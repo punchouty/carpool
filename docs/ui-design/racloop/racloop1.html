@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="shortcut icon" href="../../assets/ico/favicon.png">  -->
+
+    <title>raC looP</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+	 <style type="text/css">
+      body {
+        padding-top: 20px;
+        padding-bottom: 40px;
+      }
+
+      /* Main marketing message and sign up button */
+      .jumbotron {
+        text-align: center;
+      }
+      .jumbotron h1 {
+		margin: 5px 0;
+        font-size: 72px;
+        line-height: 1;
+      }
+	  hr {
+		margin: 5px 0;
+	  }
+      .jumbotron  {
+        font-size: 21px;
+        padding: 14px 24px;
+      }
+	  #map-canvas {
+			height: 500px;
+		}
+	  .place {
+		font-size: 16px;
+		height: auto;
+		padding: 7px 9px;
+	  }
+	  #main-controls {
+        text-align: center;
+      }
+    </style>
+	<link href="css/bootstrap-responsive.css" rel="stylesheet">
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+    <![endif]-->
+	 
+  </head>
+
+  <body>
+	<div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="navbar-inner">
+        <div class="container-fluid">
+          <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="brand" href="#">raC looP</a>
+          <div class="nav-collapse collapse">
+            <p class="navbar-text pull-right">
+              Welcome <a href="#" class="navbar-link">Rajan Punchouty</a>&nbsp;&nbsp;
+			  <a href="#" class="navbar-link">Logout</a>
+            </p>
+            <ul class="nav">
+              <li class="active"><a href="#">Home</a></li>
+              <li><a href="#about">History</a></li>
+              <li><a href="#contact">Notifications <span class="badge">4</span></a></li>
+			  <li><a href="#">Etiquettes</a></li>
+			  <li><a href="#">Terms</a></li>
+            </ul>
+          </div><!--/.nav-collapse -->
+        </div>
+      </div>
+    </div>
+	<div class="container">
+      <hr>
+      <div class="jumbotron" id="jumbotron">
+        <h1>Car Pool</h1>
+        <p class="lead">Travel together, Make friends, Save money and most important - Contribute to Green environment
+      </div>
+	  
+	<div id="main-controls">
+		<form class="form-inline" role="form">
+			<div id="travelDate" class="input-append form-control">
+				<input data-format="dd/MM/yyyy hh:mm" type="text" placeholder="Date and Time of Travel"></input>
+				<span class="add-on">
+				  <i data-time-icon="icon-time" data-date-icon="icon-calendar">
+				  </i>
+				</span>
+		   </div>
+		  <input type="text" class="form-control place" id="from" placeholder="From - Start Typing">
+		  <input type="hidden" id="fromLatitude" value="">
+		  <input type="hidden" id="fromLongitude" value="">
+		  <input type="text" class="form-control place" id="to" placeholder="To - Start Typing">
+		  <input type="hidden" id="toLatitude" value="">
+		  <input type="hidden" id="toLongitude" value="">
+		  <div class="btn-group">
+			 <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+				Do you have Car?
+				<span class="caret"></span>
+			 </a>
+			 <ul class="dropdown-menu">
+				<li><a href="#">Yes, I am giving ride</a></li>
+				<li><a href="#">No, I need a ride</a></li>
+			 </ul>
+		  </div>		  
+		  <input type="hidden" id="distance" value="">
+		  <input type="hidden" id="unit" value="">
+		</form>
+	</div>
+	  <div id="map-canvas">
+	  </div>
+	  <hr>
+      <footer>
+        <p>&copy; racloop 2013</p>
+      </footer>
+    </div> <!-- /container -->
+
+    
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
+	<script src="js/jquery.places-search.js"></script>
+	<script type="text/javascript"
+      src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places">
+    </script>
+	<script type="text/javascript">
+		var directionsDisplay;
+		var directionsService = new google.maps.DirectionsService();
+		var map;
+		var from;
+		var to;
+		$('#from').val("");
+		$('#to').val("");
+		$(function() {
+			var now = new Date();
+			$('#travelDate').val(now);
+			var dp = $('#travelDate').datetimepicker({
+			  language: 'pt-BR',
+			  pickSeconds: false,
+			  startDate: now
+			});
+		});
+		$(function() {	
+			directionsDisplay = new google.maps.DirectionsRenderer();
+			var delhi = new google.maps.LatLng(28.632897, 77.21944);
+			var mapOptions = {
+				center: delhi,
+				zoom: 12,
+				mapTypeId: google.maps.MapTypeId.ROADMAP // ROADMAP | SATELLITE | HYBRID | TERRAIN
+			};			
+			map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+			directionsDisplay.setMap(map);
+			$('#from').placesSearch({
+					onSelectAddress: function(result) {	
+					from = result.geometry.location;
+					$('#fromLatitude').val(from.lat());
+					$('#fromLongitude').val(from.lng());
+					if(to) calcRoute(from, to);					
+				}
+			});
+			$('#to').placesSearch({
+				onSelectAddress: function(result) {	
+					to = result.geometry.location;
+					$('#toLatitude').val(to.lat());
+					$('#toLongitude').val(to.lng());
+					if(from) calcRoute(from, to);					
+				}
+			});
+		});
+		function calcRoute(from, to) {
+		  var request = {
+			  origin:from,
+			  destination:to,
+			  travelMode: google.maps.DirectionsTravelMode.DRIVING
+		  };
+		  directionsService.route(request, function(response, status) {
+			if (status == google.maps.DirectionsStatus.OK) {
+			  directionsDisplay.setDirections(response);
+			}
+		  });
+		}
+		
+		function distance(lat1,lon1,lat2,lon2) {
+			var R = 6371; // km (change this constant to get miles)
+			var dLat = (lat2-lat1) * Math.PI / 180;
+			var dLon = (lon2-lon1) * Math.PI / 180; 
+			var a = Math.sin(dLat/2) * Math.sin(dLat/2) +
+				Math.cos(lat1 * Math.PI / 180 ) * Math.cos(lat2 * Math.PI / 180 ) * 
+				Math.sin(dLon/2) * Math.sin(dLon/2); 
+			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
+			var d = R * c;
+			if (d>1) {
+				d = Math.round(d);
+				$('#distance').val(d);
+				$('#unit').val('KM');
+			}
+			else if (d<=1) { 
+				d = Math.round(d*1000);
+				$('#distance').val(d);
+				$('#unit').val('M');
+			}
+		}
+	</script>
+  </body>
+</html>

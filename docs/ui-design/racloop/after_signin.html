@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="shortcut icon" href="../../assets/ico/favicon.png">  -->
+
+    <title>raC looP</title>
+
+    <!-- Bootstrap core CSS -->
+    <link href="css/bootstrap.css" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link href="css/jumbotron.css" rel="stylesheet">
+    <link href="css/bootstrap-timepicker.min.css" rel="stylesheet">
+    <link href="css/datepicker.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.js"></script>
+      <script src="js/respond.min.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <div class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">raC looP</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">History</a></li>
+            <li><a href="#about">Notifications <span class="badge">4</span></a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <div class="form-group">
+              <input type="text" placeholder="Pin Code Search" class="form-control">
+            </div>
+            <button type="submit" class="btn btn-success">Go</button>
+          </form>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+
+    <!-- Main jumbotron for a primary marketing message or call to action -->
+    <div class="jumbotron">
+      <div class="container">
+        <h1>Car Pool</h1>
+        <p>This is a template for a simple marketing or informational website. It includes a large callout called the hero unit and three supporting pieces of content. Use it as a starting point to create something more unique.</p>
+        <div class="my-centre">
+			<form class="form-inline" role="form">
+			  <div class="form-group">
+				<input type="text" class="form-control" id="travelDate" placeholder="Travel Date">
+			  </div>
+			  <div class="form-group">
+				<input type="text" class="form-control" id="travelTime" placeholder="Travel Time">
+				<span class="add-on"><i class="icon-time"></i></span>
+			  </div>
+			  <div class="form-group">
+				<input type="text" class="form-control" id="from" placeholder="From">
+			  </div>
+			  <div class="form-group">
+				<input type="text" class="form-control" id="to" placeholder="To">
+			  </div>
+			  <div class="btn-group">
+				  <button type="button" class="btn btn-primary">Have Car?</button>
+				  <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+					<span class="caret"></span>
+				  </button>
+				  <ul class="dropdown-menu" role="menu">
+					<li><a href="#">Yes I have car</a></li>
+					<li><a href="#">No, I need a ride</a></li>
+				  </ul>
+			</div>
+			</form>
+		</div>
+      </div>
+    </div>
+	<div class="input-append bootstrap-timepicker">
+            <input id="timepicker1" type="text" class="input-small">
+            <span class="add-on"><i class="icon-time"></i></span>
+        </div>
+    <div class="container">
+      <!-- Example row of columns -->
+      <div class="row">
+        <div class="col-lg-4">
+          <h2>Make Friends</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+        </div>
+        <div class="col-lg-4">
+          <h2>Save Environment</h2>
+          <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada magna mollis euismod. Donec sed odio dui. </p>
+       </div>
+        <div class="col-lg-4">
+          <h2>Save Money</h2>
+          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+        </div>
+      </div>
+
+      <hr>
+
+      <footer>
+        <p>&copy; Rac Loop 2013</p>
+      </footer>
+    </div> <!-- /container -->
+
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="js/jquery.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/bootstrap-timepicker.min.js"></script>
+    <script src="js/bootstrap-datepicker.js"></script>
+	
+	<script type="text/javascript">
+		$('#travelTime').timepicker();
+		$('#travelDate').datepicker({
+		  format: 'dd-mm-yyyy',
+		  autoclose: true
+		});
+	</script>
+ 
+        <script type="text/javascript">
+            $('#timepicker1').timepicker();
+        </script>
+  </body>
+</html>
