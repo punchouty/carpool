@@ -92,6 +92,9 @@ body {
 .search-field {
 	width: 150px
 }
+.map_canvas img {
+    max-width: none !important;
+}
 </style>
 </head>
 <body>

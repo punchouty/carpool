@@ -69,7 +69,7 @@
 			<input type="hidden" id="isDriver" value="" />
 		</form>
 	</div>
-	<div id="map-canvas"></div>
+	<div id="map-canvas" class="map_canvas"></div>
 	<small id="map-help"></small>
 	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	  <div class="modal-header">
@@ -86,57 +86,84 @@
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places">		
 	</script>
 	<script type="text/javascript">
-		var rendererOptions = {
-			draggable : true
-		};
-
-		var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
-		var directionsService = new google.maps.DirectionsService();
+		var rendererOptions;
+		var directionsDisplay;
+		var directionsService;
 		var centerOfIndia = new google.maps.LatLng(23.843138,79.44171);
-		var map;
+		var defaultZoom = 13;
+		var reserveTime = 30;//in minutes
 		var from = centerOfIndia;
 		var to;
+		var mapOptions;
+		var map;			
+		var marker;
+		var geocoder;
 		function init() {
-			$('#from').val("");
-			$('#from').val("");
-			$('#to').val("");
-		}
-		///*
-		$(function() {
-			init();
-			var mapOptions = {
+			rendererOptions = {
+				draggable : true
+			};
+			mapOptions = {
 				center : from,
+			    mapTypeControl: true,
+			    mapTypeControlOptions: {
+			      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+			    },
+			    zoomControl: true,
+			    zoomControlOptions: {
+			      style: google.maps.ZoomControlStyle.SMALL
+			    },
 				zoom : 4,
 				mapTypeId : google.maps.MapTypeId.ROADMAP
 			// ROADMAP | SATELLITE | HYBRID | TERRAIN
 			};
-			map = new google.maps.Map(document.getElementById("map-canvas"),
-					mapOptions);
-			directionsDisplay.setMap(map);
+			directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+			directionsService = new google.maps.DirectionsService();
+			map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+			geocoder = new google.maps.Geocoder();
+			marker = new google.maps.Marker({
+				draggable:true,
+				position: from,
+				map: map,
+				flat : true,
+				title: 'Current Location'
+			});
+			google.maps.event.addListener(marker, 'dragend', function(){
+			    geocodePosition(marker.getPosition());
+			});
 			google.maps.event.addListener(directionsDisplay,
 					'directions_changed', function() {
-						computeTotalDistance(directionsDisplay.directions);
+					changeDirections(directionsDisplay.directions);
 			});
-		});
-		//*/
-		/*
+			$('#from').val("");
+			$('#from').val("");
+			$('#to').val("");
+		}
+
+		function geocodePosition(position) {
+			geocoder.geocode({'latLng': position}, function(results, status) {
+			   if (status == google.maps.GeocoderStatus.OK) {
+					if (results[1]) {
+						$('#fromLatitude').val(position.lat());
+						$('#fromLongitude').val(position.lng());
+				    	$('#from').val(results[1].formatted_address);
+			    	} 
+			   } 
+			});
+		}
+		///*
 		$(function() {
 			init();
 			$.getJSON('http://freegeoip.net/json/', function(location) {
 				from = new google.maps.LatLng(parseFloat(location.latitude), parseFloat(location.longitude));
-				var mapOptions = {
-					center : from,
-					zoom : 12,
-					mapTypeId : google.maps.MapTypeId.ROADMAP	// ROADMAP | SATELLITE | HYBRID | TERRAIN
-				};
-				map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-				directionsDisplay.setMap(map);
-				google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-					computeTotalDistance(directionsDisplay.directions);
-				});
+				map.setCenter(from);
+				map.setZoom(defaultZoom);
+				marker.setPosition(from);
+				marker.setVisible(true);
+				geocodePosition(from);
 			});
+			directionsDisplay.setMap(map);
 		});
-		*/
+		//*/		
 		$(function() {
 			$('#from').placesSearch({
 				onSelectAddress : function(result) {
@@ -147,8 +174,9 @@
 						calcRoute(from, to);
 					}
 					else {
-						map.setZoom(12);
+						map.setZoom(defaultZoom);
 						map.panTo(from);
+						marker.setPosition(from);
 					}	
 				}
 			});
@@ -161,7 +189,7 @@
 						calcRoute(from, to);
 					}
 					else {
-						map.setZoom(12);
+						map.setZoom(defaultZoom);
 						map.panTo(to);
 					}
 				}
@@ -169,6 +197,7 @@
 		});
 		
 		function calcRoute(from, to) {
+			marker.setVisible(false);
 			var request = {
 				origin : from,
 				destination : to,
@@ -179,37 +208,44 @@
 					directionsDisplay.setDirections(response);
 				}
 			});
-			distance(from.lat(), from.lng(), to.lat(), to.lng());
 			setMapHelp();
 		}
-
-		function distance(lat1, lon1, lat2, lon2) {
-			var R = 6371; // km (change this constant to get miles)
-			var dLat = (lat2 - lat1) * Math.PI / 180;
-			var dLon = (lon2 - lon1) * Math.PI / 180;
-			var a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
-					+ Math.cos(lat1 * Math.PI / 180)
-					* Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2)
-					* Math.sin(dLon / 2);
-			var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-			var d = R * c;
-			if (d > 1) {
-				d = Math.round(d);
-				$('#tripUnit').val('KM');
-				$('#tripDistance').val(d + '');
-			} else if (d <= 1) {
-				d = Math.round(d * 1000);
-				$('#tripUnit').val('M');
-				$('#tripDistance').val(d + '');
-			}
-		}
-
+		
 		function computeTotalDistance(result) {
 			var total = 0;
 			var myroute = result.routes[0];
 			var numberOfLegs = 0;
 			for ( var i = 0; i < myroute.legs.length; i++) {
 				total += myroute.legs[i].distance.value;
+				var sla = $('#fromLatitude').val();
+				var slo = $('#fromLongitude').val();
+				var ela = $('#toLatitude').val();
+				var elo = $('#toLongitude').val();
+				var start_location = myroute.legs[i].start_location
+				var end_location = myroute.legs[i].end_location
+				var start_address = myroute.legs[i].start_address
+				var end_address = myroute.legs[i].end_address
+				numberOfLegs++;
+				console.log(sla + ":" + start_location.lat() + ", " + slo + ":" + start_location.lng() + ", " +ela + ":" + end_location.lat() + ", " + elo + ":" + end_location.lng())
+			}
+			if(numberOfLegs != 1) {
+				console.log("numberOfLegs : " + numberOfLegs);
+			}
+			total = total / 1000.
+			$('#tripUnit').val('KM');
+			$('#tripDistance').val(total + '');
+		}
+
+		function changeDirections(result) {
+			var total = 0;
+			var myroute = result.routes[0];
+			var numberOfLegs = 0;
+			for ( var i = 0; i < myroute.legs.length; i++) {
+				total += myroute.legs[i].distance.value;
+				var sla = $('#fromLatitude').val();
+				var slo = $('#fromLongitude').val();
+				var ela = $('#toLatitude').val();
+				var elo = $('#toLongitude').val();
 				var start_location = myroute.legs[i].start_location
 				var end_location = myroute.legs[i].end_location
 				var start_address = myroute.legs[i].start_address
@@ -221,9 +257,10 @@
 				$('#from').val(start_address);
 				$('#to').val(end_address);
 				numberOfLegs++;
+				console.log(sla + ":" + start_location.lat() + ", " + slo + ":" + start_location.lng() + ", " +ela + ":" + end_location.lat() + ", " + elo + ":" + end_location.lng())
 			}
 			if(numberOfLegs != 1) {
-				alert("numberOfLegs : " + numberOfLegs);
+				console.log("numberOfLegs : " + numberOfLegs);
 			}
 			total = total / 1000.
 			$('#tripUnit').val('KM');
@@ -239,7 +276,7 @@
 		var now;
 		$(function() {
 			now = new Date();
-			now.setMinutes(now.getMinutes() + 90);
+			now.setMinutes(now.getMinutes() + reserveTime);
 			$('#travelDateDiv').datetimepicker({
 				language : 'pt-BR',
 			    //pick12HourFormat: true,
