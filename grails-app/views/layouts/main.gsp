@@ -36,7 +36,8 @@
       <script src="js/html5shiv.js"></script>
 <![endif]-->
 <g:layoutHead />
-<r:require module="jquery" />
+<%-- <r:require module="jquery" /> --%>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <r:layoutResources />
 <style type="text/css" media="screen">
 body {

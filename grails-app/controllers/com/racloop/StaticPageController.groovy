@@ -6,5 +6,7 @@ class StaticPageController {
 	
 	def etiquettes() { }
 	
-	def about() { }
+	def about() {
+		
+	}
 }

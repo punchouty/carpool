@@ -12,7 +12,7 @@ class Journey {
 	Date dateOfJourney;
 	
 	static hasMany = {
-		notifications: Notification
+		notificationRequests: Notification
 	}
 
     static constraints = {

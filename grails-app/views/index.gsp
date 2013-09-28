@@ -16,14 +16,14 @@
 	<div id="main-controls">
 		<form id="search-form" class="form-inline" role="form">
 			<div id="travelDateDiv" class="input-append">
-				<input id="travelDate" type="text" class="search-field" placeholder="Date and Time" data-format="dd/MM/yyyy hh:mm"></input> 
+				<input id="travelDate" type="text" class="search-field" placeholder="Date and Time" data-format="dd/MM/yyyy hh:mm PP"></input> 
 				<a href="#" class="add-on"> 
 					<i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
 				</a>
 			</div>			
 			
 			<div id="fromDiv" class="input-append dropdown">
-				<input id="from" type="text" placeholder="From - Start Typing"></input> 
+				<input id="from" type="text" placeholder="Trip Start Location"></input> 
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"> </i>
 				</a>
@@ -38,7 +38,7 @@
 			<input type="hidden" id="fromLongitude" value="">
 			
 			<div id="toDiv" class="input-append dropdown"> 
-				<input id="to" type="text" placeholder="To - Start Typing"></input>
+				<input id="to" type="text" placeholder="Trip End Location"></input>
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"></i>
 				</a>
@@ -89,30 +89,54 @@
 		var rendererOptions = {
 			draggable : true
 		};
-		var directionsDisplay = new google.maps.DirectionsRenderer(
-				rendererOptions);
+
+		var directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 		var directionsService = new google.maps.DirectionsService();
-		var userLocation = new google.maps.LatLng(23.843138,79.44171);
+		var centerOfIndia = new google.maps.LatLng(23.843138,79.44171);
 		var map;
-		var from;
+		var from = centerOfIndia;
 		var to;
-		$('#from').val("");
-		$('#to').val("");
-		$.getJSON('http://freegeoip.net/json/', function(location) {
-			userLocation = new google.maps.LatLng(parseFloat(location.latitude), parseFloat(location.longitude));
+		function init() {
+			$('#from').val("");
+			$('#from').val("");
+			$('#to').val("");
+		}
+		///*
+		$(function() {
+			init();
 			var mapOptions = {
-				center : userLocation,
-				zoom : 10,
+				center : from,
+				zoom : 4,
 				mapTypeId : google.maps.MapTypeId.ROADMAP
 			// ROADMAP | SATELLITE | HYBRID | TERRAIN
 			};
 			map = new google.maps.Map(document.getElementById("map-canvas"),
 					mapOptions);
 			directionsDisplay.setMap(map);
-			google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
-				computeTotalDistance(directionsDisplay.directions);
+			google.maps.event.addListener(directionsDisplay,
+					'directions_changed', function() {
+						computeTotalDistance(directionsDisplay.directions);
 			});
 		});
+		//*/
+		/*
+		$(function() {
+			init();
+			$.getJSON('http://freegeoip.net/json/', function(location) {
+				from = new google.maps.LatLng(parseFloat(location.latitude), parseFloat(location.longitude));
+				var mapOptions = {
+					center : from,
+					zoom : 12,
+					mapTypeId : google.maps.MapTypeId.ROADMAP	// ROADMAP | SATELLITE | HYBRID | TERRAIN
+				};
+				map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+				directionsDisplay.setMap(map);
+				google.maps.event.addListener(directionsDisplay, 'directions_changed', function() {
+					computeTotalDistance(directionsDisplay.directions);
+				});
+			});
+		});
+		*/
 		$(function() {
 			$('#from').placesSearch({
 				onSelectAddress : function(result) {
@@ -211,14 +235,20 @@
 		}
 	</script>
 	<script type="text/javascript">	
+		var picker;
+		var now;
 		$(function() {
-			var now = new Date();
-			$('#travelDateDiv').val(now);
-			var dp = $('#travelDateDiv').datetimepicker({
+			now = new Date();
+			now.setMinutes(now.getMinutes() + 90);
+			$('#travelDateDiv').datetimepicker({
 				language : 'pt-BR',
+			    //pick12HourFormat: true,
 				pickSeconds : false,
-				startDate : now
+				startDate : now,
+				format : 'dd/MM/yyyy hh:mm PP'
 			});
+			picker = $('#travelDateDiv').data('datetimepicker');
+			picker.setLocalDate(now);
 		});
 		
 		$(function() {
@@ -254,7 +284,16 @@
 			var errorMessage = '';
 			var travelDateText = $('#travelDate').val();
 			if(travelDateText) {
-				
+				var selectedDate = picker.getLocalDate();
+				if(selectedDate < new Date()) {
+					$('#travelDate').addClass("control-group").addClass("error");
+					errorMessage = "You have selected past date/time";
+					return errorMessage;
+				}
+				else if(selectedDate < now) {
+					$('#travelDate').addClass("control-group").addClass("error");
+					errorMessage = "You can select time only after 30 minutes from now";
+				}
 			}
 			else {
 				$('#travelDate').addClass("control-group").addClass("error");
@@ -287,11 +326,17 @@
 					errorMessage = "To Location";
 				}				
 			}
+			var tripDistanceInKm = $('#tripDistance').val();
+			if(tripDistanceInKm) {
+				if(tripDistanceInKm <= 1) {
+					errorMessage = errorMessage + ", Distance you want to travel is very less"
+				}
+			}
 			if(errorMessage) {
-				errorMessage = "Empty Fields : " + errorMessage;
+				errorMessage = "Error Fields : " + errorMessage;
 			}
 			return errorMessage;
 		}
-	</script>
+		</script>
 </body>
 </html>
