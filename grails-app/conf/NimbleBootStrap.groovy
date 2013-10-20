@@ -38,7 +38,7 @@ class NimbleBootStrap {
 	def init = {servletContext ->
 
 		// The following must be executed
-		internalBootStap(servletContext)
+		//internalBootStap(servletContext)
 
 		// Execute any custom Nimble related BootStrap for your application below
 
@@ -90,7 +90,7 @@ class NimbleBootStrap {
 		}
 	}
 
-	private internalBootStap(servletContext) {
-		nimbleService.init()
-	}
+//	private internalBootStap(servletContext) {
+//		nimbleService.init()
+//	}
 }

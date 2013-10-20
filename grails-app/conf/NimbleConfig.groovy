@@ -33,7 +33,7 @@ nimble {
 	localusers {
 		authentication { 
 			enabled = true 
-			postLoginUrl = '/'
+			postLoginUrl = '/search'
 		} 
 		registration { enabled = true }
 		provision { active = false }

@@ -2,7 +2,7 @@ package com.racloop
 
 class Notification {
 	
-//	User recipient
+	User sender
 	String status	
 
     static constraints = {		

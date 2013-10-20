@@ -59,9 +59,15 @@ grails.exceptionresolver.params.exclude = ['password']
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
+grails.ui.dateFormat = 'dd/MM/yyyy hh:mm a'
+grails.indexNameFormatType = "Daily" //or Daily 
+grails.dailyIndexNameFormat = 'dd-MMM-yyyy'
+grails.monthlyIndexNameFormat = 'MMM-yyyy'
+
 environments {
     development {
         grails.logging.jul.usebridge = true
+		grails.resources.debug = true
     }
     production {
         grails.logging.jul.usebridge = false
@@ -73,9 +79,12 @@ environments {
 log4j = {
     // Example of changing the log pattern for the default console appender:
     //
-    //appenders {
-    //    console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-    //}
+	
+	info "grails.app"
+	
+    appenders {
+        console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+    }
 
     error  'org.codehaus.groovy.grails.web.servlet',        // controllers
            'org.codehaus.groovy.grails.web.pages',          // GSP

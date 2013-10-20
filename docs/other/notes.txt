@@ -1,0 +1,110 @@
+Health and Shutdown
+
+Information about cluster - curl -XGET http://127.0.0.1:9200/_cluster/health?pretty
+Information about all nodes - curl -XGET http://localhost:9200/_cluster/nodes?pretty
+Shut-down complete cluster - curl -XPOST http://localhost:9200/_cluster/nodes/_shutdown
+Shut-down particular node - curl -XPOST http://localhost:9200/_cluster/nodes/BlrmMvBdSKiCeYGsiHijdg/_shutdown
+Status - curl -XGET http://localhost:9200/_status?pretty=true
+Stats - curl -XGET localhost:9200/_stats?pretty=true
+
+Index Admin
+List of all indexes - curl -XGET http://localhost:9200/_aliases
+
+Searching
+curl -XGET "http://localhost:9200/10-oct-2013/driver/_search?q=user:khwaish&pretty=true"
+curl -XGET "http://localhost:9200/11-oct-2013/rider/_search?q=tamanna&pretty=true"
+
+Create Document with ID
+curl -XPUT http://localhost:9200/blog/article/1 -d '{"title": "New version of Elastic Search released!", "content": "...", "tags": ["announce", "elasticsearch", "release"] }'
+Create Document with geberated ID
+curl -XPOST http://localhost:9200/blog/article/ -d '{"title": "New version of Elastic Search released!", "content": "...", "tags": ["announce", "elasticsearch", "release"] }'
+
+Retrieve Document
+curl -XGET http://localhost:9200/blog/article/1
+
+Update
+curl -XPOST http://localhost:9200/blog/article/1/_update -d '{
+  "script": "ctx._source.content = \"new content\""
+}'
+
+Update - default case
+curl -XPOST http://localhost:9200/blog/article/1/_update -d '{
+  "script": "ctx._source.counter += 1",
+  "upsert": {
+    "counter" : 0
+  }
+}'
+
+Deleting Document
+curl -XDELETE http://localhost:9200/blog/article/1
+
+Create an Index
+curl -XPOST 'http://localhost:9200/posts'
+
+Delete an Index
+curl -XDELETE 'http://localhost:9200/posts'
+
+Schema Mapping - define index structure
+Step 1 - create post.json
+{
+ "mappings" : {
+  "post" : {
+   "properties" : {                
+    "id" : { "type" : "long", "store" : "yes", "precision_step" : "0" },
+    "name" : { "type" : "string", "store" : "yes", "index" : "analyzed" },
+    "published" : { "type" : "date", "store" : "yes", "precision_step" : "0" },
+    "contents" : { "type" : "string", "store" : "no", "index" : "analyzed" }             
+   }
+  }
+ }
+}
+Step 2 - run command
+curl -XPOST 'http://localhost:9200/posts' –d @posts.json
+
+Optional Step - to define multiple indexes
+{
+  "mappings": {
+    "post": {
+      "properties": {                
+        "id": { "type":"long", "store":"yes",
+        "precision_step":"0" },
+        "name": { "type":"string", "store":"yes", 
+        "index":"analyzed" },
+        "published": { "type":"date", "store":"yes", 
+        "precision_step":"0" },
+        "contents": { "type":"string", "store":"no", 
+        "index":"analyzed" }             
+      }
+    },
+    "user": {
+      "properties": {                
+        "id": { "type":"long", "store":"yes", 
+        "precision_step":"0" },
+        "name": { "type":"string", "store":"yes", 
+        "index":"analyzed" }             
+      }
+    }
+  }
+}
+
+curl -XPOST 'localhost:9200/library' - creation of index
+curl -XPUT 'localhost:9200/library/book/_mapping' -d @mapping.json - Another way to create mapping
+curl -s -XPOST 'localhost:9200/_bulk' --data-binary @documents.json - uploading bulk data
+
+QUERY AND FILTERS
+{
+    "filtered" : {
+        "query" : {
+            "match_all" : {}
+        },
+        "filter" : {
+            "geo_distance" : {
+                "distance" : "30km",
+                "from" : {
+                    "lat" : 40,
+                    "lon" : -70
+                }
+            }
+        }
+    }
+}

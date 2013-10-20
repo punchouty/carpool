@@ -42,6 +42,9 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         runtime 'mysql:mysql-connector-java:5.1.22'
+		compile 'org.elasticsearch:elasticsearch:0.90.5'
+		//compile 'org.elasticsearch:elasticsearch-lang-groovy:1.5.0'
+		
     }
 
     plugins {
@@ -57,9 +60,8 @@ grails.project.dependency.resolution = {
         build ":tomcat:$grailsVersion"
 
         runtime ":database-migration:1.3.2"
-
-        compile ':cache:1.0.1'
-		
+        compile ':cache:1.0.1'		
 		compile ":nimble:0.5.2"
+		//compile ":quartz:1.0-RC12"
     }
 }

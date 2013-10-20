@@ -39,63 +39,6 @@
 <%-- <r:require module="jquery" /> --%>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <r:layoutResources />
-<style type="text/css" media="screen">
-body {
-	padding-top: 20px;
-	padding-bottom: 40px;
-}
-
-/* Custom container */
-.container-narrow {
-	margin: 0 auto;
-	max-width: 900px;
-}
-
-.container-narrow>hr {
-	margin: 20px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-	margin: 0px 0;
-	text-align: center;
-}
-
-.jumbotron h1 {
-	font-size: 72px;
-	line-height: 1;
-	margin: 0px 0;
-}
-
-.jumbotron .btn {
-	font-size: 21px;
-	padding: 14px 24px;
-}
-
-/* Supporting marketing content */
-.marketing {
-	margin: 60px 0;
-}
-
-.marketing p+h4 {
-	margin-top: 28px;
-}
-
-#map-canvas {
-	height: 500px;
-}
-
-#main-controls {
-	text-align: center;
-}
-
-.search-field {
-	width: 150px
-}
-.map_canvas img {
-    max-width: none !important;
-}
-</style>
 </head>
 <body>
 	<g:set var="currentUser"
@@ -147,16 +90,20 @@ body {
 			</ul>
 			<h3 class="muted">raC looP</h3>
 		</div>
-		<hr>
-
+		<hr>		
+		
 		<g:layoutBody />
-
 
 		<hr>
 		<footer>
 			<p>&copy; racloop 2013</p>
 		</footer>
 	</div>
+	<g:if env="development">
+	<div>
+		${params }
+	</div>
+	</g:if>
 	<g:javascript library="application" />
 	<r:layoutResources />
 </body>

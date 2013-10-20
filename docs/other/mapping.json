@@ -1,0 +1,78 @@
+{
+	"journey" : {
+		"driver" : {      
+	  		"properties" : {
+				  "user" : {
+				    "type" : "string", 
+				    "index" : "not_analyzed"
+				  },
+				  "dateOfJourney" : {
+                  	"type" : "date",
+                	"format" : "basic_date_time_no_millis"
+				  },
+				  "fromPlace" : {
+				    "type" : "string",
+				    "index" : "analyzed"
+				  },
+				  "from" : {
+				    "type" : "geo_point",
+				    "lat_lon" : "true",
+				    "geohash" : "true"
+				  },
+				  "toPlace" : {
+				    "type" : "string",
+				    "index" : "analyzed"
+				  },
+				  "to" : {
+				    "type" : "geo_point"
+				    "lat_lon" : "true",
+				    "geohash" : "true"
+				  },
+				  "requesterIp" : {
+				    "type" : "ip"
+				  },
+				  "createdDate" : {
+                  	"type" : "date",
+                	"format" : "basic_date_time_no_millis"
+				  }
+	    	}
+		},
+		"rider" : {      
+	  		"properties" : {
+				  "user" : {
+				    "type" : "string", 
+				    "index" : "not_analyzed"
+				  },
+				  "dateOfJourney" : {
+                  	"type" : "date",
+                	"format" : "basic_date_time_no_millis"
+				  },
+				  "fromPlace" : {
+				    "type" : "string",
+				    "index" : "analyzed"
+				  },
+				  "from" : {
+				    "type" : "geo_point",
+				    "lat_lon" : "true",
+				    "geohash" : "true"
+				  },
+				  "toPlace" : {
+				    "type" : "string",
+				    "index" : "analyzed"
+				  },
+				  "to" : {
+				    "type" : "geo_point"
+				    "lat_lon" : "true",
+				    "geohash" : "true"
+				  },
+				  "requesterIp" : {
+				    "type" : "ip"
+				  },
+				  "createdDate" : {
+                  	"type" : "date",
+                	"format" : "basic_date_time_no_millis"
+				  }
+	    	}
+		}
+	}
+}
