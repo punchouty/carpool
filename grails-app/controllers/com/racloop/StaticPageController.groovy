@@ -10,7 +10,7 @@ class StaticPageController {
 	def home(){
 		def user = getAuthenticatedUser()
 		if(user) {
-			redirect(action: "search", params: [journeyInstance: new Journey(params)])
+			redirect(action: "search")
 		}
 		else {
 			redirect(action: "index")
@@ -27,6 +27,8 @@ class StaticPageController {
 	}
 
 	def search() {
+		def commandInstance = new JourneyRequestCommand()
+		[commandInstance : commandInstance]
 	}
 	
 	def index() {

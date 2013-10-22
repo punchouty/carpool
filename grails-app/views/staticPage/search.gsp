@@ -1,66 +1,9 @@
-<%@ page import="com.racloop.Journey" %>
+<%@ page import="com.racloop.JourneyRequestCommand" %>
 <!DOCTYPE html>
 <html>
 <head>
 <meta name="layout" content="main" />
 <title>Welcome to raC looP</title>
-<style type="text/css" media="screen">
-body {
-	padding-top: 20px;
-	padding-bottom: 40px;
-}
-
-/* Custom container */
-.container-narrow {
-	margin: 0 auto;
-	max-width: 900px;
-}
-
-.container-narrow>hr {
-	margin: 20px 0;
-}
-
-/* Main marketing message and sign up button */
-.jumbotron {
-	margin: 0px 0;
-	text-align: center;
-}
-
-.jumbotron h1 {
-	font-size: 72px;
-	line-height: 1;
-	margin: 0px 0;
-}
-
-.jumbotron .btn {
-	font-size: 21px;
-	padding: 14px 24px;
-}
-
-/* Supporting marketing content */
-.marketing {
-	margin: 60px 0;
-}
-
-.marketing p+h4 {
-	margin-top: 28px;
-}
-
-#map-canvas {
-	height: 500px;
-}
-
-#main-controls {
-	text-align: center;
-}
-
-.search-field {
-	width: 150px
-}
-.map_canvas img {
-    max-width: none !important;
-}
-</style>
 </head>
 <body>
 	<g:if test="${flash.message}">
@@ -69,10 +12,10 @@ body {
 		  ${flash.message}
 		</div>
 	</g:if>
-	<g:hasErrors bean="${journeyInstance}">
+	<g:hasErrors bean="${commandInstance}">
 		<div class="alert">	
 			<ul class="errors" role="alert">
-				<g:eachError bean="${journeyInstance}" var="error">
+				<g:eachError bean="${commandInstance}" var="error">
 				<li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
 				</g:eachError>
 			</ul>
@@ -89,14 +32,14 @@ body {
 	<div id="main-controls">
 		<g:form name="search-form" controller="journey" action="save" class="form-inline">
 			<div id="travelDateDiv" class="input-append">
-				<g:textField name="travelDate" value="${journeyInstance?.travelDate}" class="search-field" placeholder="Date and Time" />
+				<g:textField name="dateOfJourneyString" value="${commandInstance?.dateOfJourneyString}" class="search-field" placeholder="Date and Time" />
 				<a href="#" class="add-on"> 
 					<i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
 				</a>
 			</div>			
 			
 			<div id="fromDiv" class="input-append dropdown">
-				<g:textField name="fromPlace" value="${journeyInstance?.fromPlace}" placeholder="Start Location"/>
+				<g:textField name="fromPlace" value="${commandInstance?.fromPlace}" placeholder="Start Location"/>
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"> </i>
 				</a>
@@ -107,10 +50,10 @@ body {
 				</ul>
 			</div>	
 					
-			<g:hiddenField name="fromLatitude" value="${journeyInstance?.fromLatitude}" />
-			<g:hiddenField name="fromLongitude" value="${journeyInstance?.fromLongitude}" />
+			<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
+			<g:hiddenField name="fromLongitude" value="${commandInstance?.fromLongitude}" />
 			<div id="toDiv" class="input-append dropdown"> 
-				<g:textField name="toPlace" value="${journeyInstance?.toPlace}" placeholder="End Location"/>
+				<g:textField name="toPlace" value="${commandInstance?.toPlace}" placeholder="End Location"/>
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"></i>
 				</a>
@@ -121,8 +64,8 @@ body {
 				</ul>
 			</div>
 			
-			<g:hiddenField name="toLatitude" value="${journeyInstance?.toLatitude}" />
-			<g:hiddenField name="toLongitude" value="${journeyInstance?.toLongitude}" />
+			<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
+			<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
 			
 			<div class="btn-group">
 				<button class="btn btn-primary">Car?</button>
@@ -135,10 +78,10 @@ body {
 					<li><a id="rider" href="#">No, I need a ride</a></li>
 				</ul>
 			</div>
-			<g:hiddenField name="validStartTime" value="${journeyInstance?.currentTime}" />
-			<g:hiddenField name="tripDistance" value="${journeyInstance?.tripDistance}" />
-			<g:hiddenField name="tripUnit" value="${journeyInstance?.tripUnit}" />
-			<g:hiddenField name="isDriver" value="${journeyInstance?.isDriver}" />
+			<g:hiddenField name="validStartTimeString" value="${commandInstance?.validStartTimeString}" />
+			<g:hiddenField name="tripDistance" value="${commandInstance?.tripDistance}" />
+			<g:hiddenField name="tripUnit" value="${commandInstance?.tripUnit}" />
+			<g:hiddenField name="isDriver" value="${commandInstance?.isDriver}" />
 		</g:form>
 	</div>
 	<div id="map-canvas" class="map_canvas"></div>

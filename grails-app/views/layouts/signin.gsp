@@ -23,22 +23,13 @@
 	href="${resource(dir: 'img', file: 'apple-touch-icon.png')}">
 <link rel="apple-touch-icon" sizes="114x114"
 	href="${resource(dir: 'img', file: 'apple-touch-icon-retina.png')}">
-<link rel="stylesheet"
-	href="${resource(dir: 'css', file: 'bootstrap.css')}" type="text/css">
-<link rel="stylesheet"
-	href="${resource(dir: 'css', file: 'bootstrap-datetimepicker.min.css')}"
-	type="text/css">
-<link rel="stylesheet"
-	href="${resource(dir: 'css', file: 'bootstrap-responsive.css')}"
-	type="text/css">
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
       <script src="js/html5shiv.js"></script>
 <![endif]-->
 <g:layoutHead />
-<%-- <r:require module="jquery" /> --%>
-<script
-	src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
+<r:require module="core" />
 <r:layoutResources />
 </head>
 <body>
@@ -90,12 +81,6 @@
 			<p>&copy; racloop 2013</p>
 		</footer>
 	</div>
-	<g:if env="development">
-		<div>
-			${params }
-		</div>
-	</g:if>
-	<g:javascript library="application" />
 	<r:layoutResources />
 </body>
 </html>

@@ -19,7 +19,7 @@ class Journey {
 	
 	static belongsTo = [user : User]
 	
-	static transients = ['name', 'validStartTime', 'fromPlace', 'fromLatitude', 'fromLongitude', 'toPlace', 'toLatitude', 'toLongitude', 'isDriver', 'tripDistance', 'tripUnit', 'ip']
+	static transients = ['name', 'dateOfJourney', 'validStartTime', 'fromPlace', 'fromLatitude', 'fromLongitude', 'toPlace', 'toLatitude', 'toLongitude', 'isDriver', 'tripDistance', 'tripUnit', 'ip']
 	
 	static hasMany = {
 		notificationRequests: Notification
@@ -27,9 +27,6 @@ class Journey {
 
     static constraints = {
 		ip nullable : true
-		dateOfJourney nullable : false
-		fromPlace blank : false
-		toPlace blank : false
     }
 	
 	String toString(){

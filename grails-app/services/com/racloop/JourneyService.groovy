@@ -25,7 +25,7 @@ class JourneyService {
 		}
     }
 	
-	def search(User user, Journey journey) {
+	def search(User user, JourneyRequestCommand journey) {
 		def journeys = elasticSearchService.search(user, journey);
 		return journeys;
 	}

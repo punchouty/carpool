@@ -2,36 +2,40 @@ package com.racloop
 
 import java.util.Date;
 
-import org.apache.shiro.SecurityUtils
-import org.apache.shiro.subject.Subject
+import org.elasticsearch.common.joda.time.DateTime
+import org.elasticsearch.common.joda.time.format.DateTimeFormat
+import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
 class JourneyController {
 	
+	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern("dd/MM/yyyy HH:mm");
 	def grailsApplication
 	def journeyService
 
     def save(JourneyRequestCommand command) { 
-		log.info params
-		if(command.validate()) {
-			println 'valid'
+		def currentUser = getAuthenticatedUser();
+		command.name = currentUser.profile.fullName
+		command.ip = request.remoteAddr
+		DateTime dateOfJourney = UI_DATE_FORMAT.parseDateTime(command.dateOfJourneyString);
+		DateTime validStartTime = UI_DATE_FORMAT.parseDateTime(command.validStartTimeString);
+		if(dateOfJourney != null && validStartTime != null && dateOfJourney.isAfter(validStartTime)) {
+			command.dateOfJourney = dateOfJourney.toDate();	
+			command.validStartTime = validStartTime.toDate();
+			if(command.validate()) {
+				session.currentJourney = command
+				redirect(action: "results")
+			}
+			else {
+				log.warn 'Error in command : ' + params
+				redirect(controller: 'staticPage', action: "search")
+			}
 		}
 		else {
-			println 'invalid'
+			command.errors.rejectValue("travelDateString", "invalid.travel.date", [message(code: 'travel.date', default: 'Travel Date')] as Object[],
+                          "Invalid travel date")
+			log.warn 'Error in command travel dates : ' + params
+			redirect(controller: 'staticPage', action: "search")
 		}
-		render 'Done'
-//		def dateOfJourney = params.date('travelDate', grailsApplication.config.grails.ui.dateFormat)
-//		def validStartTime = params.date('validStartTime', grailsApplication.config.grails.ui.dateFormat)
-//		Journey journeyInstance = new Journey(params);
-//		journeyInstance.dateOfJourney = dateOfJourney;
-//		journeyInstance.validStartTime = validStartTime;
-//		def currentUser = getAuthenticatedUser();
-//		boolean success  = journeyService.saveJourney(currentUser, journeyInstance)
-//		if(success) {
-//			redirect(action: "results", params: [user : currentUser, journeyInstance: journeyInstance])
-//		}
-//		else {
-//			redirect(controller: "staticPage", action: "home", params: [journeyInstance: journeyInstance])
-//		}
 	}
 	
 	def activeJourneys() {
@@ -40,19 +44,25 @@ class JourneyController {
 	}
 	
 	def results() {
-		def journeys = journeyService.search(params.user, params.journeyInstance)
+		def currentUser = getAuthenticatedUser();
+		def currentJourney = session.currentJourney
+		def journeys = journeyService.search(currentUser, currentJourney)
 		int numberOfRecords = 0;
 		if(journeys.size > 0) {
 			numberOfRecords = journeys.size
 		}
-		[journeys : journeys, numberOfRecords : numberOfRecords]
+		[currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords]
 	}
 }
 
 class JourneyRequestCommand {
 	
-	String dateOfJourney;
-	String validStartTime;
+	Long id;//will be assigned later
+	String name; //Should get from user. 
+	String dateOfJourneyString; //date as string
+	Date dateOfJourney;
+	String validStartTimeString; //date as string
+	Date validStartTime;
 	String fromPlace;
 	Double fromLatitude;
 	Double fromLongitude;
@@ -61,23 +71,17 @@ class JourneyRequestCommand {
 	Double toLongitude;
 	Boolean isDriver;
 	Double tripDistance;
-	Double tripUnit;
+	String tripUnit;
+	String ip; //should get from request
+	Date createdDate = new Date();
 	
 	static constraints = {
-		dateOfJourney blank : false, matches : /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/ //http://stackoverflow.com/questions/3143070/javascript-regex-iso-datetime
-		validStartTime blank : false, matches : /\d{4}-[01]\d-[0-3]\dT[0-2]\d:[0-5]\d:[0-5]\d([+-][0-2]\d:[0-5]\d|Z)/
-		fromPlace blank : false
-		fromLatitude nullable : false
-		fromLongitude nullable : false
-		toPlace blank : false
-		toLatitude nullable : false
-		toLongitude nullable : false
-		isDriver nullable : false
-		tripDistance nullable : false
-		tripUnit nullable : false
+		id nullable : true
+		name blank: true
+		ip blank : true
 	}
 	
 	String toString(){
-		return "isDriver : ${isDriver} | date : ${dateOfJourney} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
+		return "name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
 	}
 }

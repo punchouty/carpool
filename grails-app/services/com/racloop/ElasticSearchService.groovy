@@ -14,20 +14,23 @@ import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.index.query.FilterBuilder
 import org.elasticsearch.index.query.FilterBuilders
 import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.indices.IndexMissingException
 import org.elasticsearch.node.Node
 import org.elasticsearch.node.NodeBuilder
-import org.elasticsearch.search.SearchHit;
+import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.SearchHits
-import org.elasticsearch.search.sort.SortBuilder
+import org.elasticsearch.search.sort.GeoDistanceSortBuilder
 import org.elasticsearch.search.sort.SortBuilders
+import org.elasticsearch.search.sort.SortOrder;
 
 
 class ElasticSearchService {
 
-	public final String TYPE_DRIVER = "driver"
-	public final String TYPE_RIDER = "rider"
-	public final DateTimeFormatter BASIC_DATE_FORMAT = ISODateTimeFormat.basicDateTimeNoMillis();
-	public final String DEFAULT_INDEX_NAME_FOMRAT = "dd-MMM-yyyy"
+	public static final int DISTANCE_FACTOR = 8
+	public static final String TYPE_DRIVER = "driver"
+	public static final String TYPE_RIDER = "rider"
+	public static final DateTimeFormatter BASIC_DATE_FORMAT = ISODateTimeFormat.basicDateTimeNoMillis();
+	public static final String DEFAULT_INDEX_NAME_FOMRAT = "dd-MMM-yyyy"
 	def grailsApplication
 	Node node
 
@@ -139,7 +142,7 @@ class ElasticSearchService {
 		return null
 	}
 
-	def search(User user, Journey journey) {
+	def search(User user, JourneyRequestCommand journey) {
 		String indexName = getIndexName(journey.dateOfJourney);
 		String searchTypeOpposite = null;
 		if(journey.isDriver) {
@@ -148,7 +151,7 @@ class ElasticSearchService {
 		else {
 			searchTypeOpposite = TYPE_DRIVER;
 		}
-		double filterDistance = journey.tripDistance / 5;
+		double filterDistance = journey.tripDistance / DISTANCE_FACTOR;
 		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
 		DateTime start = dateOfJourney.minusHours(4);
 		DateTime end = dateOfJourney.plusHours(4);
@@ -157,26 +160,34 @@ class ElasticSearchService {
 			start = validStartTime;
 		}
 		FilterBuilder filter = FilterBuilders.andFilter(
+			//FilterBuilders.limitFilter(10),
 			FilterBuilders.rangeFilter("dateOfJourney").from(start.toString(BASIC_DATE_FORMAT)).to(end.toString(BASIC_DATE_FORMAT)),
-			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE),
-			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE),
-			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", journey.user.username))
+			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
+			
 		);
-		SortBuilder sorter = SortBuilders.geoDistanceSort("from");
-		SearchResponse searchResponse = node.client.prepareSearch(indexName)
-			.setTypes(searchTypeOpposite)
-			.setSearchType(SearchType.QUERY_AND_FETCH)
-			.setQuery(QueryBuilders.matchAllQuery())             // Query
-			.setFilter(filter)   // Filter
-			.setFrom(0).setSize(10).addSort(sorter).setExplain(true)
-			.execute()
-			.actionGet();
-		SearchHits searchHits = searchResponse.getHits();
-		SearchHit[] hits = searchHits.hits;
+		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
+		sorter.order(SortOrder.ASC);
 		def journeys = []
-		for (SearchHit searchHit : hits) {
-			Journey journeyTemp = parseJourney(searchHit);
-			journeys << journeyTemp
+		try {			
+			SearchResponse searchResponse = node.client.prepareSearch(indexName)
+				.setTypes(searchTypeOpposite)
+				.setSearchType(SearchType.QUERY_AND_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery())             // Query
+				.setFilter(filter)   // Filter
+				.addSort(sorter)
+				.execute()
+				.actionGet();
+			SearchHits searchHits = searchResponse.getHits();
+			SearchHit[] hits = searchHits.hits;
+			for (SearchHit searchHit : hits) {
+				Journey journeyTemp = parseJourney(searchHit);
+				journeys << journeyTemp
+			}
+		}
+		catch (IndexMissingException exception) {
+			log.error "Index name ${indexName} does not exists"
 		}
 		return journeys
 	}

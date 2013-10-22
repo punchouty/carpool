@@ -186,25 +186,25 @@ function setMapHelp() {
 }
 
 var now = new Date();
-console.log(now);
 var reserveTime = 30;//in minutes
 var timeLimitInDays = 7;//in days
 var validStartTime = new Date(now.getTime() + reserveTime * 60000);
+var initialTime = new Date(now.getTime() + (reserveTime + 15) * 60000);
 console.log(validStartTime);
 var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);
 console.log(validEndTime);
-$('#validStartTime').val(validStartTime.toString('dd/MM/yyyy HH:mm'));
+$('#validStartTimeString').val(validStartTime.toString('dd/MM/yyyy HH:mm'));
 var picker;
 $(function() {
 	$('#travelDateDiv').datetimepicker({
 		language : 'pt-BR',
 	    pick12HourFormat: false,
 		pickSeconds : false,
-		startDate : validStartTime,
+		startDate : initialTime,
 		format : 'dd/MM/yyyy hh:mm'
 	});
 	picker = $('#travelDateDiv').data('datetimepicker');
-	picker.setLocalDate(validStartTime);
+	picker.setLocalDate(initialTime);
 });
 
 $(function() {
@@ -238,25 +238,25 @@ $( ".input-append" ).change(function() {
 
 function getErrorMessage() {
 	var errorMessage = '';
-	var travelDateText = $('#travelDate').val();
+	var travelDateText = $('#dateOfJourneyString').val();
 	if(travelDateText) {
 		var selectedDate = picker.getLocalDate();
 		if(selectedDate < now) {
-			$('#travelDate').addClass("control-group").addClass("error");
+			$('#dateOfJourneyString').addClass("control-group").addClass("error");
 			errorMessage = "You have selected past date/time";
 			return errorMessage;
 		}
 		else if(selectedDate < validStartTime) {
-			$('#travelDate').addClass("control-group").addClass("error");
+			$('#dateOfJourneyString').addClass("control-group").addClass("error");
 			errorMessage = "You can select time only after 30 minutes from now";
 		}
 		else if(selectedDate > validEndTime) {
-			$('#travelDate').addClass("control-group").addClass("error");
+			$('#dateOfJourneyString').addClass("control-group").addClass("error");
 			errorMessage = "You can not select time more than seven days in future";
 		}
 	}
 	else {
-		$('#travelDate').addClass("control-group").addClass("error");
+		$('#dateOfJourneyString').addClass("control-group").addClass("error");
 		errorMessage = "Travel Date/Time";
 	}
 	var startPointText = $('#fromPlace').val();

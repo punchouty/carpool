@@ -17,6 +17,7 @@ stacktrace.log
 /web-app/plugins
 /web-app/WEB-INF/classes
 /test/reports
+/data/
 /*.war
 /*.zip
 *.iws
