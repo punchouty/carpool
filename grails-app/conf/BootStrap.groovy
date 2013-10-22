@@ -112,7 +112,7 @@ class BootStrap {
 		User khwaish = User.findByUsername('khwaish');
 		log.info("Found user khwaish : ${khwaish.username}")
 		String dateFormat = grailsApplication.config.grails.dateFormat
-		CSVReader reader = new CSVReader(new FileReader("docs\\other\\journey.csv"));
+		CSVReader reader = new CSVReader(new FileReader("docs\\other\\journey1.csv"));
 		Calendar time = Calendar.getInstance();
 		List lines = reader.readAll();
 		int i = 0;		
