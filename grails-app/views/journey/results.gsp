@@ -14,7 +14,7 @@
 			on <strong><g:formatDate format="dd MMM HH:mm" date="${currentJourney.dateOfJourney}"/></strong> 
 		</div>
 		<div class="span3">
-			<a href="#" class="btn btn-primary">Save Request</a>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
+			<a href="#" class="btn btn-warning">Save Request</a>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
 		</div>
 	</div>
 	<div class="row-fluid para">
@@ -31,7 +31,7 @@
 	</div>
 	<div class="row-fluid">
 		<g:if test="${numberOfRecords != 0}">
-		<table id="results" class="table table-striped table-bordered">
+		<table id="results" class="table table-striped">
 			<thead>
 				<tr>
 					<th>Name</th>
@@ -48,7 +48,12 @@
 					<td>${journeyInstance.fromPlace}</td>
 					<td>${journeyInstance.toPlace}</td>		
 					<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
-					<td><g:link action="show" id="${journeyInstance.id}"> some </g:link></td>			
+					<g:if test="${currentJourney.isDriver}">
+					<td><g:link action="show" id="${journeyInstance.id}" class="btn btn-success">Ask for Drive</g:link></td>		
+					</g:if>
+					<g:else>
+						<td><g:link action="show" id="${journeyInstance.id}" class="btn btn-success">Request a Ride</g:link></td>
+					</g:else>	
 				</tr>
 			</g:each>
 			</tbody>

@@ -24,8 +24,7 @@
 	<g:set var="isHome" value="true" scope="request" />
 	<div class="jumbotron" id="jumbotron">
 		<h1>Car Pool Finder</h1>
-		<p class="lead">Travel together, Make friends, Save money and
-			Contribute to Greener environment
+		<p class="lead">Share your Car, Taxi and Auto rides. Make new friends and Contribute to Greener Environment.
 		</p>
 	</div>
 
@@ -39,7 +38,7 @@
 			</div>			
 			
 			<div id="fromDiv" class="input-append dropdown">
-				<g:textField name="fromPlace" value="${commandInstance?.fromPlace}" placeholder="Start Location"/>
+				<g:textField name="fromPlace" value="${commandInstance?.fromPlace}" placeholder="Start: Landmark, Locality or City"/>
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"> </i>
 				</a>
@@ -53,7 +52,7 @@
 			<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
 			<g:hiddenField name="fromLongitude" value="${commandInstance?.fromLongitude}" />
 			<div id="toDiv" class="input-append dropdown"> 
-				<g:textField name="toPlace" value="${commandInstance?.toPlace}" placeholder="End Location"/>
+				<g:textField name="toPlace" value="${commandInstance?.toPlace}" placeholder="End: Landmark, Locality or City"/>
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"></i>
 				</a>
