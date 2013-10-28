@@ -31,14 +31,14 @@
 	<div id="main-controls">
 		<g:form name="search-form" controller="journey" action="save" class="form-inline">
 			<div id="travelDateDiv" class="input-append">
-				<g:textField name="dateOfJourneyString" value="${commandInstance?.dateOfJourneyString}" class="search-field" placeholder="Date and Time" />
+				<g:textField name="dateOfJourneyString" value="${commandInstance?.dateOfJourneyString}" class="search-field" placeholder="Date and Time"  autocomplete="off" />
 				<a href="#" class="add-on"> 
 					<i data-time-icon="icon-time" data-date-icon="icon-calendar"> </i>
 				</a>
 			</div>			
 			
 			<div id="fromDiv" class="input-append dropdown">
-				<g:textField name="fromPlace" value="${commandInstance?.fromPlace}" placeholder="Start: Landmark, Locality or City"/>
+				<g:textField name="fromPlace" value="${commandInstance?.fromPlace}" placeholder="Start - Landmark or Locality"  autocomplete="off"/>
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"> </i>
 				</a>
@@ -52,7 +52,7 @@
 			<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
 			<g:hiddenField name="fromLongitude" value="${commandInstance?.fromLongitude}" />
 			<div id="toDiv" class="input-append dropdown"> 
-				<g:textField name="toPlace" value="${commandInstance?.toPlace}" placeholder="End: Landmark, Locality or City"/>
+				<g:textField name="toPlace" value="${commandInstance?.toPlace}" placeholder="End - Landmark or Locality"  autocomplete="off" />
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"></i>
 				</a>

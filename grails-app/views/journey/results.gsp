@@ -8,29 +8,33 @@
 	<g:if test="${flash.message}">
 	<div class="message" role="status">${flash.message}</div>
 	</g:if>
+	<g:if test="${numberOfRecords == 0}">
 	<div class="row-fluid para">
+		<p class="muted">
+				No matching records found
+		</p>
+	</div>
+	<div class="row-fluid para well well-large">
 		<div class="span9">
 			You want to travel from <em>${currentJourney.fromPlace}</em> to <em>${currentJourney.toPlace}</em> 
 			on <strong><g:formatDate format="dd MMM HH:mm" date="${currentJourney.dateOfJourney}"/></strong> 
 		</div>
 		<div class="span3">
-			<a href="#" class="btn btn-warning">Save Request</a>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
+			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
 		</div>
 	</div>
-	<div class="row-fluid para">
-		<p class="muted">
-			<g:if test="${numberOfRecords == 0}">
-				No matching records found
-			</g:if>
-			<%-- 
-			<g:else>
-				About ${numberOfRecords} results found
-			</g:else>
-			--%>
-		</p>
+	</g:if>
+	<g:else>
+	<div class="row-fluid para well well-large">
+		<div class="span9">
+			You want to travel from <em>${currentJourney.fromPlace}</em> to <em>${currentJourney.toPlace}</em> 
+			on <strong><g:formatDate format="dd MMM HH:mm" date="${currentJourney.dateOfJourney}"/></strong> 
+		</div>
+		<div class="span3">
+			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
+		</div>
 	</div>
 	<div class="row-fluid">
-		<g:if test="${numberOfRecords != 0}">
 		<table id="results" class="table table-striped">
 			<thead>
 				<tr>
@@ -58,7 +62,7 @@
 			</g:each>
 			</tbody>
 		</table>
-		</g:if>
 	</div>
+	</g:else>	
 </body>
 </html>

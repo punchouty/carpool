@@ -29,4 +29,8 @@ class JourneyService {
 		def journeys = elasticSearchService.search(user, journey);
 		return journeys;
 	}
+	
+	def makeSearchable(Journey journey) {
+		elasticSearchService.indexJourney(journey);
+	}
 }

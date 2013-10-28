@@ -46,12 +46,29 @@ class JourneyController {
 	def results() {
 		def currentUser = getAuthenticatedUser();
 		def currentJourney = session.currentJourney
-		def journeys = journeyService.search(currentUser, currentJourney)
-		int numberOfRecords = 0;
-		if(journeys.size > 0) {
-			numberOfRecords = journeys.size
+		if(currentJourney.isSaved) {
+			log.warnEnabled "Should not come here. This journey is already processed"
+			redirect(controller: 'staticPage', action: "search")			
 		}
-		[currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords]
+		else {
+			def journeys = journeyService.search(currentUser, currentJourney)
+			int numberOfRecords = 0;
+			if(journeys.size > 0) {
+				numberOfRecords = journeys.size
+			}
+			[currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords]
+		}
+	}
+	
+	def newJourney() {
+		def currentUser = getAuthenticatedUser();
+		def currentJourney = session.currentJourney
+		def journey = currentJourney.journey
+		journeyService.saveJourney(currentUser, journey)
+		journeyService.makeSearchable(journey)
+		session.currentJourney.isSaved = true
+		flash.message "Successfully saved your request"
+		redirect(controller: 'staticPage', action: "search")
 	}
 }
 
@@ -74,6 +91,7 @@ class JourneyRequestCommand {
 	String tripUnit;
 	String ip; //should get from request
 	Date createdDate = new Date();
+	Boolean isSaved = false
 	
 	static constraints = {
 		id nullable : true
@@ -83,5 +101,10 @@ class JourneyRequestCommand {
 	
 	String toString(){
 		return "name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
+	}
+	
+	Journey getJourney() {
+		Journey journey = new Journey(this.params)
+		return journey;
 	}
 }

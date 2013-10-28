@@ -43,7 +43,7 @@ grails.project.dependency.resolution = {
 
         runtime 'mysql:mysql-connector-java:5.1.22'
 		compile 'org.elasticsearch:elasticsearch:0.90.5'
-		//compile 'org.elasticsearch:elasticsearch-lang-groovy:1.5.0'
+		compile 'org.apache.activemq:activemq-core:5.3.0'
 		
     }
 
@@ -53,15 +53,16 @@ grails.project.dependency.resolution = {
         runtime ":resources:1.1.6"
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
-        //runtime ":zipped-resources:1.0"
-        //runtime ":cached-resources:1.0"
-        //runtime ":yui-minify-resources:0.1.5"
+        runtime ":zipped-resources:1.0"
+        runtime ":cached-resources:1.0"
+        runtime ":yui-minify-resources:0.1.5"
 
         build ":tomcat:$grailsVersion"
 
         runtime ":database-migration:1.3.2"
         compile ':cache:1.0.1'		
 		compile ":nimble:0.5.2"
-		//compile ":quartz:1.0-RC12"
+		compile ":jms:1.2"
+		compile ":quartz:1.0-RC2"
     }
 }

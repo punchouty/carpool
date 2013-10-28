@@ -21,8 +21,8 @@ class BootStrap {
 		elasticSearchService.init()
 		Environment.executeForCurrentEnvironment {
 			development {
-				createUsers();
-				createSampleData();
+				//createUsers();
+				//createSampleData();
 			}
 		  }
     }
