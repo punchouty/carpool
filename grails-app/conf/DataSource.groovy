@@ -14,10 +14,10 @@ environments {
     development {
         dataSource {
             dbCreate = "update" //"create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-			url = "jdbc:h2:file:/data/racloop;MVCC=TRUE;LOCK_TIMEOUT=10000"
-//			driverClassName = "com.mysql.jdbc.Driver"
-//            url = "jdbc:mysql://dlu13794rpunch/racloop"
-//			username = "racloop"
+//			url = "jdbc:h2:file:/data/racloop;MVCC=TRUE;LOCK_TIMEOUT=10000"
+			driverClassName = "com.mysql.jdbc.Driver"
+			url = "jdbc:mysql://localhost/racloop"
+			username = "root"
 //			password = "P@ssw0rd"
         }
     }

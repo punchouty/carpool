@@ -60,9 +60,9 @@ grails.exceptionresolver.params.exclude = ['password']
 grails.hibernate.cache.queries = false
 
 grails.ui.dateFormat = 'dd/MM/yyyy hh:mm a'
-grails.indexNameFormatType = "Daily" //or Daily 
-grails.dailyIndexNameFormat = 'dd-MMM-yyyy'
-grails.monthlyIndexNameFormat = 'MMM-yyyy'
+//grails.indexNameFormatType = "Daily" //or Daily 
+//grails.dailyIndexNameFormat = 'dd-MMM-yyyy'
+//grails.monthlyIndexNameFormat = 'MMM-yyyy'
 
 environments {
     development {

@@ -1,0 +1,2 @@
+DROP SCHEMA racloop;
+CREATE SCHEMA racloop;

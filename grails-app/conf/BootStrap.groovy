@@ -4,6 +4,7 @@ import grails.util.Environment
 import liquibase.util.csv.opencsv.CSVReader
 
 import com.racloop.Journey
+import com.racloop.JourneyRequestCommand
 import com.racloop.User
 
 
@@ -11,7 +12,8 @@ class BootStrap {
 	
 	def grailsApplication
 	def elasticSearchService
-	def journeyService
+	def journeyManagerService
+	//def journeyService
 	def nimbleService
 	def userService
 	def adminsService
@@ -21,6 +23,7 @@ class BootStrap {
 		elasticSearchService.init()
 		Environment.executeForCurrentEnvironment {
 			development {
+				//createIndexes();
 				//createUsers();
 				//createSampleData();
 			}
@@ -33,6 +36,20 @@ class BootStrap {
 
 	private internalBootStap(servletContext) {
 		nimbleService.init()
+	}
+	
+	private def createIndexes() {
+		Date date = new Date().previous();
+		elasticSearchService.createIndexIfNotExistsForDate(date);
+		date = date.next();
+		elasticSearchService.createIndexIfNotExistsForDate(date);
+		date = date.next();
+		elasticSearchService.createIndexIfNotExistsForDate(date);
+		date = date.next();
+		elasticSearchService.createIndexIfNotExistsForDate(date);
+		date = date.next();
+		elasticSearchService.createIndexIfNotExistsForDate(date);
+		
 	}
 	
 	private def createUsers() {
@@ -120,104 +137,35 @@ class BootStrap {
 		
 		lines.each {  line ->
 			i++;
-			Journey journey = new Journey()
-			journey.dateOfJourney = new Date(time.timeInMillis)
-			journey.fromPlace = line[6]
-			journey.fromLatitude = Double.parseDouble(line[4])
-			journey.fromLongitude = Double.parseDouble(line[5])
-			journey.toPlace = line[11]
-			journey.toLatitude = Double.parseDouble(line[9])
-			journey.toLongitude = Double.parseDouble(line[10])
-			journey.isDriver = true
-//			if(i%2 == 0) {
-//				journey.isDriver = true
-//			}
-//			else {
-//				journey.isDriver = false
-//			}
-			journeyService.saveJourney(tamanna, journey)
+			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+			journeyCommand.fromPlace = line[6]
+			journeyCommand.fromLatitude = Double.parseDouble(line[4])
+			journeyCommand.fromLongitude = Double.parseDouble(line[5])
+			journeyCommand.toPlace = line[11]
+			journeyCommand.toLatitude = Double.parseDouble(line[9])
+			journeyCommand.toLongitude = Double.parseDouble(line[10])
+			journeyCommand.isDriver = true
+			journeyManagerService.createJourney(tamanna, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}
-		
-//		i = 0;
-//		time = Calendar.getInstance();	
-//		time.add(Calendar.MINUTE, 3);
-//		
-//		lines.each {  line ->
-//			i++;
-//			Journey journey = new Journey()
-//			journey.dateOfJourney = new Date(time.timeInMillis)
-//			journey.fromPlace = line[11]
-//			journey.fromLatitude = Double.parseDouble(line[9])
-//			journey.fromLongitude = Double.parseDouble(line[10])
-//			journey.toPlace = line[6]
-//			journey.toLatitude = Double.parseDouble(line[4])
-//			journey.toLongitude = Double.parseDouble(line[5])
-//			journey.isDriver = true
-//			if(i%2 == 0) {
-//				journey.isDriver = true
-//			}
-//			else {
-//				journey.isDriver = false
-//			}
-//			journeyService.saveJourney(tamanna, journey)
-//			time.add(Calendar.MINUTE, timeInterval);
-//		}
-		tamanna.activeJourneys.each { journey ->
-			log.info "Tamanna - Processing journey record for elastic search ${journey.id}"
-			elasticSearchService.indexJourneyWithIndexCheck(journey)
-		}
-		
-//		i == 0;
-//		time = Calendar.getInstance();	
-//		time.add(Calendar.MINUTE, 6);
-//		lines.each {  line ->
-//			i++;
-//			Journey journey = new Journey()
-//			journey.dateOfJourney = new Date(time.timeInMillis)
-//			journey.fromPlace = line[6]
-//			journey.fromLatitude = Double.parseDouble(line[4])
-//			journey.fromLongitude = Double.parseDouble(line[5])
-//			journey.toPlace = line[11]
-//			journey.toLatitude = Double.parseDouble(line[9])
-//			journey.toLongitude = Double.parseDouble(line[10])
-//			journey.isDriver = false
-//			if(i%2 == 0) {
-//				journey.isDriver = false
-//			}
-//			else {
-//				journey.isDriver = true
-//			}
-//			journeyService.saveJourney(khwaish, journey)
-//			time.add(Calendar.MINUTE, timeInterval);
-//		}
 		
 		i == 0;
 		time = Calendar.getInstance();	
 		time.add(Calendar.MINUTE, 9);
 		lines.each {  line ->
 			i++;
-			Journey journey = new Journey()
-			journey.dateOfJourney = new Date(time.timeInMillis)
-			journey.fromPlace = line[11]
-			journey.fromLatitude = Double.parseDouble(line[9])
-			journey.fromLongitude = Double.parseDouble(line[10])
-			journey.toPlace = line[6]
-			journey.toLatitude = Double.parseDouble(line[4])
-			journey.toLongitude = Double.parseDouble(line[5])
-			journey.isDriver = false
-//			if(i%2 == 0) {
-//				journey.isDriver = false
-//			}
-//			else {
-//				journey.isDriver = true
-//			}
-			journeyService.saveJourney(khwaish, journey)
+			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+			journeyCommand.fromPlace = line[11]
+			journeyCommand.fromLatitude = Double.parseDouble(line[9])
+			journeyCommand.fromLongitude = Double.parseDouble(line[10])
+			journeyCommand.toPlace = line[6]
+			journeyCommand.toLatitude = Double.parseDouble(line[4])
+			journeyCommand.toLongitude = Double.parseDouble(line[5])
+			journeyCommand.isDriver = false
+			journeyManagerService.createJourney(khwaish, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
-		}
-		khwaish.activeJourneys.each { journey ->
-			log.info "Khwaish - Processing journey record for elastic search ${journey.id}"
-			elasticSearchService.indexJourneyWithIndexCheck(journey)
 		}
 	}
 }

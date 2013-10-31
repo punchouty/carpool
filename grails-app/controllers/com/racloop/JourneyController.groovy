@@ -2,6 +2,7 @@ package com.racloop
 
 import java.util.Date;
 
+import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
@@ -12,7 +13,7 @@ class JourneyController {
 	def grailsApplication
 	def journeyService
 
-    def save(JourneyRequestCommand command) { 
+    def findMatching(JourneyRequestCommand command) { 
 		def currentUser = getAuthenticatedUser();
 		command.name = currentUser.profile.fullName
 		command.ip = request.remoteAddr
@@ -23,7 +24,13 @@ class JourneyController {
 			command.validStartTime = validStartTime.toDate();
 			if(command.validate()) {
 				session.currentJourney = command
-				redirect(action: "results")
+				def journeys = journeyService.search(currentUser, command)
+				int numberOfRecords = 0;
+				if(journeys.size > 0) {
+					numberOfRecords = journeys.size
+				}
+				render(view: "results", model: [currentJourney: command, journeys : journeys, numberOfRecords : numberOfRecords])
+				
 			}
 			else {
 				log.warn 'Error in command : ' + params
@@ -38,10 +45,10 @@ class JourneyController {
 		}
 	}
 	
-	def activeJourneys() {
-		def currentUser = getAuthenticatedUser();
-		def activeJourneys = currentUser.journeys;
-	}
+//	def activeJourneys() {
+//		def currentUser = getAuthenticatedUser();
+//		def activeJourneys = currentUser.journeys;
+//	}
 	
 	def results() {
 		def currentUser = getAuthenticatedUser();
@@ -63,7 +70,7 @@ class JourneyController {
 	def newJourney() {
 		def currentUser = getAuthenticatedUser();
 		def currentJourney = session.currentJourney
-		def journey = currentJourney.journey
+		Journey journey = currentJourney.getJourney();
 		journeyService.saveJourney(currentUser, journey)
 		journeyService.makeSearchable(journey)
 		session.currentJourney.isSaved = true
@@ -77,9 +84,9 @@ class JourneyRequestCommand {
 	Long id;//will be assigned later
 	String name; //Should get from user. 
 	String dateOfJourneyString; //date as string
-	Date dateOfJourney;
+	Date dateOfJourney; //it should get populated before validation
 	String validStartTimeString; //date as string
-	Date validStartTime;
+	Date validStartTime; //it should get populated before validation
 	String fromPlace;
 	Double fromLatitude;
 	Double fromLongitude;
@@ -100,11 +107,6 @@ class JourneyRequestCommand {
 	}
 	
 	String toString(){
-		return "name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
-	}
-	
-	Journey getJourney() {
-		Journey journey = new Journey(this.params)
-		return journey;
+		return "JourneyRequestCommand -> name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
 	}
 }

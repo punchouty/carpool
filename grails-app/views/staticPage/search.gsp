@@ -29,7 +29,7 @@
 	</div>
 
 	<div id="main-controls">
-		<g:form name="search-form" controller="journey" action="save" class="form-inline">
+		<g:form name="search-form" controller="journey" action="findMatching" class="form-inline">
 			<div id="travelDateDiv" class="input-append">
 				<g:textField name="dateOfJourneyString" value="${commandInstance?.dateOfJourneyString}" class="search-field" placeholder="Date and Time"  autocomplete="off" />
 				<a href="#" class="add-on"> 
