@@ -26,10 +26,19 @@ class JourneyController {
 				session.currentJourney = command
 				def journeys = journeyService.search(currentUser, command)
 				int numberOfRecords = 0;
+				def names = [];
 				if(journeys.size > 0) {
 					numberOfRecords = journeys.size
 				}
-				render(view: "results", model: [currentJourney: command, journeys : journeys, numberOfRecords : numberOfRecords])
+				else {
+					if(command.isDriver) {
+						names = NamesUtil.getRandomBoyNames();
+					}
+					else {
+						names = NamesUtil.getRandomNames();
+					}
+				}
+				render(view: "results", model: [currentJourney: command, journeys : journeys, numberOfRecords : numberOfRecords, names: names])
 				
 			}
 			else {
@@ -50,22 +59,22 @@ class JourneyController {
 //		def activeJourneys = currentUser.journeys;
 //	}
 	
-	def results() {
-		def currentUser = getAuthenticatedUser();
-		def currentJourney = session.currentJourney
-		if(currentJourney.isSaved) {
-			log.warnEnabled "Should not come here. This journey is already processed"
-			redirect(controller: 'staticPage', action: "search")			
-		}
-		else {
-			def journeys = journeyService.search(currentUser, currentJourney)
-			int numberOfRecords = 0;
-			if(journeys.size > 0) {
-				numberOfRecords = journeys.size
-			}
-			[currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords]
-		}
-	}
+//	def results() {
+//		def currentUser = getAuthenticatedUser();
+//		def currentJourney = session.currentJourney
+//		if(currentJourney.isSaved) {
+//			log.warnEnabled "Should not come here. This journey is already processed"
+//			redirect(controller: 'staticPage', action: "search")			
+//		}
+//		else {
+//			def journeys = journeyService.search(currentUser, currentJourney)
+//			int numberOfRecords = 0;
+//			if(journeys.size > 0) {
+//				numberOfRecords = journeys.size
+//			}
+//			[currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords]
+//		}
+//	}
 	
 	def newJourney() {
 		def currentUser = getAuthenticatedUser();

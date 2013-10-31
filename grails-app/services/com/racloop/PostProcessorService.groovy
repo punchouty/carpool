@@ -30,6 +30,8 @@ class PostProcessorService {
 			newHistory.user = user;
 			newHistory.place = journey.fromPlace;
 			newHistory.geoHash = from.geohash;
+			newHistory.latitude = journey.fromLatitude;
+			newHistory.longitude = journey.fromLongitude;
 			newHistory.save();
 		}
 		//processing to
@@ -44,6 +46,8 @@ class PostProcessorService {
 			newHistory.user = user;
 			newHistory.place = journey.toPlace;
 			newHistory.geoHash = to.geohash;
+			newHistory.latitude = journey.toLatitude;
+			newHistory.longitude = journey.toLongitude;
 			newHistory.save();
 		}
 

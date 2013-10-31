@@ -27,8 +27,18 @@ class StaticPageController {
 	}
 
 	def search() {
-		def commandInstance = new JourneyRequestCommand()
-		[commandInstance : commandInstance]
+		def user = getAuthenticatedUser();
+		def commandInstance = new JourneyRequestCommand();
+		def criteria = TravelHistory.createCriteria();
+		def historyResults = criteria {
+			eq("user", user)
+			maxResults(7)
+			and {
+				order('searchCount', 'desc')
+				order('lastUpdatedAt', 'desc')
+			}
+		}
+		[commandInstance: commandInstance, history : historyResults]
 	}
 	
 	def index() {

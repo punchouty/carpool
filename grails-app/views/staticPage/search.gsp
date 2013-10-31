@@ -42,11 +42,13 @@
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"> </i>
 				</a>
+				<g:if test="${history.size() > 0}">
 				<ul class="dropdown-menu">
-					<li><a href="#"> Caunaught place, Delhi </a></li>
-					<li><a href="#"> Sector 47-D,  Chandigarh </a></li>
-					<li><a href="#"> IFFCO chowk, Gurgaon </a></li>
+					<g:each in="${history}" status="i" var="historyInstance">
+						<li><a href="#"  id="from_${historyInstance.id}" class="history_dropdown">${historyInstance.place}</a></li>
+					</g:each>
 				</ul>
+				</g:if>
 			</div>	
 					
 			<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
@@ -56,13 +58,21 @@
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"></i>
 				</a>
+				<g:if test="${history.size() > 0}">
 				<ul class="dropdown-menu">
-					<li><a href="#"> IFFCO chowk, Gurgaon </a></li>
-					<li><a href="#"> Sector 47-D,  Chandigarh </a></li>
-					<li><a href="#"> Caunaught place, Delhi </a></li>
+					<g:each in="${history}" status="i" var="historyInstance">
+						<li><a href="#" id="to_${historyInstance.id}" class="history_dropdown">${historyInstance.place}</a></li>
+					</g:each>
 				</ul>
+				</g:if>
 			</div>
 			
+			<g:each in="${history}" status="i" var="historyInstance">
+				<input type="hidden" id="history_place_${historyInstance.id}" value="${historyInstance.place}" />
+				<input type="hidden" id="history_geoHash_${historyInstance.id}" value="${historyInstance.geoHash}" />
+				<input type="hidden" id="history_latitude_${historyInstance.id}" value="${historyInstance.latitude}" />
+				<input type="hidden" id="history_longitude_${historyInstance.id}" value="${historyInstance.longitude}" />
+			</g:each>
 			<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
 			<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
 			

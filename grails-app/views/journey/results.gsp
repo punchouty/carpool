@@ -8,12 +8,6 @@
 	<g:if test="${flash.message}">
 	<div class="message" role="status">${flash.message}</div>
 	</g:if>
-	<g:if test="${numberOfRecords == 0}">
-	<div class="row-fluid para">
-		<p class="muted">
-				No matching records found
-		</p>
-	</div>
 	<div class="row-fluid para well well-large">
 		<div class="span9">
 			You want to travel from <em>${currentJourney.fromPlace}</em> to <em>${currentJourney.toPlace}</em> 
@@ -22,18 +16,41 @@
 		<div class="span3">
 			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
 		</div>
+	</div>
+	<g:if test="${numberOfRecords == 0}">
+	<div class="row-fluid">
+		<table id="results" class="table table-striped">
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>From</th>
+					<th>To</th>
+					<th>Time</th>
+					<th></th>
+				</tr>
+			</thead>
+			<tbody>
+			<g:each in="${names}" status="i" var="name">
+				<tr>
+					<td>${name}</td>	
+					<td></td>
+					<td></td>		
+					<td></td>
+					<g:if test="${currentJourney.isDriver}">
+					<td><g:link action="pseudo" id="pseudo_${i}" class="btn btn-success">Ask for Drive</g:link></td>		
+					</g:if>
+					<g:else>
+						<td><g:link action="pseudo" id="pseudo_${i}" class="btn btn-success">Request a Ride</g:link></td>
+					</g:else>	
+				</tr>
+			</g:each>
+			</tbody>
+		</table>
+		<g:hiddenField name="latitude" value="${currentJourney?.fromLatitude}" />
+		<g:hiddenField name="longitude" value="${currentJourney?.fromLongitude}" />
 	</div>
 	</g:if>
 	<g:else>
-	<div class="row-fluid para well well-large">
-		<div class="span9">
-			You want to travel from <em>${currentJourney.fromPlace}</em> to <em>${currentJourney.toPlace}</em> 
-			on <strong><g:formatDate format="dd MMM HH:mm" date="${currentJourney.dateOfJourney}"/></strong> 
-		</div>
-		<div class="span3">
-			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
-		</div>
-	</div>
 	<div class="row-fluid">
 		<table id="results" class="table table-striped">
 			<thead>
