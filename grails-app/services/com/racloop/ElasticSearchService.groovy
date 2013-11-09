@@ -32,6 +32,7 @@ class ElasticSearchService {
 	public static final String TYPE_RIDER = "rider"
 	public static final DateTimeFormatter BASIC_DATE_FORMAT = ISODateTimeFormat.basicDateTimeNoMillis();
 	public static final String DEFAULT_INDEX_NAME_FOMRAT = "dd-MMM-yyyy"
+	public static final String DUMMY_INDEX_NAME = "dummy_data"
 	def grailsApplication
 	Node node
 
@@ -54,9 +55,19 @@ class ElasticSearchService {
 		def sourceBuilder = createJourneyJson(user, journey)
 		String indexName = getIndexName(journey.dateOfJourney)
 		String type = getType(journey);
-		IndexRequest request = new IndexRequest(indexName, type).id(journey.id + '').source(sourceBuilder);
-		node.client.index(request).actionGet();
+		IndexRequest indexRequest = new IndexRequest(indexName, type).id(journey.id + '').source(sourceBuilder);
+		node.client.index(indexRequest).actionGet();
 		log.info "successfully indexed ${journey}"
+	}
+
+	def indexDummyJourney(JourneyRequestCommand journey) {
+		log.info "Adding dummy record to elastic search ${journey}"
+		def sourceBuilder = createDummyJourneyJson(journey)
+		String indexName = DUMMY_INDEX_NAME
+		String type = getType(journey);
+		IndexRequest indexRequest = new IndexRequest(indexName, type).source(sourceBuilder);
+		node.client.index(indexRequest).actionGet();
+		log.info "successfully indexed dummy journey : ${journey}"
 	}
 
 	def createIndexIfNotExistsForDate(Date date) {
@@ -70,14 +81,36 @@ class ElasticSearchService {
 			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
 			log.info "Index name : ${indexName} created successfuly"
 			log.info "Started creating type : ${TYPE_DRIVER} for index : ${indexName}"
-			def builder = createTypeJson(TYPE_DRIVER)
+			def builder = createMainIndexJson(TYPE_DRIVER)
 			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_DRIVER).setSource(builder).execute().actionGet();
 			log.info "Type : ${TYPE_DRIVER} for index : ${indexName} created successfully"
 
 			log.info "Started creating type : ${TYPE_DRIVER} for index : ${indexName}"
-			builder = createTypeJson(TYPE_RIDER)
+			builder = createMainIndexJson(TYPE_RIDER)
 			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_RIDER).setSource(builder).execute().actionGet();
 			log.info "Type : ${TYPE_RIDER} for index : ${indexName} created successfully"
+		}
+	}
+	
+	def createDummyDataIndexIfNotExists() {
+		String indexName = DUMMY_INDEX_NAME
+		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
+		if(isIndexExists) {
+			log.info "Index name : ${indexName} already exists"
+		}
+		else {
+			log.info "Started creating Dummy Index name : ${indexName}"
+			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
+			log.info "Dummy Index name : ${indexName} created successfuly"
+			log.info "Started creating type : ${TYPE_DRIVER} for Dummy index : ${indexName}"
+			def builder = createDummyDataIndexJson(TYPE_DRIVER)
+			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_DRIVER).setSource(builder).execute().actionGet();
+			log.info "Type : ${TYPE_DRIVER} for Dummy index : ${indexName} created successfully"
+
+			log.info "Started creating type : ${TYPE_DRIVER} for Dummy index : ${indexName}"
+			builder = createDummyDataIndexJson(TYPE_RIDER)
+			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_RIDER).setSource(builder).execute().actionGet();
+			log.info "Type : ${TYPE_RIDER} for Dummy index : ${indexName} created successfully"
 		}
 	}
 	
@@ -95,7 +128,7 @@ class ElasticSearchService {
 		}
 	}
 
-	private def createTypeJson(String type) {
+	private def createMainIndexJson(String type) {
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 		startObject().
 			startObject(type).
@@ -133,6 +166,29 @@ class ElasticSearchService {
 		return builder;
 	}
 
+	private def createDummyDataIndexJson(String type) {
+		XContentBuilder builder = XContentFactory.jsonBuilder().
+		startObject().
+			startObject(type).
+				startObject("properties").
+					startObject("name").
+					field("type", "string").field("index", "not_analyzed").
+					endObject().
+					startObject("dateOfJourney").
+					field("type", "date").field("format", "basic_date_time_no_millis").
+					endObject().
+					startObject("from").
+					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
+					endObject().
+					startObject("to").
+					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
+					endObject().
+				endObject().
+			endObject().
+		endObject();
+		return builder;
+	}
+
 	private def createJourneyJson(User user, JourneyRequestCommand journey) {
 		GeoPoint from = new GeoPoint(journey.fromLatitude, journey.fromLongitude)
 		GeoPoint to = new GeoPoint(journey.toLatitude, journey.toLongitude)
@@ -149,6 +205,21 @@ class ElasticSearchService {
 				field("to", to).
 				field("requesterIp", journey.ip).
 				field("createdDate", createdDate.toString(BASIC_DATE_FORMAT)).
+			endObject();
+		return builder;
+	}
+	
+	private def createDummyJourneyJson(JourneyRequestCommand journey) {
+		GeoPoint from = new GeoPoint(journey.fromLatitude, journey.fromLongitude)
+		GeoPoint to = new GeoPoint(journey.toLatitude, journey.toLongitude)
+		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
+		DateTime createdDate = new DateTime(journey.createdDate)
+		XContentBuilder builder = XContentFactory.jsonBuilder().
+			startObject().
+				field("name", journey.name).
+				field("dateOfJourney", dateOfJourney.toString(BASIC_DATE_FORMAT)).
+				field("from", from).
+				field("to", to).
 			endObject();
 		return builder;
 	}
@@ -216,6 +287,55 @@ class ElasticSearchService {
 		}
 		return journeys
 	}
+	
+	def searchDummyData(JourneyRequestCommand journey) {
+		String indexName = DUMMY_INDEX_NAME;
+		String searchTypeOpposite = null;
+		if(journey.isDriver) {
+			searchTypeOpposite = TYPE_RIDER;
+		}
+		else {
+			searchTypeOpposite = TYPE_DRIVER;
+		}
+		double filterDistance = journey.tripDistance / DISTANCE_FACTOR;
+		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
+		DateTime start = dateOfJourney.minusHours(4);
+		DateTime end = dateOfJourney.plusHours(4);
+		DateTime validStartTime = new DateTime(journey.validStartTime)
+		if(start.isBefore(validStartTime)) {
+			start = validStartTime;
+		}
+		FilterBuilder filter = FilterBuilders.andFilter(
+			//FilterBuilders.limitFilter(10),
+			FilterBuilders.rangeFilter("dateOfJourney").from(start.toString(BASIC_DATE_FORMAT)).to(end.toString(BASIC_DATE_FORMAT)),
+			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)			
+		);
+		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
+		sorter.point(journey.fromLatitude, journey.fromLongitude);
+		sorter.order(SortOrder.ASC);
+		def journeys = []
+		try {
+			SearchResponse searchResponse = node.client.prepareSearch(indexName)
+				.setTypes(searchTypeOpposite)
+				.setSearchType(SearchType.QUERY_AND_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery())             // Query
+				.setFilter(filter)   // Filter
+				.addSort(sorter)
+				.execute()
+				.actionGet();
+			SearchHits searchHits = searchResponse.getHits();
+			SearchHit[] hits = searchHits.hits;
+			for (SearchHit searchHit : hits) {
+				JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
+				journeys << journeyTemp
+			}
+		}
+		catch (IndexMissingException exception) {
+			log.error "Index name ${indexName} does not exists"
+		}
+		return journeys
+	}
 
 	private JourneyRequestCommand parseJourneyFromSearchHit(SearchHit searchHit) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
@@ -226,6 +346,21 @@ class ElasticSearchService {
 		journeyTemp.dateOfJourney = dateTime.toDate();
 		journeyTemp.fromPlace = searchHit.getSource().get('fromPlace');
 		journeyTemp.toPlace = searchHit.getSource().get('toPlace')
+		return journeyTemp
+	}
+
+	private JourneyRequestCommand parseDummyJourneyFromSearchHit(SearchHit searchHit) {
+		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
+		journeyTemp.name = searchHit.getSource().get('name');
+		String dateStr = searchHit.getSource().get('dateOfJourney');
+		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
+		journeyTemp.dateOfJourney = dateTime.toDate();
+		GeoPoint from = searchHit.getSource().get('from');
+		GeoPoint to = searchHit.getSource().get('to');
+		journeyTemp.fromLatitude = from.lat();
+		journeyTemp.fromLongitude = from.lon();
+		journeyTemp.toLatitude = to.lat();
+		journeyTemp.toLongitude = to.lon();
 		return journeyTemp
 	}
 	

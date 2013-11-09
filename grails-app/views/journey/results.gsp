@@ -17,38 +17,48 @@
 			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
 		</div>
 	</div>
-	<g:if test="${numberOfRecords == 0}">
-	<div class="row-fluid">
-		<table id="results" class="table table-striped">
-			<thead>
-				<tr>
-					<th>Name</th>
-					<th>From</th>
-					<th>To</th>
-					<th>Time</th>
-					<th></th>
-				</tr>
-			</thead>
-			<tbody>
-			<g:each in="${names}" status="i" var="name">
-				<tr>
-					<td>${name}</td>	
-					<td></td>
-					<td></td>		
-					<td></td>
-					<g:if test="${currentJourney.isDriver}">
-					<td><g:link action="pseudo" id="pseudo_${i}" class="btn btn-success">Ask for Drive</g:link></td>		
-					</g:if>
-					<g:else>
-						<td><g:link action="pseudo" id="pseudo_${i}" class="btn btn-success">Request a Ride</g:link></td>
-					</g:else>	
-				</tr>
-			</g:each>
-			</tbody>
-		</table>
-		<g:hiddenField name="latitude" value="${currentJourney?.fromLatitude}" />
-		<g:hiddenField name="longitude" value="${currentJourney?.fromLongitude}" />
-	</div>
+	<g:if test="${isDummyData}">
+		<g:if test="${numberOfRecords != 0}">
+		<div class="row-fluid">
+			<table id="results" class="table table-striped">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>From</th>
+						<th>To</th>
+						<th>Time</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+				<g:each in="${journeys}" status="i" var="journeyInstance">
+					<tr>
+						<td>${journeyInstance.name}</td>	
+						<td id="${i}_from"></td>
+						<td id="${i}_to"></td>		
+						<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
+						<g:if test="${currentJourney.isDriver}">
+							<td><g:link action="pseudoRequest" id="pseudo_${i}" class="btn btn-success">Ask for Drive</g:link></td>		
+						</g:if>
+						<g:else>
+							<td><g:link action="pseudoRequest" id="pseudo_${i}" class="btn btn-success">Request a Ride</g:link></td>
+						</g:else>
+						<input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">
+						<input type="hidden" id="${i}_from_longitude" value="${journeyInstance.fromLongitude}">
+						<input type="hidden" id="${i}_to_lattitude" value="${journeyInstance.toLatitude}">
+						<input type="hidden" id="${i}_to_longitude" value="${journeyInstance.toLongitude}">
+					</tr>
+				</g:each>
+				</tbody>
+			</table>
+			<g:hiddenField name="dummy" value="true" />
+		</div>
+		</g:if>
+		<g:else>
+			<div class="row-fluid">
+				<p class="text-error">Sorry your search did not match any results</p>
+			</div>
+		</g:else>
 	</g:if>
 	<g:else>
 	<div class="row-fluid">
@@ -70,16 +80,20 @@
 					<td>${journeyInstance.toPlace}</td>		
 					<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
 					<g:if test="${currentJourney.isDriver}">
-					<td><g:link action="show" id="${journeyInstance.id}" class="btn btn-success">Ask for Drive</g:link></td>		
+					<td><g:link action="request" id="${journeyInstance.id}" class="btn btn-success">Ask for Drive</g:link></td>		
 					</g:if>
 					<g:else>
-						<td><g:link action="show" id="${journeyInstance.id}" class="btn btn-success">Request a Ride</g:link></td>
+						<td><g:link action="request" id="${journeyInstance.id}" class="btn btn-success">Request a Ride</g:link></td>
 					</g:else>	
 				</tr>
 			</g:each>
 			</tbody>
 		</table>
+		<g:hiddenField name="dummy" value="false" />
 	</div>
 	</g:else>	
+	<g:hiddenField name="user_mobile" value="${currentUser?.profile?.mobile}" />
+	<g:hiddenField name="user_email" value="${currentUser?.profile?.email}" />
+	<g:hiddenField name="numberOfRecords" value="${numberOfRecords}" />
 </body>
 </html>

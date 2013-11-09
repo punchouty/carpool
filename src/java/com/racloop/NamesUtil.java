@@ -31,17 +31,14 @@ public class NamesUtil {
 	
 	static {
 		String [] tmp = LAST_NAMES.split(",");
-		System.out.println("Number of last names : " + tmp.length);
 		for (String string : tmp) {
 			LAST_NAMES_LIST.add(string);
 		}
 		tmp = FIRST_NAMES_BOYS.split(",");
-		System.out.println("Number of boys names : " + tmp.length);
 		for (String string : tmp) {
 			FIRST_NAMES_BOYS_LIST.add(string);
 		}
 		tmp = FIRST_NAMES_GIRLS.split(",");
-		System.out.println("Number of girls names : " + tmp.length);
 		for (String string : tmp) {
 			FIRST_NAMES_GIRLS_LIST.add(string);
 		}
@@ -50,9 +47,13 @@ public class NamesUtil {
 	}
 	
 	public static ArrayList<String> getRandomBoyNames() {
+		return getRandomBoyNames(NUMBER_OF_NAMES);
+	}
+	
+	public static ArrayList<String> getRandomBoyNames(int number) {
 		ArrayList<String> boyNames = new ArrayList<String>();
 		Random randomGenerator = new Random();
-		for (int idx = 1; idx <= NUMBER_OF_NAMES; ++idx){
+		for (int idx = 1; idx <= number; ++idx){
 			int randomInt = randomGenerator.nextInt(FIRST_NAMES_BOYS_LIST.size());
 			String firstName = FIRST_NAMES_BOYS_LIST.get(randomInt);
 			randomInt = randomGenerator.nextInt(LAST_NAMES_LIST.size());
@@ -64,9 +65,13 @@ public class NamesUtil {
 	}
 	
 	public static ArrayList<String> getRandomNames() {
+		return getRandomNames(NUMBER_OF_NAMES);
+	}
+	
+	public static ArrayList<String> getRandomNames(int number) {
 		ArrayList<String> names = new ArrayList<String>();
 		Random randomGenerator = new Random();
-		for (int idx = 1; idx <= NUMBER_OF_NAMES; ++idx){
+		for (int idx = 1; idx <= number; ++idx){
 			int randomInt = randomGenerator.nextInt(FIRST_NAMES_ALL_LIST.size());
 			String firstName = FIRST_NAMES_ALL_LIST.get(randomInt);
 			randomInt = randomGenerator.nextInt(LAST_NAMES_LIST.size());

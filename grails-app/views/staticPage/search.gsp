@@ -93,6 +93,9 @@
 			<g:hiddenField name="isDriver" value="${commandInstance?.isDriver}" />
 		</g:form>
 	</div>
+	<div id="map_info">
+	  <!--  <small>Distance : <span id="distance_in_km">20</span> KM</small>  -->
+	</div>
 	<div id="map-canvas" class="map_canvas"></div>
 	<small id="map-help"></small>
 	<div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">

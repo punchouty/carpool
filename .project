@@ -29,4 +29,10 @@
 			<locationURI>GRAILS_ROOT/2.2.1/projects/racloop/plugins</locationURI>
 		</link>
 	</linkedResources>
+	<variableList>
+		<variable>
+			<name>ELASTIC</name>
+			<value>file:/D:/ezzie/racloop/elasticsearch/src</value>
+		</variable>
+	</variableList>
 </projectDescription>

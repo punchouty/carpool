@@ -21,9 +21,23 @@ class BootStrap {
     def init = { servletContext ->
 		internalBootStap(servletContext)
 		elasticSearchService.init()
+		createIndexes();
 		Environment.executeForCurrentEnvironment {
 			development {
-				createIndexes();
+				// COMMENT BELOW LINES IF YOU HAVE CLEANED DB AND ELASTICSEARCH
+				//  
+				/*
+				 * FOR CLEANING -
+				 * 
+				 * 1) RECREATE DB USING FOLLOWING DML
+				 * DROP SCHEMA racloop;
+				 * CREATE SCHEMA racloop;
+				 * 2) run remove.sh or remove.bat to clean files (in docs/other directory)
+				 * 3) Refresh the project
+				 */
+				//creating extra previous day index for dev environment
+				Date date = new Date().previous();
+				elasticSearchService.createIndexIfNotExistsForDate(date);
 				createUsers();
 				createSampleData();
 			}
@@ -39,16 +53,13 @@ class BootStrap {
 	}
 	
 	private def createIndexes() {
-		Date date = new Date().previous();
-		elasticSearchService.createIndexIfNotExistsForDate(date);
-		date = date.next();
-		elasticSearchService.createIndexIfNotExistsForDate(date);
-		date = date.next();
-		elasticSearchService.createIndexIfNotExistsForDate(date);
-		date = date.next();
-		elasticSearchService.createIndexIfNotExistsForDate(date);
-		date = date.next();
-		elasticSearchService.createIndexIfNotExistsForDate(date);
+		Date date = new Date()
+		for (int i = 0; i < 10; i++) {
+			elasticSearchService.createIndexIfNotExistsForDate(date);
+			date = date.next()
+		}
+		//Dummy Data Index
+		elasticSearchService.createDummyDataIndexIfNotExists();
 		
 	}
 	

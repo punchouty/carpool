@@ -1,5 +1,8 @@
 package com.racloop
 
+import java.util.Random;
+
+import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.joda.time.DateTime
 
 class JourneyService {
@@ -62,11 +65,48 @@ class JourneyService {
 		}
     }
 	
-	/**
-	 * @deprecated
-	 */
 	def search(User user, JourneyRequestCommand journey) {
 		def journeys = elasticSearchService.search(user, journey);
+		return journeys;
+	}
+	
+	def getDummyData(JourneyRequestCommand command) {
+		DateTime tempDate = new DateTime(command.dateOfJourney);
+		if(tempDate.getHourOfDay() > 20 || tempDate.getHourOfDay() < 7) return [];
+		def journeys = elasticSearchService.searchDummyData(command);
+		if(journeys.size == 0) {
+			Random randomGenerator = new Random();
+			Integer numberOfRecords = randomGenerator.nextInt(5);
+			if(numberOfRecords < 2) numberOfRecords = 2;
+			journeys = [];
+			def names = [];
+			if(command.isDriver) {
+				names = NamesUtil.getRandomNames(numberOfRecords);
+			}
+			else {
+				names = NamesUtil.getRandomBoyNames(numberOfRecords);
+			}
+			def maxDistance = command.tripDistance / (ElasticSearchService.DISTANCE_FACTOR + 1)
+			GeoPoint from = new GeoPoint(command.fromLatitude, command.fromLongitude)
+			GeoPoint to = new GeoPoint(command.toLatitude, command.toLongitude)
+			Random randomMinutesGenerator = new Random();
+			names.each {
+				int randomMinutes = randomMinutesGenerator.nextInt(60);
+				if(randomMinutes < 15) randomMinutes = 15;
+				tempDate = tempDate.plusMinutes(randomMinutes);
+				JourneyRequestCommand journey = new JourneyRequestCommand()
+				journey.name = it;
+				journey.dateOfJourney = tempDate.toDate()
+				GeoPoint fromRandom = DummyDataUtil.random(from, maxDistance);
+				journey.fromLatitude = fromRandom.lat();
+				journey.fromLongitude = fromRandom.lon();
+				GeoPoint toRandom = DummyDataUtil.random(to, maxDistance);
+				journey.toLatitude = toRandom.lat();
+				journey.toLongitude = toRandom.lon();
+				elasticSearchService.indexDummyJourney(journey);
+				journeys << journey
+			}
+		}
 		return journeys;
 	}
 	
@@ -83,19 +123,8 @@ class JourneyService {
 	 */
 	private Journey createJourneyInstance(JourneyRequestCommand command) {
 		Journey journey = new Journey()
-		journey.name = command.name
 		journey.dateOfJourney = command.dateOfJourney
-		journey.validStartTime = command.validStartTime
-		journey.fromPlace = command.fromPlace
-		journey.fromLatitude = command.fromLatitude
-		journey.fromLongitude = command.fromLongitude
-		journey.toPlace = command.toPlace
-		journey.toLatitude = command.toLatitude
-		journey.toLongitude = command.toLongitude
 		journey.isDriver = command.isDriver
-		journey.tripDistance = command.tripDistance
-		journey.tripUnit = command.tripUnit
-		journey.ip = command.ip
 		return journey;
 	}
 }
