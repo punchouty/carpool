@@ -1,44 +1,22 @@
-1,1,30/9/2013 13:30,10/1/2013 13:30,28.612857,77.231048,India gate -  Delhi,TRUE,Active,30.79899,76.917072,Pinjore -  Harayan,1
-2,1,30/9/2013 14:00,10/1/2013 14:00,28.247235,77.069815,Sohna -  Haryana,FALSE,Active,31.237756,76.497446,Anandpur Sahib -  Punjab,2
-3,1,30/9/2013 14:30,10/1/2013 14:30,28.584635,77.058056,Dwarka Sector 10 -  Delhi,TRUE,Active,30.734458,76.842644,IT Park Landmark -  Chandigarh,3
-4,1,30/9/2013 15:00,10/1/2013 15:00,28.65075,76.946941,Jharoda Kalan -  New Delhi,FALSE,Active,30.674091,76.789442,Chandigarh Airport -  Chandigarh,4
-5,1,30/9/2013 15:30,10/1/2013 15:30,28.600197,77.045692,Sector 4 Dwarka -  New Delhi,TRUE,Active,30.747774,76.794298,Sector 9 Chandigarh -  Chandigarh,1
-6,1,30/9/2013 16:00,10/1/2013 16:00,28.329844,77.319618,Sector 60 Faridabad -  Haryana,FALSE,Active,30.699796,76.84404,Sector 8 Panchkula -  Haryana,2
-7,1,30/9/2013 16:30,10/1/2013 16:30,28.3302,77.31651,Ballabgarh -  Haryana,TRUE,Active,30.726859,76.846434,City Centre DLFPhase - I Manimajra -  Chandigarh,3
-8,1,30/9/2013 17:00,10/1/2013 17:00,28.690211,77.087875,Mangolpuri -  New Delhi,FALSE,Active,30.770159,76.785652,Punjab Engg College -  Chandigarh,4
-9,1,30/9/2013 17:30,10/1/2013 17:30,28.4102,77.048057,Sector 49 Gurgaon -  Haryana,TRUE,Active,30.590933,76.842815,Derabassi -  Punjab,1
-10,1,30/9/2013 18:00,10/1/2013 18:00,28.62898,77.43333,Crossings Golf Course Noida -  Uttar Pradesh,FALSE,Active,30.730493,76.810073,Sector 26 Chandigarh -  Chandigarh,2
-11,1,30/9/2013 18:30,10/1/2013 18:30,28.728754,77.00256,Kanjhawala -  New Delhi,TRUE,Active,30.754191,76.789878,Sector 10 Chandigarh -  Chandigarh,3
-12,1,30/9/2013 19:00,10/1/2013 19:00,28.605604,77.304372,Himmatpuri Trilokpuri -  New Delhi,FALSE,Active,30.7372,76.7872,Sector 18 Chandigarh -  Chandigarh,4
-13,1,30/9/2013 19:30,10/1/2013 19:30,28.480876,77.312158,Faridabad Sector 37 -  Uttar Pradesh,TRUE,Active,30.752901,76.633666,Civil Hospital Kharar - Landran Road -  Punjab,1
-14,1,30/9/2013 20:00,10/1/2013 20:00,28.42267261,77.10313904,Sector 56 Gurgaon -  Haryana,FALSE,Active,30.842995,76.981834,Timber Trail Heights Solan -  Himachal Pradesh,2
-15,1,30/9/2013 20:30,10/1/2013 20:30,28.529186,77.15139,Vasant Kunj -  New Delhi,TRUE,Active,30.738221,76.789173,New Secretariat -  Chandigarh,3
-16,1,30/9/2013 21:00,10/1/2013 21:00,28.943265,77.09233,Sonepat -  Haryana,FALSE,Active,30.970397,76.52301,Ropar -  Punjab,4
-17,1,30/9/2013 21:30,10/1/2013 21:30,28.928843,77.096373,Rai -  Haryana,TRUE,Active,30.657775,76.853822,Panchkula Heights -  Haryana,1
-18,1,30/9/2013 22:00,10/1/2013 22:00,28.770123,77.115823,Khera Kalan -  New Delhi,FALSE,Active,30.767246,76.778248,Sector 12 Chandigarh -  Chandigarh,2
-19,1,30/9/2013 22:30,10/1/2013 22:30,28.705645,77.433086,Raj Nagar Extension Ghaziabad -  Uttar Pradesh,TRUE,Active,30.72044,76.764129,Sector 34 chd -  Chandigarh,3
-20,1,30/9/2013 23:00,10/1/2013 23:00,28.44730513,77.09648037,Sector 53 Gurgaon -  Haryana,FALSE,Active,31.129044,77.231005,Mashobra -  Himachal Pradesh,4
-21,1,30/9/2013 23:30,10/1/2013 23:30,25.374817,81.516359,Sardar Patel Inter Collage Faridabad -  Uttar Pradesh,TRUE,Active,30.785239,76.756232,Mullanpur Chandigarh -  Chandigarh,1
-22,1,1/10/2013 0:00,10/2/2013 0:00,28.713775,77.157398,Shalimar Bagh -  New Delhi,FALSE,Active,30.747479,76.778248,Sector 16 Chandigarh -  Chandigarh,2
-23,1,1/10/2013 0:30,10/2/2013 0:30,28.498189,77.403389,Unitech Infopark NOIDA -  Uttar Pradesh,TRUE,Active,30.748659,76.747563,Sector 38-A -   Chandigarh,3
-24,1,1/10/2013 1:00,10/2/2013 1:00,28.629093,77.282374,Shakarpur -  New Delhi,FALSE,Active,30.695756,76.769493,Sector 47 Chandigarh -  Chandigarh,4
-25,1,1/10/2013 1:30,10/2/2013 1:30,28.442016,77.507637,Army Institute of Management and Technology Greater Noida -  Uttar Pradesh,TRUE,Active,30.697933,76.711214,Vivek High School Sector 70 Mohali -  Punjab,1
-26,1,1/10/2013 2:00,10/2/2013 2:00,28.680084,77.444834,Ramlila Maidanmore Raj Nagar Ghaziabad -  Uttar Pradesh,FALSE,Active,30.689842,76.746313,Manav Mangal Smart School Phase 10 Mohal -  Punjab,2
-27,1,1/10/2013 2:30,10/2/2013 2:30,28.702182,77.282678,Gokulpuri -  New Delhi,TRUE,Active,30.712139,76.792882,Sector 29 Chandigarh -  Chandigarh,3
-28,1,1/10/2013 3:00,10/2/2013 3:00,28.464768,77.51107,Pari Chowk Noida -  Uttar Pradesh,FALSE,Active,30.742537,76.676195,Sunny Enclave Sector125 Mohali -  Punjab,4
-29,1,1/10/2013 3:30,10/2/2013 3:30,28.632784,77.219546,Connaught Place -  Delhi,TRUE,Active,30.835035,76.573406,Kurali -  Punjab,1
-30,1,1/10/2013 4:00,10/2/2013 4:00,27.8999168,77.3739284,Hodal -  Uttar Pradesh,FALSE,Active,31.115194,77.176717,Bharari Rd Shankli Shimla -  Himachal Pradesh,2
-31,1,1/10/2013 4:30,10/2/2013 4:30,28.55829,77.014662,Somesh Vihar -  New Delhi,TRUE,Active,30.71308,76.800267,Industrial Training Institute Sector 28 -  Chandigarh,3
-32,1,1/10/2013 5:00,10/2/2013 5:00,28.378412,76.907017,IMT Manesar -  Haryana,FALSE,Active,30.718153,76.833387,Mani Majra -  Chandigarh,4
-33,1,1/10/2013 5:30,10/2/2013 5:30,28.691886,77.309951,Nand Nagri Terminal -  New Delhi,TRUE,Active,30.729368,76.792839,Sector 19 Chandigarh -  Chandigarh,1
-34,1,1/10/2013 6:00,10/2/2013 6:00,28.432581,77.362369,Badshahpur -  Haryana,FALSE,Active,31.384563,76.380875,Nangal -  Punjab,2
-35,1,1/10/2013 6:30,10/2/2013 6:30,28.535049,77.391125,Sector 106 Noida -  Uttar Pradesh,TRUE,Active,30.740287,76.766789,Sector 23 Chandigarh -  Chandigarh,3
-36,1,1/10/2013 7:00,10/2/2013 7:00,28.563642,76.915191,Ujwa -  New Delhi,FALSE,Active,30.741061,76.798547,Sector 8 Chandigarh -  Chandigarh,4
-37,1,1/10/2013 7:30,10/2/2013 7:30,28.35466,76.939978,Manesar -  Haryana,TRUE,Active,30.96186,76.791145,Baddi -  Himachal Pradesh,1
-38,1,1/10/2013 8:00,10/2/2013 8:00,28.703801,77.263881,Bhajan Pura -  New Delhi,FALSE,Active,30.733794,76.771124,Sector 22 Chandigarh -  Chandigarh,2
-39,1,1/10/2013 8:30,10/2/2013 8:30,28.686371,77.098221,Rohtak Rd A 1 Block Paschim Vihar -  New Delhi,TRUE,Active,30.761198,76.766832,Sector 14 Chandigarh -  Chandigarh,3
-40,1,1/10/2013 9:00,10/2/2013 9:00,28.50988,77.072028,Unitech Infospace Dundahera Gurgaon -  Haryana,FALSE,Active,30.707822,76.75915,Sector 45 Chandigarh -  Chandigarh,4
-41,1,1/10/2013 9:30,10/2/2013 9:30,28.45706777,77.06776491,South City I Sector 41Gurgaon -  Haryana,TRUE,Active,31.104538,77.197445,Sanjauli -  Himachal Pradesh,1
-42,1,1/10/2013 10:00,10/2/2013 10:00,28.667847,77.093454,Paschim Vihar -  Delhi,FALSE,Active,30.793313,76.911651,Pinjore Graden -  Haryana,2
-43,1,1/10/2013 10:30,10/2/2013 10:30,28.336946,77.305885,Sector 25 Faridabad -  Uttar Pradesh,TRUE,Active,30.72626,76.712732,Ranbaxy Laboratories Limited Mohali Sas Nagar -  Chandigarh,3
-44,1,1/10/2013 11:00,10/2/2013 11:00,28.850838,77.096702,Narela -  Delhi,FALSE,Active,30.381613,76.776382,Ambala -   Haryana,4
+1,1,30/9/2013 13:30,10/1/2013 13:30,28.612932,77.230955,India gate -  Delhi,TRUE,Active,30.798990,76.917072,Pinjore -  Harayan,1
+2,1,30/9/2013 14:00,10/1/2013 14:00,28.633123,77.219540,Rajeev Chowk - Delhi,FALSE,Active,31.237756,76.497446,Anandpur Sahib -  Punjab,2
+3,1,30/9/2013 14:30,10/1/2013 14:30,28.568542,77.209490,AIIMS -  Delhi,TRUE,Active,30.734458,76.842644,IT Park Landmark -  Chandigarh,3
+4,1,30/9/2013 15:00,10/1/2013 15:00,28.544719,77.192074,IIT Hauz Khas -  New Delhi,FALSE,Active,30.674091,76.789442,Chandigarh Airport -  Chandigarh,4
+5,1,30/9/2013 15:30,10/1/2013 15:30,28.524360,77.185894,Qutab Minar -  New Delhi,TRUE,Active,30.747774,76.794298,Sector 9 Chandigarh -  Chandigarh,1
+6,1,30/9/2013 16:00,10/1/2013 16:00,28.503695,77.178427,"Chatarpur, New Delhi",FALSE,Active,30.699796,76.844040,Sector 8 Panchkula -  Haryana,2
+7,1,30/9/2013 16:30,10/1/2013 16:30,28.494040,77.147528,"Ghitorni, Delhi",TRUE,Active,30.726859,76.846434,City Centre DLFPhase - I Manimajra -  Chandigarh,3
+8,1,30/9/2013 17:00,10/1/2013 17:00,28.481366,77.092939,"Sikandarpur, Gurgaon",FALSE,Active,30.770159,76.785652,Punjab Engg College -  Chandigarh,4
+9,1,30/9/2013 17:30,10/1/2013 17:30,28.477670,77.068134,IFFCO Gurgaon -  Haryana,TRUE,Active,30.590933,76.842815,Derabassi -  Punjab,1
+10,1,30/9/2013 18:00,10/1/2013 18:00,28.468616,77.058865,"Crown Plaza, Gurgaon",FALSE,Active,30.730493,76.810073,Sector 26 Chandigarh -  Chandigarh,2
+11,1,30/9/2013 18:30,10/1/2013 18:30,28.445902,77.033544,"Rajiv Chownk, Gurgaon",TRUE,Active,30.754191,76.789878,Sector 10 Chandigarh -  Chandigarh,3
+12,1,30/9/2013 19:00,10/1/2013 19:00,28.401895,76.989599,"Haldiram near toll, Gurgaon",FALSE,Active,30.737200,76.787200,Sector 18 Chandigarh -  Chandigarh,4
+13,1,30/9/2013 19:30,10/1/2013 19:30,28.377280,76.962648,"Wet and Wild, Manesar",TRUE,Active,30.752901,76.633666,Civil Hospital Kharar - Landran Road -  Punjab,1
+14,1,30/9/2013 20:00,10/1/2013 20:00,28.208062,76.793304,Daruheda -  Haryana,FALSE,Active,30.842995,76.981834,Timber Trail Heights Solan -  Himachal Pradesh,2
+15,1,30/9/2013 20:30,10/1/2013 20:30,28.002889,76.453930,"Bani Jonaycha, Rajasthan",TRUE,Active,30.738221,76.789173,New Secretariat -  Chandigarh,3
+16,1,30/9/2013 21:00,10/1/2013 21:00,28.710614,77.176281,"Azadpur, Delhi",FALSE,Active,30.970397,76.523010,Ropar -  Punjab,4
+17,1,30/9/2013 21:30,10/1/2013 21:30,28.682908,77.208811,"FMS DU, Delhi",TRUE,Active,30.657775,76.853822,Panchkula Heights -  Haryana,1
+18,1,30/9/2013 22:00,10/1/2013 22:00,28.735001,77.155767,"Karnal, Bypass",FALSE,Active,30.767246,76.778248,Sector 12 Chandigarh -  Chandigarh,2
+19,1,30/9/2013 22:30,10/1/2013 22:30,28.802338,77.144702,"Splash Water Park, Rai",TRUE,Active,30.720440,76.764129,Sector 34 chd -  Chandigarh,3
+20,1,30/9/2013 23:00,10/1/2013 23:00,28.854296,77.126592,"Guru Teg Bhadur Memorial, Rai",FALSE,Active,31.129044,77.231005,Mashobra -  Himachal Pradesh,4
+21,1,30/9/2013 23:30,10/1/2013 23:30,28.885452,77.117751,"TDI Mall, Kundali",TRUE,Active,30.785239,76.756232,Mullanpur Chandigarh -  Chandigarh,1
+22,1,1/10/2013 0:00,10/2/2013 0:00,28.962041,77.092510,"Sonepat, Haryana",FALSE,Active,30.747479,76.778248,Sector 16 Chandigarh -  Chandigarh,2

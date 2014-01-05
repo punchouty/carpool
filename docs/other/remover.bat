@@ -1,6 +1,0 @@
-rmdir /s /q "D:\elasticsearch\grails-data"
-rmdir /s /q "D:\elasticsearch\elasticsearch-0.90.5\data"
-rmdir /s /q "D:\elasticsearch\elasticsearch-0.90.5\data"
-rmdir /s /q "D:\elasticsearch\elasticsearch-0.90.5\logs"
-rmdir /s /q "C:\data"
-rmdir /s /q "C:\springsource\ggts-3.2.0.RELEASE\workspace\racloop\activemq-data"

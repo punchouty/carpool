@@ -1,7 +1,23 @@
 // Place your Spring DSL code here
+import org.apache.activemq.ActiveMQConnectionFactory
+import org.springframework.jms.connection.SingleConnectionFactory
+
 beans = {
-	
-	jmsConnectionFactory(org.apache.activemq.ActiveMQConnectionFactory) {
-		brokerURL = 'vm://localhost'
-	  }
+
+	xmlns amq:"http://activemq.apache.org/schema/core"
+
+	amq.broker(xmlns:"http://activemq.apache.org/schema/core",
+	brokerName:"localhost",
+	dataDirectory:"C:/data/activemq" ){
+
+		amq.transportConnectors{
+			amq.transportConnector(name:"vm", uri:"vm://localhost" )
+		}
+	}
+
+	jmsConnectionFactory(SingleConnectionFactory) {
+        targetConnectionFactory = { ActiveMQConnectionFactory cf ->
+            brokerURL = 'vm://localhost?create=false&waitForStart=100'
+        }
+    }
 }

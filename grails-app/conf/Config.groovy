@@ -59,10 +59,27 @@ grails.exceptionresolver.params.exclude = ['password']
 // configure auto-caching of queries by default (if false you can cache individual queries with 'cache: true')
 grails.hibernate.cache.queries = false
 
+//******************** IMPORTANT PATH INFORMATION ******************************************//
+// Elastic search related directories (refer elasticsearch.yml) - c:\\data\\elasticsearch	//
+// Active MQ related directories (refer resources.groovy) - C:/data/activemq				//
+// H2 database related directories (refer datasource.groovy) - C:/data/h2database			//
+//******************************************************************************************//
+
+// Below configuration after cleaning c:\\data
+grails.startup.elasticsearch.index.create = true
+grails.startup.sampleUsers.create = true
+grails.startup.sampleData.create = true
+grails.startup.masterData.places.create = true
+
 grails.ui.dateFormat = 'dd/MM/yyyy hh:mm a'
 //grails.indexNameFormatType = "Daily" //or Daily 
-//grails.dailyIndexNameFormat = 'dd-MMM-yyyy'
+grails.dailyIndexNameFormat = 'dd-MMM-yyyy' // TODO externalize this from com.racloop.ElasticSearchService
 //grails.monthlyIndexNameFormat = 'MMM-yyyy'
+grails.startup.sampleData.index.name = 'sample_data'
+grails.startup.sampleData.file = "C:/springsource/ggts-3.2.0.RELEASE/workspace/racloop/docs/other/journey.csv"
+grails.startup.masterData.places.file = "C:/springsource/ggts-3.2.0.RELEASE/workspace/racloop/docs/places/all.csv"
+grails.startup.masterData.places.index.name = 'location_master'
+grails.startup.masterData.places.index.type = 'sample'
 
 environments {
     development {

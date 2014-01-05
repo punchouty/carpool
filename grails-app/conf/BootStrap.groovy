@@ -3,8 +3,10 @@ import grails.plugin.nimble.core.UserBase
 import grails.util.Environment
 import liquibase.util.csv.opencsv.CSVReader
 
-import com.racloop.Journey
+import org.elasticsearch.common.geo.GeoPoint
+
 import com.racloop.JourneyRequestCommand
+import com.racloop.Place
 import com.racloop.User
 
 
@@ -13,33 +15,39 @@ class BootStrap {
 	def grailsApplication
 	def elasticSearchService
 	def journeyManagerService
-	//def journeyService
 	def nimbleService
 	def userService
 	def adminsService
-
+	
     def init = { servletContext ->
 		internalBootStap(servletContext)
 		elasticSearchService.init()
-		createIndexes();
+		Boolean createIndex = grailsApplication.config.grails.startup.elasticsearch.index.create
+		if(createIndex) {
+			log.info("Start creating indexes in Elasticsearch")
+			createIndexes();
+			log.info("Indexes created successfully in Elasticsearch")
+		}
+		Boolean createSampleUsers = grailsApplication.config.grails.startup.sampleUsers.create
+		if(createSampleUsers) {
+			log.info("Start creating initial users in database")
+			createUsers();
+			log.info("Users created successfully in Elasticsearch")
+		}
+		Boolean createMasterData = grailsApplication.config.grails.startup.masterData.places.create
+		if(createMasterData) {
+			log.info("Start creating master data for places in Elasticsearch")
+			createMasterDataForPlaces();
+			log.info("Master data for places created successfully in Elasticsearch")
+		}
 		Environment.executeForCurrentEnvironment {
-			development {
-				// COMMENT BELOW LINES IF YOU HAVE CLEANED DB AND ELASTICSEARCH
-				//  
-				/*
-				 * FOR CLEANING -
-				 * 
-				 * 1) RECREATE DB USING FOLLOWING DML
-				 * DROP SCHEMA racloop;
-				 * CREATE SCHEMA racloop;
-				 * 2) run remove.sh or remove.bat to clean files (in docs/other directory)
-				 * 3) Refresh the project
-				 */
-				//creating extra previous day index for dev environment
-				Date date = new Date().previous();
-				elasticSearchService.createIndexIfNotExistsForDate(date);
-				createUsers();
-				createSampleData();
+			development {				
+				Boolean createSampleData = grailsApplication.config.grails.startup.sampleData
+				if(createSampleData) {
+					log.info("Start creating sample data for places in Elasticsearch")
+					createMasterDataForPlaces();
+					log.info("Sample data created successfully in Elasticsearch")
+				}
 			}
 		  }
     }
@@ -53,13 +61,17 @@ class BootStrap {
 	}
 	
 	private def createIndexes() {
-		Date date = new Date()
+		Date date = new Date().previous();//get yesterday date
+		//Create index for yesterday, today and next 8 days
 		for (int i = 0; i < 10; i++) {
 			elasticSearchService.createIndexIfNotExistsForDate(date);
 			date = date.next()
 		}
+		
+		// Master Data Index
+		elasticSearchService.createMasterLocationIndexIfNotExists();//TODO - check if it need to be here???
 		//Dummy Data Index
-		elasticSearchService.createDummyDataIndexIfNotExists();
+		elasticSearchService.createDummyDataIndexIfNotExists();//TODO - check if it need to be here???
 		
 	}
 	
@@ -131,6 +143,24 @@ class BootStrap {
 		}
 	}
 	
+	private def createMasterDataForPlaces() {
+		CSVReader reader = new CSVReader(new FileReader(grailsApplication.config.grails.startup.masterData.places.file));
+		Place previousPlace = null; //Assuming data is sorted in file w.r.t location
+		List lines = reader.readAll();
+		lines.each {  line ->
+			Place place = new Place();
+			String name = line[0]
+			Double latitude = Double.parseDouble(line[1])
+			Double longitude = Double.parseDouble(line[1])
+			place.name = name
+			place.location = new GeoPoint(latitude, longitude)
+			if(!place.equals(previousPlace)) {
+				elasticSearchService.indexLocation(place);
+			}
+			previousPlace = place;
+		}
+	}
+	
 	private def createSampleData() {
 		int timeInterval = 15
 		User rajan = User.findByUsername('rajan');
@@ -140,7 +170,7 @@ class BootStrap {
 		User khwaish = User.findByUsername('khwaish');
 		log.info("Found user khwaish : ${khwaish.username}")
 		String dateFormat = grailsApplication.config.grails.dateFormat
-		CSVReader reader = new CSVReader(new FileReader("docs\\other\\journey1.csv"));
+		CSVReader reader = new CSVReader(new FileReader(grailsApplication.config.grails.startup.sampleData.file));
 		List lines = reader.readAll();
 		
 		int i = 0;		
@@ -161,7 +191,7 @@ class BootStrap {
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 		
-		i == 0;
+		i = 0;
 		time = Calendar.getInstance();	
 		time.add(Calendar.MINUTE, 9);
 		lines.each {  line ->

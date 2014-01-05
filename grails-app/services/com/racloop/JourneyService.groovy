@@ -77,7 +77,7 @@ class JourneyService {
 		if(journeys.size == 0) {
 			Random randomGenerator = new Random();
 			Integer numberOfRecords = randomGenerator.nextInt(5);
-			if(numberOfRecords < 2) numberOfRecords = 2;
+			if(numberOfRecords < 2) numberOfRecords = 2;//expecting 2,3,4 number of records
 			journeys = [];
 			def names = [];
 			if(command.isDriver) {
