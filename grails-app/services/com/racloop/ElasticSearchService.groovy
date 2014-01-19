@@ -1,5 +1,7 @@
 package com.racloop;
 
+import org.elasticsearch.action.admin.indices.close.CloseIndexResponse;
+import org.elasticsearch.action.deletebyquery.DeleteByQueryResponse
 import org.elasticsearch.action.get.GetResponse
 import org.elasticsearch.action.index.IndexRequest
 import org.elasticsearch.action.search.SearchResponse
@@ -58,19 +60,19 @@ class ElasticSearchService {
 		log.info "Successfully indexed ${journey}"
 	}
 
-	def indexDummyJourney(JourneyRequestCommand journey) {
-		String indexName = grailsApplication.config.grails.startup.sampleData.index.name
-		log.debug "Adding dummy record to elastic search ${journey}"
-		def sourceBuilder = createDummyJourneyJson(journey)
+	def indexGeneratedJourney(JourneyRequestCommand journey) {
+		String indexName = grailsApplication.config.grails.generatedData.index.name
+		log.debug "Adding generated record to elastic search ${journey}"
+		def sourceBuilder = createdGeneratedJourneyJson(journey)
 		String type = getType(journey);
 		IndexRequest indexRequest = new IndexRequest(indexName, type).source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
-		log.debug "Successfully indexed dummy journey : ${journey}"
+		log.debug "Successfully indexed generated journey : ${journey}"
 	}
 	
 	def indexLocation(Place place) {
-		String indexName = grailsApplication.config.grails.startup.masterData.places.index.name
-		String type = grailsApplication.config.grails.startup.masterData.places.index.type;		
+		String indexName = grailsApplication.config.grails.masterData.places.index.name
+		String type = grailsApplication.config.grails.masterData.places.index.type;		
 		log.debug "Adding record to location master index in elastic search ${place}"
 		def sourceBuilder = createPlaceJson(place);
 		IndexRequest indexRequest = new IndexRequest(indexName, type).source(sourceBuilder);
@@ -78,30 +80,57 @@ class ElasticSearchService {
 		log.debug "Successfully indexed place : ${place}"
 	}
 
-	def createIndexIfNotExistsForDate(Date date) {
-		String indexName = getIndexName(date)
+	def createMainIndex() {
+		Date date = new Date().previous();//get yesterday date
+		//Create indexes for past week and future week
+		for (int i = 0; i < 10; i++) {
+			String indexName = getIndexName(date)
+			boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
+			if(isIndexExists) {
+				log.info "Index name : ${indexName} already exists"
+			}
+			else {
+				log.info "Started creating Index name : ${indexName}"
+				node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
+				log.info "Index name : ${indexName} created successfuly"
+				log.info "Started creating type : ${TYPE_DRIVER} for index : ${indexName}"
+				def builder = createMainIndexJson(TYPE_DRIVER)
+				node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_DRIVER).setSource(builder).execute().actionGet();
+				log.info "Type : ${TYPE_DRIVER} for index : ${indexName} created successfully"
+	
+				log.info "Started creating type : ${TYPE_DRIVER} for index : ${indexName}"
+				builder = createMainIndexJson(TYPE_RIDER)
+				node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_RIDER).setSource(builder).execute().actionGet();
+				log.info "Type : ${TYPE_RIDER} for index : ${indexName} created successfully"
+			}
+			date = date.next()
+		}		
+	}
+	
+	def closeMainIndexForPreviousWeek() {
+		Calendar time = Calendar.getInstance();
+		time.add(Calendar.WEEK_OF_MONTH, -3);
+		String indexName = getIndexName(time.getTime());
 		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
 		if(isIndexExists) {
-			log.info "Index name : ${indexName} already exists"
+			log.info "Index name : ${indexName} exists"
+			log.info "Started closing Index name : ${indexName}"
+			CloseIndexResponse response = node.client.admin().indices().prepareClose(indexName).execute().actionGet();
+			if(response.isAcknowledged()) {
+				log.info "Index name : ${indexName} closed successfully"
+			}
+			else {
+				log.warn "Index name : ${indexName} not closed because it is acknowledge"
+			}
 		}
 		else {
-			log.info "Started creating Index name : ${indexName}"
-			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
-			log.info "Index name : ${indexName} created successfuly"
-			log.info "Started creating type : ${TYPE_DRIVER} for index : ${indexName}"
-			def builder = createMainIndexJson(TYPE_DRIVER)
-			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_DRIVER).setSource(builder).execute().actionGet();
-			log.info "Type : ${TYPE_DRIVER} for index : ${indexName} created successfully"
-
-			log.info "Started creating type : ${TYPE_DRIVER} for index : ${indexName}"
-			builder = createMainIndexJson(TYPE_RIDER)
-			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_RIDER).setSource(builder).execute().actionGet();
-			log.info "Type : ${TYPE_RIDER} for index : ${indexName} created successfully"
+			log.warn "Index name : ${indexName} does not exists"
 		}
 	}
 	
 	def createMasterLocationIndexIfNotExists() {
-		String indexName = grailsApplication.config.grails.startup.masterData.places.index.name
+		String indexName = grailsApplication.config.grails.masterData.places.index.name
+		String indexType = grailsApplication.config.grails.masterData.places.index.type
 		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
 		if(isIndexExists) {
 			log.info "Index name : ${indexName} already exists"
@@ -110,13 +139,16 @@ class ElasticSearchService {
 			log.info "Started creating master location Index name : ${indexName}"
 			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
 			def builder = createLocationMasterIndexJson();
-			node.client.admin().indices().preparePutMapping(indexName).setType(grailsApplication.config.grails.startup.masterData.places.index.type).setSource(builder).execute().actionGet();
+			node.client.admin().indices().preparePutMapping(indexName).setType(indexType).setSource(builder).execute().actionGet();
 			log.info "Master location index name : ${indexName} created successfuly"
 		}
 	}
 	
-	def createDummyDataIndexIfNotExists() {
-		String indexName = grailsApplication.config.grails.startup.sampleData.index.name
+	/**
+	 * @return
+	 */
+	def createGeneratedDataIndexIfNotExists() {
+		String indexName = grailsApplication.config.grails.generatedData.index.name
 		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
 		if(isIndexExists) {
 			log.info "Index name : ${indexName} already exists"
@@ -126,28 +158,14 @@ class ElasticSearchService {
 			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
 			log.info "Dummy Index name : ${indexName} created successfuly"
 			log.info "Started creating type : ${TYPE_DRIVER} for Dummy index : ${indexName}"
-			def builder = createDummyDataIndexJson(TYPE_DRIVER)
+			def builder = createGeneratedDataJson(TYPE_DRIVER)
 			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_DRIVER).setSource(builder).execute().actionGet();
 			log.info "Type : ${TYPE_DRIVER} for Dummy index : ${indexName} created successfully"
 
 			log.info "Started creating type : ${TYPE_DRIVER} for Dummy index : ${indexName}"
-			builder = createDummyDataIndexJson(TYPE_RIDER)
+			builder = createGeneratedDataJson(TYPE_RIDER)
 			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_RIDER).setSource(builder).execute().actionGet();
 			log.info "Type : ${TYPE_RIDER} for Dummy index : ${indexName} created successfully"
-		}
-	}
-	
-	def closeIndexIfExistsForDate(Date date) {
-		String indexName = getIndexName(date)
-		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
-		if(isIndexExists) {
-			log.info "Index name : ${indexName} exists"
-			log.info "Started closing Index name : ${indexName}"
-			node.client.admin().indices().prepareClose(indexName).execute().actionGet();
-			log.info "Index name : ${indexName} closed successfully"
-		}
-		else {
-			log.warn "Index name : ${indexName} does not exists"
 		}
 	}
 
@@ -189,7 +207,7 @@ class ElasticSearchService {
 		return builder;
 	}
 
-	private def createDummyDataIndexJson(String type) {
+	private def createGeneratedDataJson(String type) {
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 		startObject().
 			startObject(type).
@@ -200,8 +218,14 @@ class ElasticSearchService {
 					startObject("dateOfJourney").
 					field("type", "date").field("format", "basic_date_time_no_millis").
 					endObject().
+					startObject("fromPlace").
+					field("type", "string").field("index", "not_analyzed").
+					endObject().
 					startObject("from").
 					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
+					endObject().
+					startObject("toPlace").
+					field("type", "string").field("index", "not_analyzed").
 					endObject().
 					startObject("to").
 					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
@@ -215,7 +239,7 @@ class ElasticSearchService {
 	private def createLocationMasterIndexJson() {
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 		startObject().
-			startObject(grailsApplication.config.grails.startup.masterData.places.index.type).
+			startObject(grailsApplication.config.grails.masterData.places.index.type).
 				startObject("properties").
 					startObject("name").
 					field("type", "string").
@@ -249,7 +273,7 @@ class ElasticSearchService {
 		return builder;
 	}
 	
-	private def createDummyJourneyJson(JourneyRequestCommand journey) {
+	private def createdGeneratedJourneyJson(JourneyRequestCommand journey) {
 		GeoPoint from = new GeoPoint(journey.fromLatitude, journey.fromLongitude)
 		GeoPoint to = new GeoPoint(journey.toLatitude, journey.toLongitude)
 		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
@@ -258,7 +282,9 @@ class ElasticSearchService {
 			startObject().
 				field("name", journey.name).
 				field("dateOfJourney", dateOfJourney.toString(BASIC_DATE_FORMAT)).
+				field("fromPlace", journey.fromPlace).
 				field("from", from).
+				field("toPlace", journey.toPlace).
 				field("to", to).
 			endObject();
 		return builder;
@@ -337,8 +363,8 @@ class ElasticSearchService {
 		return journeys
 	}
 	
-	def searchDummyData(JourneyRequestCommand journey) {
-		String indexName = grailsApplication.config.grails.startup.sampleData.index.name;
+	def searchGeneratedData(JourneyRequestCommand journey) {
+		String indexName = grailsApplication.config.grails.generatedData.index.name;
 		String searchTypeOpposite = null;
 		if(journey.isDriver) {
 			searchTypeOpposite = TYPE_RIDER;
@@ -385,6 +411,56 @@ class ElasticSearchService {
 		}
 		return journeys
 	}
+	
+	def searchNearLocations(double lattitude, double longitude, double tripDistance, int maxRecords) {
+		String indexName = grailsApplication.config.grails.masterData.places.index.name;
+		String indexType = grailsApplication.config.grails.masterData.places.index.type
+		double filterDistance = tripDistance / DISTANCE_FACTOR;
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.limitFilter(maxRecords),
+			FilterBuilders.geoDistanceFilter("location").point(lattitude, longitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+		);
+		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("location");
+		sorter.point(lattitude, longitude);
+		sorter.order(SortOrder.ASC);
+		def places = [];
+		try {
+			SearchResponse searchResponse = node.client.prepareSearch(indexName)
+				.setTypes(indexType)
+				.setSearchType(SearchType.QUERY_AND_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery())             // Query
+				.setFilter(filter)   // Filter
+				.addSort(sorter)
+				.execute()
+				.actionGet();
+			SearchHits searchHits = searchResponse.getHits();
+			SearchHit[] hits = searchHits.hits;
+			for (SearchHit searchHit : hits) {
+				Place place = parsePlaceFromSearchHit(searchHit);
+				places << place
+			}
+		}
+		catch (IndexMissingException exception) {
+			log.error "Index name ${indexName} does not exists"
+		}
+		return places
+	}
+	
+	def deleteSampleData() {
+		Calendar time = Calendar.getInstance();
+		Date date = new Date(time.timeInMillis);
+		String indexName = getIndexName(date);
+		log.info "Removing data from journeys"
+		DeleteByQueryResponse response = node.client.prepareDeleteByQuery(indexName).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
+		log.info "Data removed from journeys successfully"
+	}
+	
+	private Place parsePlaceFromSearchHit(SearchHit searchHit) {
+		Place place = new Place();
+		place.name = searchHit.getSource().get('name');
+		place.location = searchHit.getSource().get('location');
+		return place;
+	}
 
 	private JourneyRequestCommand parseJourneyFromSearchHit(SearchHit searchHit) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
@@ -396,24 +472,7 @@ class ElasticSearchService {
 		journeyTemp.fromPlace = searchHit.getSource().get('fromPlace');
 		journeyTemp.toPlace = searchHit.getSource().get('toPlace')
 		return journeyTemp
-	}
-
-	private JourneyRequestCommand parseDummyJourneyFromSearchHit(SearchHit searchHit) {
-		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
-		journeyTemp.name = searchHit.getSource().get('name');
-		String dateStr = searchHit.getSource().get('dateOfJourney');
-		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
-		journeyTemp.dateOfJourney = dateTime.toDate();
-		GeoPoint from = searchHit.getSource().get('from');
-		GeoPoint to = searchHit.getSource().get('to');
-		journeyTemp.fromLatitude = from.lat();
-		journeyTemp.fromLongitude = from.lon();
-		journeyTemp.toLatitude = to.lat();
-		journeyTemp.toLongitude = to.lon();
-		return journeyTemp
-	}
-	
-	
+	}	
 	
 	private JourneyRequestCommand parseJourneyFromGetResponse(GetResponse getResponse) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
@@ -436,7 +495,7 @@ class ElasticSearchService {
 	}
 
 	private String getIndexName(Date dateOfJourney) {
-		String indexName = dateOfJourney.format(grailsApplication.config.grails.dailyIndexNameFormat);
+		String indexName = dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat);
 		return indexName.toLowerCase();
 	}
 

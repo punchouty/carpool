@@ -1,2 +1,8 @@
 DROP SCHEMA racloop;
 CREATE SCHEMA racloop;
+
+# JDBC to connect embedded database
+DRIVER : org.h2.Driver
+URL : jdbc:h2:file:C:/data/h2/racloop
+USER : sa
+

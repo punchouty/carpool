@@ -40,16 +40,6 @@ class BootStrap {
 			createMasterDataForPlaces();
 			log.info("Master data for places created successfully in Elasticsearch")
 		}
-		Environment.executeForCurrentEnvironment {
-			development {				
-				Boolean createSampleData = grailsApplication.config.grails.startup.sampleData
-				if(createSampleData) {
-					log.info("Start creating sample data for places in Elasticsearch")
-					createMasterDataForPlaces();
-					log.info("Sample data created successfully in Elasticsearch")
-				}
-			}
-		  }
     }
 	
     def destroy = {
@@ -61,17 +51,12 @@ class BootStrap {
 	}
 	
 	private def createIndexes() {
-		Date date = new Date().previous();//get yesterday date
-		//Create index for yesterday, today and next 8 days
-		for (int i = 0; i < 10; i++) {
-			elasticSearchService.createIndexIfNotExistsForDate(date);
-			date = date.next()
-		}
-		
+		// Main Index
+		elasticSearchService.createMainIndex();		
 		// Master Data Index
 		elasticSearchService.createMasterLocationIndexIfNotExists();//TODO - check if it need to be here???
 		//Dummy Data Index
-		elasticSearchService.createDummyDataIndexIfNotExists();//TODO - check if it need to be here???
+		elasticSearchService.createGeneratedDataIndexIfNotExists();//TODO - check if it need to be here???
 		
 	}
 	
@@ -144,7 +129,7 @@ class BootStrap {
 	}
 	
 	private def createMasterDataForPlaces() {
-		CSVReader reader = new CSVReader(new FileReader(grailsApplication.config.grails.startup.masterData.places.file));
+		CSVReader reader = new CSVReader(new InputStreamReader(this.class.classLoader.getResourceAsStream(grailsApplication.config.grails.startup.masterData.places.file)));
 		Place previousPlace = null; //Assuming data is sorted in file w.r.t location
 		List lines = reader.readAll();
 		lines.each {  line ->
@@ -158,55 +143,6 @@ class BootStrap {
 				elasticSearchService.indexLocation(place);
 			}
 			previousPlace = place;
-		}
-	}
-	
-	private def createSampleData() {
-		int timeInterval = 15
-		User rajan = User.findByUsername('rajan');
-		log.info("Found user rajan : ${rajan.username}")
-		User tamanna = User.findByUsername('tamanna');
-		log.info("Found user tamanna : ${tamanna.username}")
-		User khwaish = User.findByUsername('khwaish');
-		log.info("Found user khwaish : ${khwaish.username}")
-		String dateFormat = grailsApplication.config.grails.dateFormat
-		CSVReader reader = new CSVReader(new FileReader(grailsApplication.config.grails.startup.sampleData.file));
-		List lines = reader.readAll();
-		
-		int i = 0;		
-		Calendar time = Calendar.getInstance();
-		
-		lines.each {  line ->
-			i++;
-			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
-			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.fromPlace = line[6]
-			journeyCommand.fromLatitude = Double.parseDouble(line[4])
-			journeyCommand.fromLongitude = Double.parseDouble(line[5])
-			journeyCommand.toPlace = line[11]
-			journeyCommand.toLatitude = Double.parseDouble(line[9])
-			journeyCommand.toLongitude = Double.parseDouble(line[10])
-			journeyCommand.isDriver = true
-			journeyManagerService.createJourney(tamanna, journeyCommand)
-			time.add(Calendar.MINUTE, timeInterval);
-		}
-		
-		i = 0;
-		time = Calendar.getInstance();	
-		time.add(Calendar.MINUTE, 9);
-		lines.each {  line ->
-			i++;
-			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
-			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.fromPlace = line[11]
-			journeyCommand.fromLatitude = Double.parseDouble(line[9])
-			journeyCommand.fromLongitude = Double.parseDouble(line[10])
-			journeyCommand.toPlace = line[6]
-			journeyCommand.toLatitude = Double.parseDouble(line[4])
-			journeyCommand.toLongitude = Double.parseDouble(line[5])
-			journeyCommand.isDriver = false
-			journeyManagerService.createJourney(khwaish, journeyCommand)
-			time.add(Calendar.MINUTE, timeInterval);
 		}
 	}
 }

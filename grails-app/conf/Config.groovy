@@ -68,18 +68,20 @@ grails.hibernate.cache.queries = false
 // Below configuration after cleaning c:\\data
 grails.startup.elasticsearch.index.create = true
 grails.startup.sampleUsers.create = true
-grails.startup.sampleData.create = true
 grails.startup.masterData.places.create = true
+//Below configuration will not refresh data
+//grails.startup.elasticsearch.index.create = false
+//grails.startup.sampleUsers.create = false
+//grails.startup.masterData.places.create = false
+
+grails.generatedData.index.name = 'generated_data'//generated journeys by application
+grails.masterData.places.index.name = 'location_master'
+grails.masterData.places.index.type = 'india'
 
 grails.ui.dateFormat = 'dd/MM/yyyy hh:mm a'
-//grails.indexNameFormatType = "Daily" //or Daily 
-grails.dailyIndexNameFormat = 'dd-MMM-yyyy' // TODO externalize this from com.racloop.ElasticSearchService
-//grails.monthlyIndexNameFormat = 'MMM-yyyy'
-grails.startup.sampleData.index.name = 'sample_data'
-grails.startup.sampleData.file = "C:/springsource/ggts-3.2.0.RELEASE/workspace/racloop/docs/other/journey.csv"
-grails.startup.masterData.places.file = "C:/springsource/ggts-3.2.0.RELEASE/workspace/racloop/docs/places/all.csv"
-grails.startup.masterData.places.index.name = 'location_master'
-grails.startup.masterData.places.index.type = 'sample'
+grails.journeyIndexNameFormat = 'yy-MM-W'
+grails.startup.sampleData.file = "journey.csv"
+grails.startup.masterData.places.file = "all.csv"
 
 environments {
     development {

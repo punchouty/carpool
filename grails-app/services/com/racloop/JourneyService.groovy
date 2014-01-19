@@ -1,8 +1,8 @@
 package com.racloop
 
-import java.util.Random;
+import grails.util.Environment
 
-import org.elasticsearch.common.geo.GeoPoint;
+import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.joda.time.DateTime
 
 class JourneyService {
@@ -72,8 +72,10 @@ class JourneyService {
 	
 	def getDummyData(JourneyRequestCommand command) {
 		DateTime tempDate = new DateTime(command.dateOfJourney);
-		if(tempDate.getHourOfDay() > 20 || tempDate.getHourOfDay() < 7) return [];
-		def journeys = elasticSearchService.searchDummyData(command);
+		if(Environment.current.getName() == "production") {
+			if(tempDate.getHourOfDay() > 20 || tempDate.getHourOfDay() < 7) return [];
+		}
+		def journeys = elasticSearchService.searchGeneratedData(command);
 		if(journeys.size == 0) {
 			Random randomGenerator = new Random();
 			Integer numberOfRecords = randomGenerator.nextInt(5);
@@ -87,44 +89,58 @@ class JourneyService {
 				names = NamesUtil.getRandomBoyNames(numberOfRecords);
 			}
 			def maxDistance = command.tripDistance / (ElasticSearchService.DISTANCE_FACTOR + 1)
-			GeoPoint from = new GeoPoint(command.fromLatitude, command.fromLongitude)
-			GeoPoint to = new GeoPoint(command.toLatitude, command.toLongitude)
+			
+			Place [] fromPlaces = elasticSearchService.searchNearLocations(maxDistance, command.fromLatitude, command.fromLongitude, numberOfRecords)
+			Place [] toPlaces = elasticSearchService.searchNearLocations(maxDistance, command.toLatitude, command.toLongitude, numberOfRecords)
 			Random randomMinutesGenerator = new Random();
-			names.each {
-				int randomMinutes = randomMinutesGenerator.nextInt(60);
-				if(randomMinutes < 15) randomMinutes = 15;
-				tempDate = tempDate.plusMinutes(randomMinutes);
-				JourneyRequestCommand journey = new JourneyRequestCommand()
-				journey.name = it;
-				journey.dateOfJourney = tempDate.toDate()
-				GeoPoint fromRandom = DummyDataUtil.random(from, maxDistance);
-				journey.fromLatitude = fromRandom.lat();
-				journey.fromLongitude = fromRandom.lon();
-				GeoPoint toRandom = DummyDataUtil.random(to, maxDistance);
-				journey.toLatitude = toRandom.lat();
-				journey.toLongitude = toRandom.lon();
-				elasticSearchService.indexDummyJourney(journey);
-				journeys << journey
+			int index = 0;
+			if(fromPlaces.size() <= toPlaces.size()) {
+				fromPlaces.each {
+					int fiveMinuteIntervalIndex = randomMinutesGenerator.nextInt(12);
+					int randomMinutes = 15;
+					if(fiveMinuteIntervalIndex > 3) randomMinutes = fiveMinuteIntervalIndex * 5;
+					tempDate = tempDate.plusMinutes(randomMinutes);
+					def name = names[index]
+					def fromPlace = it;
+					def toPlace = toPlaces[index]
+					JourneyRequestCommand journey = new JourneyRequestCommand()
+					journey.name = name;
+					journey.dateOfJourney = tempDate.toDate()
+					journey.fromLatitude = fromPlace.location.lat();
+					journey.fromLongitude = fromPlace.location.lon();
+					journey.fromPlace = fromPlace.name
+					journey.toLatitude = toPlace.location.lat();
+					journey.toLongitude = toPlace.location.lat();
+					journey.toPlace = toPlace.name
+					elasticSearchService.indexGeneratedJourney(journey);
+					journeys << journey
+					index++
+				}
+			}
+			else {
+				toPlaces.each {
+					int fiveMinuteIntervalIndex = randomMinutesGenerator.nextInt(12);
+					int randomMinutes = 15;
+					if(fiveMinuteIntervalIndex > 3) randomMinutes = fiveMinuteIntervalIndex * 5;
+					tempDate = tempDate.plusMinutes(randomMinutes);
+					def name = names[index]
+					def toPlace = it;
+					def fromPlace = toPlaces[index]
+					JourneyRequestCommand journey = new JourneyRequestCommand()
+					journey.name = name;
+					journey.dateOfJourney = tempDate.toDate()
+					journey.fromLatitude = fromPlace.location.lat();
+					journey.fromLongitude = fromPlace.location.lon();
+					journey.fromPlace = fromPlace.name
+					journey.toLatitude = toPlace.location.lat();
+					journey.toLongitude = toPlace.location.lat();
+					journey.toPlace = toPlace.name
+					elasticSearchService.indexGeneratedJourney(journey);
+					journeys << journey
+					index++
+				}				
 			}
 		}
 		return journeys;
-	}
-	
-	/**
-	 * @deprecated
-	 */
-	def makeSearchable(Journey journey) {
-		elasticSearchService.indexJourney(journey);
-		jmsService.send(queue:'msg.history', journey)
-	}
-	
-	/**
-	 * @deprecated
-	 */
-	private Journey createJourneyInstance(JourneyRequestCommand command) {
-		Journey journey = new Journey()
-		journey.dateOfJourney = command.dateOfJourney
-		journey.isDriver = command.isDriver
-		return journey;
 	}
 }
