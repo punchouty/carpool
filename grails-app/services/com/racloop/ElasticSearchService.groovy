@@ -33,7 +33,7 @@ class ElasticSearchService {
 	public static final int DISTANCE_FACTOR = 8
 	public static final String TYPE_DRIVER = "driver"
 	public static final String TYPE_RIDER = "rider"
-	public static final DateTimeFormatter BASIC_DATE_FORMAT = ISODateTimeFormat.basicDateTimeNoMillis();
+	public static final DateTimeFormatter BASIC_DATE_FORMAT = ISODateTimeFormat.dateOptionalTimeParser();
 	private Node node
 
 	def init() {
@@ -45,10 +45,10 @@ class ElasticSearchService {
 		node.close()
 	}
 
-	def indexJourneyWithIndexCheck(Journey journey) {
-		createIndexIfNotExistsForDate(journey.dateOfJourney);
-		indexJourney(journey)
-	}
+//	def indexJourneyWithIndexCheck(Journey journey) {
+//		createIndexIfNotExistsForDate(journey.dateOfJourney);
+//		indexJourney(journey)
+//	}
 
 	def indexJourney(User user, JourneyRequestCommand journey) {
 		log.info "Adding record to elastic search ${journey}"
@@ -181,7 +181,7 @@ class ElasticSearchService {
 					field("type", "string").field("index", "not_analyzed").
 					endObject().
 					startObject("dateOfJourney").
-					field("type", "date").field("format", "basic_date_time_no_millis").
+					field("type", "date").
 					endObject().
 					startObject("fromPlace").
 					field("type", "string").field("index", "not_analyzed").
@@ -199,7 +199,7 @@ class ElasticSearchService {
 					field("type", "ip").
 					endObject().
 					startObject("createdDate").
-					field("type", "date").field("format", "basic_date_time_no_millis").
+					field("type", "date").
 					endObject().
 				endObject().
 			endObject().
@@ -216,7 +216,7 @@ class ElasticSearchService {
 					field("type", "string").field("index", "not_analyzed").
 					endObject().
 					startObject("dateOfJourney").
-					field("type", "date").field("format", "basic_date_time_no_millis").
+					field("type", "date").
 					endObject().
 					startObject("fromPlace").
 					field("type", "string").field("index", "not_analyzed").
@@ -229,6 +229,9 @@ class ElasticSearchService {
 					endObject().
 					startObject("to").
 					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
+					endObject().
+					startObject("createdDate").
+					field("type", "date").
 					endObject().
 				endObject().
 			endObject().
@@ -262,13 +265,13 @@ class ElasticSearchService {
 			startObject().
 				field("user", user.username).
 				field("name", user.profile.fullName).
-				field("dateOfJourney", dateOfJourney.toString(BASIC_DATE_FORMAT)).
+				field("dateOfJourney", dateOfJourney).
 				field("fromPlace", journey.fromPlace).
 				field("from", from).
 				field("toPlace", journey.toPlace).
 				field("to", to).
 				field("requesterIp", journey.ip).
-				field("createdDate", createdDate.toString(BASIC_DATE_FORMAT)).
+				field("createdDate", createdDate).
 			endObject();
 		return builder;
 	}
@@ -281,11 +284,12 @@ class ElasticSearchService {
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 			startObject().
 				field("name", journey.name).
-				field("dateOfJourney", dateOfJourney.toString(BASIC_DATE_FORMAT)).
+				field("dateOfJourney", dateOfJourney).
 				field("fromPlace", journey.fromPlace).
 				field("from", from).
 				field("toPlace", journey.toPlace).
 				field("to", to).
+				field("createdDate", createdDate).
 			endObject();
 		return builder;
 	}
@@ -331,7 +335,7 @@ class ElasticSearchService {
 		}
 		FilterBuilder filter = FilterBuilders.andFilter(
 			//FilterBuilders.limitFilter(10),
-			FilterBuilders.rangeFilter("dateOfJourney").from(start.toString(BASIC_DATE_FORMAT)).to(end.toString(BASIC_DATE_FORMAT)),
+			FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
 			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
 			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
 			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
@@ -344,7 +348,7 @@ class ElasticSearchService {
 		try {			
 			SearchResponse searchResponse = node.client.prepareSearch(indexName)
 				.setTypes(searchTypeOpposite)
-				.setSearchType(SearchType.QUERY_AND_FETCH)
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
 				.setFilter(filter)   // Filter
 				.addSort(sorter)
@@ -382,9 +386,9 @@ class ElasticSearchService {
 		}
 		FilterBuilder filter = FilterBuilders.andFilter(
 			//FilterBuilders.limitFilter(10),
-			FilterBuilders.rangeFilter("dateOfJourney").from(start.toString(BASIC_DATE_FORMAT)).to(end.toString(BASIC_DATE_FORMAT)),
-			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
-			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)			
+			FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
+			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE),
+			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE)			
 		);
 		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
 		sorter.point(journey.fromLatitude, journey.fromLongitude);
@@ -393,7 +397,7 @@ class ElasticSearchService {
 		try {
 			SearchResponse searchResponse = node.client.prepareSearch(indexName)
 				.setTypes(searchTypeOpposite)
-				.setSearchType(SearchType.QUERY_AND_FETCH)
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
 				.setFilter(filter)   // Filter
 				.addSort(sorter)
@@ -412,14 +416,14 @@ class ElasticSearchService {
 		return journeys
 	}
 	
-	def searchNearLocations(double lattitude, double longitude, double tripDistance, int maxRecords) {
+	def searchNearLocations(double maxDistance, double lattitude, double longitude, int maxRecords) {
 		String indexName = grailsApplication.config.grails.masterData.places.index.name;
 		String indexType = grailsApplication.config.grails.masterData.places.index.type
-		double filterDistance = tripDistance / DISTANCE_FACTOR;
-		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.limitFilter(maxRecords),
-			FilterBuilders.geoDistanceFilter("location").point(lattitude, longitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
-		);
+//		FilterBuilder filter = FilterBuilders.andFilter(
+//			FilterBuilders.limitFilter(maxRecords),
+//			FilterBuilders.geoDistanceFilter("location").point(lattitude, longitude).distance(maxDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+//		);
+		FilterBuilder filter = FilterBuilders.geoDistanceFilter("location").point(lattitude, longitude).distance(maxDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE)
 		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("location");
 		sorter.point(lattitude, longitude);
 		sorter.order(SortOrder.ASC);
@@ -427,10 +431,11 @@ class ElasticSearchService {
 		try {
 			SearchResponse searchResponse = node.client.prepareSearch(indexName)
 				.setTypes(indexType)
-				.setSearchType(SearchType.QUERY_AND_FETCH)
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
 				.setFilter(filter)   // Filter
 				.addSort(sorter)
+				.setSize(maxRecords)
 				.execute()
 				.actionGet();
 			SearchHits searchHits = searchResponse.getHits();

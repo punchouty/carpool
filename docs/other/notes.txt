@@ -1,3 +1,7 @@
+1. Install hq plugin to one of instance - "plugin -install royrusso/elasticsearch-HQ" - http://www.elastichq.org/support_plugin.html
+2. To remove "plugin --remove royrusso/elasticsearch-HQ"
+3. Access - http://localhost:9200/_plugin/HQ/
+
 Health and Shutdown
 
 Information about cluster - curl -XGET http://127.0.0.1:9200/_cluster/health?pretty

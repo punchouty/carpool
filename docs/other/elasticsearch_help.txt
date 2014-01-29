@@ -1,0 +1,38 @@
+GET _mapping
+GET generated_data/_mapping
+POST generated_data/rider,driver/_search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+GET location_master/_mapping
+POST location_master/india/_search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+POST location_master/india/_search 
+{
+    "query": {
+        "filtered": {
+            "filter": {
+                "geo_distance": {
+                    "location": {
+                        "lat": 28.631541,
+                        "lon": 77.219955
+                    },
+                    "distance": "50km",
+                    "optimize_bbox": "memory"
+                }
+            },
+            "query": {
+                "match_all": {}
+            }
+        }
+    }
+}
+GET location_master/_search?q=name:"Delhi"

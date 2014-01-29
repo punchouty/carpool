@@ -34,8 +34,8 @@
 				<g:each in="${journeys}" status="i" var="journeyInstance">
 					<tr>
 						<td>${journeyInstance.name}</td>	
-						<td id="${i}_from"></td>
-						<td id="${i}_to"></td>		
+						<td id="${i}_from">${journeyInstance.fromPlace}</td>
+						<td id="${i}_to">${journeyInstance.toPlace}</td>		
 						<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
 						<g:if test="${currentJourney.isDriver}">
 							<td><g:link action="pseudoRequest" id="pseudo_${i}" class="btn btn-success">Ask for Drive</g:link></td>		
@@ -80,10 +80,10 @@
 					<td>${journeyInstance.toPlace}</td>		
 					<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
 					<g:if test="${currentJourney.isDriver}">
-					<td><g:link action="request" id="${journeyInstance.id}" class="btn btn-success">Ask for Drive</g:link></td>		
+					<td><g:link action="request" id="${journeyInstance.id}" class="btn btn-success">Request<%-- Ask for Drive --%></g:link></td>		
 					</g:if>
 					<g:else>
-						<td><g:link action="request" id="${journeyInstance.id}" class="btn btn-success">Request a Ride</g:link></td>
+						<td><g:link action="request" id="${journeyInstance.id}" class="btn btn-success">Request<%--Request a Ride --%></g:link></td>
 					</g:else>	
 				</tr>
 			</g:each>

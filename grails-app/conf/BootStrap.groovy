@@ -136,7 +136,7 @@ class BootStrap {
 			Place place = new Place();
 			String name = line[0]
 			Double latitude = Double.parseDouble(line[1])
-			Double longitude = Double.parseDouble(line[1])
+			Double longitude = Double.parseDouble(line[2])
 			place.name = name
 			place.location = new GeoPoint(latitude, longitude)
 			if(!place.equals(previousPlace)) {
@@ -144,5 +144,6 @@ class BootStrap {
 			}
 			previousPlace = place;
 		}
+		reader.close();
 	}
 }

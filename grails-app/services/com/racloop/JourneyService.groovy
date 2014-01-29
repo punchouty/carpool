@@ -105,12 +105,13 @@ class JourneyService {
 					def toPlace = toPlaces[index]
 					JourneyRequestCommand journey = new JourneyRequestCommand()
 					journey.name = name;
+					journey.isDriver = command.isDriver;
 					journey.dateOfJourney = tempDate.toDate()
 					journey.fromLatitude = fromPlace.location.lat();
 					journey.fromLongitude = fromPlace.location.lon();
 					journey.fromPlace = fromPlace.name
 					journey.toLatitude = toPlace.location.lat();
-					journey.toLongitude = toPlace.location.lat();
+					journey.toLongitude = toPlace.location.lon();
 					journey.toPlace = toPlace.name
 					elasticSearchService.indexGeneratedJourney(journey);
 					journeys << journey
@@ -125,9 +126,10 @@ class JourneyService {
 					tempDate = tempDate.plusMinutes(randomMinutes);
 					def name = names[index]
 					def toPlace = it;
-					def fromPlace = toPlaces[index]
+					def fromPlace = fromPlaces[index]
 					JourneyRequestCommand journey = new JourneyRequestCommand()
 					journey.name = name;
+					journey.isDriver = command.isDriver;
 					journey.dateOfJourney = tempDate.toDate()
 					journey.fromLatitude = fromPlace.location.lat();
 					journey.fromLongitude = fromPlace.location.lon();
