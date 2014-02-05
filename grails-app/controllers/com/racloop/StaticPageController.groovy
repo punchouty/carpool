@@ -6,6 +6,7 @@ class StaticPageController {
 	
 	def userService
 	def recaptchaService
+	def staticdataService
 
 	def home(){
 		def user = getAuthenticatedUser()
@@ -18,12 +19,18 @@ class StaticPageController {
 	}
 	
 	def terms() {
+		String value = staticdataService.getSaticValueBasedOnKey("term")
+		[terms:value]
 	}
 
 	def etiquettes() {
+		String value = staticdataService.getSaticValueBasedOnKey("etiquettes")
+		[etiquettes:value]
 	}
 
 	def about() {
+		String value = staticdataService.getSaticValueBasedOnKey("about")
+		[about:value]
 	}
 
 	def search() {
