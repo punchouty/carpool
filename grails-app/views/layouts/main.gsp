@@ -87,9 +87,17 @@
 		<g:layoutBody />
 
 		<hr>
-		<footer>
-			<p>&copy; racloop 2013</p>
-		</footer>
+		<nav class="navbar navbar-default" role="navigation">
+	        <div class="container">
+	            <ul class="nav nav-pills">
+	            	<li><a href="#">&copy; racloop 2014</a></li>
+	            	<li><g:link controller="staticPage" action="terms">Terms</g:link></li>
+	            	<li><g:link controller="staticPage" action="about">About</g:link></li>
+	            	
+	            </ul>
+	        </div>
+    	</nav>
+		
 	</div>
 	<g:if env="development">
 	<div>

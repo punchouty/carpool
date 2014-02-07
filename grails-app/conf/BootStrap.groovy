@@ -5,9 +5,8 @@ import liquibase.util.csv.opencsv.CSVReader
 
 import org.elasticsearch.common.geo.GeoPoint
 
-import com.racloop.JourneyRequestCommand
 import com.racloop.Place
-import com.racloop.User
+import com.racloop.staticdata.StaticData
 
 
 class BootStrap {
@@ -40,6 +39,10 @@ class BootStrap {
 			createMasterDataForPlaces();
 			log.info("Master data for places created successfully in Elasticsearch")
 		}
+		
+		if (Environment.current == Environment.DEVELOPMENT) {
+            intializeStaticData()
+        }
     }
 	
     def destroy = {
@@ -148,5 +151,23 @@ class BootStrap {
 			previousPlace = place;
 		}
 		reader.close();
+	}
+	
+	private void intializeStaticData() {
+		StaticData staticData  = StaticData.find {key == 'term'}
+		if(!staticData){
+			StaticData terms = [key:'term', data :'<p>Terms and Condition</p>']
+			terms.save()
+		}
+		staticData  = StaticData.find {key == 'about'}
+		if(!staticData){
+			StaticData about = [key:'about', data :'<p>About Us</p>']
+			about.save()
+		}
+		staticData  = StaticData.find {key == 'etiquettes'}
+		if(!staticData){
+			StaticData etiquettes = [key:'etiquettes', data :'<p>Etiquettes</p>']
+			etiquettes.save()
+		}
 	}
 }
