@@ -43,7 +43,7 @@ grails.project.dependency.resolution = {
 
         runtime 'mysql:mysql-connector-java:5.1.22'
 		compile 'org.elasticsearch:elasticsearch:0.90.5'//TODO startup breaking for > 0.90.7
-		compile 'org.apache.activemq:activemq-core:5.3.0'
+		compile 'org.apache.activemq:activemq-core:5.3.0'//TODO creating big issues with grails 2.3.5. So reverted back the upgrade
 		runtime 'org.apache.xbean:xbean-spring:3.16'
     }
 
@@ -61,7 +61,7 @@ grails.project.dependency.resolution = {
 
         runtime ":database-migration:1.3.2"
         compile ':cache:1.0.1'		
-		compile ":nimble:0.5.2"
+		compile ":nimble:0.5.2"//TODO Shiro is giving trouble with nimble:0.7 upgrade
 		compile ":jms:1.2"
 		compile ":quartz:1.0-RC2"
     }

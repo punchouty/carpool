@@ -29,8 +29,8 @@ class SecurityFilters extends NimbleFilterBase {
 			before = { accessControl { true } }
 		}
 		
-		homesecure(controller: "staticPage", action: "search") {
-			before = { accessControl { true } }
-		}
+//		homesecure(controller: "staticPage", action: "search") {
+//			before = { accessControl { true } }
+//		}
 	}
 }

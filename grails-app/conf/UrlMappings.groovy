@@ -15,7 +15,7 @@ class UrlMappings {
 
 		"/"{
 			controller = "staticPage"
-			action = "home"
+			action = "search"
 		}
 		"500"(view:'/error')
 	}

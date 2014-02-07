@@ -44,11 +44,9 @@
 					<li <g:if test="${isSafety == 'true'}">class="active"</g:if>><g:link
 							controller="staticPage" action="safety">Safety</g:link></li>
 					<li <g:if test="${isFaq == 'true'}">class="active"</g:if>><g:link
-							controller="staticPage" action="faq">FAQ</g:link></li>
-							<%-- 
+							controller="staticPage" action="faq">FAQ</g:link></li><%-- 
 					<li <g:if test="${isEtiquettes == 'true'}">class="active"</g:if>><g:link
-							controller="staticPage" action="etiquettes">Etiquettes</g:link></li>
-							--%>
+							controller="staticPage" action="etiquettes">Etiquettes</g:link></li>--%>
 					<li <g:if test="${isSignin == 'true'}">class="active"</g:if>><g:link
 							controller="staticPage" action="signin">Sign In</g:link></li>
 					<li <g:if test="${isSignup == 'true'}">class="active"</g:if>><g:link
@@ -87,26 +85,18 @@
 			</ul>
 			<g:link controller="staticPage" action="home"><h3 class="muted">raC looP</h3></g:link>
 		</div>
-		<hr>		
-		
+		<%-- 		
+		<div class="jumbotron">
+	        <h1>Car Pool Finder</h1>
+	        <p class="lead">Share your Car, Taxi and Auto rides. Save money, Make friends and Contribute to Greener Environment.</p>
+	        <g:link controller="account" action="createuser" class="btn btn-large btn-primary">
+                Sign up today
+             </g:link>
+		</div>
+		--%>
+      <hr>
 		<g:layoutBody />
-		
 
-      <div class="row-fluid marketing">
-		<div class="span4">
-		    <h2>Save Money</h2>
-		    <p>It is pocket friendly. Nothing better than some one sharing your commute cost. </p>
-		</div>
-		<div class="span4">
-		    <h2>Environment Friendly</h2>
-		    <p>Having fewer cars on the road means reduced air pollution and improved air quality. Benefits for generations to come. It also mean reduced traffic congestion that will save time for all of us.</p>
-		</div>
-		<div class="span4">
-		    <h2>Make New Friends</h2>
-		    <p>Car pool provide you new avenue of friendships and company for your commute. Drive Together.</p>
-		</div>
-      </div>
-      
 	<nav class="container-narrow" role="navigation">
         <div class="site-footer">
             <ul class="site-footer-links">

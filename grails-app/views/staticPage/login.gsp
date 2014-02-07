@@ -31,7 +31,7 @@
                </div>
                <div style="text-align: center; margin-bottom: 3px;">-- OR --</div>
             </g:if>
-            <g:form action="signin" name="login-form" method="post">
+            <g:form action="signin" controller="auth" name="login-form" method="post">
                <div class="login-input">
                   <div class="control-group">
                      <div class="controls ">

@@ -154,15 +154,30 @@ class BootStrap {
 	}
 	
 	private void intializeStaticData() {
-		StaticData staticData  = StaticData.find {key == 'term'}
+		StaticData staticData  = StaticData.find {key == 'safety'}
 		if(!staticData){
-			StaticData terms = [key:'term', data :'<p>Terms and Condition</p>']
+			StaticData terms = [key:'safety', data :'<p>Safty</p>']
 			terms.save()
+		}
+		staticData  = StaticData.find {key == 'faq'}
+		if(!staticData){
+			StaticData about = [key:'faq', data :'<p>FAQ</p>']
+			about.save()
 		}
 		staticData  = StaticData.find {key == 'about'}
 		if(!staticData){
 			StaticData about = [key:'about', data :'<p>About Us</p>']
 			about.save()
+		}
+		staticData  = StaticData.find {key == 'terms'}
+		if(!staticData){
+			StaticData terms = [key:'terms', data :'<p>Terms and Condition</p>']
+			terms.save()
+		}
+		staticData  = StaticData.find {key == 'privacy'}
+		if(!staticData){
+			StaticData etiquettes = [key:'privacy', data :'<p>Privacy Policy</p>']
+			etiquettes.save()
 		}
 		staticData  = StaticData.find {key == 'etiquettes'}
 		if(!staticData){

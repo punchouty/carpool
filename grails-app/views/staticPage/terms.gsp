@@ -1,6 +1,6 @@
 <html>
 <head>
-<meta name="layout" content="main" />
+<meta name="layout" content="static" />
 <title>Terms and Conditions</title>
 </head>
 
