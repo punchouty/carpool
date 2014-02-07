@@ -1,0 +1,14 @@
+# Populate sample data
+http://localhost:8080/racloop/sampleData/populate
+
+# Confirm in sense
+POST 14-02-2/_search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+
+# Delete sample data
+http://localhost:8080/racloop/sampleData/delete

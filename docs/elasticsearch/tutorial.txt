@@ -1,0 +1,191 @@
+GET _mapping
+PUT employee
+GET _mapping
+DELETE employee
+GET _mapping
+POST _search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+GET _mapping
+PUT /employee/permanent/1 
+{
+    "name" : "Rajan Punchouty",
+    "skills" : ["java", "java script", "sql"],
+    "quote" : "You are never too old to set another goal or to dream a new dream. rohit",
+    "dateOfJoing" : "2008-08-06T08:00:00"
+}
+GET _mapping
+POST _search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+DELETE /employee/permanent/1
+PUT /employee
+{
+   "mappings": {
+      "permanent": {
+         "properties": {
+            "dateOfJoing": {
+               "type": "date",
+               "format": "dateOptionalTime"
+            },
+            "name": {
+               "type": "string"
+            },
+            "quote": {
+               "type": "string"
+            },
+            "skills": {
+               "type": "string"
+            }
+         }
+      }
+   }
+}
+GET _mapping
+PUT /employee/permanent/1 
+{
+    "name" : "Rajan Punchouty",
+    "skills" : ["java", "java script", "sql"],
+    "quote" : "You are never too old to set another goal or to dream a new dream. rohit",
+    "dateOfJoing" : "2008-08-06T08:00:00"
+}
+PUT /employee/contractor/1
+{
+    "name" : "Ajay Arora",
+    "skills" : ["PM", "salesforce"],
+    "quote" : "A creative man is motivated by the desire to achieve, not by the desire to beat others. rohit",
+    "dateOfJoing" : "2014-01-11T08:00:00"
+}
+GET _mapping
+POST _search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+GET /employee/permanent/1
+GET /employee/contractor/2
+PUT /employee/permanent/2 
+{
+    "name" : "Rohit Arora",
+    "skills" : ["java", "C++", "XML"],
+    "quote" : "Always do your best. What you plant now, you will harvest later. ajay",
+    "dateOfJoing" : "2002-02-06T08:00:00"
+}
+PUT /employee/permanent/3
+{
+    "name" : "Ajay Singhal",
+    "skills" : ["qa", "sql"],
+    "quote" : "Our greatest weakness lies in giving up. The most certain way to succeed is always to try just one more time. rajan",
+    "dateOfJoing" : "2006-06-17T08:00:00"
+}
+PUT /employee/permanent/4
+{
+    "name" : "Puja",
+    "skills" : ["PM", "java"],
+    "quote" : "Learn from the past, set vivid, detailed goals for the future, and live in the only moment of time over which you have any control: now. ajay",
+    "dateOfJoing" : "2000-01-17T08:00:00"
+}
+PUT /employee/contractor/2
+{
+    "name" : "Anil",
+    "skills" : ["java", "grails"],
+    "quote" : "Always continue the climb. It is possible for you to do whatever you choose, if you first get to know who you are and are willing to work with a power that is greater than ourselves to do it. rajan",
+    "dateOfJoing" : "2019-01-21T08:00:00"
+}
+POST _search
+{
+    "query": {
+        "query_string": {
+            "query": "Arora"
+        }
+    }
+}
+POST /employee/_search
+{
+    "query": {
+        "query_string": {
+            "query": "Ajay"
+        }
+    }
+}
+POST /employee/permanent/_search
+{
+    "query": {
+        "query_string": {
+            "query": "rohit"
+        }
+    }
+}
+POST /employee/permanent/_search
+{
+    "query": {
+        "query_string": {
+            "query": "rohit",
+            "fields": ["name"]
+        }
+    }
+}
+POST /employee/permanent/_search
+{
+    "query": {
+        "query_string": {
+            "query": "rohit",
+            "fields": ["name", "quote"]
+        }
+    }
+}
+POST /employee/_search
+{
+    "query": {
+        "query_string": {
+            "query": "java"
+        }
+    }
+}
+POST /employee/permanent/_search
+{
+    "query": {
+        "query_string": {
+            "query": "java"
+        }
+    }
+}
+POST /employee/_search
+{
+    "query": {
+        "filtered": {
+            "query": {
+                "query_string": {
+                    "query": "java"
+                }
+            },
+            "filter": {
+                "term": { "quote": "ajay" }
+            }
+        }
+    }
+}
+POST /employee/_search
+{
+    "query": {
+        "filtered": {
+            "query": {
+                "match_all": {
+                }
+            },
+            "filter": {
+                "term": { "quote": "always" }
+            }
+        }
+    }
+}

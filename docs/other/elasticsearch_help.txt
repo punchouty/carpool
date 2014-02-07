@@ -15,6 +15,28 @@ POST location_master/india/_search
         }        
     }    
 }
+# Rajiv chownk delhi
+POST location_master/india/_search 
+{
+    "query": {
+        "filtered": {
+            "query": {
+                "match_all": {
+                }
+            },
+            "filter": {
+                "geo_distance": {
+                    "location": { 
+                        "lat": 28.631541,
+                        "lon": 77.219955
+                    },
+                    "distance": "50km",
+                    "optimize_bbox": "memory"
+                }
+            }
+        }
+    }
+}
 POST location_master/india/_search 
 {
     "query": {
@@ -36,3 +58,118 @@ POST location_master/india/_search
     }
 }
 GET location_master/_search?q=name:"Delhi"
+GET _mapping
+GET generated_data/_mapping
+POST generated_data/rider,driver/_search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+GET location_master/_mapping
+POST location_master/india/_search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+POST location_master/india/_search 
+{
+    "query": {
+        "filtered": {
+            "query": {
+                "match_all": {
+                }
+            },
+            "filter": {
+                "geo_distance": {
+                    "location": { 
+                        "lat": 28.631541,
+                        "lon": 77.219955
+                    },
+                    "distance": "0.5km",
+                    "distance_type" : "plane", 
+                    "optimize_bbox": "memory"   
+                }
+            }
+        }
+    }
+}
+POST 14-02-2/driver/_search 
+{
+    "query":{
+        "match_all":{            
+        }        
+    }    
+}
+# Rajiv chowk delhi to Tribune Chownk Chandigarh
+POST 14-02-2/driver/_search 
+{
+    "query": {
+        "filtered": {
+            "query": {
+                "match_all": {
+                }
+            },
+            "filter": {
+                "and": {
+                   "filters": [
+                      {
+                        "geo_distance": {
+                            "from": { 
+                                "lat": 28.631541,
+                                "lon": 77.219955
+                            },
+                            "distance": "20km",
+                            "distance_type" : "plane", 
+                            "optimize_bbox": "memory"   
+                        }                      
+                      },
+                      {
+                          "geo_distance": {
+                            "to": { 
+                                "lat": 30.703911,
+                                "lon": 76.789957
+                            },
+                            "distance": "20km",
+                            "distance_type" : "plane", 
+                            "optimize_bbox": "memory"   
+                        }
+                      },
+                      {
+                          "range" : {
+                                "dateOfJourney" : {
+                                    "gte": "2014-02-05T12:00:48.135Z",
+                                    "lte": "2014-02-05T15:49:48.135Z"
+                                }
+                            }
+                      },
+                      {
+                        "bool" : {
+                            "must_not" : {
+                                "term" : {
+                                    "user" : "tamanna"                                
+                                }
+                            }                        
+                        }
+                      }
+                   ]
+                }
+            }
+        }
+    },
+    "sort" : [
+        {
+            "_geo_distance" : {
+                "from": { 
+                    "lat": 28.631541,
+                    "lon": 77.219955
+                },
+                "order" : "asc",
+                "unit" : "km"
+            }
+        }
+    ]
+}

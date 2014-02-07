@@ -60,10 +60,10 @@ class ElasticSearchService {
 		log.info "Successfully indexed ${journey}"
 	}
 
-	def indexGeneratedJourney(JourneyRequestCommand journey) {
+	def indexGeneratedJourney(User user, JourneyRequestCommand journey) {
 		String indexName = grailsApplication.config.grails.generatedData.index.name
 		log.debug "Adding generated record to elastic search ${journey}"
-		def sourceBuilder = createdGeneratedJourneyJson(journey)
+		def sourceBuilder = createdGeneratedJourneyJson(user, journey)
 		String type = getType(journey);
 		IndexRequest indexRequest = new IndexRequest(indexName, type).source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
@@ -180,6 +180,9 @@ class ElasticSearchService {
 					startObject("name").
 					field("type", "string").field("index", "not_analyzed").
 					endObject().
+					startObject("isMale").
+					field("type", "boolean").
+					endObject().
 					startObject("dateOfJourney").
 					field("type", "date").
 					endObject().
@@ -214,6 +217,9 @@ class ElasticSearchService {
 				startObject("properties").
 					startObject("name").
 					field("type", "string").field("index", "not_analyzed").
+					endObject().
+					startObject("isMale").
+					field("type", "boolean").
 					endObject().
 					startObject("dateOfJourney").
 					field("type", "date").
@@ -265,6 +271,7 @@ class ElasticSearchService {
 			startObject().
 				field("user", user.username).
 				field("name", user.profile.fullName).
+				field("isMale", user.profile.isMale).
 				field("dateOfJourney", dateOfJourney).
 				field("fromPlace", journey.fromPlace).
 				field("from", from).
@@ -276,7 +283,7 @@ class ElasticSearchService {
 		return builder;
 	}
 	
-	private def createdGeneratedJourneyJson(JourneyRequestCommand journey) {
+	private def createdGeneratedJourneyJson(User user, JourneyRequestCommand journey) {
 		GeoPoint from = new GeoPoint(journey.fromLatitude, journey.fromLongitude)
 		GeoPoint to = new GeoPoint(journey.toLatitude, journey.toLongitude)
 		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
@@ -284,6 +291,7 @@ class ElasticSearchService {
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 			startObject().
 				field("name", journey.name).
+				field("isMale", user.profile.isMale).
 				field("dateOfJourney", dateOfJourney).
 				field("fromPlace", journey.fromPlace).
 				field("from", from).
@@ -367,7 +375,7 @@ class ElasticSearchService {
 		return journeys
 	}
 	
-	def searchGeneratedData(JourneyRequestCommand journey) {
+	def searchGeneratedData(User user, JourneyRequestCommand journey) {
 		String indexName = grailsApplication.config.grails.generatedData.index.name;
 		String searchTypeOpposite = null;
 		if(journey.isDriver) {

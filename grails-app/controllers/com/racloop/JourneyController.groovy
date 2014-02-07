@@ -32,7 +32,7 @@ class JourneyController {
 					numberOfRecords = journeys.size
 				}
 				else {
-					journeys = journeyService.getDummyData(currentJourney)
+					journeys = journeyService.getDummyData(currentUser, currentJourney)
 					numberOfRecords = journeys.size
 					isDummyData = true;
 				}
@@ -90,6 +90,7 @@ class JourneyRequestCommand {
 	
 	Long id;//will be assigned later
 	String name; //Should get from user. 
+	Boolean isMale; //Should get from user.
 	String dateOfJourneyString; //date as string
 	Date dateOfJourney; //it should get populated before validation
 	String validStartTimeString; //date as string

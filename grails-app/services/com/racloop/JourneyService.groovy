@@ -70,12 +70,12 @@ class JourneyService {
 		return journeys;
 	}
 	
-	def getDummyData(JourneyRequestCommand command) {
+	def getDummyData(User user, JourneyRequestCommand command) {
 		DateTime tempDate = new DateTime(command.dateOfJourney);
 		if(Environment.current.getName() == "production") {
 			if(tempDate.getHourOfDay() > 20 || tempDate.getHourOfDay() < 7) return [];
 		}
-		def journeys = elasticSearchService.searchGeneratedData(command);
+		def journeys = elasticSearchService.searchGeneratedData(user, command);
 		if(journeys.size == 0) {
 			Random randomGenerator = new Random();
 			Integer numberOfRecords = randomGenerator.nextInt(5);
@@ -113,7 +113,7 @@ class JourneyService {
 					journey.toLatitude = toPlace.location.lat();
 					journey.toLongitude = toPlace.location.lon();
 					journey.toPlace = toPlace.name
-					elasticSearchService.indexGeneratedJourney(journey);
+					elasticSearchService.indexGeneratedJourney(user, journey);
 					journeys << journey
 					index++
 				}
@@ -137,7 +137,7 @@ class JourneyService {
 					journey.toLatitude = toPlace.location.lat();
 					journey.toLongitude = toPlace.location.lat();
 					journey.toPlace = toPlace.name
-					elasticSearchService.indexGeneratedJourney(journey);
+					elasticSearchService.indexGeneratedJourney(user, journey);
 					journeys << journey
 					index++
 				}				

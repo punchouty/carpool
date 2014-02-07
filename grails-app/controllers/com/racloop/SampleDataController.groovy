@@ -65,6 +65,7 @@ class SampleDataController {
 			i++;
 			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
 			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+			journeyCommand.isMale = false
 			journeyCommand.fromPlace = line[6]
 			journeyCommand.fromLatitude = Double.parseDouble(line[4])
 			journeyCommand.fromLongitude = Double.parseDouble(line[5])
@@ -78,11 +79,72 @@ class SampleDataController {
 		
 		i = 0;
 		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 9);
+		time.add(Calendar.MINUTE, 10);
 		lines.each {  line ->
 			i++;
 			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
 			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+			journeyCommand.isMale = false
+			journeyCommand.fromPlace = line[11]
+			journeyCommand.fromLatitude = Double.parseDouble(line[9])
+			journeyCommand.fromLongitude = Double.parseDouble(line[10])
+			journeyCommand.toPlace = line[6]
+			journeyCommand.toLatitude = Double.parseDouble(line[4])
+			journeyCommand.toLongitude = Double.parseDouble(line[5])
+			journeyCommand.isDriver = true
+			journeyManagerService.createJourney(khwaish, journeyCommand)
+			time.add(Calendar.MINUTE, timeInterval);
+		}
+		
+		
+		
+		i = 0;
+		time = Calendar.getInstance();
+		time.add(Calendar.MINUTE, 15);
+		lines.each {  line ->
+			i++;
+			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+			journeyCommand.isMale = true
+			journeyCommand.fromPlace = line[11]
+			journeyCommand.fromLatitude = Double.parseDouble(line[9])
+			journeyCommand.fromLongitude = Double.parseDouble(line[10])
+			journeyCommand.toPlace = line[6]
+			journeyCommand.toLatitude = Double.parseDouble(line[4])
+			journeyCommand.toLongitude = Double.parseDouble(line[5])
+			journeyCommand.isDriver = true
+			journeyManagerService.createJourney(rajan, journeyCommand)
+			time.add(Calendar.MINUTE, timeInterval);
+		}
+		
+		i = 0;
+		time = Calendar.getInstance();
+		time.add(Calendar.MINUTE, 5);
+		
+		lines.each {  line ->
+			i++;
+			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+			journeyCommand.isMale = false
+			journeyCommand.fromPlace = line[6]
+			journeyCommand.fromLatitude = Double.parseDouble(line[4])
+			journeyCommand.fromLongitude = Double.parseDouble(line[5])
+			journeyCommand.toPlace = line[11]
+			journeyCommand.toLatitude = Double.parseDouble(line[9])
+			journeyCommand.toLongitude = Double.parseDouble(line[10])
+			journeyCommand.isDriver = false
+			journeyManagerService.createJourney(tamanna, journeyCommand)
+			time.add(Calendar.MINUTE, timeInterval);
+		}
+		
+		i = 0;
+		time = Calendar.getInstance();
+		time.add(Calendar.MINUTE, 10);
+		lines.each {  line ->
+			i++;
+			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+			journeyCommand.isMale = false
 			journeyCommand.fromPlace = line[11]
 			journeyCommand.fromLatitude = Double.parseDouble(line[9])
 			journeyCommand.fromLongitude = Double.parseDouble(line[10])
@@ -91,6 +153,27 @@ class SampleDataController {
 			journeyCommand.toLongitude = Double.parseDouble(line[5])
 			journeyCommand.isDriver = false
 			journeyManagerService.createJourney(khwaish, journeyCommand)
+			time.add(Calendar.MINUTE, timeInterval);
+		}
+		
+		
+		
+		i = 0;
+		time = Calendar.getInstance();
+		time.add(Calendar.MINUTE, 15);
+		lines.each {  line ->
+			i++;
+			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+			journeyCommand.isMale = true
+			journeyCommand.fromPlace = line[11]
+			journeyCommand.fromLatitude = Double.parseDouble(line[9])
+			journeyCommand.fromLongitude = Double.parseDouble(line[10])
+			journeyCommand.toPlace = line[6]
+			journeyCommand.toLatitude = Double.parseDouble(line[4])
+			journeyCommand.toLongitude = Double.parseDouble(line[5])
+			journeyCommand.isDriver = false
+			journeyManagerService.createJourney(rajan, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 	}

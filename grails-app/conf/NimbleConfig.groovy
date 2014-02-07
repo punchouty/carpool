@@ -17,9 +17,9 @@
 
 nimble {
 	organization {
-		name = "abcde"
-		displayname = "fghij"
-		description = "klmonop"
+		name = "racloop"
+		displayname = "raC looP"
+		description = "Car Pool Finder"
 		logo = ""
 		logosmall = ""
 		url = ""

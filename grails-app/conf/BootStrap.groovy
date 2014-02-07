@@ -72,6 +72,7 @@ class BootStrap {
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Tamanna Punchouty"
 			userProfile.owner = user
+			userProfile.isMale = false
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:tamanna")
@@ -94,6 +95,7 @@ class BootStrap {
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Rajan Punchouty"
 			userProfile.owner = user
+			userProfile.isMale = true
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:rajan")
@@ -116,6 +118,7 @@ class BootStrap {
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Khwaish Punchouty"
 			userProfile.owner = user
+			userProfile.isMale = false
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:khwaish")
