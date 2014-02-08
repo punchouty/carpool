@@ -44,7 +44,7 @@
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"> </i>
 				</a>
-				<g:if test="${history.size() > 0}">
+				<g:if test="${history?.size() > 0}">
 				<ul class="dropdown-menu">
 					<g:each in="${history}" status="i" var="historyInstance">
 						<li><a href="#"  id="from_${historyInstance.id}" class="history_dropdown">${historyInstance.place}</a></li>
@@ -60,7 +60,7 @@
 				<a href="#" class="add-on dropdown-toggle"  data-toggle="dropdown"> 
 					<i class="icon-map-marker"></i>
 				</a>
-				<g:if test="${history.size() > 0}">
+				<g:if test="${history?.size() > 0}">
 				<ul class="dropdown-menu">
 					<g:each in="${history}" status="i" var="historyInstance">
 						<li><a href="#" id="to_${historyInstance.id}" class="history_dropdown">${historyInstance.place}</a></li>

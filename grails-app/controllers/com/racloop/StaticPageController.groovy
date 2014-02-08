@@ -9,15 +9,15 @@ class StaticPageController {
 	def recaptchaService
 	def staticdataService
 
-	def home(){
-		def user = getAuthenticatedUser()
-		if(user) {
-			redirect(action: "search")
-		}
-		else {
-			redirect(action: "index")
-		}
-	}
+//	def home(){
+//		def user = getAuthenticatedUser()
+//		if(user) {
+//			redirect(action: "search")
+//		}
+//		else {
+//			redirect(action: "index")
+//		}
+//	}
 	
 	def safety() {
 		String value = staticdataService.getSaticValueBasedOnKey("safety")
@@ -48,50 +48,9 @@ class StaticPageController {
 		String value = staticdataService.getSaticValueBasedOnKey("etiquettes")
 		[etiquettes:value]
 	}
-
-	def search() {
-		def user = getAuthenticatedUser();
-		def commandInstance = new JourneyRequestCommand();
-		def criteria = TravelHistory.createCriteria();
-		def historyResults = criteria {
-			eq("user", user)
-			maxResults(7)
-			and {
-				order('searchCount', 'desc')
-				order('lastUpdatedAt', 'desc')
-			}
-		}
-		[commandInstance: commandInstance, history : historyResults]
-	}
 	
 	def index() {
 		
-	}
-	
-	def signin(String targetUri, String username, String rememberMe) {
-		def local = nimbleConfig.localusers.authentication.enabled
-		def registration = nimbleConfig.localusers.registration.enabled
-
-		if(targetUri) {
-			session.setAttribute(AuthController.TARGET, targetUri)
-		}
-
-		model: [local: local, registration: registration, username: username, rememberMe: (rememberMe != null), targetUri: targetUri]
-	}
-	
-	def signup(String targetUri, String username, String rememberMe) {
-		def local = nimbleConfig.localusers.authentication.enabled
-		def registration = nimbleConfig.localusers.registration.enabled
-
-		if(targetUri) {
-			session.setAttribute(AuthController.TARGET, targetUri)
-		}
-
-		model: [local: local, registration: registration, username: username, rememberMe: (rememberMe != null), targetUri: targetUri]
-	}
-
-	private getNimbleConfig() {
-		grailsApplication.config.nimble
 	}
 
 }

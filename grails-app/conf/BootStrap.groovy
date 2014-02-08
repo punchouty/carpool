@@ -97,6 +97,7 @@ class BootStrap {
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Rajan Punchouty"
+			userProfile.email = "punchouty@gmail.com"
 			userProfile.owner = user
 			userProfile.isMale = true
 			user.profile = userProfile

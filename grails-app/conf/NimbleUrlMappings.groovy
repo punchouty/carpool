@@ -86,8 +86,10 @@ class NimbleUrlMappings {
 		}
 
 		"/login" {
-			controller = "auth"
-			action = "login"
+//			controller = "auth" //changed by rajan
+//			action = "login"
+			controller = "userSession"
+			action = "signin"
 		}
 
 		"/logout" {

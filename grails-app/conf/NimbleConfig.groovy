@@ -47,24 +47,24 @@ nimble {
 		changeemail { subject = "Your email address has been changed" }
 
 		mail {
-//			from = "raC looP <app@company.com>"
-//			host = ""
-//			port = 25
-//			username = ""
-//			password = ""
-//			props = ["mail.smtp.auth": "false",
-//				"mail.smtp.socketFactory.port": "25",
-//				"mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-//				"mail.smtp.socketFactory.fallback": "false"]
-			from = "Rajan Punchouty <punchouty@gmail.com>"
-			host = "smtp.gmail.com"
-			port = 465
-			username = "punchouty@gmail.com"
-			password = "bishanbhagat"
+			from = "raC looP <rajan@racloop.com>"
+			host = "smtp-mail.outlook.com"
+			port = 25
+			username = "rajan@racloop.com"
+			password = "Wellington1"
 			props = ["mail.smtp.auth": "true",
-				"mail.smtp.socketFactory.port": "465",
+				"mail.smtp.socketFactory.port": "25",
 				"mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
 				"mail.smtp.socketFactory.fallback": "false"]
+//			from = "Rajan Punchouty <rajan.punchouty@gmail.com>"
+//			host = "smtp.gmail.com"
+//			port = 465
+//			username = "rajan.punchouty@gmail.com"
+//			password = "teesmarkhan"
+//			props = ["mail.smtp.auth": "true",
+//				"mail.smtp.socketFactory.port": "465",
+//				"mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
+//				"mail.smtp.socketFactory.fallback": "false"]
 		}
 	}
 
