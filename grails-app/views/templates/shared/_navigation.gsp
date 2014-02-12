@@ -68,6 +68,9 @@
 						<li>
 							<g:link controller="admins" action="index">Admin Functions</g:link>
 						</li>
+						<li>
+							<g:link controller="staticData" action="list">Update Static</g:link>
+						</li>
 						</n:hasRole>
 						<li>
 							<a href="${request.contextPath}/profile">Profile</a>
