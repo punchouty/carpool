@@ -112,7 +112,5 @@
 	    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
 	  </div>
 	</div>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places">		
-	</script>
 </body>
 </html>

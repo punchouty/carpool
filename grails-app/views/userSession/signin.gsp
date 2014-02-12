@@ -35,8 +35,8 @@
             </g:if>
 			<g:form action="signin"  controller="auth" name="login-form" method="post">
 				<input type="hidden" name="targetUri" value="${targetUri}"/>
-	            <input type="text" name="username" id="username" placeholder="username">
-				<input type="password" name="password" id="password" placeholder="password">
+	            <input type="text" name="username" id="username" placeholder="username" required>
+				<input type="password" name="password" id="password" placeholder="password" required>
 	            <label class="checkbox">
 	            	<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
 	            </label>

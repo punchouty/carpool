@@ -13,7 +13,6 @@
 <head>
 <g:render template="/templates/shared/head" />
 <g:layoutHead />
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
 <r:require module="core" />
 <r:layoutResources />
 </head>
@@ -31,6 +30,9 @@
 	        <g:render template="/templates/shared/footer" />
 	   	</nav>
 	</div>
+	
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places"></script>
 	<r:layoutResources />
 </body>
 </html>
