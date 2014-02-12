@@ -196,15 +196,25 @@ console.log(validEndTime);
 $('#validStartTimeString').val(validStartTime.toString('dd/MM/yyyy HH:mm'));
 var picker;
 $(function() {
-	$('#travelDateDiv').datetimepicker({
-		language : 'pt-BR',
-	    pick12HourFormat: false,
-		pickSeconds : false,
-		startDate : initialTime,
-		format : 'dd/MM/yyyy hh:mm'
-	});
-	picker = $('#travelDateDiv').data('datetimepicker');
-	picker.setLocalDate(initialTime);
+//	$('#travelDateDiv').datetimepicker({
+//		language : 'pt-BR',
+//	    pick12HourFormat: false,
+//		pickSeconds : false,
+//		startDate : initialTime,
+//		format : 'dd/MM/yyyy hh:mm'
+//	});
+//	picker = $('#travelDateDiv').data('datetimepicker');
+//	picker.setLocalDate(initialTime);
+	$('.form_datetime').datetimepicker({
+        //language:  'fr',
+        weekStart: 1,
+        todayBtn:  1,
+		autoclose: 1,
+		todayHighlight: 1,
+		startView: 2,
+		forceParse: 0,
+        showMeridian: 1
+    });
 });
 
 $(function() {
