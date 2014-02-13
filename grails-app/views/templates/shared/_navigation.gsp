@@ -4,9 +4,9 @@
 			<g:form controller="auth" action="signin" name="login-form" method="post"
 				class="navbar-form form-inline pull-right">
 				<input type="text" name="username" id="username" class="input-small"
-					placeholder="User Id">
+					placeholder="User Id" required>
 				<input type="password" name="password" id="password"
-					class="input-small" placeholder="Password">
+					class="input-small" placeholder="Password" required>
 				<label class="checkbox"> 
 					<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
 				</label>

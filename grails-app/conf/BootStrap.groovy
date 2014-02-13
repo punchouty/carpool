@@ -76,6 +76,7 @@ class BootStrap {
 			userProfile.fullName = "Tamanna Punchouty"
 			userProfile.owner = user
 			userProfile.isMale = false
+			userProfile.mobile = '9717744392'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:tamanna")
@@ -100,6 +101,7 @@ class BootStrap {
 			userProfile.email = "punchouty@gmail.com"
 			userProfile.owner = user
 			userProfile.isMale = true
+			userProfile.mobile = '9717744392'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:rajan")
@@ -123,6 +125,7 @@ class BootStrap {
 			userProfile.fullName = "Khwaish Punchouty"
 			userProfile.owner = user
 			userProfile.isMale = false
+			userProfile.mobile = '9717744392'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:khwaish")
