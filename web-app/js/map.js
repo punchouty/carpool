@@ -250,7 +250,7 @@ function getErrorMessage() {
 	var errorMessage = '';
 	var travelDateText = $('#dateOfJourneyString').val();
 	if(travelDateText) {
-		var selectedDate = picker.getLocalDate();
+		var selectedDate = new Date(travelDateText);
 		if(selectedDate < now) {
 			$('#dateOfJourneyString').addClass("control-group").addClass("error");
 			errorMessage = "You have selected past date/time";
