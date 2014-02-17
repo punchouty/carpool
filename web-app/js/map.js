@@ -193,7 +193,7 @@ var initialTime = new Date(now.getTime() + (reserveTime + 15) * 60000);
 console.log(validStartTime);
 var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);
 console.log(validEndTime);
-$('#validStartTimeString').val(validStartTime.toString('dd/MM/yyyy HH:mm'));
+$('#validStartTimeString').val(validStartTime.toString('dd-MMMM-yyyy-hh:mm tt'));
 var picker;
 $(function() {
 //	$('#travelDateDiv').datetimepicker({
