@@ -53,6 +53,8 @@ class NimbleBootStrap {
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Test User"
 			userProfile.owner = user
+			userProfile.isMale = false
+			userProfile.mobile = '9717744392'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:user")
@@ -76,6 +78,8 @@ class NimbleBootStrap {
 			def adminProfile = InstanceGenerator.profile(grailsApplication)
 			adminProfile.fullName = "Administrator"
 			adminProfile.owner = admin
+			adminProfile.isMale = false
+			adminProfile.mobile = '9717744392'
 			admin.profile = adminProfile
 
 			log.info("Creating default admin account with username:admin")

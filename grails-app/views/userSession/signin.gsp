@@ -34,15 +34,22 @@
             </div>
             </g:if>
 			<g:form action="signin"  controller="auth" name="login-form" method="post">
-				<input type="hidden" name="targetUri" value="${targetUri}"/>
-	            <input type="text" name="username" id="username" placeholder="username" required>
-				<input type="password" name="password" id="password" placeholder="password" required>
+				<input type="hidden" name="targetUri" value="${targetUri}" />
+	            <div class="control-group">
+					<label class="control-label">Username</label>
+					<input type="text" name="username" id="username" placeholder="Username" value="${username}" data-validation-required-message="Username is required field" required />
+	      			<p class="help-block"></p>
+	      		</div>
+				<div class="control-group">
+					<label class="control-label">Password</label>
+					<input type="password" name="password" id="password" placeholder="Password" data-validation-required-message="Password is required field" required />
+	      			<p class="help-block"></p>
+	      		</div>
 	            <label class="checkbox">
 	            	<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
 	            </label>
 				<button type="submit" name="submit" class="btn btn-large btn-primary">Sign In</button>
-			</g:form>  
-            <%-- <g:link controller="account" action="forgottenpassword"> --%>            
+			</g:form>           
             <a href="${request.contextPath}/password/forgot">Forgot Password</a>
 		</div>
 	</div>
