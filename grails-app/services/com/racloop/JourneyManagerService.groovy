@@ -3,12 +3,12 @@ package com.racloop
 import org.elasticsearch.common.geo.GeoPoint
 
 class JourneyManagerService {
-	
+
 	def elasticSearchService
 	def journeyService
 	def jmsService
-	
-    def createJourney(User user, JourneyRequestCommand command) {
+
+	def createJourney(User user, JourneyRequestCommand command) {
 		Journey journey = new Journey()
 		journey.user = user
 		journey.dateOfJourney = command.dateOfJourney
@@ -24,5 +24,9 @@ class JourneyManagerService {
 			log.warn "Unable to create journey ${journey}"
 			return false;
 		}
-    }
+	}
+	def createJourney(JourneyRequestCommand command) {
+		User user  = User.findByUsername(command.name);
+		createJourney(user, command)
+	}
 }
