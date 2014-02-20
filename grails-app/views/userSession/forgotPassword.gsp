@@ -6,21 +6,31 @@
 
 <body>
 	<div class="row">
-        <div class="span9">
-    		<div class="thumbnail center well well-small text-center">
+       	<g:if test="${flash.message != null && flash.message.length() > 0}">
+			<div class="alert alert-error">
+		         <a class="close" data-dismiss="alert" href="#">×</a>
+		         <n:flashembed/>            
+		     </div>
+		</g:if>
+		<div class="span9">
+   			<div class="thumbnail center well well-small text-center">
                 <h2>Forgot Password</h2>
                 
-                <p>Email Address regiester with us.</p>
+                <p>Email address register with us.</p>
                 
                 <g:form controller="userSession" action="forgotPasswordProcess" method="POST">
-                    <div class="input-prepend"><span class="add-on"><i class="icon-envelope"></i></span>
-                        <input type="text" name="email" id="email" placeholder="your@email.com">
-                    </div>
+	                <div class="control-group">
+	                	<div class="input-prepend">
+	                		<span class="add-on"><i class="icon-envelope"></i></span>
+							<input name="email" id="email" type="email" placeholder="your@email.com" required>
+	                    </div>
+						<p class="help-block"></p> 
+					</div>
                     <br />
                     <input type="submit" value="Send Email!" class="btn btn-large" />
               </g:form>
-            </div>    
-        </div>
+           	</div>    
+       	</div>
 	</div>
 </body>
 </html>
