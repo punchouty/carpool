@@ -40,32 +40,45 @@ nimble {
 	}
 
 	messaging {
-		enabled = false
+		enabled = true
 
 		registration { subject = "Your new account is ready!" }
 		passwordreset { subject = "Your password has been reset" }
 		changeemail { subject = "Your email address has been changed" }
 
-		mail {
-			from = "raC looP <rajan@racloop.com>"
+		/*mail {
+			from = "raC looP <help@racloop.com>"
 			host = "smtp-mail.outlook.com"
 			port = 25
-			username = "rajan@racloop.com"
-			password = "Wellington1"
-			props = ["mail.smtp.auth": "true",
-				"mail.smtp.socketFactory.port": "25",
-				"mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
-				"mail.smtp.socketFactory.fallback": "false"]
+			username = "help@racloop.com"
+			password = "R@cloop1"
+			props = [
+					"mail.smtp.auth":"true",
+					"mail.smtp.starttls.enable":"true", 
+				  "mail.smtp.port":"587"]
 //			from = "Rajan Punchouty <rajan.punchouty@gmail.com>"
 //			host = "smtp.gmail.com"
 //			port = 465
 //			username = "rajan.punchouty@gmail.com"
 //			password = "teesmarkhan"
 //			props = ["mail.smtp.auth": "true",
+//				"mail.smtp.starttls.enable":"true",
 //				"mail.smtp.socketFactory.port": "465",
 //				"mail.smtp.socketFactory.class": "javax.net.ssl.SSLSocketFactory",
 //				"mail.smtp.socketFactory.fallback": "false"]
-		}
+		}*/
+	
+		mail {
+			host = "smtp.gmail.com"
+			port = 465
+			username = "rarora@gmail.com"
+			password = "Ra3930734"
+			from = "Rajan Punchouty <rajan.punchouty@gmail.com>"
+			props = ["mail.transport.protocol":"smtps",
+				"mail.smtps.host":"smtp.gmail.com",
+				"mail.smtps.port":"465",
+				"mail.smtps.auth":"true"]
+		  }
 	}
 
 	implementation {

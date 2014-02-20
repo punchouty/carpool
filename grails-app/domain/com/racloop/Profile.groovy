@@ -25,7 +25,7 @@ class Profile extends grails.plugin.nimble.core.ProfileBase {
 	Integer ratingAsRiderPunctualtyBad = 0
 	
 	static constraints = {
-		mobile blank: false, nullable: false, matches:'\\d{10}'
+		mobile blank: false, nullable: false, matches:'\\d{10}', unique: true
 	}
 	
 }

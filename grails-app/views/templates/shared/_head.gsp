@@ -12,5 +12,6 @@
 	href="${resource(dir: 'img', file: 'apple-touch-icon-retina.png')}">
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
-      <script src="js/html5shiv.js"></script>
+      <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+<script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script> 

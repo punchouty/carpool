@@ -67,7 +67,7 @@ grails.hibernate.cache.queries = false
 
 // Below configuration after cleaning c:\\data
 //grails.startup.elasticsearch.index.create = true
-//grails.startup.sampleUsers.create = true
+grails.startup.sampleUsers.create = true
 //grails.startup.masterData.places.create = true
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
@@ -92,6 +92,22 @@ environments {
         grails.logging.jul.usebridge = false
         // TODO: grails.serverURL = "http://www.changeme.com"
     }
+}
+
+grails {
+   mail {
+     host = "smtp.live.com"
+     port = 587
+     username = "help@racloop.com"
+	 password = "R@cloop1"
+	 props = [
+		 "mail.smtp.auth":"true",
+		 "mail.smtp.starttls.enable":"true", 
+		 "mail.transport.protocol":"smtp",
+         "mail.smtp.host":"smtp.live.com",
+         "mail.smtp.port":"587"
+         ]
+   }
 }
 
 // log4j configuration

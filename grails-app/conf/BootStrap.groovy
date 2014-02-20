@@ -74,9 +74,10 @@ class BootStrap {
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Tamanna Punchouty"
+			userProfile.email = "tamanna.punchouty@gmail.com"
 			userProfile.owner = user
 			userProfile.isMale = false
-			userProfile.mobile = '9717744392'
+			userProfile.mobile = '1111111111'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:tamanna")
@@ -91,17 +92,17 @@ class BootStrap {
 		if(!UserBase.findByUsername("rajan")) {
 			// Create example User account
 			def user = InstanceGenerator.user(grailsApplication)
-			user.username = "rajan"
+			user.username = "punchouty"
 			user.pass = 'P@ssw0rd'
 			user.passConfirm = 'P@ssw0rd'
 			user.enabled = true
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Rajan Punchouty"
-			userProfile.email = "punchouty@gmail.com"
+			userProfile.email = "rajan@gmail.com"
 			userProfile.owner = user
 			userProfile.isMale = true
-			userProfile.mobile = '9717744392'
+			userProfile.mobile = '2222222222'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:rajan")
@@ -123,9 +124,10 @@ class BootStrap {
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Khwaish Punchouty"
+			userProfile.email = "khwaish.punchouty@gmail.com"
 			userProfile.owner = user
 			userProfile.isMale = false
-			userProfile.mobile = '9717744392'
+			userProfile.mobile = '3333333333'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:khwaish")

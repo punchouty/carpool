@@ -25,14 +25,22 @@
 		      </div>
 		</div>
 		<div class="span3 well">
-			<h2>Sign Up</h2>
+			<h2>Sign Up</h2>			
 			<g:if test="${flash.message != null && flash.message.length() > 0}">
-			<div class="alert alert-error">
-                <a class="close" data-dismiss="alert" href="#">×</a>
-                <n:flashembed/>
-            </div>
-            </g:if>
-			<g:form action="saveuser" name="signup-form" method="post">
+				<div class="alert alert-error">
+			         <a class="close" data-dismiss="alert" href="#">×</a>
+			         <n:flashembed/>            
+			     </div>
+			</g:if>
+			<g:hasErrors bean="${user}">
+				<div class="alert alert-error">
+					<a class="close" data-dismiss="alert" href="#">×</a>
+					<h5 class='alert-heading'>
+						<g:message code="nimble.label.error" />
+					</h5>
+					<g:renderErrors bean="${user}" as="list" />
+				</div>
+			</g:hasErrors><g:form action="saveuser" name="signup-form" method="post">
 				<div class="control-group">
 					<label class="control-label">Username</label>
 					<input type="text" id="username" name="username" value="${fieldValue(bean: user, field: 'username')}" placeholder="Username" data-validation-regex-regex="[a-z0-9_-]{5,15}" data-validation-regex-message="Minimum 5 chracters - matching a-z, 0-9, underscore, hyphen" class="span3"/>
@@ -40,7 +48,7 @@
 				</div>
 				<div class="control-group">
 					<label class="control-label">Password</label>
-					<input type="password" size="30" id="pass" name="pass" value="${user.pass?.encodeAsHTML()}" placeholder="Password" class="span3" maxlength="30" minlength="6" />
+					<input type="password" size="30" id="pass" name="pass" value="${user.pass?.encodeAsHTML()}" placeholder="Password" class="span3" data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character" />
 					<p class="help-block"></p> 
 				</div>
 				<div class="control-group">
@@ -55,10 +63,10 @@
 				</div>
 				<div class="control-group">
 					<label class="radio inline">
-						<input type="radio" name="sex" value="${user?.profile?.isMale}"/>Male
+						<input type="radio" name="sex" value="male" <g:if test="${user?.profile?.isMale}">checked</g:if> />Male
 					</label>
 					<label class="radio inline">
-						<input type="radio" name="sex" value="${user?.profile?.isMale}"/>Female
+						<input type="radio" name="sex" value="female" <g:if test="${!user?.profile?.isMale}">checked</g:if> />Female
 					</label>
 				</div>
 				<div class="control-group">
