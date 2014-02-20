@@ -4,6 +4,8 @@ import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.AuthController
 import grails.plugin.nimble.core.ProfileBase
 
+import org.apache.shiro.crypto.hash.Sha256Hash
+
 class UserSessionController {
 
 	def userService
@@ -226,7 +228,59 @@ class UserSessionController {
 	}
 	
 	def changePassword(){
+		[user:authenticatedUser]
+	}
+
+	def changedPassword() {
 		
+	}
+
+	def updatePassword(String currentPassword, String pass, String passConfirm) {
+		def user = authenticatedUser
+
+		if(!currentPassword) {
+			log.warn("User [$user?.id]$user?.username attempting to change password but has not supplied current password")
+			user.errors.reject('nimble.user.password.required')
+			render (view:"changePassword", model:[user:user])
+			return
+		}
+
+		def pwEnc = new Sha256Hash(currentPassword)
+		def crypt = pwEnc.toHex()
+
+		def human = recaptchaService.verifyAnswer(session, request.getRemoteAddr(), params)
+		if (human) {
+
+			if(!crypt.equals(user.passwordHash)) {
+				log.warn("User [$user.id]$user.username attempting to change password but has supplied invalid current password")
+				user.errors.reject('nimble.user.password.nomatch')
+				render (view:"changePassword", model:[user:user])
+				return
+			}
+
+			user.pass = pass
+			user.passConfirm = passConfirm
+
+			if(user.validate() && userService.validatePass(user, true)) {
+				userService.changePassword(user)
+				if(!user.hasErrors()) {
+					log.info("Changed password for user [$user.id]$user.username successfully")
+					redirect action: "changedPassword"
+					return
+				}
+			}
+
+			log.error("User [$user.id]$user.username password change was considered invalid")
+			user.errors.allErrors.each { log.debug it }
+			render (view:"changePassword", model:[user:user])
+			return
+		}
+
+		log.debug("Captcha entry was invalid for user account creation")
+		resetNewUser(user)
+		user.errors.reject('nimble.invalid.captcha')
+		render(view: 'changePassword', model: [user: user])
+		return
 	}
 
 	private getNimbleConfig() {

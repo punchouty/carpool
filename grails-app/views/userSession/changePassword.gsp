@@ -6,39 +6,48 @@
 
 <body>
 	<div class="row">
-        <div class="span12">
-    		<div class="thumbnail center well well-small text-center">
+		<g:if test="${flash.message != null && flash.message.length() > 0}">
+			<div class="alert alert-error">
+		         <a class="close" data-dismiss="alert" href="#">×</a>
+		         <n:flashembed/>            
+		     </div>
+		</g:if>
+		<n:errors bean="${user}"/>		
+		<div class="span9">
+			<div class="span2"></div>
+			<div class="well well-large span5">
                 <h2>Change Password</h2>
+                <p>You can change your current password to something new below. To verify your login you'll need to also provide your current password.</p>
+            	<g:form controller="userSession" action="updatePassword" method="POST">
+                <div class="control-group">
+                	<label class="control-label" for="currentPassword">Old Password</label>
+                    <div class="controls">
+                        <input id="currentPassword" name="currentPassword" placeholder="Current Password" type="password" required></input>
+                    </div>
+					<p class="help-block"></p> 
+				</div>
+				 <div class="control-group">
+                	<label class="control-label" for="pass">New Password</label>
+                    <div class="controls">
+                        <input id="pass" name="pass" placeholder="New Password" type="password" data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character"></input>
+                    </div>
+					<p class="help-block"></p> 
+				</div>
+				 <div class="control-group">
+                	<label class="control-label" for="passConfirm">Repeat Password</label>
+                    <div class="controls">
+                        <input id="passConfirm" name="passConfirm" placeholder="Repeat Password" type="password" required data-validation-match-match="pass" data-validation-match-message="Two passwords don't match"></input>
+                    </div>
+					<p class="help-block"></p> 
+				</div>
                 
-                <p>Subscribe to our weekly Newsletter and stay tuned.</p>
-                
-                <form action="" method="post">
-                    <div class="control-group">
-                        <label class="control-label" for=
-                        "oldPassword">Old Password</label>
-                        <div class="controls">
-                            <input id="oldPassword" placeholder="Old Password" type="text">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for=
-                        "newPassword">New Password</label>
-                        <div class="controls">
-                            <input id="newPassword" placeholder="New Password" type="text">
-                        </div>
-                    </div>
-                    <div class="control-group">
-                        <label class="control-label" for=
-                        "repeatPassword">Repeat Password</label>
-                        <div class="controls">
-                            <input id="repeatPassword" placeholder="Repeat Password" type="text">
-                        </div>
-                    </div>
-                    <br />
-                    <input type="submit" value="Subscribe Now!" class="btn btn-large" />
-              </form>
-            </div>    
-        </div>
+                <br />
+                <input type="submit" value="Change Password" class="btn btn-large" />
+            	</g:form>
+            </div>
+            
+			<div class="span2"></div>
+		</div>
 	</div>
 </body>
 </html>

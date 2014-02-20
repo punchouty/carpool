@@ -40,7 +40,8 @@
 					</h5>
 					<g:renderErrors bean="${user}" as="list" />
 				</div>
-			</g:hasErrors><g:form action="saveuser" name="signup-form" method="post">
+			</g:hasErrors>
+			<g:form action="saveuser" name="signup-form" method="post">
 				<div class="control-group">
 					<label class="control-label">Username</label>
 					<input type="text" id="username" name="username" value="${fieldValue(bean: user, field: 'username')}" placeholder="Username" data-validation-regex-regex="[a-z0-9_-]{5,15}" data-validation-regex-message="Minimum 5 chracters - matching a-z, 0-9, underscore, hyphen" class="span3"/>

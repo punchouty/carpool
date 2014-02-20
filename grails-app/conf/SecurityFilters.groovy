@@ -32,5 +32,10 @@ class SecurityFilters extends NimbleFilterBase {
 //		homesecure(controller: "staticPage", action: "search") {
 //			before = { accessControl { true } }
 //		}
+		
+		// Account management requiring authentication
+		accountsecure(controller: "userSession", action: "(changePassword|updatePassword|changedPassword)") {
+			before = { accessControl { true } }
+		}
 	}
 }
