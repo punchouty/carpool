@@ -1,6 +1,6 @@
 package com.racloop;
 
-import org.elasticsearch.action.admin.indices.close.CloseIndexResponse;
+import org.elasticsearch.action.admin.indices.close.CloseIndexResponse
 import org.elasticsearch.action.deletebyquery.DeleteByQueryResponse
 import org.elasticsearch.action.get.GetResponse
 import org.elasticsearch.action.index.IndexRequest
@@ -22,9 +22,12 @@ import org.elasticsearch.node.Node
 import org.elasticsearch.node.NodeBuilder
 import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.SearchHits
+import org.elasticsearch.search.sort.FieldSortBuilder
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder
 import org.elasticsearch.search.sort.SortBuilders
 import org.elasticsearch.search.sort.SortOrder
+
+import com.racloop.workflow.JourneyWorkflow
 
 
 class ElasticSearchService {
@@ -33,6 +36,7 @@ class ElasticSearchService {
 	public static final int DISTANCE_FACTOR = 8
 	public static final String TYPE_DRIVER = "driver"
 	public static final String TYPE_RIDER = "rider"
+	public static final String WORKFLOW = "workflow"
 	public static final DateTimeFormatter BASIC_DATE_FORMAT = ISODateTimeFormat.dateOptionalTimeParser();
 	private Node node
 
@@ -61,13 +65,15 @@ class ElasticSearchService {
 	}
 
 	def indexGeneratedJourney(User user, JourneyRequestCommand journey) {
+		String id = System.currentTimeMillis()+"";
 		String indexName = grailsApplication.config.grails.generatedData.index.name
 		log.debug "Adding generated record to elastic search ${journey}"
 		def sourceBuilder = createdGeneratedJourneyJson(user, journey)
 		String type = getType(journey);
-		IndexRequest indexRequest = new IndexRequest(indexName, type).source(sourceBuilder);
+		IndexRequest indexRequest = new IndexRequest(indexName, type, id).source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
 		log.debug "Successfully indexed generated journey : ${journey}"
+		return id
 	}
 	
 	def indexLocation(Place place) {
@@ -175,7 +181,7 @@ class ElasticSearchService {
 			startObject(type).
 				startObject("properties").
 					startObject("user").
-					field("type", "string").field("index", "no").
+					field("type", "string").field("index", "not_analyzed").
 					endObject().
 					startObject("name").
 					field("type", "string").field("index", "not_analyzed").
@@ -277,7 +283,7 @@ class ElasticSearchService {
 				field("from", from).
 				field("toPlace", journey.toPlace).
 				field("to", to).
-				field("requesterIp", journey.ip).
+				//field("requesterIp", journey.ip).
 				field("createdDate", createdDate).
 			endObject();
 		return builder;
@@ -290,6 +296,7 @@ class ElasticSearchService {
 		DateTime createdDate = new DateTime(journey.createdDate)
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 			startObject().
+				field("user", journey.user).
 				field("name", journey.name).
 				field("isMale", user.profile.isMale).
 				field("dateOfJourney", dateOfJourney).
@@ -477,21 +484,27 @@ class ElasticSearchService {
 
 	private JourneyRequestCommand parseJourneyFromSearchHit(SearchHit searchHit) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
-		journeyTemp.id = searchHit.getSource().get('id');
+		journeyTemp.id = new Long(searchHit.id)
+		journeyTemp.user = searchHit.getSource().get('user');
 		journeyTemp.name = searchHit.getSource().get('name');
 		String dateStr = searchHit.getSource().get('dateOfJourney');
 		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
+		journeyTemp.dateOfJourneyString = dateStr
 		journeyTemp.dateOfJourney = dateTime.toDate();
 		journeyTemp.fromPlace = searchHit.getSource().get('fromPlace');
 		journeyTemp.toPlace = searchHit.getSource().get('toPlace')
+		journeyTemp.isSaved = true
+		journeyTemp.isMale=searchHit.getSource().get('isMale')
 		return journeyTemp
 	}	
 	
 	private JourneyRequestCommand parseJourneyFromGetResponse(GetResponse getResponse) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
-		journeyTemp.id = getResponse.getSource().get('id');
+		journeyTemp.id = new Long(getResponse.id)
+		journeyTemp.user = getResponse.getSource().get('user');
 		journeyTemp.name = getResponse.getSource().get('name');
 		String dateStr = getResponse.getSource().get('dateOfJourney');
+		journeyTemp.dateOfJourneyString = dateStr
 		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
 		journeyTemp.dateOfJourney = dateTime.toDate();
 		journeyTemp.isDriver = getResponse.getSource().get('isDriver');
@@ -520,4 +533,175 @@ class ElasticSearchService {
 			return TYPE_RIDER
 		}
 	}
+	
+	def createWorkflowIndex() {
+		String indexName = "workflow"
+		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
+		if(isIndexExists) {
+			log.info "Index name : ${indexName} already exists"
+		}
+		else {
+			log.info "Started creating Index name : ${indexName}"
+			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
+			log.info "Index name : ${indexName} created successfuly"
+			def builder = createWorkflowIndexJson()
+			node.client.admin().indices().preparePutMapping(indexName).setType(WORKFLOW).setSource(builder).execute().actionGet();
+			
+		}
+
+	}
+
+	
+	private def createWorkflowIndexJson(String indexName) {
+		XContentBuilder builder = XContentFactory.jsonBuilder().
+				startObject().
+					startObject(WORKFLOW).
+						startObject("properties").
+							startObject("requestJourneyId").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("requestedFromPlace").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("requestedToPlace").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("requestUser").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("requestedDateTime").
+								field("type", "date").
+							endObject().
+							startObject("state").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("matchedJourneyId").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("matchedFromPlace").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("matchedToPlace").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("matchingUser").
+								field("type", "string").field("index", "not_analyzed").
+							endObject().
+							startObject("matchedDateTime").
+								field("type", "date").
+							endObject().
+							startObject("isRequesterDriving").
+								field("type", "boolean").
+							endObject().
+						endObject().
+					endObject().
+				endObject();
+		return builder;
+	}
+	
+	def indexWorkflow(JourneyWorkflow workflow) {
+		log.info "Adding record to elastic search ${workflow}"
+		def sourceBuilder = createWorkflowJson(workflow)
+		IndexRequest indexRequest = new IndexRequest('workflow', WORKFLOW).id(workflow.id + '').source(sourceBuilder);
+		node.client.index(indexRequest).actionGet();
+		log.info "Successfully indexed ${workflow}"
+	}
+	
+	private def createWorkflowJson(JourneyWorkflow workflow) {
+		DateTime requestedDateTime = new DateTime(JourneyController.UI_DATE_FORMAT.parseDateTime(workflow.requestedDateTime))
+		DateTime matchedDateTime = new DateTime(BASIC_DATE_FORMAT.parseDateTime(workflow.matchedDateTime))
+		XContentBuilder builder = XContentFactory.jsonBuilder().
+			startObject().
+				field("requestJourneyId", workflow.requestJourneyId).
+				field("requestedFromPlace", workflow.requestedFromPlace).
+				field("requestedToPlace", workflow.requestedToPlace).
+				field("requestUser", workflow.requestUser).
+				field("requestedDateTime", requestedDateTime).
+				field("state", workflow.state).
+				field("matchingUser", workflow.matchingUser).
+				field("matchedJourneyId", workflow.matchedJourneyId).
+				field("matchedFromPlace", workflow.matchedFromPlace).
+				field("matchedToPlace", workflow.matchedToPlace).
+				field("matchedDateTime", matchedDateTime).
+				field("isRequesterDriving", workflow.isRequesterDriving).
+			endObject();
+		return builder;
+	}
+	
+	
+	
+	def findJourneyById(String matchedJourneyId , JourneyRequestCommand currentJourney, boolean isDummyData) {
+		String indexName = null 
+		if(isDummyData) {
+			indexName = grailsApplication.config.grails.generatedData.index.name
+		}
+		else {
+			indexName = getIndexName(currentJourney.dateOfJourney);
+			
+		}
+		String searchTypeOpposite = null;
+		if(currentJourney.isDriver) {
+			searchTypeOpposite = TYPE_RIDER;
+		}
+		else {
+			searchTypeOpposite = TYPE_DRIVER;
+		}
+		GetResponse response = node.client.prepareGet(indexName, searchTypeOpposite, matchedJourneyId).execute().actionGet();
+		JourneyRequestCommand journeyTemp = parseJourneyFromGetResponse(response)
+		return journeyTemp
+	}
+	
+	def searchWorkflowRequestedByUser(User user) {
+		String indexName = WORKFLOW.toLowerCase()
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.termFilter('requestUser', user.username),
+			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
+			
+		)
+		
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("requestedDateTime")
+		sorter.order(SortOrder.DESC);
+		
+		def workflows = []
+		try {
+			SearchResponse searchResponse = node.client.prepareSearch(indexName)
+				.setTypes(WORKFLOW)
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery())             // Query
+				.setFilter(filter)   // Filter
+				.addSort(sorter)
+				.execute()
+				.actionGet();
+			SearchHits searchHits = searchResponse.getHits();
+			SearchHit[] hits = searchHits.hits;
+			for (SearchHit searchHit : hits) {
+				JourneyWorkflow workflow = parseWorkflowFromSearchHit(searchHit);
+				workflows << workflow
+			}
+		}
+		catch (IndexMissingException exception) {
+			log.error "Index name ${indexName} does not exists"
+		}
+		return workflows
+	}
+	
+	private JourneyWorkflow parseWorkflowFromSearchHit(SearchHit searchHit) {
+		JourneyWorkflow workflow = new JourneyWorkflow();
+		workflow.id = new Long(searchHit.id)
+		workflow.requestJourneyId = searchHit.getSource().get('requestJourneyId');
+		workflow.requestedDateTime= searchHit.getSource().get('requestedDateTime');
+		workflow.requestedFromPlace = searchHit.getSource().get('requestedFromPlace');
+		workflow.requestedToPlace = searchHit.getSource().get('requestedToPlace');
+		workflow.requestUser = searchHit.getSource().get('requestUser');
+		workflow.state = searchHit.getSource().get('state')
+		workflow.matchingUser = searchHit.getSource().get('matchingUser');
+		workflow.matchedJourneyId= searchHit.getSource().get('matchedJourneyId');
+		workflow.matchedFromPlace = searchHit.getSource().get('matchedFromPlace');
+		workflow.matchedToPlace = searchHit.getSource().get('matchedToPlace');
+		workflow.matchedDateTime = searchHit.getSource().get('matchedDateTime');
+		workflow.isRequesterDriving = searchHit.getSource().get('isRequesterDriving');
+		return workflow
+	}
+	
+	
 }

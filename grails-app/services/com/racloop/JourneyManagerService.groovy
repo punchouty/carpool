@@ -15,7 +15,8 @@ class JourneyManagerService {
 		journey.isDriver = command.isDriver
 		if(journeyService.saveJourney(journey)) {
 			log.info("Journey created with id ${journey.id}")
-			command.id = journey.id;
+			command.id = journey.id
+			command.isSaved = true
 			elasticSearchService.indexJourney(user, command);
 			jmsService.send(queue: Constant.HISTORY_QUEUE, command.id);
 			return true;
@@ -26,7 +27,7 @@ class JourneyManagerService {
 		}
 	}
 	def createJourney(JourneyRequestCommand command) {
-		User user  = User.findByUsername(command.name);
+		User user  = User.findByUsername(command.user);
 		createJourney(user, command)
 	}
 }
