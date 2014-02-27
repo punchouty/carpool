@@ -10,7 +10,7 @@
 <body>
 	<div class="row">
        	<g:if test="${flash.message != null && flash.message.length() > 0}">
-			<div class="alert alert-block">
+			<div id="flash-error" class="alert alert-block">
 		         <a class="close" data-dismiss="alert" href="#">×</a>
 		         <h4>Wrong Email!</h4>
 		         <n:flashembed/>            
@@ -27,7 +27,7 @@
 	                		<span class="add-on"><i class="icon-envelope"></i></span>
 							<input name="email" id="email" type="email" placeholder="your@email.com" required>
 	                    </div>
-						<p class="help-block"></p> 
+						<p id="email-help-block" class="help-block"></p> 
 					</div>
                     <br />
                     <input type="submit" value="Send Email!" class="btn btn-large btn-info" />

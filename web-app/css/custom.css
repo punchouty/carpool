@@ -59,6 +59,10 @@ body {
 	max-width: none !important;
 }
 
+.logo-link:hover {
+	text-decoration: none;
+}
+
 .site-footer {
 	position: relative;
 	margin-top: 20px;

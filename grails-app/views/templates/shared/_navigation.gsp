@@ -38,7 +38,7 @@
 				</g:if>
 				<input type="hidden" name="targetUri" value="${targetUri}" />
 			</g:form>
-			<h3 class="muted">raC looP</h3>
+			<g:link controller="staticPage" action="home" class="logo-link"><h1 class="muted">raC looP</h1></g:link>
 		</div>
 		</n:isNotLoggedIn>
 		<n:isLoggedIn>
@@ -111,6 +111,6 @@
 					</div>
 				</li>		
 			</ul>
-			<g:link controller="staticPage" action="home"><h3 class="muted">raC looP</h3></g:link>
+			<g:link controller="staticPage" action="home" class="logo-link"><h1 class="muted">raC looP</h1></g:link>
 		</div>
 		</n:isLoggedIn>

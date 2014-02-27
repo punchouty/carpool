@@ -7,7 +7,7 @@
 </head>
 <body>
 	<g:if test="${flash.message}">
-		<div class="alert">			
+		<div class="alert alert-success">			
 		  <button type="button" class="close" data-dismiss="alert">&times;</button>
 		  ${flash.message}
 		</div>

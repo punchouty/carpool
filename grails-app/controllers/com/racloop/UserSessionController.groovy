@@ -238,10 +238,6 @@ class UserSessionController {
 		[user:authenticatedUser]
 	}
 
-	def changedPassword() {
-		
-	}
-
 	def updatePassword(String currentPassword, String pass, String passConfirm) {
 		def user = authenticatedUser
 
@@ -272,7 +268,9 @@ class UserSessionController {
 				userService.changePassword(user)
 				if(!user.hasErrors()) {
 					log.info("Changed password for user [$user.id]$user.username successfully")
-					redirect action: "changedPassword"
+					flash.type = "message"
+					flash.message = "Password Changed Successfully"
+					redirect (action: "search")
 					return
 				}
 			}
