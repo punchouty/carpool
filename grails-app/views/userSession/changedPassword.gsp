@@ -1,3 +1,4 @@
+<%-- DEPRECTAED - WE ARE NOT USING IT ANYWHERE --%>
 <html>
    <head>
       <meta name="layout" content="static"/>

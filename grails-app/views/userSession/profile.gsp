@@ -2,61 +2,80 @@
 <head>
 <meta name="layout" content="static" />
 <title>My Profile</title>
+<style>
+  .center {text-align: center; margin-left: auto; margin-right: auto; margin-bottom: auto; margin-top: auto;}
+</style>
 </head>
 
 <body>
 	<div class="row">
 		<g:if test="${flash.message != null && flash.message.length() > 0}">
-			<div class="alert alert-error">
+			<div id="flash-message" class="alert alert-info">
 		         <a class="close" data-dismiss="alert" href="#">×</a>
+		         <h4>Success!</h4>
 		         <n:flashembed/>            
 		     </div>
 		</g:if>
 		<g:hasErrors bean="${user}">
-			<div class="alert alert-error">
+			<div id="flash-error" class="alert alert-error">
 				<a class="close" data-dismiss="alert" href="#">×</a>
-				<h5 class='alert-heading'>
-					<g:message code="nimble.label.error" />
-				</h5>
+				<h4>Error!</h4>
 				<g:renderErrors bean="${user}" as="list" />
 			</div>
-		</g:hasErrors>
-		<div class="span9">
-			<div class="span2"></div>
-			<div class="well well-large span5">
-                <h2>Edit Profile</h2>
-                <h3>User Name : ${fieldValue(bean: user, field: 'username')}</h3>
-                <g:form controller="userSession" action="editProfile" method="POST">
+		</g:hasErrors>	
+	</div>
+	<div class="row">
+		<div class="span2"></div>
+		<div class="span5">
+			<fieldset>
+	          <legend>Update Profile</legend>
+                <g:form controller="userSession" action="editProfile" method="POST"  class="form-horizontal">
                 <div class="control-group">
-					<label class="control-label">Name</label>
-					<input type="text" size="30" id="fullName" name="fullName" value="${user.profile?.fullName?.encodeAsHTML()}" placeholder="Full Name" maxlength="100" minlength="3" required class="span3"> 
-					<p class="help-block"></p> 
+					<label class="control-label">Username</label>
+					<div class="controls">
+						${fieldValue(bean: user, field: 'username')}
+					</div>
 				</div>
 				<div class="control-group">
-					<label class="radio inline">
-						<input type="radio" name="sex" value="male" <g:if test="${user?.profile?.isMale}">checked</g:if> />Male
-					</label>
-					<label class="radio inline">
-						<input type="radio" name="sex" value="female" <g:if test="${!user?.profile?.isMale}">checked</g:if> />Female
-					</label>
+					<label class="control-label" for="fullName">Name</label>
+					<div class="controls">
+						<input type="text" size="30" id="fullName" name="fullName" value="${user.profile?.fullName?.encodeAsHTML()}" placeholder="Full Name" maxlength="100" minlength="3" required> 
+						<p id="name-help-block" class="help-block"></p> 
+					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label">Email</label>
-					<input size="50" id="email" name="email" type="email" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" class="span3" required/>
-					<p class="help-block"></p> 
+					<label class="control-label" for="sex">Sex</label>
+					<div class="controls">
+						<label class="radio inline">
+							<input type="radio" name="sex" value="male" <g:if test="${user?.profile?.isMale}">checked</g:if> />Male
+						</label>
+						<label class="radio inline">
+							<input type="radio" name="sex" value="female" <g:if test="${!user?.profile?.isMale}">checked</g:if> />Female
+						</label>
+						<p id="sex-help-block" class="help-block"></p>
+					</div>
 				</div>
 				<div class="control-group">
-					<label class="control-label">Mobile Number <a href="${request.contextPath}/privacy" target="_blank">Privacy</a></label>
-					<input type="text" size="30" id="mobile" name="mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number" placeholder="Mobile Number" class="span3"/> 
-					<p class="help-block"></p> 
+					<label class="control-label" for="email">Email</label>
+					<div class="controls">
+						<input size="50" id="email" name="email" type="email" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" required/>
+						<p id="email-help-block" class="help-block"></p> 
+					</div>
+				</div>
+				<div class="control-group">
+					<label class="control-label" for="mobile">Mobile Number <a href="${request.contextPath}/privacy" target="_blank">Privacy</a></label>
+					<div class="controls">
+						<input type="text" size="30" id="mobile" name="mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number" placeholder="Mobile Number"/> 
+						<p id="mobile-help-block" class="help-block"></p> 
+					</div>
 				</div>
 				
                 <br />
-                <input type="submit" value="Update Profile" class="btn btn-large" />
+	            <div class="center">
+                	<input id="edit-profile-button" type="submit" value="Update Profile" class="btn btn-large btn-info" />
+                </div>
             	</g:form>
-            </div>
-            
-			<div class="span2"></div>
+	        </fieldset>
 		</div>
 	</div>
 </body>
