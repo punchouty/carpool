@@ -3,6 +3,7 @@ package com.racloop
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.AuthController
 import grails.plugin.nimble.core.ProfileBase
+import grails.plugin.nimble.core.UserBase
 
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
@@ -162,12 +163,7 @@ class UserSessionController {
 
 
 	def forgotPassword() {
-	}
-	
-	def forgotPasswordComplete(int id) {
-		if(id == null || id == 0) {
-			redirect(action: "search")
-		}
+		
 	}
 
 	def forgotPasswordProcess(String email) {
@@ -222,7 +218,7 @@ class UserSessionController {
 
 			log.info("Successful password reset for user identified as [$user.id]$user.username")
 
-			redirect(action: "forgotPasswordComplete")
+			redirect(action: "forgotPasswordComplete", validFlow: true)
 			return
 		}
 
@@ -230,6 +226,12 @@ class UserSessionController {
 		flash.type = "error"
 		flash.message = message(code: 'nimble.invalid.captcha')
 		redirect(action: "forgotPassword")
+	}
+	
+	def forgotPasswordComplete(boolean validFlow) {
+		if(!validFlow) {
+			redirect(action: "search")
+		}
 	}
 	
 	def changePassword(){
