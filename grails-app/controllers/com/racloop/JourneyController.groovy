@@ -1,8 +1,7 @@
 package com.racloop
 
-import java.util.Date;
+import grails.converters.JSON
 
-import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
@@ -12,10 +11,13 @@ class JourneyController {
 	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern("dd-MMMM-yyyy-hh:mm a");
 	def grailsApplication
 	def journeyService
+	def journeyWorkflowService
+	def journeyManagerService
 
     def findMatching(JourneyRequestCommand currentJourney) { 
 		def currentUser = getAuthenticatedUser();
 		boolean isDummyData = false
+		currentJourney.user = currentUser.username
 		currentJourney.name = currentUser.profile.fullName
 		currentJourney.ip = request.remoteAddr
 		DateTime dateOfJourney = UI_DATE_FORMAT.parseDateTime(currentJourney.dateOfJourneyString);
@@ -77,18 +79,35 @@ class JourneyController {
 	def newJourney() {
 		def currentUser = getAuthenticatedUser();
 		def currentJourney = session.currentJourney
-		Journey journey = currentJourney.getJourney();
-		journeyService.saveJourney(currentUser, journey)
-		journeyService.makeSearchable(journey)
+		journeyManagerService.createJourney(currentUser, currentJourney)
 		session.currentJourney.isSaved = true
-		flash.message "Successfully saved your request"
-		redirect(controller: 'staticPage', action: "search")
+		flash.message ="Successfully saved your request"
+		//redirect(controller: 'staticPage', action: "search")
+		render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney])
 	}
+	
+	def requestService(JourneyRequestCommand myJourney) {
+		def currentJourney = session.currentJourney
+		def currentUser = getAuthenticatedUser()
+		def matchedJourneyId = params.matchedJourneyId
+		boolean isDummy =params.dummy
+		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
+		def workflow = journeyWorkflowService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
+		render workflow as JSON
+	}
+	
+	def getWorkflow(){
+		def currentUser = getAuthenticatedUser()
+		def workflows = journeyWorkflowService.searchWorkflowRequestedByUser(currentUser)
+		render workflows as JSON
+	}
+	
 }
 
 class JourneyRequestCommand {
 	
 	Long id;//will be assigned later
+	String user
 	String name; //Should get from user. 
 	Boolean isMale; //Should get from user.
 	String dateOfJourneyString; //date as string
@@ -110,11 +129,12 @@ class JourneyRequestCommand {
 	
 	static constraints = {
 		id nullable : true
-		name blank: true
-		ip blank : true
+		/*name blank: true
+		ip blank : true*/
 	}
 	
 	String toString(){
 		return "JourneyRequestCommand -> name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
 	}
+	
 }

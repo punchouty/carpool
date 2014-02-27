@@ -60,6 +60,7 @@ class BootStrap {
 		elasticSearchService.createMasterLocationIndexIfNotExists();//TODO - check if it need to be here???
 		//Dummy Data Index
 		elasticSearchService.createGeneratedDataIndexIfNotExists();//TODO - check if it need to be here???
+		elasticSearchService.createWorkflowIndex()
 		
 	}
 	

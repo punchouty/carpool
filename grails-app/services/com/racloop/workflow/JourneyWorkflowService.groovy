@@ -1,6 +1,16 @@
 package com.racloop.workflow
 
+import org.elasticsearch.action.search.SearchResponse
+import org.elasticsearch.action.search.SearchType
+import org.elasticsearch.index.query.FilterBuilder
+import org.elasticsearch.index.query.FilterBuilders
+import org.elasticsearch.index.query.QueryBuilders
+import org.elasticsearch.indices.IndexMissingException
+import org.elasticsearch.search.SearchHit
+import org.elasticsearch.search.SearchHits
+
 import com.racloop.JourneyRequestCommand
+import com.racloop.User
 
 class JourneyWorkflowService {
 	
@@ -32,15 +42,27 @@ class JourneyWorkflowService {
 	
 	}
 	
+	def searchWorkflowRequestedByUser(User user) {
+		return elasticSearchService.searchWorkflowRequestedByUser(user)
+	}
+	
 	private JourneyWorkflow createAndSaveWorkflow(JourneyRequestCommand requestedJourney, JourneyRequestCommand matchedJourney){
 		JourneyWorkflow workflow = new JourneyWorkflow()
 		workflow.matchedJourneyId=matchedJourney.id
 		workflow.requestJourneyId=requestedJourney.id
+		workflow.requestedFromPlace = requestedJourney.fromPlace
+		workflow.requestedToPlace = requestedJourney.toPlace
+		workflow.requestedDateTime = requestedJourney.dateOfJourneyString
 		workflow.state = INTIIAL_STATE
-		workflow.requestUser = requestedJourney.name
-		workflow.matchingUser = matchedJourney.name
+		workflow.requestUser = requestedJourney.user
+		workflow.matchingUser = matchedJourney.user
+		workflow.matchedFromPlace = matchedJourney.fromPlace
+		workflow.matchedToPlace = matchedJourney.toPlace
+		workflow.matchedDateTime = matchedJourney.dateOfJourneyString
+		workflow.isRequesterDriving = requestedJourney.isDriver
 		if(workflow.validate()) {
-			workflow.save()
+			workflow.id = System.currentTimeMillis()
+			return workflow
 		}
 		else {
 			log.error "Unable to create workflow ${workflow}"
@@ -50,6 +72,6 @@ class JourneyWorkflowService {
 		
 	}
 	private indexWorkflow (JourneyWorkflow workflow) {
-		//elasticSearchService.saveWorkflow(workflow)
+		elasticSearchService.indexWorkflow(workflow)
 	}
 }

@@ -1,3 +1,4 @@
+<%@ page import="grails.converters.JSON" %>
 <html>
 <head>
 <meta name="layout" content="main" />
@@ -38,10 +39,10 @@
 						<td id="${i}_to">${journeyInstance.toPlace}</td>		
 						<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
 						<g:if test="${currentJourney.isDriver}">
-							<td><g:link action="pseudoRequest" id="pseudo_${i}" class="btn btn-success">Ask for Drive</g:link></td>		
+							<td><g:link action="requestService" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:true]" class="btn btn-success">Ask for Drive</g:link></td>		
 						</g:if>
 						<g:else>
-							<td><g:link action="pseudoRequest" id="pseudo_${i}" class="btn btn-success">Request a Ride</g:link></td>
+							<td><g:link action="requestService" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:true]" class="btn btn-success">Request a Ride</g:link></td>
 						</g:else>
 						<input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">
 						<input type="hidden" id="${i}_from_longitude" value="${journeyInstance.fromLongitude}">
@@ -51,7 +52,7 @@
 				</g:each>
 				</tbody>
 			</table>
-			<g:hiddenField name="dummy" value="true" />
+			<g:hiddenField id ="dummy" name="dummy" value="true" />
 		</div>
 		</g:if>
 		<g:else>
@@ -80,10 +81,10 @@
 					<td>${journeyInstance.toPlace}</td>		
 					<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
 					<g:if test="${currentJourney.isDriver}">
-					<td><g:link action="request" id="${journeyInstance.id}" class="btn btn-success">Request<%-- Ask for Drive --%></g:link></td>		
+					<td><g:link action="requestService" id="${journeyInstance.id}" params="[matchedJourneyId: journeyInstance.id]" class="btn btn-success">Request<%-- Ask for Drive --%></g:link></td>		
 					</g:if>
 					<g:else>
-						<td><g:link action="request" id="${journeyInstance.id}" class="btn btn-success">Request<%--Request a Ride --%></g:link></td>
+						<td><g:link action="requestService" id="${journeyInstance.id}" params="[matchedJourneyId: journeyInstance.id]" class="btn btn-success">Request<%--Request a Ride --%></g:link></td>
 					</g:else>	
 				</tr>
 			</g:each>
@@ -96,4 +97,5 @@
 	<g:hiddenField name="user_email" value="${currentUser?.profile?.email}" />
 	<g:hiddenField name="numberOfRecords" value="${numberOfRecords}" />
 </body>
+
 </html>

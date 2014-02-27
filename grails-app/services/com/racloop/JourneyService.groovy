@@ -105,7 +105,8 @@ class JourneyService {
 					def toPlace = toPlaces[index]
 					JourneyRequestCommand journey = new JourneyRequestCommand()
 					journey.name = name;
-					journey.isDriver = command.isDriver;
+					journey.user= name;
+					journey.isDriver = !command.isDriver;
 					journey.dateOfJourney = tempDate.toDate()
 					journey.fromLatitude = fromPlace.location.lat();
 					journey.fromLongitude = fromPlace.location.lon();
@@ -113,7 +114,7 @@ class JourneyService {
 					journey.toLatitude = toPlace.location.lat();
 					journey.toLongitude = toPlace.location.lon();
 					journey.toPlace = toPlace.name
-					elasticSearchService.indexGeneratedJourney(user, journey);
+					journey.id = new Long(elasticSearchService.indexGeneratedJourney(user, journey))
 					journeys << journey
 					index++
 				}
@@ -129,6 +130,7 @@ class JourneyService {
 					def fromPlace = fromPlaces[index]
 					JourneyRequestCommand journey = new JourneyRequestCommand()
 					journey.name = name;
+					journey.user= name;
 					journey.isDriver = command.isDriver;
 					journey.dateOfJourney = tempDate.toDate()
 					journey.fromLatitude = fromPlace.location.lat();
@@ -144,5 +146,10 @@ class JourneyService {
 			}
 		}
 		return journeys;
+	}
+	
+	def JourneyRequestCommand findMatchedJourneyById (String matchedJourneyId, JourneyRequestCommand currentJourney, boolean isDummy = false) {
+		def journey = elasticSearchService.findJourneyById(matchedJourneyId, currentJourney, isDummy)
+		return journey
 	}
 }

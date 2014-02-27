@@ -1,15 +1,26 @@
 package com.racloop.workflow
 
+
 class JourneyWorkflow {
 	
-	String requestUser
-	String matchingUser
-	String state
 	String requestJourneyId
+	String requestedFromPlace
+	String requestedToPlace
+	String requestUser
+	String requestedDateTime
+	String state
+	String matchingUser
 	String matchedJourneyId
+	String matchedFromPlace
+	String matchedToPlace
+	String matchedDateTime
+	boolean isRequesterDriving
 
     static constraints = {
 		
 		state inList : ['Initiated', 'Accepted', 'Rejected', 'Cancelled']
     }
+	
+	static mapWith = "none"
+	
 }
