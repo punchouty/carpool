@@ -34,7 +34,7 @@ class SecurityFilters extends NimbleFilterBase {
 //		}
 		
 		// Account management requiring authentication
-		accountsecure(controller: "userSession", action: "(changePassword|updatePassword|changedPassword)") {
+		accountsecure(controller: "userSession", action: "(changePassword|updatePassword|changedPassword|profile)") {
 			before = { accessControl { true } }
 		}
 	}
