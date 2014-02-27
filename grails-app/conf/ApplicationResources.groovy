@@ -15,6 +15,7 @@ modules = {
 		resource url:'js/jquery.dataTables.js'
 		resource url:'js/bootstrap-datatable.js'
 		resource url:'js/jqBootstrapValidation.js'
+		//resource url:'js/ jquery.validate.bootstrap.popover.js'
 		resource url:'js/custom.js'
     }
 }

@@ -44,23 +44,23 @@
 			<g:form action="saveuser" name="signup-form" method="post">
 				<div class="control-group">
 					<label class="control-label">Username</label>
-					<input type="text" id="username" name="username" value="${fieldValue(bean: user, field: 'username')}" placeholder="Username" data-validation-regex-regex="[a-z0-9_-]{5,15}" data-validation-regex-message="Minimum 5 chracters - matching a-z, 0-9, underscore, hyphen" class="span3"/>
-					<p class="help-block"></p> 
+					<input type="text" id="username" name="username" value="${fieldValue(bean: user, field: 'username')}" placeholder="Username" data-validation-regex-regex="[a-z0-9_-]{5,15}" data-validation-regex-message="Minimum 5 chracters - matching a-z, 0-9, underscore, hyphen" class="span3" required/>
+					<p id="username-help-block" class="help-block"></p> 
 				</div>
 				<div class="control-group">
 					<label class="control-label">Password</label>
-					<input type="password" size="30" id="pass" name="pass" value="${user.pass?.encodeAsHTML()}" placeholder="Password" class="span3" data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character" />
-					<p class="help-block"></p> 
+					<input type="password" size="30" id="pass" name="pass" value="${user.pass?.encodeAsHTML()}" placeholder="Password" class="span3" data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character" required />
+					<p id="pass-help-block" class="help-block"></p> 
 				</div>
 				<div class="control-group">
 					<label class="control-label">Confirm Password</label>
 					<input type="password" size="30" id="passConfirm" name="passConfirm" value="${user.passConfirm?.encodeAsHTML()}" placeholder="Confirm Password" required data-validation-match-match="pass" data-validation-match-message="Two passwords don't match" class="span3"/>
-					<p class="help-block"></p> 
+					<p id="passConfirm-help-block" class="help-block"></p> 
 				</div>
 				<div class="control-group">
 					<label class="control-label">Name</label>
 					<input type="text" size="30" id="fullName" name="fullName" value="${user.profile?.fullName?.encodeAsHTML()}" placeholder="Full Name" maxlength="100" minlength="3" required class="span3"> 
-					<p class="help-block"></p> 
+					<p id="fullName-help-block" class="help-block"></p> 
 				</div>
 				<div class="control-group">
 					<label class="radio inline">
@@ -73,21 +73,21 @@
 				<div class="control-group">
 					<label class="control-label">Email</label>
 					<input size="50" id="email" name="email" type="email" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" class="span3" required/>
-					<p class="help-block"></p> 
+					<p id="email-help-block" class="help-block"></p> 
 				</div>
 				<div class="control-group">
 					<label class="control-label">Mobile Number <a href="${request.contextPath}/privacy" target="_blank">Privacy</a></label>
 					<input type="text" size="30" id="mobile" name="mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number" placeholder="Mobile Number" class="span3"/> 
-					<p class="help-block"></p> 
+					<p id="mobile-help-block" class="help-block"></p> 
 				</div>
 				<div class="control-group">
 					<label class="checkbox">
 					  <input type="checkbox" id="terms" name="terms" required data-validation-required-message="You must agree to the terms and conditions">
 					  I agree with the <a href="${request.contextPath}/terms" target="_blank">Terms</a> and <a href="${request.contextPath}/privacy" target="_blank">Privacy</a>
 					</label>
-                    <p class="help-block"></p>
+                    <p id="terms-help-block" class="help-block"></p>
 				</div>
-				<input type="submit" value="Sign up" class="btn btn-primary pull-right">
+				<input id="signup-button" type="submit" value="Sign up" class="btn btn-primary pull-right">
 			</g:form>
 		</div>
 	</div>

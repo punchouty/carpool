@@ -92,14 +92,14 @@ class BootStrap {
 		if(!UserBase.findByUsername("rajan")) {
 			// Create example User account
 			def user = InstanceGenerator.user(grailsApplication)
-			user.username = "punchouty"
+			user.username = "rajan"
 			user.pass = 'P@ssw0rd'
 			user.passConfirm = 'P@ssw0rd'
 			user.enabled = true
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Rajan Punchouty"
-			userProfile.email = "rajan@gmail.com"
+			userProfile.email = "rajan@racloop.com"
 			userProfile.owner = user
 			userProfile.isMale = true
 			userProfile.mobile = '2222222222'

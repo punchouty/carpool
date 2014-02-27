@@ -282,6 +282,37 @@ class UserSessionController {
 		render(view: 'changePassword', model: [user: user])
 		return
 	}
+	
+	def profile() {
+		def user = authenticatedUser
+		[user: user]
+	}
+	
+	def editProfile(String fullName, String sex, String email, String mobile) {
+		def user = authenticatedUser
+		boolean isMale = true
+		if(sex != 'male') {
+			isMale = false
+		}
+		user.profile.fullName = fullName
+		user.profile.email = email
+		user.profile.mobile = mobile
+		user.profile.isMale = isMale
+		
+		if (!user.validate()) {
+			log.debug("Updated details for user [$user.id] $user.username are invalid")
+			render view: 'profile', model: [user: user]
+			return
+		}
+
+		def updatedUser = userService.updateUser(user)
+		
+		log.info("Successfully updated details for user [$user.id]$user.username")
+		flash.type = "success"
+		flash.message = message(code: 'nimble.user.update.success', args: [user.username])
+		redirect action: 'profile', user: updatedUser
+		return
+	}
 
 	private getNimbleConfig() {
 		grailsApplication.config.nimble

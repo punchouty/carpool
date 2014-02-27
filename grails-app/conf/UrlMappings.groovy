@@ -68,6 +68,11 @@ class UrlMappings {
 			action = "search"
 		}
 
+		"/profile" {
+			controller = "userSession"
+			action = "profile"
+		}
+
 		"/password/change"{
 			controller = "userSession"
 			action = "changePassword"

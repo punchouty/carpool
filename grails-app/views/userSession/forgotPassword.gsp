@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta name="layout" content="static" />
-<title>About raC looP</title>
+<title>Forget Password</title>
 </head>
 
 <body>
