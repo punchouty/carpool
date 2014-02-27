@@ -20,18 +20,20 @@ class BootStrap {
 	
     def init = { servletContext ->
 		internalBootStap(servletContext)
+		createRequiredUsers()
+		Boolean createSampleUsers = grailsApplication.config.grails.startup.sampleUsers.create
+		if(createSampleUsers) {
+			log.info("Start creating initial users in database")
+			createUsers();
+			log.info("Users created successfully in Elasticsearch")
+		}
+		//Initialising Elasticsearch
 		elasticSearchService.init()
 		Boolean createIndex = grailsApplication.config.grails.startup.elasticsearch.index.create
 		if(createIndex) {
 			log.info("Start creating indexes in Elasticsearch")
 			createIndexes();
 			log.info("Indexes created successfully in Elasticsearch")
-		}
-		Boolean createSampleUsers = grailsApplication.config.grails.startup.sampleUsers.create
-		if(createSampleUsers) {
-			log.info("Start creating initial users in database")
-			createUsers();
-			log.info("Users created successfully in Elasticsearch")
 		}
 		Boolean createMasterData = grailsApplication.config.grails.startup.masterData.places.create
 		if(createMasterData) {
@@ -78,7 +80,7 @@ class BootStrap {
 			userProfile.email = "tamanna.punchouty@gmail.com"
 			userProfile.owner = user
 			userProfile.isMale = false
-			userProfile.mobile = '1111111111'
+			userProfile.mobile = '9800000002'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:tamanna")
@@ -103,7 +105,7 @@ class BootStrap {
 			userProfile.email = "rajan@racloop.com"
 			userProfile.owner = user
 			userProfile.isMale = true
-			userProfile.mobile = '2222222222'
+			userProfile.mobile = '9800000003'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:rajan")
@@ -128,7 +130,7 @@ class BootStrap {
 			userProfile.email = "khwaish.punchouty@gmail.com"
 			userProfile.owner = user
 			userProfile.isMale = false
-			userProfile.mobile = '3333333333'
+			userProfile.mobile = '9800000004'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:khwaish")
@@ -153,7 +155,7 @@ class BootStrap {
 			userProfile.email = "sample.user@racloop.com"
 			userProfile.owner = user
 			userProfile.isMale = false
-			userProfile.mobile = '9898989898'
+			userProfile.mobile = '9800000005'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:sample.user")
@@ -162,6 +164,111 @@ class BootStrap {
 			if (savedUser.hasErrors()) {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example sample.user")
+			}
+		}
+		
+		if(!UserBase.findByUsername("sample.driver")) {
+			// Create example User account
+			def user = InstanceGenerator.user(grailsApplication)
+			user.username = "sample.driver"
+			user.pass = 'P@ssw0rd'
+			user.passConfirm = 'P@ssw0rd'
+			user.enabled = true
+
+			def userProfile = InstanceGenerator.profile(grailsApplication)
+			userProfile.fullName = "Sample Driver"
+			userProfile.email = "sample.driver@racloop.com"
+			userProfile.owner = user
+			userProfile.isMale = false
+			userProfile.mobile = '9800000006'
+			user.profile = userProfile
+
+			log.info("Creating default user account with username:sample.user")
+
+			def savedUser = userService.createUser(user)
+			if (savedUser.hasErrors()) {
+				savedUser.errors.each { log.error(it) }
+				throw new RuntimeException("Error creating example sample.user")
+			}
+		}
+		
+		if(!UserBase.findByUsername("sample.rider")) {
+			// Create example User account
+			def user = InstanceGenerator.user(grailsApplication)
+			user.username = "sample.rider"
+			user.pass = 'P@ssw0rd'
+			user.passConfirm = 'P@ssw0rd'
+			user.enabled = true
+
+			def userProfile = InstanceGenerator.profile(grailsApplication)
+			userProfile.fullName = "Sample Rider"
+			userProfile.email = "sample.rider@racloop.com"
+			userProfile.owner = user
+			userProfile.isMale = false
+			userProfile.mobile = '9800000007'
+			user.profile = userProfile
+
+			log.info("Creating default user account with username:sample.user")
+
+			def savedUser = userService.createUser(user)
+			if (savedUser.hasErrors()) {
+				savedUser.errors.each { log.error(it) }
+				throw new RuntimeException("Error creating example sample.user")
+			}
+		}
+	}
+	
+	private def createRequiredUsers() {
+		if(!UserBase.findByUsername("admin")) {
+			// Create example Administrative account
+			def admins = Role.findByName(AdminsService.ADMIN_ROLE)
+			def admin = InstanceGenerator.user(grailsApplication)
+			admin.username = "admin"
+			admin.pass = "admiN123!"
+			admin.passConfirm = "admiN123!"
+			admin.enabled = true
+
+			def adminProfile = InstanceGenerator.profile(grailsApplication)
+			adminProfile.fullName = "Administrator"
+			adminProfile.email = "admin@racloop.com"
+			adminProfile.owner = admin
+			adminProfile.isMale = false
+			adminProfile.mobile = '9800000000'
+			admin.profile = adminProfile
+
+			log.info("Creating default admin account with username:admin")
+
+			def savedAdmin = userService.createUser(admin)
+			if (savedAdmin.hasErrors()) {
+				savedAdmin.errors.each { log.error(it) }
+				throw new RuntimeException("Error creating administrator")
+			}
+
+			adminsService.add(admin)
+		}		
+		
+		if(!UserBase.findByUsername("user")) {
+			// Create example User account
+			def user = InstanceGenerator.user(grailsApplication)
+			user.username = "user"
+			user.pass = 'useR123!'
+			user.passConfirm = 'useR123!'
+			user.enabled = true
+
+			def userProfile = InstanceGenerator.profile(grailsApplication)
+			userProfile.fullName = "Test User"
+			userProfile.email = "test.user@racloop.com"
+			userProfile.owner = user
+			userProfile.isMale = false
+			userProfile.mobile = '9800000001'
+			user.profile = userProfile
+
+			log.info("Creating default user account with username:user")
+
+			def savedUser = userService.createUser(user)
+			if (savedUser.hasErrors()) {
+				savedUser.errors.each { log.error(it) }
+				throw new RuntimeException("Error creating example user")
 			}
 		}
 	}

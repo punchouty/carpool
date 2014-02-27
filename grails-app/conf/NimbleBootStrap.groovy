@@ -41,59 +41,6 @@ class NimbleBootStrap {
 		//internalBootStap(servletContext)
 
 		// Execute any custom Nimble related BootStrap for your application below
-
-		if(!UserBase.findByUsername("user")) {
-			// Create example User account
-			def user = InstanceGenerator.user(grailsApplication)
-			user.username = "user"
-			user.pass = 'useR123!'
-			user.passConfirm = 'useR123!'
-			user.enabled = true
-
-			def userProfile = InstanceGenerator.profile(grailsApplication)
-			userProfile.fullName = "Test User"
-			userProfile.email = "test.user@racloop.com"
-			userProfile.owner = user
-			userProfile.isMale = false
-			userProfile.mobile = '4444444444'
-			user.profile = userProfile
-
-			log.info("Creating default user account with username:user")
-
-			def savedUser = userService.createUser(user)
-			if (savedUser.hasErrors()) {
-				savedUser.errors.each { log.error(it) }
-				throw new RuntimeException("Error creating example user")
-			}
-		}
-
-		if(!UserBase.findByUsername("admin")) {
-			// Create example Administrative account
-			def admins = Role.findByName(AdminsService.ADMIN_ROLE)
-			def admin = InstanceGenerator.user(grailsApplication)
-			admin.username = "admin"
-			admin.pass = "admiN123!"
-			admin.passConfirm = "admiN123!"
-			admin.enabled = true
-
-			def adminProfile = InstanceGenerator.profile(grailsApplication)
-			adminProfile.fullName = "Administrator"
-			adminProfile.email = "admin@racloop.com"
-			adminProfile.owner = admin
-			adminProfile.isMale = false
-			adminProfile.mobile = '5555555555'
-			admin.profile = adminProfile
-
-			log.info("Creating default admin account with username:admin")
-
-			def savedAdmin = userService.createUser(admin)
-			if (savedAdmin.hasErrors()) {
-				savedAdmin.errors.each { log.error(it) }
-				throw new RuntimeException("Error creating administrator")
-			}
-
-			adminsService.add(admin)
-		}
 	}
 
 //	private internalBootStap(servletContext) {
