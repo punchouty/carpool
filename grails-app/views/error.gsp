@@ -1,18 +1,30 @@
-<!DOCTYPE html>
 <html>
-	<head>
-		<title><g:if env="development">Grails Runtime Exception</g:if><g:else>Error</g:else></title>
-		<meta name="layout" content="main">
-		<g:if env="development"><link rel="stylesheet" href="${resource(dir: 'css', file: 'errors.css')}" type="text/css"></g:if>
-	</head>
-	<body>
-		<g:if env="development">
+<head>
+<meta name="layout" content="static" />
+<title>Error on server side</title>
+<style>
+  .center {text-align: center; margin-left: auto; margin-right: auto; margin-bottom: auto; margin-top: auto;}
+</style>
+</head>
+
+<body>
+	<div class="row">
+		<div>
+			<div class="hero-unit center">
+				<h1>
+					This is embarrassing :(
+				</h1>
+				<br />
+				<p>
+					We have error at server and We will try to resolve this soon.
+				</p>
+				<a href="${request.contextPath}/" class="btn btn-large btn-info"><i
+					class="icon-home icon-white"></i> Take Me Home</a>
+			</div>				
+		</div>
+	</div>
+	<g:if env="development">
 			<g:renderException exception="${exception}" />
-		</g:if>
-		<g:else>
-			<ul class="errors">
-				<li>An error has occurred</li>
-			</ul>
-		</g:else>
-	</body>
+	</g:if>
+</body>
 </html>

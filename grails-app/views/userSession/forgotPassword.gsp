@@ -2,20 +2,23 @@
 <head>
 <meta name="layout" content="static" />
 <title>Forget Password</title>
+<style>
+  .center {text-align: center; margin-left: auto; margin-right: auto; margin-bottom: auto; margin-top: auto;}
+</style>
 </head>
 
 <body>
 	<div class="row">
        	<g:if test="${flash.message != null && flash.message.length() > 0}">
-			<div class="alert alert-error">
+			<div class="alert alert-block">
 		         <a class="close" data-dismiss="alert" href="#">×</a>
+		         <h4>Wrong Email!</h4>
 		         <n:flashembed/>            
 		     </div>
 		</g:if>
-		<div class="span9">
-   			<div class="thumbnail center well well-small text-center">
-                <h2>Forgot Password</h2>
-                
+		<div class="hero-unit center">
+                <h1>Forgot Password</h1>
+                <br/>
                 <p>Email address register with us.</p>
                 
                 <g:form controller="userSession" action="forgotPasswordProcess" method="POST">
@@ -27,9 +30,8 @@
 						<p class="help-block"></p> 
 					</div>
                     <br />
-                    <input type="submit" value="Send Email!" class="btn btn-large" />
+                    <input type="submit" value="Send Email!" class="btn btn-large btn-info" />
               </g:form>
-           	</div>    
        	</div>
 	</div>
 </body>

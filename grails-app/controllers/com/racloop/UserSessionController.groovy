@@ -5,11 +5,13 @@ import grails.plugin.nimble.core.AuthController
 import grails.plugin.nimble.core.ProfileBase
 
 import org.apache.shiro.crypto.hash.Sha256Hash
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 class UserSessionController {
 
 	def userService
 	def recaptchaService
+	LinkGenerator grailsLinkGenerator
 
 	def search() {
 		def user = getAuthenticatedUser();//dynamic method added by nimble
@@ -162,7 +164,10 @@ class UserSessionController {
 	def forgotPassword() {
 	}
 	
-	def forgotPasswordComplete() {
+	def forgotPasswordComplete(int id) {
+		if(id == null || id == 0) {
+			redirect(action: "search")
+		}
 	}
 
 	def forgotPasswordProcess(String email) {
@@ -186,7 +191,7 @@ class UserSessionController {
 					to user.profile.email
 					from nimbleConfig.messaging.mail.from
 					subject nimbleConfig.messaging.passwordreset.external.subject
-					html g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user]).toString()
+					html g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
 				}
 			}
 			else {
@@ -208,7 +213,7 @@ class UserSessionController {
 					to user.profile.email
 					from nimbleConfig.messaging.mail.from
 					subject nimbleConfig.messaging.passwordreset.subject
-					html g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user]).toString()
+					html g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
 				}
 			}
 			else {

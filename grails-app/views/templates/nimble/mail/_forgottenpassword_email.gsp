@@ -7,10 +7,6 @@
 	<p>
 		<g:message code="nimble.template.mail.forgottenpassword.instructions" />
 	</p>
-	<p>
-		${createLink(absolute:true, controller: 'auth', action: 'login')}
-	</p>
-
 	<table>
 	  	<tbody>
 			  <tr>
@@ -23,6 +19,9 @@
 			  </tr>
 		  </tbody>
 	</table>
+	<p>
+		Click <a href="${baseUrl}/signin">here</a> to login into raC looP or go to ${baseUrl}/signin
+	</p>
 
 </body>
 </html>
