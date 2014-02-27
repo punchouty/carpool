@@ -28,7 +28,7 @@
 		<div class="span3 well">
 			<h2>Sign In</h2>
 			<g:if test="${flash.message != null && flash.message.length() > 0}">
-			<div class="alert alert-error">
+			<div id="flash-message" class="alert alert-error">
                 <a class="close" data-dismiss="alert" href="#">×</a>
                 <n:flashembed/>
             </div>

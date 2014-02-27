@@ -27,13 +27,13 @@
 		<div class="span3 well">
 			<h2>Sign Up</h2>			
 			<g:if test="${flash.message != null && flash.message.length() > 0}">
-				<div class="alert alert-error">
+				<div id="flash-message" class="alert alert-error">
 			         <a class="close" data-dismiss="alert" href="#">×</a>
 			         <n:flashembed/>            
 			     </div>
 			</g:if>
 			<g:hasErrors bean="${user}">
-				<div class="alert alert-error">
+				<div id="flash-error" class="alert alert-error">
 					<a class="close" data-dismiss="alert" href="#">×</a>
 					<h5 class='alert-heading'>
 						<g:message code="nimble.label.error" />
@@ -44,7 +44,7 @@
 			<g:form action="saveuser" name="signup-form" method="post">
 				<div class="control-group">
 					<label class="control-label">Username</label>
-					<input type="text" id="username" name="username" value="${fieldValue(bean: user, field: 'username')}" placeholder="Username" data-validation-regex-regex="[a-z0-9_-]{5,15}" data-validation-regex-message="Minimum 5 chracters - matching a-z, 0-9, underscore, hyphen" class="span3" required/>
+					<input type="text" id="username" name="username" value="${fieldValue(bean: user, field: 'username')}" placeholder="Username" data-validation-regex-regex="[a-z0-9_.-]{5,15}" data-validation-regex-message="Minimum 5 chracters - matching a-z, 0-9, underscore, hyphen" class="span3" required/>
 					<p id="username-help-block" class="help-block"></p> 
 				</div>
 				<div class="control-group">

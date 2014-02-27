@@ -10,7 +10,7 @@
 				<label class="checkbox"> 
 					<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
 				</label>
-				<button type="submit" class="btn">Sign in</button>
+				<button id="signin_button" type="submit" class="btn">Sign in</button>
 				<div class="btn-group">
 					<a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
 						Help <span class="caret"></span>

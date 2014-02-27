@@ -139,6 +139,31 @@ class BootStrap {
 				throw new RuntimeException("Error creating example khwaish")
 			}
 		}
+		
+		if(!UserBase.findByUsername("sample.user")) {
+			// Create example User account
+			def user = InstanceGenerator.user(grailsApplication)
+			user.username = "sample.user"
+			user.pass = 'P@ssw0rd'
+			user.passConfirm = 'P@ssw0rd'
+			user.enabled = true
+
+			def userProfile = InstanceGenerator.profile(grailsApplication)
+			userProfile.fullName = "Sample User"
+			userProfile.email = "sample.user@racloop.com"
+			userProfile.owner = user
+			userProfile.isMale = false
+			userProfile.mobile = '9898989898'
+			user.profile = userProfile
+
+			log.info("Creating default user account with username:sample.user")
+
+			def savedUser = userService.createUser(user)
+			if (savedUser.hasErrors()) {
+				savedUser.errors.each { log.error(it) }
+				throw new RuntimeException("Error creating example sample.user")
+			}
+		}
 	}
 	
 	private def createMasterDataForPlaces() {
