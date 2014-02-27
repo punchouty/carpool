@@ -1,4 +1,6 @@
 import grails.plugin.nimble.InstanceGenerator
+import grails.plugin.nimble.core.AdminsService
+import grails.plugin.nimble.core.Role
 import grails.plugin.nimble.core.UserBase
 import grails.util.Environment
 import liquibase.util.csv.opencsv.CSVReader
