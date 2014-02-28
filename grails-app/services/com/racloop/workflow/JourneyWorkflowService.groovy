@@ -26,6 +26,7 @@ class JourneyWorkflowService {
 		JourneyWorkflow workflow = createAndSaveWorkflow(requestedJourney, matchedJourney)
 		if(workflow) {
 			indexWorkflow(workflow)
+			sendConfirmationToBothUsers(workflow)
 		}
 		return workflow
 	}
@@ -74,4 +75,20 @@ class JourneyWorkflowService {
 	private indexWorkflow (JourneyWorkflow workflow) {
 		elasticSearchService.indexWorkflow(workflow)
 	}
+	
+	private sendConfirmationToBothUsers(JourneyWorkflow workflow) {
+		sendConfirmationEmail(workflow)
+		sendConfirmationSMS(workflow)
+	}
+	
+	private sendConfirmationEmail(JourneyWorkflow workflow) {
+		
+	}
+	
+	private sendConfirmationSMS(JourneyWorkflow workflow) {
+		
+	}
+	
+	
 }
+	
