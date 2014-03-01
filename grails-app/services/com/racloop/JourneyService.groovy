@@ -75,7 +75,7 @@ class JourneyService {
 		if(Environment.current.getName() == "production") {
 			if(tempDate.getHourOfDay() > 20 || tempDate.getHourOfDay() < 7) return [];
 		}
-		def journeys = elasticSearchService.searchGeneratedData(user, command);
+		def journeys = elasticSearchService.searchGeneratedData(command);
 		if(journeys.size == 0) {
 			Random randomGenerator = new Random();
 			Integer numberOfRecords = randomGenerator.nextInt(5);
@@ -83,7 +83,12 @@ class JourneyService {
 			journeys = [];
 			def names = [];
 			if(command.isDriver) {
-				names = NamesUtil.getRandomNames(numberOfRecords);
+				if(user) {
+					names = NamesUtil.getRandomNames(numberOfRecords);
+				}
+				else {//User is not authenticated
+					names = NamesUtil.getRandomBoyNames(numberOfRecords);
+				}
 			}
 			else {
 				names = NamesUtil.getRandomBoyNames(numberOfRecords);

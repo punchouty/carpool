@@ -32,6 +32,11 @@
 
 	<div id="main-controls">
 		<g:form name="search-form" controller="journey" action="findMatching" class="form-inline">
+			<%--
+			// Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
+			// This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
+			// This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
+			 --%>
 			<div id="travelDateDiv" class="controls input-append date form_datetime" data-date-format="dd MM yyyy    HH:ii P" data-link-field="dtp_input1">
 				<input id="dateOfJourneyString" name="dateOfJourneyString" size="16" type="text" value="" placeholder="Date and Time"  autocomplete="off" readonly>
 				<span class="add-on"><i class="icon-th"></i></span>

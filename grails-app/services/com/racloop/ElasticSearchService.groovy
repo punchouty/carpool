@@ -162,11 +162,15 @@ class ElasticSearchService {
 		GeoPoint to = new GeoPoint(journey.toLatitude, journey.toLongitude)
 		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
 		DateTime createdDate = new DateTime(journey.createdDate)
+		boolean isMale = true;
+		if(user) {
+			isMale = user.profile.isMale;
+		}
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 			startObject().
 				field("user", journey.user).
 				field("name", journey.name).
-				field("isMale", user.profile.isMale).
+				field("isMale", isMale).
 				field("dateOfJourney", dateOfJourney).
 				field("fromPlace", journey.fromPlace).
 				field("from", from).
@@ -216,14 +220,26 @@ class ElasticSearchService {
 		if(start.isBefore(validStartTime)) {
 			start = validStartTime;
 		}
-		FilterBuilder filter = FilterBuilders.andFilter(
-			//FilterBuilders.limitFilter(10),
-			FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
-			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
-			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
-			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
-			
-		);
+		FilterBuilder filter = null;
+		if(user) {
+			filter = FilterBuilders.andFilter(
+				//FilterBuilders.limitFilter(10),
+				FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
+				FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+				FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+				FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
+				
+			);
+		}
+		else {
+			filter = FilterBuilders.andFilter(
+				//FilterBuilders.limitFilter(10),
+				FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
+				FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+				FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+				
+			);
+		}
 		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
 		sorter.point(journey.fromLatitude, journey.fromLongitude);
 		sorter.order(SortOrder.ASC);
@@ -249,8 +265,13 @@ class ElasticSearchService {
 		}
 		return journeys
 	}
-	
-	def searchGeneratedData(User user, JourneyRequestCommand journey) {
+	/**
+	 * 
+	 * @param user
+	 * @param journey
+	 * @return
+	 */
+	def searchGeneratedData(JourneyRequestCommand journey) {
 		String indexName = grailsApplication.config.grails.generatedData.index.name;
 		String searchTypeOpposite = null;
 		if(journey.isDriver) {

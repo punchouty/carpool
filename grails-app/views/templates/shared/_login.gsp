@@ -76,5 +76,5 @@
 					</li>
 				</n:isLoggedIn>
 			</ul>
-			<g:link controller="staticPage" action="home"><h3 class="muted">raC looP</h3></g:link>
+			<a href="${request.contextPath}" class="logo-link"><h1 class="muted">raC looP</h1></a>
 		</div>

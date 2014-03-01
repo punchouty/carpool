@@ -193,7 +193,12 @@ var initialTime = new Date(now.getTime() + (reserveTime + 15) * 60000);
 console.log(validStartTime);
 var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);
 console.log(validEndTime);
-$('#validStartTimeString').val(validStartTime.toString('dd-MMMM-yyyy-hh:mm tt'));
+
+//Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
+//This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
+//This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
+$('#validStartTimeString').val(validStartTime.toString('dd MMMM yyyy    hh:mm tt'));
+
 var picker;
 $(function() {
 //	$('#travelDateDiv').datetimepicker({

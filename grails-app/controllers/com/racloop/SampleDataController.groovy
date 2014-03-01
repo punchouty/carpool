@@ -47,20 +47,19 @@ class SampleDataController {
 		log.info "Removing old sample data if it exists"
 		elasticSearchService.deleteSampleData();
 		log.info "Old sample data removed"
-		int timeInterval = 15
-		User rajan = User.findByUsername('rajan');
-		log.info("Found user rajan : ${rajan.username}")
-		User tamanna = User.findByUsername('tamanna');
-		log.info("Found user tamanna : ${tamanna.username}")
-		User khwaish = User.findByUsername('khwaish');
-		log.info("Found user khwaish : ${khwaish.username}")
+		int timeInterval = 10
+		User user1 = User.findByUsername('admin');
+		User user2 = User.findByUsername('sample.user');
+		User user3 = User.findByUsername('sample.driver');
+		User user4 = User.findByUsername('sample.rider');
 		String dateFormat = grailsApplication.config.grails.dateFormat
 		CSVReader reader = new CSVReader(new InputStreamReader(this.class.classLoader.getResourceAsStream(grailsApplication.config.grails.startup.sampleData.file)));
 		List lines = reader.readAll();
 		
 		int i = 0;
 		Calendar time = Calendar.getInstance();
-		
+		time.add(Calendar.MINUTE, 30);
+		//Delhi to Chandigarh - sample.driver
 		lines.each {  line ->
 			i++;
 			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
@@ -73,54 +72,14 @@ class SampleDataController {
 			journeyCommand.toLatitude = Double.parseDouble(line[9])
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = true
-			journeyManagerService.createJourney(tamanna, journeyCommand)
+			journeyManagerService.createJourney(user3, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 		
 		i = 0;
 		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 10);
-		lines.each {  line ->
-			i++;
-			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
-			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.isMale = false
-			journeyCommand.fromPlace = line[11]
-			journeyCommand.fromLatitude = Double.parseDouble(line[9])
-			journeyCommand.fromLongitude = Double.parseDouble(line[10])
-			journeyCommand.toPlace = line[6]
-			journeyCommand.toLatitude = Double.parseDouble(line[4])
-			journeyCommand.toLongitude = Double.parseDouble(line[5])
-			journeyCommand.isDriver = true
-			journeyManagerService.createJourney(khwaish, journeyCommand)
-			time.add(Calendar.MINUTE, timeInterval);
-		}
-		
-		
-		
-		i = 0;
-		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 15);
-		lines.each {  line ->
-			i++;
-			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
-			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.isMale = true
-			journeyCommand.fromPlace = line[11]
-			journeyCommand.fromLatitude = Double.parseDouble(line[9])
-			journeyCommand.fromLongitude = Double.parseDouble(line[10])
-			journeyCommand.toPlace = line[6]
-			journeyCommand.toLatitude = Double.parseDouble(line[4])
-			journeyCommand.toLongitude = Double.parseDouble(line[5])
-			journeyCommand.isDriver = true
-			journeyManagerService.createJourney(rajan, journeyCommand)
-			time.add(Calendar.MINUTE, timeInterval);
-		}
-		
-		i = 0;
-		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 5);
-		
+		time.add(Calendar.MINUTE, 35);
+		//Delhi to Chandigarh - sample.rider
 		lines.each {  line ->
 			i++;
 			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
@@ -133,47 +92,46 @@ class SampleDataController {
 			journeyCommand.toLatitude = Double.parseDouble(line[9])
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = false
-			journeyManagerService.createJourney(tamanna, journeyCommand)
+			journeyManagerService.createJourney(user4, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
-		}
-		
+		}		
 		i = 0;
 		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 10);
+		//Delhi to Chandigarh - admin
+		time.add(Calendar.MINUTE, 40);
 		lines.each {  line ->
 			i++;
 			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
 			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
 			journeyCommand.isMale = false
-			journeyCommand.fromPlace = line[11]
-			journeyCommand.fromLatitude = Double.parseDouble(line[9])
-			journeyCommand.fromLongitude = Double.parseDouble(line[10])
-			journeyCommand.toPlace = line[6]
-			journeyCommand.toLatitude = Double.parseDouble(line[4])
-			journeyCommand.toLongitude = Double.parseDouble(line[5])
-			journeyCommand.isDriver = false
-			journeyManagerService.createJourney(khwaish, journeyCommand)
+			journeyCommand.fromPlace = line[6]
+			journeyCommand.fromLatitude = Double.parseDouble(line[4])
+			journeyCommand.fromLongitude = Double.parseDouble(line[5])
+			journeyCommand.toPlace = line[11]
+			journeyCommand.toLatitude = Double.parseDouble(line[9])
+			journeyCommand.toLongitude = Double.parseDouble(line[10])
+			journeyCommand.isDriver = true
+			journeyManagerService.createJourney(user1, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 		
-		
-		
 		i = 0;
 		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 15);
+		time.add(Calendar.MINUTE, 45);
+		//Delhi to Chandigarh - admin
 		lines.each {  line ->
 			i++;
 			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
 			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.isMale = true
-			journeyCommand.fromPlace = line[11]
-			journeyCommand.fromLatitude = Double.parseDouble(line[9])
-			journeyCommand.fromLongitude = Double.parseDouble(line[10])
-			journeyCommand.toPlace = line[6]
-			journeyCommand.toLatitude = Double.parseDouble(line[4])
-			journeyCommand.toLongitude = Double.parseDouble(line[5])
+			journeyCommand.isMale = false
+			journeyCommand.fromPlace = line[6]
+			journeyCommand.fromLatitude = Double.parseDouble(line[4])
+			journeyCommand.fromLongitude = Double.parseDouble(line[5])
+			journeyCommand.toPlace = line[11]
+			journeyCommand.toLatitude = Double.parseDouble(line[9])
+			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = false
-			journeyManagerService.createJourney(rajan, journeyCommand)
+			journeyManagerService.createJourney(user1, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 	}

@@ -8,6 +8,9 @@ import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
 class JourneyController {
 	
+	// Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
+	// This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
+	// This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
 	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMM yyyy    hh:mm a");
 	def grailsApplication
 	def journeyService
@@ -17,8 +20,10 @@ class JourneyController {
     def findMatching(JourneyRequestCommand currentJourney) { 
 		def currentUser = getAuthenticatedUser();
 		boolean isDummyData = false
-		currentJourney.user = currentUser.username
-		currentJourney.name = currentUser.profile.fullName
+		if(currentUser) {
+			currentJourney.user = currentUser.username
+			currentJourney.name = currentUser.profile.fullName
+		}
 		currentJourney.ip = request.remoteAddr
 		DateTime dateOfJourney = UI_DATE_FORMAT.parseDateTime(currentJourney.dateOfJourneyString);
 		DateTime validStartTime = UI_DATE_FORMAT.parseDateTime(currentJourney.validStartTimeString);
@@ -43,14 +48,14 @@ class JourneyController {
 			}
 			else {
 				log.warn 'Error in command : ' + params
-				redirect(controller: 'staticPage', action: "search")
+				redirect(controller: 'userSession', action: "search")
 			}
 		}
 		else {
 			currentJourney.errors.rejectValue("travelDateString", "invalid.travel.date", [message(code: 'travel.date', default: 'Travel Date')] as Object[],
                           "Invalid travel date")
 			log.warn 'Error in command travel dates : ' + params
-			redirect(controller: 'staticPage', action: "search")
+			redirect(controller: 'userSession', action: "search")
 		}
 	}
 	
