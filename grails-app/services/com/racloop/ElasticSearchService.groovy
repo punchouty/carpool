@@ -27,6 +27,7 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder
 import org.elasticsearch.search.sort.SortBuilders
 import org.elasticsearch.search.sort.SortOrder
 
+import com.racloop.elasticsearch.IndexDefinitor
 import com.racloop.workflow.JourneyWorkflow
 
 
@@ -91,24 +92,8 @@ class ElasticSearchService {
 		//Create indexes for past week and future week
 		for (int i = 0; i < 10; i++) {
 			String indexName = getIndexName(date)
-			boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
-			if(isIndexExists) {
-				log.info "Index name : ${indexName} already exists"
-			}
-			else {
-				log.info "Started creating Index name : ${indexName}"
-				node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
-				log.info "Index name : ${indexName} created successfuly"
-				log.info "Started creating type : ${TYPE_DRIVER} for index : ${indexName}"
-				def builder = createMainIndexJson(TYPE_DRIVER)
-				node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_DRIVER).setSource(builder).execute().actionGet();
-				log.info "Type : ${TYPE_DRIVER} for index : ${indexName} created successfully"
-	
-				log.info "Started creating type : ${TYPE_DRIVER} for index : ${indexName}"
-				builder = createMainIndexJson(TYPE_RIDER)
-				node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_RIDER).setSource(builder).execute().actionGet();
-				log.info "Type : ${TYPE_RIDER} for index : ${indexName} created successfully"
-			}
+			IndexDefinitor indexDefinitor = new IndexDefinitor()
+			indexDefinitor.createMainIndex(node, indexName)
 			date = date.next()
 		}		
 	}
@@ -137,17 +122,8 @@ class ElasticSearchService {
 	def createMasterLocationIndexIfNotExists() {
 		String indexName = grailsApplication.config.grails.masterData.places.index.name
 		String indexType = grailsApplication.config.grails.masterData.places.index.type
-		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
-		if(isIndexExists) {
-			log.info "Index name : ${indexName} already exists"
-		}
-		else {
-			log.info "Started creating master location Index name : ${indexName}"
-			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
-			def builder = createLocationMasterIndexJson();
-			node.client.admin().indices().preparePutMapping(indexName).setType(indexType).setSource(builder).execute().actionGet();
-			log.info "Master location index name : ${indexName} created successfuly"
-		}
+		IndexDefinitor indexDefinitor = new IndexDefinitor()
+		indexDefinitor.createMasterLocationIndex(node, indexName, indexType)
 	}
 	
 	/**
@@ -155,118 +131,10 @@ class ElasticSearchService {
 	 */
 	def createGeneratedDataIndexIfNotExists() {
 		String indexName = grailsApplication.config.grails.generatedData.index.name
-		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
-		if(isIndexExists) {
-			log.info "Index name : ${indexName} already exists"
-		}
-		else {
-			log.info "Started creating Dummy Index name : ${indexName}"
-			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
-			log.info "Dummy Index name : ${indexName} created successfuly"
-			log.info "Started creating type : ${TYPE_DRIVER} for Dummy index : ${indexName}"
-			def builder = createGeneratedDataJson(TYPE_DRIVER)
-			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_DRIVER).setSource(builder).execute().actionGet();
-			log.info "Type : ${TYPE_DRIVER} for Dummy index : ${indexName} created successfully"
-
-			log.info "Started creating type : ${TYPE_DRIVER} for Dummy index : ${indexName}"
-			builder = createGeneratedDataJson(TYPE_RIDER)
-			node.client.admin().indices().preparePutMapping(indexName).setType(TYPE_RIDER).setSource(builder).execute().actionGet();
-			log.info "Type : ${TYPE_RIDER} for Dummy index : ${indexName} created successfully"
-		}
+		IndexDefinitor indexDefinitor = new IndexDefinitor()
+		indexDefinitor.createGeneratedDataIndex(node, indexName)
 	}
 
-	private def createMainIndexJson(String type) {
-		XContentBuilder builder = XContentFactory.jsonBuilder().
-		startObject().
-			startObject(type).
-				startObject("properties").
-					startObject("user").
-					field("type", "string").field("index", "not_analyzed").
-					endObject().
-					startObject("name").
-					field("type", "string").field("index", "not_analyzed").
-					endObject().
-					startObject("isMale").
-					field("type", "boolean").
-					endObject().
-					startObject("dateOfJourney").
-					field("type", "date").
-					endObject().
-					startObject("fromPlace").
-					field("type", "string").field("index", "not_analyzed").
-					endObject().
-					startObject("from").
-					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
-					endObject().
-					startObject("toPlace").
-					field("type", "string").field("index", "not_analyzed").
-					endObject().
-					startObject("to").
-					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
-					endObject().
-					startObject("requesterIp").
-					field("type", "ip").
-					endObject().
-					startObject("createdDate").
-					field("type", "date").
-					endObject().
-				endObject().
-			endObject().
-		endObject();
-		return builder;
-	}
-
-	private def createGeneratedDataJson(String type) {
-		XContentBuilder builder = XContentFactory.jsonBuilder().
-		startObject().
-			startObject(type).
-				startObject("properties").
-					startObject("name").
-					field("type", "string").field("index", "not_analyzed").
-					endObject().
-					startObject("isMale").
-					field("type", "boolean").
-					endObject().
-					startObject("dateOfJourney").
-					field("type", "date").
-					endObject().
-					startObject("fromPlace").
-					field("type", "string").field("index", "not_analyzed").
-					endObject().
-					startObject("from").
-					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
-					endObject().
-					startObject("toPlace").
-					field("type", "string").field("index", "not_analyzed").
-					endObject().
-					startObject("to").
-					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
-					endObject().
-					startObject("createdDate").
-					field("type", "date").
-					endObject().
-				endObject().
-			endObject().
-		endObject();
-		return builder;
-	}
-
-	private def createLocationMasterIndexJson() {
-		XContentBuilder builder = XContentFactory.jsonBuilder().
-		startObject().
-			startObject(grailsApplication.config.grails.masterData.places.index.type).
-				startObject("properties").
-					startObject("name").
-					field("type", "string").
-					endObject().
-					startObject("location").
-					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
-					endObject().
-				endObject().
-			endObject().
-		endObject();
-		return builder;
-	}
 
 	private def createJourneyJson(User user, JourneyRequestCommand journey) {
 		GeoPoint from = new GeoPoint(journey.fromLatitude, journey.fromLongitude)
@@ -535,68 +403,9 @@ class ElasticSearchService {
 	}
 	
 	def createWorkflowIndex() {
-		String indexName = "workflow"
-		boolean isIndexExists = node.client.admin().indices().prepareExists(indexName).execute().actionGet().isExists();
-		if(isIndexExists) {
-			log.info "Index name : ${indexName} already exists"
-		}
-		else {
-			log.info "Started creating Index name : ${indexName}"
-			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
-			log.info "Index name : ${indexName} created successfuly"
-			def builder = createWorkflowIndexJson()
-			node.client.admin().indices().preparePutMapping(indexName).setType(WORKFLOW).setSource(builder).execute().actionGet();
-			
-		}
+		IndexDefinitor indexDefinitor = new IndexDefinitor()
+		indexDefinitor.createWorkflowIndex(node, WORKFLOW.toLowerCase())
 
-	}
-
-	
-	private def createWorkflowIndexJson(String indexName) {
-		XContentBuilder builder = XContentFactory.jsonBuilder().
-				startObject().
-					startObject(WORKFLOW).
-						startObject("properties").
-							startObject("requestJourneyId").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("requestedFromPlace").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("requestedToPlace").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("requestUser").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("requestedDateTime").
-								field("type", "date").
-							endObject().
-							startObject("state").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("matchedJourneyId").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("matchedFromPlace").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("matchedToPlace").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("matchingUser").
-								field("type", "string").field("index", "not_analyzed").
-							endObject().
-							startObject("matchedDateTime").
-								field("type", "date").
-							endObject().
-							startObject("isRequesterDriving").
-								field("type", "boolean").
-							endObject().
-						endObject().
-					endObject().
-				endObject();
-		return builder;
 	}
 	
 	def indexWorkflow(JourneyWorkflow workflow) {
@@ -702,6 +511,4 @@ class ElasticSearchService {
 		workflow.isRequesterDriving = searchHit.getSource().get('isRequesterDriving');
 		return workflow
 	}
-	
-	
 }
