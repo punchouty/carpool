@@ -26,7 +26,7 @@ class StaticDataController {
             return
         }
 
-        flash.message = message(code: 'default.created.message', args: [message(code: 'staticData.label', default: 'StaticData'), staticDataInstance.id])
+        flash.message = "Page ${staticDataInstance?.key} updated successfully"
         redirect(action: "show", id: staticDataInstance.id)
     }
 
@@ -77,7 +77,7 @@ class StaticDataController {
             return
         }
 
-        flash.message = message(code: 'default.updated.message', args: [message(code: 'staticData.label', default: 'StaticData'), staticDataInstance.id])
+        flash.message = "Page <strong>${staticDataInstance?.key}</strong> updated successfully"
         redirect(action: "show", id: staticDataInstance.id)
     }
 

@@ -44,9 +44,11 @@ class BootStrap {
 			log.info("Master data for places created successfully in Elasticsearch")
 		}
 		
-		if (Environment.current == Environment.DEVELOPMENT) {
-            intializeStaticData()
-        }
+		intializeStaticData();
+		
+//		if (Environment.current == Environment.DEVELOPMENT) {
+//            intializeStaticData()
+//        }
     }
 	
     def destroy = {

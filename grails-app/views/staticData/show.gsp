@@ -1,63 +1,55 @@
-
 <%@ page import="com.racloop.staticdata.StaticData" %>
 <%@ page import="grails.plugin.nimble.core.AdminsService"%>
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main">
+		<meta name="layout" content="static">
 		<g:set var="entityName" value="${message(code: 'staticData.label', default: 'StaticData')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<a href="#show-staticData" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-		<div class="nav" role="navigation">
-			<ul>
-				<li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-				<li><g:link class="list" action="list"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-				<n:isLoggedIn>
-				<n:hasRole name="${AdminsService.ADMIN_ROLE}">
-					<li><g:link class="create" action="create"><g:message code="default.new.label" args="[entityName]" /></g:link></li>
-				</n:hasRole>
-				</n:isLoggedIn>
-			</ul>
-		</div>
-		<div id="show-staticData" class="content scaffold-show" role="main">
-			<h1><g:message code="default.show.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
+		<div class="row">
+			<g:if test="${flash.message != null && flash.message.length() > 0}">
+				<div id="flash-message" class="alert alert-info">
+			         <a class="close" data-dismiss="alert" href="#">×</a>
+			         <h4>Success!</h4>
+			         <n:flashembed/>            
+			     </div>
 			</g:if>
-			<ol class="property-list staticData">
-			
-				<g:if test="${staticDataInstance?.data}">
-				<li class="fieldcontain">
-					<span id="data-label" class="property-label"><g:message code="staticData.data.label" default="Data" /></span>
-					
-						<span class="property-value" aria-labelledby="data-label"><g:fieldValue bean="${staticDataInstance}" field="data"/></span>
-					
-				</li>
-				</g:if>
-			
-				<g:if test="${staticDataInstance?.key}">
-				<li class="fieldcontain">
-					<span id="key-label" class="property-label"><g:message code="staticData.key.label" default="Key" /></span>
-					
-						<span class="property-value" aria-labelledby="key-label"><g:fieldValue bean="${staticDataInstance}" field="key"/></span>
-					
-				</li>
-				</g:if>
-			
-			</ol>
-			<n:isLoggedIn>
-				<n:hasRole name="${AdminsService.ADMIN_ROLE}">
-					<g:form>
-						<fieldset class="buttons">
-							<g:hiddenField name="id" value="${staticDataInstance?.id}" />
-							<g:link class="edit" action="edit" id="${staticDataInstance?.id}"><g:message code="default.button.edit.label" default="Edit" /></g:link>
-							<g:actionSubmit class="delete" action="delete" value="${message(code: 'default.button.delete.label', default: 'Delete')}" onclick="return confirm('${message(code: 'default.button.delete.confirm.message', default: 'Are you sure?')}');" />
-						</fieldset>
-					</g:form>
-				</n:hasRole>
-			</n:isLoggedIn>
+			<g:hasErrors bean="${staticDataInstance}">
+				<div id="flash-error" class="alert alert-error">
+					<a class="close" data-dismiss="alert" href="#">×</a>
+					<h4>Error!</h4>
+					<g:renderErrors bean="${staticDataInstance}" as="list" />
+				</div>
+			</g:hasErrors>	
+		</div>
+		<div class="row">		    
+			<g:form action="edit"  class="form-horizontal">
+			<g:hiddenField name="id" value="${staticDataInstance?.id}" />
+			<g:hiddenField name="version" value="${staticDataInstance?.version}" />
+			<fieldset>
+			    <legend>Static Html Page</legend>
+			    <div class="control-group">
+		         	 <label class="control-label">Page Name</label>
+		             <div class="controls">
+		                 <strong>${staticDataInstance?.key}</strong>
+					 </div> 
+				</div>
+				 <div class="control-group">
+		              	<label class="control-label" for="key">Page Content</label>
+		                  <div class="controls">
+		                      <g:textArea name="key" value="${staticDataInstance?.data}" required="" readonly="" style="margin: 0px; width: 650px; height: 300px; overflow-x: auto; overflow-y: auto;"/>
+							  <p id="content-help-block" class="help-block"></p>
+		                  </div>
+				 </div>
+				 <br />
+                <div>
+                	<g:submitButton name="edit" value="Edit" class="btn btn-large btn-info" />
+                	<g:link class="btn btn-large btn-info" action="list" class="btn btn-large">All Pages</g:link>
+				</div>
+			</fieldset>
+			</g:form>
 		</div>
 	</body>
 </html>

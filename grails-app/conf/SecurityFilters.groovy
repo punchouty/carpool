@@ -37,5 +37,9 @@ class SecurityFilters extends NimbleFilterBase {
 		accountsecure(controller: "userSession", action: "(changePassword|updatePassword|changedPassword|profile)") {
 			before = { accessControl { true } }
 		}
+		
+//		otheradminsecure(controller: "staticData|sampleData") {
+//			accessControl { role(AdminsService.ADMIN_ROLE) }
+//		}
 	}
 }

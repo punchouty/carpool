@@ -68,10 +68,10 @@
 						  <ul class="dropdown-menu">
 						    <n:hasRole name="${AdminsService.ADMIN_ROLE}">
 							<li>
-								<g:link controller="admins" action="index">Admin Functions</g:link>
+								<g:link controller="admins" action="index" target="_blank">User Administration</g:link>
 							</li>
 							<li>
-								<g:link controller="staticData" action="list">Update Static</g:link>
+								<g:link controller="staticData" action="list">Static Pages</g:link>
 							</li>
 							</n:hasRole>
 							<li>
