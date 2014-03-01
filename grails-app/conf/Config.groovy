@@ -66,9 +66,9 @@ grails.hibernate.cache.queries = false
 //******************************************************************************************//
 
 // Below configuration after cleaning c:\\data
-//grails.startup.elasticsearch.index.create = true
-//grails.startup.sampleUsers.create = true
-//grails.startup.masterData.places.create = true
+grails.startup.elasticsearch.index.create = true
+grails.startup.sampleUsers.create = true
+grails.startup.masterData.places.create = true
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
 //grails.startup.sampleUsers.create = false
@@ -115,7 +115,7 @@ log4j = {
     // Example of changing the log pattern for the default console appender:
     //
 	
-	debug "grails.app"
+	info "grails.app"
 	
     appenders {
         console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')

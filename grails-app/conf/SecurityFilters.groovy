@@ -25,7 +25,7 @@ import grails.plugin.nimble.security.NimbleFilterBase
 class SecurityFilters extends NimbleFilterBase {
 
 	def filters = {		
-		journeysecure(controller: "journey") {
+		journeysecure(controller: "journey", action: "(newJourney|requestService|getWorkflow)") {
 			before = { accessControl { true } }
 		}
 		

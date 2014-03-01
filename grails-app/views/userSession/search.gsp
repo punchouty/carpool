@@ -32,7 +32,7 @@
 
 	<div id="main-controls">
 		<g:form name="search-form" controller="journey" action="findMatching" class="form-inline">
-			<div id="travelDateDiv" class="controls input-append date form_datetime" data-date-format="dd-MM-yyyy-HH:ii p" data-link-field="dtp_input1">
+			<div id="travelDateDiv" class="controls input-append date form_datetime" data-date-format="dd MM yyyy    HH:ii P" data-link-field="dtp_input1">
 				<input id="dateOfJourneyString" name="dateOfJourneyString" size="16" type="text" value="" placeholder="Date and Time"  autocomplete="off" readonly>
 				<span class="add-on"><i class="icon-th"></i></span>
 				<input type="hidden" id="dtp_input1" value="" />

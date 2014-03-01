@@ -8,7 +8,7 @@ import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
 class JourneyController {
 	
-	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern("dd-MMMM-yyyy-hh:mm a");
+	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMM yyyy    hh:mm a");
 	def grailsApplication
 	def journeyService
 	def journeyWorkflowService

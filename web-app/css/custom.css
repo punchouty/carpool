@@ -54,6 +54,9 @@ body {
 .search-field {
 	width: 150px
 }
+#dateOfJourneyString {
+    background:none;            
+}
 
 .map_canvas img {
 	max-width: none !important;
@@ -62,7 +65,6 @@ body {
 .logo-link:hover {
 	text-decoration: none;
 }
-
 .site-footer {
 	position: relative;
 	margin-top: 20px;

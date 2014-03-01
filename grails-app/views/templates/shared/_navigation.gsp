@@ -38,7 +38,7 @@
 				</g:if>
 				<input type="hidden" name="targetUri" value="${targetUri}" />
 			</g:form>
-			<g:link controller="staticPage" action="home" class="logo-link"><h1 class="muted">raC looP</h1></g:link>
+			<a href="${request.contextPath}" class="logo-link"><h1 class="muted">raC looP</h1></a>
 		</div>
 		</n:isNotLoggedIn>
 		<n:isLoggedIn>
@@ -84,33 +84,9 @@
 								<a href="${request.contextPath}/signout">Sign Out</a>
 							</li>
 						  </ul>
-						<%-- 
-						<a class="btn btn-success dropdown-toggle" data-toggle="dropdown" href="#"> 
-							${currentUser.profile.fullName}&nbsp;<i	class="icon-user"></i> <b class="caret"></b>
-						</a>
-						<ul class="dropdown-menu">
-							<n:hasRole name="${AdminsService.ADMIN_ROLE}">
-							<li>
-								<g:link controller="admins" action="index">Admin Functions</g:link>
-							</li>
-							<li>
-								<g:link controller="staticData" action="list">Update Static</g:link>
-							</li>
-							</n:hasRole>
-							<li>
-								<a href="${request.contextPath}/profile">Profile</a>
-							</li>
-							<li>
-								<a href="${request.contextPath}/password/change">Change Password</a>
-							</li>
-							<li>
-								<a href="${request.contextPath}/signout">Sign Out</a>
-							</li>
-						</ul>
-						--%>
 					</div>
 				</li>		
 			</ul>
-			<g:link controller="staticPage" action="home" class="logo-link"><h1 class="muted">raC looP</h1></g:link>
+			<a href="${request.contextPath}" class="logo-link"><h1 class="muted">raC looP</h1></a>
 		</div>
 		</n:isLoggedIn>
