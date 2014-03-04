@@ -21,8 +21,8 @@
 		value="${UserBase.get(SecurityUtils.subject.principal)}" />
 	<div class="container-narrow">
 		<g:render template="/templates/shared/navigation" />	
-		<hr>		
-			
+		<hr>
+		
 		<g:layoutBody />
 		
 
@@ -55,5 +55,28 @@
 	<r:layoutResources />
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places"></script>
 	<script src="${resource(dir: 'js', file: 'map.js')}" ></script>
+	<g:if env="development">
+		<script>
+			$(function() {
+				/* */
+				$('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Hard coding</h4><p>Please comment or change java script code in main.gsp layout</p></div>').insertAfter("hr");
+				var now = new Date();
+				var reserveTime = 30;//in minutes
+				var timeToJourneyFromNow = 90;//in minutes
+				var timeLimitInDays = 7;//in days
+				var validStartTime = new Date(now.getTime() + reserveTime * 60000);
+				var dateOfJourney = new Date(now.getTime() + timeToJourneyFromNow * 60000);
+				var initialTime = new Date(now.getTime() + (reserveTime + 15) * 60000);
+				var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);							
+				$('#dateOfJourneyString').val(dateOfJourney.toString('dd MMMM yyyy    hh:mm tt'));
+				$('#validStartTimeString').val(validStartTime.toString('dd MMMM yyyy    hh:mm tt'));	
+
+				var from = new google.maps.LatLng(28.6352494, 77.22443450000003);//delhi
+				var to = new google.maps.LatLng(30.7333038, 76.77938949999998);//chandigarh
+				calcRoute(from, to);
+				/* */
+			});
+		</script>
+	</g:if>
 </body>
 </html>

@@ -19,7 +19,8 @@ class BootStrap {
 	def nimbleService
 	def userService
 	def adminsService
-	
+	def sampleDataService
+		
     def init = { servletContext ->
 		internalBootStap(servletContext)
 		createRequiredUsers()
@@ -46,9 +47,10 @@ class BootStrap {
 		
 		intializeStaticData();
 		
-//		if (Environment.current == Environment.DEVELOPMENT) {
-//            intializeStaticData()
-//        }
+		if (Environment.current == Environment.DEVELOPMENT) {
+			log.info("Populating Sample Data");
+			sampleDataService.populateSampleData();
+        }
     }
 	
     def destroy = {

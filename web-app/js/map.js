@@ -190,9 +190,9 @@ var reserveTime = 30;//in minutes
 var timeLimitInDays = 7;//in days
 var validStartTime = new Date(now.getTime() + reserveTime * 60000);
 var initialTime = new Date(now.getTime() + (reserveTime + 15) * 60000);
-console.log(validStartTime);
+//console.log(validStartTime);
 var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);
-console.log(validEndTime);
+//console.log(validEndTime);
 
 //Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
 //This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp

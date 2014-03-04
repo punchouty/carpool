@@ -1,6 +1,6 @@
 		<%@ page import="grails.plugin.nimble.core.AdminsService"%>
 		<n:isNotLoggedIn>
-		<div class="nav-collapse collapse">
+		<div id='navigation' class="nav-collapse collapse">
 			<g:form controller="auth" action="signin" name="login-form" method="post"
 				class="navbar-form form-inline pull-right">
 				<input type="text" name="username" id="navigation.username" class="input-small"
@@ -42,7 +42,7 @@
 		</div>
 		</n:isNotLoggedIn>
 		<n:isLoggedIn>
-		<div class="masthead">
+		<div id='navigation' class="masthead">
 			<ul class="nav nav-pills pull-right">
 				<li	<g:if test="${isHome == 'true'}">class="active"</g:if>>
 					<a href="${request.contextPath}">Home</a>

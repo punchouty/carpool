@@ -15,7 +15,7 @@
 			on <strong><g:formatDate format="dd MMM HH:mm" date="${currentJourney.dateOfJourney}"/></strong> 
 		</div>
 		<div class="span3">
-			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<g:link controller="staticPage" action="search" class="btn">Cancel</g:link>
+			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<a href="${request.contextPath}" class="btn">Cancel</a>
 		</div>
 	</div>
 	<g:if test="${isDummyData}">

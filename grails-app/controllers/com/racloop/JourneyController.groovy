@@ -11,7 +11,7 @@ class JourneyController {
 	// Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
 	// This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
 	// This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
-	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMM yyyy    hh:mm a");
+	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMM yyyy    HH:mm a");
 	def grailsApplication
 	def journeyService
 	def journeyWorkflowService
@@ -111,6 +111,10 @@ class JourneyController {
 		def currentUser = getAuthenticatedUser()
 		def workflows = journeyWorkflowService.searchWorkflowRequestedByUser(currentUser)
 		render workflows as JSON
+	}
+	
+	def selectedJourney(){
+		
 	}
 	
 }
