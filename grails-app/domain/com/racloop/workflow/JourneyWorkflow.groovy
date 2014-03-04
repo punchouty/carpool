@@ -3,6 +3,7 @@ package com.racloop.workflow
 
 class JourneyWorkflow {
 	
+	UUID id
 	String requestJourneyId
 	String requestedFromPlace
 	String requestedToPlace
@@ -20,6 +21,11 @@ class JourneyWorkflow {
 		
 		state inList : ['Initiated', 'Accepted', 'Rejected', 'Cancelled']
     }
+	
+	static mapping = {
+		id generator:'assigned' //disable primary key generation
+	}
+
 	
 	static mapWith = "none"
 	

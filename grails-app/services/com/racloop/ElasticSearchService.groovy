@@ -66,7 +66,7 @@ class ElasticSearchService {
 	}
 
 	def indexGeneratedJourney(User user, JourneyRequestCommand journey) {
-		String id = System.currentTimeMillis()+"";
+		String id = UUID.randomUUID().toString()
 		String indexName = grailsApplication.config.grails.generatedData.index.name
 		log.debug "Adding generated record to elastic search ${journey}"
 		def sourceBuilder = createdGeneratedJourneyJson(user, journey)
@@ -373,7 +373,7 @@ class ElasticSearchService {
 
 	private JourneyRequestCommand parseJourneyFromSearchHit(SearchHit searchHit) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
-		journeyTemp.id = new Long(searchHit.id)
+		journeyTemp.id = searchHit.id
 		journeyTemp.user = searchHit.getSource().get('user');
 		journeyTemp.name = searchHit.getSource().get('name');
 		String dateStr = searchHit.getSource().get('dateOfJourney');
@@ -389,7 +389,7 @@ class ElasticSearchService {
 	
 	private JourneyRequestCommand parseJourneyFromGetResponse(GetResponse getResponse) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
-		journeyTemp.id = new Long(getResponse.id)
+		journeyTemp.id = getResponse.id
 		journeyTemp.user = getResponse.getSource().get('user');
 		journeyTemp.name = getResponse.getSource().get('name');
 		String dateStr = getResponse.getSource().get('dateOfJourney');
@@ -432,7 +432,7 @@ class ElasticSearchService {
 	def indexWorkflow(JourneyWorkflow workflow) {
 		log.info "Adding record to elastic search ${workflow}"
 		def sourceBuilder = createWorkflowJson(workflow)
-		IndexRequest indexRequest = new IndexRequest('workflow', WORKFLOW).id(workflow.id + '').source(sourceBuilder);
+		IndexRequest indexRequest = new IndexRequest('workflow', WORKFLOW).id(workflow.id.toString()).source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
 		log.info "Successfully indexed ${workflow}"
 	}
@@ -517,7 +517,7 @@ class ElasticSearchService {
 	
 	private JourneyWorkflow parseWorkflowFromSearchHit(SearchHit searchHit) {
 		JourneyWorkflow workflow = new JourneyWorkflow();
-		workflow.id = new Long(searchHit.id)
+		workflow.id = searchHit.id
 		workflow.requestJourneyId = searchHit.getSource().get('requestJourneyId');
 		workflow.requestedDateTime= searchHit.getSource().get('requestedDateTime');
 		workflow.requestedFromPlace = searchHit.getSource().get('requestedFromPlace');

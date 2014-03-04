@@ -15,7 +15,7 @@ class JourneyManagerService {
 		journey.isDriver = command.isDriver
 		if(journeyService.saveJourney(journey)) {
 			log.info("Journey created with id ${journey.id}")
-			command.id = journey.id
+			command.id = journey.id.toString()
 			command.isSaved = true
 			elasticSearchService.indexJourney(user, command);
 			jmsService.send(queue: Constant.HISTORY_QUEUE, command.id);

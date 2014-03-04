@@ -96,6 +96,12 @@ class JourneyController {
 		def currentUser = getAuthenticatedUser()
 		def matchedJourneyId = params.matchedJourneyId
 		boolean isDummy =params.dummy
+		if(!currentJourney.user) {
+			currentJourney.user = currentUser.username
+			currentJourney.name = currentUser.profile.fullName
+			currentJourney.isMale = currentUser.profile.isMale
+			session.currentJourney = currentJourney
+		}
 		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
 		def workflow = journeyWorkflowService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
 		render workflow as JSON
@@ -111,8 +117,8 @@ class JourneyController {
 
 class JourneyRequestCommand {
 	
-	Long id;//will be assigned later
 	String user
+	String id;//will be assigned later
 	String name; //Should get from user. 
 	Boolean isMale; //Should get from user.
 	String dateOfJourneyString; //date as string

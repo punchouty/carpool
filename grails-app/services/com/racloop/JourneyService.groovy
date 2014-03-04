@@ -119,7 +119,7 @@ class JourneyService {
 					journey.toLatitude = toPlace.location.lat();
 					journey.toLongitude = toPlace.location.lon();
 					journey.toPlace = toPlace.name
-					journey.id = new Long(elasticSearchService.indexGeneratedJourney(user, journey))
+					journey.id = elasticSearchService.indexGeneratedJourney(user, journey)
 					journeys << journey
 					index++
 				}

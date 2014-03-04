@@ -1,14 +1,5 @@
 package com.racloop.workflow
 
-import org.elasticsearch.action.search.SearchResponse
-import org.elasticsearch.action.search.SearchType
-import org.elasticsearch.index.query.FilterBuilder
-import org.elasticsearch.index.query.FilterBuilders
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.indices.IndexMissingException
-import org.elasticsearch.search.SearchHit
-import org.elasticsearch.search.SearchHits
-
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 
@@ -62,7 +53,7 @@ class JourneyWorkflowService {
 		workflow.matchedDateTime = matchedJourney.dateOfJourneyString
 		workflow.isRequesterDriving = requestedJourney.isDriver
 		if(workflow.validate()) {
-			workflow.id = System.currentTimeMillis()
+			workflow.id = UUID.randomUUID()
 			return workflow
 		}
 		else {
