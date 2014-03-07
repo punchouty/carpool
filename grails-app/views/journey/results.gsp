@@ -38,11 +38,27 @@
 						<td id="${i}_from">${journeyInstance.fromPlace}</td>
 						<td id="${i}_to">${journeyInstance.toPlace}</td>		
 						<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
-						<g:if test="${currentJourney.isDriver}">
-							<td><g:link action="requestService" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:true]" class="btn btn-success">Ask for Drive</g:link></td>		
+						<g:if test = "${session?.selectedJourneysMap?.get(currentJourney.id)?.contains(journeyInstance.id)}">
+							<td>
+							<div class="btn-group">
+								<button class="btn btn-primary">Requested</button>
+								<button class="btn btn-primary dropdown-toggle"
+									data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="driver" href="#">Cancel</a></li>
+								</ul>
+							</div>
+							</td>
 						</g:if>
 						<g:else>
-							<td><g:link action="requestService" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:true]" class="btn btn-success">Request a Ride</g:link></td>
+							<g:if test="${currentJourney.isDriver}">
+								<td><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:true]" class="btn btn-success">Ask for Drive</g:link></td>		
+							</g:if>
+							<g:else>
+								<td><g:link action="selectedJourney" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:true]" class="btn btn-success">Request a Ride</g:link></td>
+							</g:else>
 						</g:else>
 						<input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">
 						<input type="hidden" id="${i}_from_longitude" value="${journeyInstance.fromLongitude}">
@@ -80,11 +96,27 @@
 					<td>${journeyInstance.fromPlace}</td>
 					<td>${journeyInstance.toPlace}</td>		
 					<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
-					<g:if test="${currentJourney.isDriver}">
-					<td><g:link action="requestService" id="${journeyInstance.id}" params="[matchedJourneyId: journeyInstance.id]" class="btn btn-success">Request<%-- Ask for Drive --%></g:link></td>		
+					<g:if test = "${session?.selectedJourneysMap?.get(currentJourney.id)?.contains(journeyInstance.id)}">
+							<td>
+							<div class="btn-group">
+								<button class="btn btn-primary">Requested</button>
+								<button class="btn btn-primary dropdown-toggle"
+									data-toggle="dropdown">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li><a id="driver" href="#">Cancel</a></li>
+								</ul>
+							</div>
+							</td>
 					</g:if>
 					<g:else>
-						<td><g:link action="requestService" id="${journeyInstance.id}" params="[matchedJourneyId: journeyInstance.id]" class="btn btn-success">Request<%--Request a Ride --%></g:link></td>
+						<g:if test="${currentJourney.isDriver}">
+						<td><g:link action="selectedJourney" id="${journeyInstance.id}" params="[matchedJourneyId: journeyInstance.id]" class="btn btn-success">Request<%-- Ask for Drive --%></g:link></td>		
+						</g:if>
+						<g:else>
+							<td><g:link action="selectedJourney" id="${journeyInstance.id}" params="[matchedJourneyId: journeyInstance.id]" class="btn btn-success">Request<%--Request a Ride --%></g:link></td>
+						</g:else>
 					</g:else>	
 				</tr>
 			</g:each>

@@ -70,6 +70,16 @@ class JourneyService {
 		return journeys;
 	}
 	
+	def searchPossibleExistingJourneyForUser(User user, JourneyRequestCommand journey) {
+		def journeys = elasticSearchService.searchPossibleExistingJourneyForUser(user, journey);
+		if(journeys) {
+			return journeys.first()
+		}
+		else {
+			return null
+		}
+	}
+	
 	def getDummyData(User user, JourneyRequestCommand command) {
 		DateTime tempDate = new DateTime(command.dateOfJourney);
 		if(Environment.current.getName() == "production") {
@@ -119,6 +129,7 @@ class JourneyService {
 					journey.toLatitude = toPlace.location.lat();
 					journey.toLongitude = toPlace.location.lon();
 					journey.toPlace = toPlace.name
+					journey.tripDistance = command.tripDistance
 					journey.id = elasticSearchService.indexGeneratedJourney(user, journey)
 					journeys << journey
 					index++

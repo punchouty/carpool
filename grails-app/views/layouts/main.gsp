@@ -68,8 +68,8 @@
 				var dateOfJourney = new Date(now.getTime() + timeToJourneyFromNow * 60000);
 				var initialTime = new Date(now.getTime() + (reserveTime + 15) * 60000);
 				var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);							
-				$('#dateOfJourneyString').val(dateOfJourney.toString('dd MMMM yyyy    hh:mm tt'));
-				$('#validStartTimeString').val(validStartTime.toString('dd MMMM yyyy    hh:mm tt'));	
+				$('#dateOfJourneyString').val(dateOfJourney.toString('dd MMMM yyyy    HH:mm tt'));
+				$('#validStartTimeString').val(validStartTime.toString('dd MMMM yyyy    HH:mm tt'));	
 
 				var from = new google.maps.LatLng(28.6352494, 77.22443450000003);//delhi
 				var to = new google.maps.LatLng(30.7333038, 76.77938949999998);//chandigarh

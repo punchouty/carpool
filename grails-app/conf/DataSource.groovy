@@ -15,6 +15,7 @@ environments {
         dataSource {
             dbCreate = "update" //"create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
 			url = "jdbc:h2:file:C:/data/h2/racloop;MVCC=TRUE;LOCK_TIMEOUT=10000"
+			loggingSql = true
 //			driverClassName = "com.mysql.jdbc.Driver"
 //			url = "jdbc:mysql://localhost/racloop"
 //			username = "root"

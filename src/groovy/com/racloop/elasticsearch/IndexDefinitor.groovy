@@ -167,6 +167,9 @@ class IndexDefinitor {
 					startObject("createdDate").
 					field("type", "date").
 					endObject().
+					startObject("tripDistance").
+					field("type", "double").
+					endObject().
 				endObject().
 			endObject().
 		endObject();
@@ -218,6 +221,9 @@ class IndexDefinitor {
 					endObject().
 					startObject("createdDate").
 					field("type", "date").
+					endObject().
+					startObject("tripDistance").
+					field("type", "double").
 					endObject().
 				endObject().
 			endObject().

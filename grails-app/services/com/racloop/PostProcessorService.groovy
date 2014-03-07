@@ -53,7 +53,7 @@ class PostProcessorService {
 			}
 		}
 		catch(Exception e) {
-			log.error "Problem for hourneyId : ${journeyId} and exception is " + e.getMessage();
+			log.error ("Problem for hourneyId : ${journeyId} and exception is " , e);
 		}
 		log.info "message with journeyId ${journeyId} processed successfully"
 

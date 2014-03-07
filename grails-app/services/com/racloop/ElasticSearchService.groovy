@@ -153,6 +153,7 @@ class ElasticSearchService {
 				field("to", to).
 				//field("requesterIp", journey.ip).
 				field("createdDate", createdDate).
+				field("tripDistance", journey.tripDistance).
 			endObject();
 		return builder;
 	}
@@ -177,6 +178,7 @@ class ElasticSearchService {
 				field("toPlace", journey.toPlace).
 				field("to", to).
 				field("createdDate", createdDate).
+				field("tripDistance", journey.tripDistance).
 			endObject();
 		return builder;
 	}
@@ -247,6 +249,54 @@ class ElasticSearchService {
 		try {			
 			SearchResponse searchResponse = node.client.prepareSearch(indexName)
 				.setTypes(searchTypeOpposite)
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery())             // Query
+				.setFilter(filter)   // Filter
+				.addSort(sorter)
+				.execute()
+				.actionGet();
+			SearchHits searchHits = searchResponse.getHits();
+			SearchHit[] hits = searchHits.hits;
+			for (SearchHit searchHit : hits) {
+				JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
+				journeys << journeyTemp
+			}
+		}
+		catch (IndexMissingException exception) {
+			log.error "Index name ${indexName} does not exists"
+		}
+		return journeys
+	}
+	
+	def searchPossibleExistingJourneyForUser(User user, JourneyRequestCommand journey) {
+		String indexName = getIndexName(journey.dateOfJourney);
+		String searchType = null;
+		if(journey.isDriver) {
+			searchType = TYPE_DRIVER;
+		}
+		else {
+			searchType = TYPE_RIDER;
+		}
+		double filterDistance = 3.0d;
+		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
+		DateTime start = dateOfJourney.minusMinutes(30)
+		DateTime end = dateOfJourney.plusMinutes(30)
+		FilterBuilder filter = null;
+		filter = FilterBuilders.andFilter(
+			//FilterBuilders.limitFilter(10),
+			FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
+			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username))
+			
+		)
+		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
+		sorter.point(journey.fromLatitude, journey.fromLongitude);
+		sorter.order(SortOrder.ASC);
+		def journeys = []
+		try {
+			SearchResponse searchResponse = node.client.prepareSearch(indexName)
+				.setTypes(searchType)
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
 				.setFilter(filter)   // Filter
@@ -374,26 +424,31 @@ class ElasticSearchService {
 	private JourneyRequestCommand parseJourneyFromSearchHit(SearchHit searchHit) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
 		journeyTemp.id = searchHit.id
+		journeyTemp.isDriver = searchHit.type==TYPE_DRIVER?true:false
 		journeyTemp.user = searchHit.getSource().get('user');
 		journeyTemp.name = searchHit.getSource().get('name');
 		String dateStr = searchHit.getSource().get('dateOfJourney');
 		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
-		journeyTemp.dateOfJourneyString = dateStr
 		journeyTemp.dateOfJourney = dateTime.toDate();
 		journeyTemp.fromPlace = searchHit.getSource().get('fromPlace');
 		journeyTemp.toPlace = searchHit.getSource().get('toPlace')
 		journeyTemp.isSaved = true
 		journeyTemp.isMale=searchHit.getSource().get('isMale')
+		journeyTemp.tripDistance=searchHit.getSource().get('tripDistance')
+		journeyTemp.fromLatitude=searchHit.getSource().get('from')?.get("lat")
+		journeyTemp.fromLongitude=searchHit.getSource().get('from')?.get("lon")
+		journeyTemp.toLatitude=searchHit.getSource().get('to')?.get("lat")
+		journeyTemp.toLongitude=searchHit.getSource().get('to')?.get("lon")
 		return journeyTemp
 	}	
 	
 	private JourneyRequestCommand parseJourneyFromGetResponse(GetResponse getResponse) {
 		JourneyRequestCommand journeyTemp = new JourneyRequestCommand();
 		journeyTemp.id = getResponse.id
+		journeyTemp.isDriver = getResponse.type==TYPE_DRIVER?true:false
 		journeyTemp.user = getResponse.getSource().get('user');
 		journeyTemp.name = getResponse.getSource().get('name');
 		String dateStr = getResponse.getSource().get('dateOfJourney');
-		journeyTemp.dateOfJourneyString = dateStr
 		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
 		journeyTemp.dateOfJourney = dateTime.toDate();
 		journeyTemp.isDriver = getResponse.getSource().get('isDriver');
@@ -406,6 +461,12 @@ class ElasticSearchService {
 		journeyTemp.toLatitude = to.lat();
 		journeyTemp.toLongitude = to.lon();
 		journeyTemp.ip = getResponse.getSource().get('ip');
+		journeyTemp.tripDistance=getResponse.getSource().get('tripDistance')
+		journeyTemp.fromLatitude=getResponse.getSource().get('from')?.get("lat")
+		journeyTemp.fromLongitude=getResponse.getSource().get('from')?.get("lon")
+		journeyTemp.toLatitude=getResponse.getSource().get('to')?.get("lat")
+		journeyTemp.toLongitude=getResponse.getSource().get('to')?.get("lon")
+		
 		return journeyTemp
 	}
 
@@ -438,8 +499,8 @@ class ElasticSearchService {
 	}
 	
 	private def createWorkflowJson(JourneyWorkflow workflow) {
-		DateTime requestedDateTime = new DateTime(JourneyController.UI_DATE_FORMAT.parseDateTime(workflow.requestedDateTime))
-		DateTime matchedDateTime = new DateTime(BASIC_DATE_FORMAT.parseDateTime(workflow.matchedDateTime))
+		DateTime requestedDateTime = new DateTime(workflow.requestedDateTime)
+		DateTime matchedDateTime = new DateTime(workflow.matchedDateTime)
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 			startObject().
 				field("requestJourneyId", workflow.requestJourneyId).
@@ -515,11 +576,43 @@ class ElasticSearchService {
 		return workflows
 	}
 	
+	def searchWorkflowByRequestedJourney(JourneyRequestCommand command) {
+		String indexName = WORKFLOW.toLowerCase()
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.termFilter('requestUser', command.user),
+			FilterBuilders.termFilter('requestJourneyId', command.id)
+			//FilterBuilders.termFilter('state', "")
+		)
+		
+		def workflows = []
+		try {
+			SearchResponse searchResponse = node.client.prepareSearch(indexName)
+				.setTypes(WORKFLOW)
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery())             // Query
+				.setFilter(filter)   // Filter
+				.execute()
+				.actionGet();
+			SearchHits searchHits = searchResponse.getHits();
+			SearchHit[] hits = searchHits.hits;
+			for (SearchHit searchHit : hits) {
+				JourneyWorkflow workflow = parseWorkflowFromSearchHit(searchHit);
+				workflows << workflow
+			}
+		}
+		catch (IndexMissingException exception) {
+			log.error "Index name ${indexName} does not exists"
+		}
+		return workflows
+	}
+	
 	private JourneyWorkflow parseWorkflowFromSearchHit(SearchHit searchHit) {
 		JourneyWorkflow workflow = new JourneyWorkflow();
-		workflow.id = searchHit.id
+		String workflowId = searchHit.id
+		workflow.id = UUID.fromString(workflowId)
 		workflow.requestJourneyId = searchHit.getSource().get('requestJourneyId');
-		workflow.requestedDateTime= searchHit.getSource().get('requestedDateTime');
+		String requestedDateTimeStr = searchHit.getSource().get('requestedDateTime');
+		workflow.requestedDateTime = BASIC_DATE_FORMAT.parseDateTime(requestedDateTimeStr).toDate()
 		workflow.requestedFromPlace = searchHit.getSource().get('requestedFromPlace');
 		workflow.requestedToPlace = searchHit.getSource().get('requestedToPlace');
 		workflow.requestUser = searchHit.getSource().get('requestUser');
@@ -528,7 +621,9 @@ class ElasticSearchService {
 		workflow.matchedJourneyId= searchHit.getSource().get('matchedJourneyId');
 		workflow.matchedFromPlace = searchHit.getSource().get('matchedFromPlace');
 		workflow.matchedToPlace = searchHit.getSource().get('matchedToPlace');
-		workflow.matchedDateTime = searchHit.getSource().get('matchedDateTime');
+		String matchedDateTimeStr = searchHit.getSource().get('matchedDateTime');
+		workflow.matchedDateTime = BASIC_DATE_FORMAT.parseDateTime(matchedDateTimeStr).toDate()
+
 		workflow.isRequesterDriving = searchHit.getSource().get('isRequesterDriving');
 		return workflow
 	}

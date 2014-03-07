@@ -1,9 +1,9 @@
 package com.racloop
 
-import org.elasticsearch.common.geo.GeoPoint;
 
 class Journey implements Serializable {
 	
+	//UUID id
 	Boolean isDriver;
 	Date dateOfJourney;
 	Date createdDate = new Date();
@@ -13,6 +13,10 @@ class Journey implements Serializable {
 	static hasMany = {
 		travelRequests : TravelRequest
 	}
+	
+	/*static mapping ={
+		id(generator: "uuid2", type: "uuid-binary", length: 16)
+	}*/
 	
 	String toString(){
 		return "id : ${id} | isDriver : ${isDriver} | date : ${dateOfJourney}";

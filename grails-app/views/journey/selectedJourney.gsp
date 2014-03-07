@@ -111,20 +111,30 @@
                                 
                             </div>
                             <div class="span6">
-                                <strong>Rajan Punchouty</strong><br>
+                            	<g:if test="${matchedUser}">
+                            		<strong>${matchedUser.profile.fullName}</strong><br>
+                            	</g:if>
+                            	<g:else>
+                            		<strong>Rajan Punchouty</strong><br>
+                            	</g:else>
+                                
                                 <table class="table table-condensed table-responsive table-user-information">
                                     <tbody>
                                     <tr>
                                         <td>From : </td>
-                                        <td>154, Connaught Lane, Barakhamba, New Delhi, Delhi 110001, India</td>
+                                        <td>${matchedJourney.fromPlace}</td>
                                     </tr>
                                     <tr>
                                         <td>To : </td>
-                                        <td>Himalaya Marg, 22B, Sector 22, Chandigarh, 160022, India</td>
+                                        <td>${matchedJourney.toPlace}</td>
                                     </tr>
                                     <tr>
                                         <td>Date :</td>
-                                        <td>05 March 2014 08:30 AM</td>
+                                        <td>${matchedJourney.dateOfJourney}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Cost :</td>
+                                        <td>Approximate INR 200</td>
                                     </tr>
                                     <tr>
                                         <td>Rating : </td>
@@ -149,9 +159,11 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                        <button class="btn  btn-primary" type="button"
-                                data-toggle="tooltip"
-                                data-original-title="Send message to user">Send Request <i class="icon-envelope icon-white"></i></button>
+                    	<g:link action="requestService" id="requestService"  params="[matchedJourneyId: matchedJourney.id, dummy:isDummy]">
+	                        <button class="btn  btn-primary" type="button"
+	                                data-toggle="tooltip"
+	                                data-original-title="Send message to user">Send Request <i class="icon-envelope icon-white"></i></button>
+						</g:link>                                
                         <span class="pull-right">
                             <button class="btn btn-warning" type="button"
                                     data-toggle="tooltip"

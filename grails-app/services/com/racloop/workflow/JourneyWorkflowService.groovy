@@ -38,19 +38,32 @@ class JourneyWorkflowService {
 		return elasticSearchService.searchWorkflowRequestedByUser(user)
 	}
 	
+	def getAlreadySelectedJourneyIdsForCurrentJourney(JourneyRequestCommand currentJourney){
+		List selectedJourneyIds = []
+		if(currentJourney.id && currentJourney.isSaved) {
+			def selectedWorkflows = elasticSearchService.searchWorkflowByRequestedJourney(currentJourney)
+			selectedWorkflows.each {it->
+				selectedJourneyIds<<it.matchedJourneyId
+			}
+		}
+		
+		return selectedJourneyIds
+
+	}
+	
 	private JourneyWorkflow createAndSaveWorkflow(JourneyRequestCommand requestedJourney, JourneyRequestCommand matchedJourney){
 		JourneyWorkflow workflow = new JourneyWorkflow()
 		workflow.matchedJourneyId=matchedJourney.id
 		workflow.requestJourneyId=requestedJourney.id
 		workflow.requestedFromPlace = requestedJourney.fromPlace
 		workflow.requestedToPlace = requestedJourney.toPlace
-		workflow.requestedDateTime = requestedJourney.dateOfJourneyString
+		workflow.requestedDateTime = requestedJourney.dateOfJourney
 		workflow.state = INTIIAL_STATE
 		workflow.requestUser = requestedJourney.user
 		workflow.matchingUser = matchedJourney.user
 		workflow.matchedFromPlace = matchedJourney.fromPlace
 		workflow.matchedToPlace = matchedJourney.toPlace
-		workflow.matchedDateTime = matchedJourney.dateOfJourneyString
+		workflow.matchedDateTime = matchedJourney.dateOfJourney
 		workflow.isRequesterDriving = requestedJourney.isDriver
 		if(workflow.validate()) {
 			workflow.id = UUID.randomUUID()

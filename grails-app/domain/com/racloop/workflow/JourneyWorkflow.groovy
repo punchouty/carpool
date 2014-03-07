@@ -8,13 +8,13 @@ class JourneyWorkflow {
 	String requestedFromPlace
 	String requestedToPlace
 	String requestUser
-	String requestedDateTime
+	Date requestedDateTime
 	String state
 	String matchingUser
 	String matchedJourneyId
 	String matchedFromPlace
 	String matchedToPlace
-	String matchedDateTime
+	Date matchedDateTime
 	boolean isRequesterDriving
 
     static constraints = {

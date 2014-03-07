@@ -11,40 +11,25 @@ class JourneyController {
 	// Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
 	// This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
 	// This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
-	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern("dd MMMM yyyy    HH:mm a");
+	public static final String JAVA_DATE_FORMAT = "dd MMMM yyyy    HH:mm a";
+	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern(JAVA_DATE_FORMAT);
 	def grailsApplication
 	def journeyService
 	def journeyWorkflowService
 	def journeyManagerService
 
-    def findMatching(JourneyRequestCommand currentJourney) { 
-		def currentUser = getAuthenticatedUser();
-		boolean isDummyData = false
-		if(currentUser) {
-			currentJourney.user = currentUser.username
-			currentJourney.name = currentUser.profile.fullName
+    def findMatching(JourneyRequestCommand currentJourney) {
+		if(chainModel && chainModel.currentJourney) {
+			currentJourney = chainModel.currentJourney
 		}
+		def currentUser = getAuthenticatedUser();
+		setUserInformation(currentUser,currentJourney )
 		currentJourney.ip = request.remoteAddr
-		DateTime dateOfJourney = UI_DATE_FORMAT.parseDateTime(currentJourney.dateOfJourneyString);
-		DateTime validStartTime = UI_DATE_FORMAT.parseDateTime(currentJourney.validStartTimeString);
-		if(dateOfJourney != null && validStartTime != null && dateOfJourney.isAfter(validStartTime)) {
-			currentJourney.dateOfJourney = dateOfJourney.toDate();	
-			currentJourney.validStartTime = validStartTime.toDate();
+		setDates(currentJourney)
+		if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 			if(currentJourney.validate()) {
-				session.currentJourney = currentJourney
-				def journeys = journeyService.search(currentUser, currentJourney)
-				int numberOfRecords = 0;
-				def names = [];
-				if(journeys.size > 0) {
-					numberOfRecords = journeys.size
-				}
-				else {
-					journeys = journeyService.getDummyData(currentUser, currentJourney)
-					numberOfRecords = journeys.size
-					isDummyData = true;
-				}
-				render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
-				
+				def searchResultMap = getSearchResultMap(currentUser, currentJourney)
+				render(view: "results", model: searchResultMap)
 			}
 			else {
 				log.warn 'Error in command : ' + params
@@ -57,6 +42,78 @@ class JourneyController {
 			log.warn 'Error in command travel dates : ' + params
 			redirect(controller: 'userSession', action: "search")
 		}
+	}
+	
+	private setUserInformation(User currentUser, JourneyRequestCommand currentJourney) {
+		if(currentUser) {
+			currentJourney.user = currentUser.username
+			currentJourney.name = currentUser.profile.fullName
+			currentJourney.isMale = currentUser.profile.isMale
+		}
+	}
+	
+	private setDates(JourneyRequestCommand currentJourney) {
+		if(currentJourney.dateOfJourneyString) {
+			currentJourney.dateOfJourney = UI_DATE_FORMAT.parseDateTime(currentJourney.dateOfJourneyString).toDate()
+		}
+		if(currentJourney.validStartTimeString) {
+			currentJourney.validStartTime = UI_DATE_FORMAT.parseDateTime(currentJourney.validStartTimeString).toDate()
+		}
+		if(!currentJourney.validStartTime) {
+			DateTime currentDate = new DateTime()
+			//TODO - get this Info from config
+			currentDate.plusMinutes(30)
+			currentJourney.validStartTime = currentDate.toDate()
+		}
+	}
+	
+	private getSearchResultMap(User currentUser, JourneyRequestCommand currentJourney) {
+		currentJourney = getExisitngJourneyForUser(currentUser, currentJourney)
+		def selectedJourneyIds = getAlreadySelectedJourneyIdsForCurrentJourney(currentJourney)
+		updateHttpSession(currentJourney,selectedJourneyIds)
+		def matchedJourney = searchJourneys(currentUser, currentJourney)
+		def matchResult =[currentUser: currentUser, currentJourney: currentJourney, journeys : matchedJourney.matchedJourneys, numberOfRecords : matchedJourney.numberOfRecords, isDummyData: matchedJourney.isDummyData]
+		return matchResult
+	}
+	
+	private Map searchJourneys(User currentUser, JourneyRequestCommand currentJourney) {
+		def matchedJourney =[:]
+		boolean isDummyData =false
+		def journeys = journeyService.search(currentUser, currentJourney)
+		int numberOfRecords = 0;
+		if(journeys.size > 0) {
+			numberOfRecords = journeys.size
+		}
+		else {
+			journeys = journeyService.getDummyData(currentUser, currentJourney)
+			numberOfRecords = journeys.size
+			isDummyData = true;
+		}
+		matchedJourney.matchedJourneys = journeys
+		matchedJourney.numberOfRecords = numberOfRecords
+		matchedJourney.isDummyData = isDummyData
+		return matchedJourney
+	}
+	
+	private getExisitngJourneyForUser(User currentUser, JourneyRequestCommand currentJourneyFromWeb) {
+		if(currentUser && !currentJourneyFromWeb.id && !currentJourneyFromWeb.isSaved) {
+			def possibleExisitingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourneyFromWeb)
+			if(possibleExisitingJourney) {
+				currentJourneyFromWeb = possibleExisitingJourney
+			}
+		}
+		return currentJourneyFromWeb
+	}
+	
+	private updateHttpSession(JourneyRequestCommand currentJourney, List selectedJourneyIds) {
+		session.currentJourney = currentJourney
+		selectedJourneyIds.each {journeyId ->
+			setSelectedJounreyInSession(currentJourney, journeyId)
+		}
+	}
+	private getAlreadySelectedJourneyIdsForCurrentJourney(JourneyRequestCommand currentJourney) {
+		def selectedJourneyIds = journeyWorkflowService.getAlreadySelectedJourneyIdsForCurrentJourney(currentJourney)
+		return selectedJourneyIds
 	}
 	
 //	def activeJourneys() {
@@ -95,7 +152,7 @@ class JourneyController {
 		def currentJourney = session.currentJourney
 		def currentUser = getAuthenticatedUser()
 		def matchedJourneyId = params.matchedJourneyId
-		boolean isDummy =params.dummy
+		boolean isDummy =params.boolean('dummy')
 		if(!currentJourney.user) {
 			currentJourney.user = currentUser.username
 			currentJourney.name = currentUser.profile.fullName
@@ -104,7 +161,26 @@ class JourneyController {
 		}
 		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
 		def workflow = journeyWorkflowService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
-		render workflow as JSON
+		setSelectedJounreyInSession(currentJourney,matchedJourneyId)
+		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
+		chain(action: 'findMatching', model: [currentJourney: currentJourney])
+	}
+
+	private setSelectedJounreyInSession(def currentJourney, String matchedJourneyId) {
+		def currentJourneyId = currentJourney.id
+		def selectedJourneysMap = session.selectedJourneysMap
+		def  selectedJourneyIdList=[] as Set
+		if(!selectedJourneysMap) {
+			selectedJourneysMap =[:]
+			session.selectedJourneysMap = selectedJourneysMap
+		}
+		else {
+			if(session.selectedJourneysMap.get(currentJourneyId)) {
+				selectedJourneyIdList =session.selectedJourneysMap.get(currentJourneyId)
+			}
+		}
+		selectedJourneyIdList<<matchedJourneyId
+		session.selectedJourneysMap.put(currentJourneyId,selectedJourneyIdList)
 	}
 	
 	def getWorkflow(){
@@ -114,8 +190,14 @@ class JourneyController {
 	}
 	
 	def selectedJourney(){
-		
+		def currentJourney = session.currentJourney
+		def matchedJourneyId = params.matchedJourneyId
+		boolean isDummy =params.boolean('dummy') 
+		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
+		def matchedUser = User.findByUsername(matchedJourney.user)
+		[matchedJourney: matchedJourney, matchedUser:matchedUser, isDummy: isDummy]
 	}
+	
 	
 }
 
