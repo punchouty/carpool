@@ -83,6 +83,9 @@ grails.journeyIndexNameFormat = 'yy-MM-W'
 grails.startup.sampleData.file = "journey.csv"
 grails.startup.masterData.places.file = "all.csv"
 
+grails.approx.distance.to.match = 3.0
+grails.approx.time.to.match = 30
+
 environments {
     development {
         grails.logging.jul.usebridge = true

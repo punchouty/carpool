@@ -62,7 +62,7 @@ class JourneyController {
 		if(!currentJourney.validStartTime) {
 			DateTime currentDate = new DateTime()
 			//TODO - get this Info from config
-			currentDate.plusMinutes(30)
+			currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
 			currentJourney.validStartTime = currentDate.toDate()
 		}
 	}

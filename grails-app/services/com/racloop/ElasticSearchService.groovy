@@ -277,10 +277,10 @@ class ElasticSearchService {
 		else {
 			searchType = TYPE_RIDER;
 		}
-		double filterDistance = 3.0d;
+		double filterDistance = Double.valueOf(grailsApplication.config.grails.approx.distance.to.match)
 		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
-		DateTime start = dateOfJourney.minusMinutes(30)
-		DateTime end = dateOfJourney.plusMinutes(30)
+		DateTime start = dateOfJourney.minusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
+		DateTime end = dateOfJourney.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
 		FilterBuilder filter = null;
 		filter = FilterBuilders.andFilter(
 			//FilterBuilders.limitFilter(10),
