@@ -4,6 +4,7 @@ import org.elasticsearch.action.admin.indices.close.CloseIndexResponse
 import org.elasticsearch.action.deletebyquery.DeleteByQueryResponse
 import org.elasticsearch.action.get.GetResponse
 import org.elasticsearch.action.index.IndexRequest
+import org.elasticsearch.action.search.SearchRequestBuilder
 import org.elasticsearch.action.search.SearchResponse
 import org.elasticsearch.action.search.SearchType
 import org.elasticsearch.common.geo.GeoDistance
@@ -553,26 +554,22 @@ class ElasticSearchService {
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("requestedDateTime")
 		sorter.order(SortOrder.DESC);
 		
-		def workflows = []
-		try {
-			SearchResponse searchResponse = node.client.prepareSearch(indexName)
-				.setTypes(WORKFLOW)
-				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setFilter(filter)   // Filter
-				.addSort(sorter)
-				.execute()
-				.actionGet();
-			SearchHits searchHits = searchResponse.getHits();
-			SearchHit[] hits = searchHits.hits;
-			for (SearchHit searchHit : hits) {
-				JourneyWorkflow workflow = parseWorkflowFromSearchHit(searchHit);
-				workflows << workflow
-			}
-		}
-		catch (IndexMissingException exception) {
-			log.error "Index name ${indexName} does not exists"
-		}
+		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
+		return workflows
+	}
+	
+	def searchWorkflowMatchedForUser(User user) {
+		String indexName = WORKFLOW.toLowerCase()
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.termFilter('matchingUser', user.username),
+			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
+			
+		)
+		
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("matchedDateTime")
+		sorter.order(SortOrder.DESC);
+		
+		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
 		return workflows
 	}
 	
@@ -584,15 +581,24 @@ class ElasticSearchService {
 			//FilterBuilders.termFilter('state', "")
 		)
 		
+		def workflows = searchWorkflow(indexName, WORKFLOW, filter, null)
+		
+		return workflows
+	}
+	
+	private List searchWorkflow(String indexName, String type, FilterBuilder filter, FieldSortBuilder  sorter ) {
 		def workflows = []
 		try {
-			SearchResponse searchResponse = node.client.prepareSearch(indexName)
-				.setTypes(WORKFLOW)
+			SearchRequestBuilder searchRequestBuilder = node.client.prepareSearch(indexName)
+			searchRequestBuilder = searchRequestBuilder.setTypes(WORKFLOW)
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())             // Query
+				.setQuery(QueryBuilders.matchAllQuery())
 				.setFilter(filter)   // Filter
-				.execute()
-				.actionGet();
+			if(sorter) {
+				searchRequestBuilder.addSort(sorter)
+			}	
+				
+			SearchResponse searchResponse =searchRequestBuilder.execute().actionGet();
 			SearchHits searchHits = searchResponse.getHits();
 			SearchHit[] hits = searchHits.hits;
 			for (SearchHit searchHit : hits) {

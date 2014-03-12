@@ -38,6 +38,10 @@ class JourneyWorkflowService {
 		return elasticSearchService.searchWorkflowRequestedByUser(user)
 	}
 	
+	def searchWorkflowMatchedForUser(User user) {
+		return elasticSearchService.searchWorkflowMatchedForUser(user)
+	}
+	
 	def getAlreadySelectedJourneyIdsForCurrentJourney(JourneyRequestCommand currentJourney){
 		List selectedJourneyIds = []
 		if(currentJourney.id && currentJourney.isSaved) {
