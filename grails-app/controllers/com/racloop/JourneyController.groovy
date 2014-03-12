@@ -212,11 +212,11 @@ class JourneyRequestCommand {
 	String validStartTimeString; //date as string
 	Date validStartTime; //it should get populated before validation
 	String fromPlace;
-	Double fromLatitude;
-	Double fromLongitude;
+	Double fromLatitude = -1;
+	Double fromLongitude = -1;
 	String toPlace;
-	Double toLatitude;
-	Double toLongitude;
+	Double toLatitude = -1;
+	Double toLongitude = -1;
 	Boolean isDriver;
 	Double tripDistance;
 	String tripUnit;

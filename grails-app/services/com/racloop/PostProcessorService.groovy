@@ -12,6 +12,7 @@ class PostProcessorService {
 	@Queue(name= "msg.history.queue") //also defined in Constant.java
     def processHistory(def journeyId) {
 		log.info "Recieved message with journeyId ${journeyId}"
+		/*
 		try {
 			Journey journeyFromDb = Journey.get(journeyId);
 			User user = journeyFromDb.user
@@ -53,10 +54,10 @@ class PostProcessorService {
 			}
 		}
 		catch(Exception e) {
-			log.error ("Problem for hourneyId : ${journeyId} and exception is " , e);
+			log.error ("Problem for journeyId : ${journeyId} and exception is " , e);
 		}
 		log.info "message with journeyId ${journeyId} processed successfully"
-
+		*/
 		// explicitly return null to prevent unwanted replyTo queue attempt
 		return null
     }

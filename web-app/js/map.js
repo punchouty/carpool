@@ -274,32 +274,59 @@ function getErrorMessage() {
 		$('#dateOfJourneyString').addClass("control-group").addClass("error");
 		errorMessage = "Travel Date/Time";
 	}
-	var startPointText = $('#fromPlace').val();
-	if(startPointText) {
-		
-	}
-	else {
+	var startLatitude = parseFloat($('#fromLatitude').val());
+	var startLongitude = parseFloat($('#fromLongitude').val());
+	var endLatitude = parseFloat($('#toLatitude').val());
+	var endLongitude = parseFloat($('#toLongitude').val());
+	
+	if(startLatitude <= 0 || startLongitude <= 0) {
 		$('#fromPlace').addClass("control-group").addClass("error");
 		if(errorMessage) {
 			errorMessage = errorMessage + ", From Location";
 		}
 		else {
 			errorMessage = "From Location";
+		}		
+	}
+	else {		
+		var startPointText = $('#fromPlace').val();
+		if(startPointText) {
+			
 		}
-		
+		else {
+			$('#fromPlace').addClass("control-group").addClass("error");
+			if(errorMessage) {
+				errorMessage = errorMessage + ", From Location";
+			}
+			else {
+				errorMessage = "From Location";
+			}			
+		}		
 	}
-	var toPointText = $('#toPlace').val();
-	if(toPointText) {
-		
-	}
-	else {
+	
+	if(endLatitude <= 0 || endLongitude <= 0) {
 		$('#toPlace').addClass("control-group").addClass("error");
 		if(errorMessage) {
 			errorMessage = errorMessage + ", To Location"
 		}
 		else {
 			errorMessage = "To Location";
-		}				
+		}			
+	}
+	else {
+		var toPointText = $('#toPlace').val();
+		if(toPointText) {
+			
+		}
+		else {
+			$('#toPlace').addClass("control-group").addClass("error");
+			if(errorMessage) {
+				errorMessage = errorMessage + ", To Location"
+			}
+			else {
+				errorMessage = "To Location";
+			}				
+		}		
 	}
 	var tripDistanceInKm = $('#tripDistance').val();
 	if(tripDistanceInKm) {

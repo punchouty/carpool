@@ -1,7 +1,7 @@
 <%@ page import="grails.converters.JSON" %>
 <html>
 <head>
-<meta name="layout" content="main" />
+<meta name="layout" content="static" />
 <title>Search Results -  ${numberOfRecords} records returned</title>
 </head>
 <body>
