@@ -586,6 +586,37 @@ class ElasticSearchService {
 		return workflows
 	}
 	
+	def findAllJourneysForUserAfterADate(User user, DateTime inputDate) {
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.rangeFilter("dateOfJourney").gte(inputDate),
+			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username))
+			
+		)
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
+		sorter.order(SortOrder.ASC);
+		def journeys = []
+		try {
+			SearchResponse searchResponse = node.client.prepareSearch()
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery())             // Query
+				.setFilter(filter)   // Filter
+				.addSort(sorter)
+				.setSize(100) //size
+				.execute()
+				.actionGet();
+			SearchHits searchHits = searchResponse.getHits();
+			SearchHit[] hits = searchHits.hits;
+			for (SearchHit searchHit : hits) {
+				JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
+				journeys << journeyTemp
+			}
+		}
+		catch (IndexMissingException exception) {
+			log.error ("Index name does not exists", exception)
+		}
+		return journeys
+	}
+	
 	private List searchWorkflow(String indexName, String type, FilterBuilder filter, FieldSortBuilder  sorter ) {
 		def workflows = []
 		try {

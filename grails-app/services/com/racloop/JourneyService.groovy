@@ -5,10 +5,14 @@ import grails.util.Environment
 import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.joda.time.DateTime
 
+import com.racloop.journey.model.JourneyRequestDetails;
+
 class JourneyService {
 
     def elasticSearchService
 	def jmsService
+	def journeyWorkflowService
+	def grailsApplication
 	
 	def saveJourney(Journey journey) {
 		if(journey.validate()) {
@@ -167,5 +171,30 @@ class JourneyService {
 	def JourneyRequestCommand findMatchedJourneyById (String matchedJourneyId, JourneyRequestCommand currentJourney, boolean isDummy = false) {
 		def journey = elasticSearchService.findJourneyById(matchedJourneyId, currentJourney, isDummy)
 		return journey
+	}
+	
+	def List findAllFutureJourneyForTheUser (User user, DateTime currentDate) {
+		def journeys = elasticSearchService.findAllJourneysForUserAfterADate(user, currentDate)
+		return journeys
+	}
+	
+	def List findAllActiveJourneyDetailsForUser(User user) {
+		def journeyDetails =[]
+		DateTime currentDate = new DateTime()
+		currentDate.minusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
+		def journeys = elasticSearchService.findAllJourneysForUserAfterADate(user, currentDate)
+		journeys.each {journey ->
+			if(journey.id) {
+				JourneyRequestDetails journeyRequestDetails = new JourneyRequestDetails()
+				journeyRequestDetails.journey = journey
+				def requestedWorkflow = journeyWorkflowService.searchWorkflowRequestedByUser(user)
+				journeyDetails.requestedJourneys.addAll(requestedWorkflow)
+				def matchedWorkflow = journeyWorkflowService.searchWorkflowMatchedForUser(user)
+				journeyDetails.matchedJourneys.addAll(matchedWorkflow)
+				journeyDetails<<journeyRequestDetails
+			}
+		}
+		
+		return journeyDetails
 	}
 }
