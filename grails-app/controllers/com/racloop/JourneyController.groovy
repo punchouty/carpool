@@ -164,7 +164,7 @@ class JourneyController {
 			session.currentJourney = currentJourney
 		}
 		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
-		def workflow = journeyWorkflowService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
+		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
 		setSelectedJounreyInSession(currentJourney,matchedJourneyId)
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
@@ -202,6 +202,29 @@ class JourneyController {
 		[matchedJourney: matchedJourney, matchedUser:matchedUser, isDummy: isDummy]
 	}
 	
+	def myJourneys() {
+		def workflows =[]
+		def journeys =[]
+		int numberOfRecords = 0
+		def currentUser = getAuthenticatedUser()
+		if(currentUser) {
+			journeys = journeyService.findAllActiveJourneyDetailsForUser(currentUser)
+			numberOfRecords = journeys?.size()
+			
+		}
+		render(view: "myJourneys", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords, workflows:workflows])
+	}
+	
+	def myMatchedJourneys() {
+		def workflows =[]
+		int numberOfRecords = 0
+		def currentUser = getAuthenticatedUser()
+		if(currentUser) {
+			workflows = journeyWorkflowService.searchWorkflowMatchedForUser(currentUser)
+			numberOfRecords = workflows?.size()
+		}
+		render(view: "myMatchedJourneys", model: [currentUser: currentUser, numberOfRecords : numberOfRecords, workflows:workflows])
+	}
 	
 }
 

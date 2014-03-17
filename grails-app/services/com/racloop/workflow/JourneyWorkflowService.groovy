@@ -6,14 +6,10 @@ import com.racloop.User
 class JourneyWorkflowService {
 	
 	def elasticSearchService
-	def journeyManagerService
 	
 	public static final INTIIAL_STATE ='Initiated'
 
-    def JourneyWorkflow saveJourneyAndInitiateWorkflow(JourneyRequestCommand requestedJourney, JourneyRequestCommand matchedJourney){
-		if(!requestedJourney.isSaved) {
-			journeyManagerService.createJourney(requestedJourney)
-		}
+    def initiateWorkflow(JourneyRequestCommand requestedJourney, JourneyRequestCommand matchedJourney) {
 		JourneyWorkflow workflow = createAndSaveWorkflow(requestedJourney, matchedJourney)
 		if(workflow) {
 			indexWorkflow(workflow)

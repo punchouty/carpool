@@ -2,11 +2,14 @@ package com.racloop
 
 import org.elasticsearch.common.geo.GeoPoint
 
+import com.racloop.workflow.JourneyWorkflow;
+
 class JourneyManagerService {
 
 	def elasticSearchService
 	def journeyService
 	def jmsService
+	def journeyWorkflowService
 
 	def createJourney(User user, JourneyRequestCommand command) {
 		Journey journey = new Journey()
@@ -29,5 +32,13 @@ class JourneyManagerService {
 	def createJourney(JourneyRequestCommand command) {
 		User user  = User.findByUsername(command.user);
 		createJourney(user, command)
+	}
+	
+	def JourneyWorkflow saveJourneyAndInitiateWorkflow(JourneyRequestCommand requestedJourney, JourneyRequestCommand matchedJourney){
+		if(!requestedJourney.isSaved) {
+			createJourney(requestedJourney)
+		}
+		JourneyWorkflow workflow = journeyWorkflowService.initiateWorkflow(requestedJourney, matchedJourney)
+		return workflow
 	}
 }

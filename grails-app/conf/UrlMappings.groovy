@@ -80,9 +80,10 @@ class UrlMappings {
 
 		"/password/forgot"{
 			controller = "userSession"
-			action = "forgotPassword"
+			acti
+			on = "forgotPassword"
 		}
-		
+
 		"/journeys" {
 			controller = "journey"
 			action = "activeJourneys"
@@ -91,6 +92,15 @@ class UrlMappings {
 		"/history" {
 			controller = "journey"
 			action = "history"
+		}
+		
+		"/requests"{
+			controller = "journey"
+			action = "myJourneys"
+		}
+		"/notifications"{
+			controller = "journey"
+			action = "myMatchedJourneys"
 		}
 		
 		"500"(view:'/error')
