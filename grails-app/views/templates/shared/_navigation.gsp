@@ -50,15 +50,17 @@
 				<li	<g:if test="${isSafety == 'true'}">class="active"</g:if>>
 					<a href="${request.contextPath}/safety">Safety</a>
 				</li>
-				<li>
-					<a href="${request.contextPath}/requests">Active Requests</a>
+				<li <g:if test="${isActiveJourneys == 'true'}">class="active"</g:if>>
+					<a href="${request.contextPath}/journeys">Active Requests</a>
 				</li>
 				<li>
 					<a href="${request.contextPath}/history">History</a>
 				</li>
+				<%-- 
 				<li>
 					<a href="${request.contextPath}/notifications">Notifications <span class="badge badge-info">4</span></a>
 				</li>
+				--%>
 				<li>
 					<div class="btn-group">
 						<button class="btn">${currentUser.profile.fullName}&nbsp;<i	class="icon-user"></i></button>

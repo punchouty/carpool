@@ -116,10 +116,14 @@ class JourneyController {
 		return selectedJourneyIds
 	}
 	
-//	def activeJourneys() {
+	def activeJourneys() {
 //		def currentUser = getAuthenticatedUser();
 //		def activeJourneys = currentUser.journeys;
-//	}
+	}
+	
+	def history() {
+		
+	}
 	
 //	def results() {
 //		def currentUser = getAuthenticatedUser();

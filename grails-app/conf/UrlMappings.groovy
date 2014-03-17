@@ -82,6 +82,17 @@ class UrlMappings {
 			controller = "userSession"
 			action = "forgotPassword"
 		}
+		
+		"/journeys" {
+			controller = "journey"
+			action = "activeJourneys"
+		}
+		
+		"/history" {
+			controller = "journey"
+			action = "history"
+		}
+		
 		"500"(view:'/error')
 		"404"(view:'/404')
 		"403"(view:'/403')
