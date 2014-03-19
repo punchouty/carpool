@@ -2,10 +2,11 @@ package com.racloop
 
 import grails.util.Environment
 
-import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.joda.time.DateTime
 
-import com.racloop.journey.model.JourneyRequestDetails;
+import com.racloop.journey.model.JourneyRequestDetails
+import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.journey.workkflow.model.WorkflowDetails
 
 class JourneyService {
 
@@ -187,14 +188,15 @@ class JourneyService {
 			if(journey.id) {
 				JourneyRequestDetails journeyRequestDetails = new JourneyRequestDetails()
 				journeyRequestDetails.journey = journey
-				def requestedWorkflow = journeyWorkflowService.searchWorkflowRequestedByUser(user)
-				journeyDetails.requestedJourneys.addAll(requestedWorkflow)
-				def matchedWorkflow = journeyWorkflowService.searchWorkflowMatchedForUser(user)
-				journeyDetails.matchedJourneys.addAll(matchedWorkflow)
+				def requestWorkflowDetails = journeyWorkflowService.getWorkflowRequestedByUserForAJourney(journey.id, user)
+				journeyRequestDetails.requestedJourneys.addAll(requestWorkflowDetails)
+				def matchedWorkflowDetails = journeyWorkflowService.getWorkflowMatchedForUserForAJourney(journey.id, user)
+				journeyRequestDetails.matchedJourneys.addAll(matchedWorkflowDetails)
 				journeyDetails<<journeyRequestDetails
 			}
 		}
 		
 		return journeyDetails
 	}
+	
 }

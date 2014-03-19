@@ -116,11 +116,6 @@ class JourneyController {
 		return selectedJourneyIds
 	}
 	
-	def activeJourneys() {
-//		def currentUser = getAuthenticatedUser();
-//		def activeJourneys = currentUser.journeys;
-	}
-	
 	def history() {
 		
 	}
@@ -202,7 +197,7 @@ class JourneyController {
 		[matchedJourney: matchedJourney, matchedUser:matchedUser, isDummy: isDummy]
 	}
 	
-	def myJourneys() {
+	def activeJourneys() {
 		def workflows =[]
 		def journeys =[]
 		int numberOfRecords = 0
@@ -212,7 +207,7 @@ class JourneyController {
 			numberOfRecords = journeys?.size()
 			
 		}
-		render(view: "myJourneys", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords, workflows:workflows])
+		render(view: "activeJourneys", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords, workflows:workflows])
 	}
 	
 	def myMatchedJourneys() {
@@ -258,7 +253,7 @@ class JourneyRequestCommand {
 	}
 	
 	String toString(){
-		return "JourneyRequestCommand -> name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
+		return "JourneyRequestCommand -> id : ${id} | name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
 	}
 	
 }

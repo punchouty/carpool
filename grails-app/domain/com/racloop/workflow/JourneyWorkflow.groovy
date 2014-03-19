@@ -1,5 +1,7 @@
 package com.racloop.workflow
 
+import com.racloop.journey.workkflow.WorkflowState;
+
 
 class JourneyWorkflow {
 	
@@ -19,7 +21,7 @@ class JourneyWorkflow {
 
     static constraints = {
 		
-		state inList : ['Initiated', 'Accepted', 'Rejected', 'Cancelled']
+		state inList : WorkflowState.values()*.state
     }
 	
 	static mapping = {

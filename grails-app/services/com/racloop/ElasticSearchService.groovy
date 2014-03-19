@@ -547,8 +547,22 @@ class ElasticSearchService {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
 			FilterBuilders.termFilter('requestUser', user.username),
-			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
+			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username))
 			
+		)
+		
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("requestedDateTime")
+		sorter.order(SortOrder.DESC);
+		
+		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
+		return workflows
+	}
+	
+	def searchWorkflowRequestedByUserForAJourney(String journeyId, User user) {
+		String indexName = WORKFLOW.toLowerCase()
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.termFilter('requestUser', user.username),
+			FilterBuilders.termFilter('requestJourneyId', journeyId)
 		)
 		
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("requestedDateTime")
@@ -563,6 +577,21 @@ class ElasticSearchService {
 		FilterBuilder filter = FilterBuilders.andFilter(
 			FilterBuilders.termFilter('matchingUser', user.username),
 			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
+			
+		)
+		
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("matchedDateTime")
+		sorter.order(SortOrder.DESC);
+		
+		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
+		return workflows
+	}
+	
+	def searchWorkflowMatchedForUserForAJourney(String journeyId, User user) {
+		String indexName = WORKFLOW.toLowerCase()
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.termFilter('matchingUser', user.username),
+			FilterBuilders.termFilter('matchedJourneyId', journeyId)
 			
 		)
 		

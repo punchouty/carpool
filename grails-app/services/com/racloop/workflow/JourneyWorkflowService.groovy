@@ -2,13 +2,13 @@ package com.racloop.workflow
 
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
+import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.journey.workkflow.model.WorkflowDetails
 
 class JourneyWorkflowService {
 	
 	def elasticSearchService
 	
-	public static final INTIIAL_STATE ='Initiated'
-
     def initiateWorkflow(JourneyRequestCommand requestedJourney, JourneyRequestCommand matchedJourney) {
 		JourneyWorkflow workflow = createAndSaveWorkflow(requestedJourney, matchedJourney)
 		if(workflow) {
@@ -34,8 +34,26 @@ class JourneyWorkflowService {
 		return elasticSearchService.searchWorkflowRequestedByUser(user)
 	}
 	
+	def searchWorkflowRequestedByUserForAJourney(String journeyId, User user) {
+		return elasticSearchService.searchWorkflowRequestedByUserForAJourney(journeyId, user)
+	}
+	
+	def getWorkflowRequestedByUserForAJourney(String journeyId, User user) {
+		def requestedWorkflowList = elasticSearchService.searchWorkflowRequestedByUserForAJourney(journeyId, user)
+		return populateRequstedWorkflowDetails(requestedWorkflowList)
+	}
+	
 	def searchWorkflowMatchedForUser(User user) {
 		return elasticSearchService.searchWorkflowMatchedForUser(user)
+	}
+	
+	def searchWorkflowMatchedForUserForAJourney(String journeyId,User user) {
+		return elasticSearchService.searchWorkflowMatchedForUserForAJourney(journeyId, user)
+	}
+	
+	def getWorkflowMatchedForUserForAJourney(String journeyId,User user) {
+		def matchedWorkflowList = elasticSearchService.searchWorkflowMatchedForUserForAJourney(journeyId, user)
+		return populateMatchededWorkflowDetails(matchedWorkflowList)
 	}
 	
 	def getAlreadySelectedJourneyIdsForCurrentJourney(JourneyRequestCommand currentJourney){
@@ -58,7 +76,7 @@ class JourneyWorkflowService {
 		workflow.requestedFromPlace = requestedJourney.fromPlace
 		workflow.requestedToPlace = requestedJourney.toPlace
 		workflow.requestedDateTime = requestedJourney.dateOfJourney
-		workflow.state = INTIIAL_STATE
+		workflow.state = WorkflowState.INITIATED.getState()
 		workflow.requestUser = requestedJourney.user
 		workflow.matchingUser = matchedJourney.user
 		workflow.matchedFromPlace = matchedJourney.fromPlace
@@ -91,6 +109,62 @@ class JourneyWorkflowService {
 	
 	private sendConfirmationSMS(JourneyWorkflow workflow) {
 		
+	}
+	
+	public List populateRequstedWorkflowDetails(List requestedWorkflowList) {
+		def requestWorkflowDetails =[]
+		requestedWorkflowList.each {workflow ->
+			WorkflowDetails workflowDetails = new WorkflowDetails()
+			workflowDetails.workflow = workflow
+			workflowDetails.otherUser = User.findByUsername(workflow.matchingUser)
+			workflowDetails.state = (workflow.state ==WorkflowState.INITIATED.getState()?'Sent':workflow.state)
+			workflowDetails.actionButtons.addAll(getAvailableActionForRequestSent(workflow.state))
+			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForSentRequest(workflow.state)
+			requestWorkflowDetails << workflowDetails
+		}
+		return requestWorkflowDetails
+	}
+	
+	private List getAvailableActionForRequestSent(String state) {
+		def actionButton =[]
+		if(state == WorkflowState.ACCEPTED.getState() || state == WorkflowState.INITIATED.getState()){
+			actionButton = ['Cancel']
+		}
+		return actionButton
+	}
+	
+	private boolean shouldDisplayOtherUserInfoForSentRequest(String state) {
+		boolean showContactInfo = false
+		if(state == WorkflowState.ACCEPTED.getState()){
+			showContactInfo = true
+		}
+		return showContactInfo
+	}
+	
+	public List populateMatchededWorkflowDetails(List matchedWorkflowList) {
+		def matchedWorkflowDetails =[]
+		matchedWorkflowList.each {workflow ->
+			WorkflowDetails workflowDetails = new WorkflowDetails()
+			workflowDetails.workflow = workflow
+			workflowDetails.otherUser = User.findByUsername(workflow.requestUser)
+			workflowDetails.state = workflow.state
+			workflowDetails.actionButtons.addAll(getAvailableActionForResponse(workflow.state))
+			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForResponse(workflow.state)
+			matchedWorkflowDetails << workflowDetails
+		}
+		return matchedWorkflowDetails
+	}
+	
+	private List getAvailableActionForResponse(String state) {
+		return WorkflowState.getAction(state)
+	}
+	
+	private boolean shouldDisplayOtherUserInfoForResponse(String state) {
+		boolean showContactInfo = false
+		if(state == WorkflowState.ACCEPTED.getState()){
+			showContactInfo = true
+		}
+		return showContactInfo
 	}
 	
 	
