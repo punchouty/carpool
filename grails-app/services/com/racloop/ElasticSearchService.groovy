@@ -300,7 +300,7 @@ class ElasticSearchService {
 				.setTypes(searchType)
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setFilter(filter)   // Filter
+				.setPostFilter(filter)   // Filter
 				.addSort(sorter)
 				.execute()
 				.actionGet();
@@ -354,7 +354,7 @@ class ElasticSearchService {
 				.setTypes(searchTypeOpposite)
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setFilter(filter)   // Filter
+				.setPostFilter(filter)   // Filter
 				.addSort(sorter)
 				.execute()
 				.actionGet();
@@ -388,7 +388,7 @@ class ElasticSearchService {
 				.setTypes(indexType)
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setFilter(filter)   // Filter
+				.setPostFilter(filter)   // Filter
 				.addSort(sorter)
 				.setSize(maxRecords)
 				.execute()
@@ -628,7 +628,7 @@ class ElasticSearchService {
 			SearchResponse searchResponse = node.client.prepareSearch()
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setFilter(filter)   // Filter
+				.setPostFilter(filter)   // Filter
 				.addSort(sorter)
 				.setSize(100) //size
 				.execute()
@@ -653,7 +653,7 @@ class ElasticSearchService {
 			searchRequestBuilder = searchRequestBuilder.setTypes(WORKFLOW)
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())
-				.setFilter(filter)   // Filter
+				.setPostFilter(filter)   // Filter
 			if(sorter) {
 				searchRequestBuilder.addSort(sorter)
 			}	
