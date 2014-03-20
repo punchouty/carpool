@@ -42,7 +42,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         runtime 'mysql:mysql-connector-java:5.1.22'
-		compile 'org.elasticsearch:elasticsearch:0.90.5'//TODO startup breaking for > 0.90.7
+		compile 'org.elasticsearch:elasticsearch:1.0.1'//TODO startup breaking for > 0.90.7
 		compile 'org.apache.activemq:activemq-core:5.3.0'//TODO creating big issues with grails 2.3.5. So reverted back the upgrade
 		runtime 'org.apache.xbean:xbean-spring:3.16'
     }

@@ -252,7 +252,7 @@ class ElasticSearchService {
 				.setTypes(searchTypeOpposite)
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setFilter(filter)   // Filter
+				.setPostFilter(filter)   // Filter
 				.addSort(sorter)
 				.execute()
 				.actionGet();
