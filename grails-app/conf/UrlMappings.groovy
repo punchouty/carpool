@@ -103,8 +103,17 @@ class UrlMappings {
 			action = "myMatchedJourneys"
 		}
 		
-		"500"(view:'/error')
-		"404"(view:'/404')
-		"403"(view:'/403')
+		"500"{
+			controller = "error"
+			action = "internalError"
+		}
+		"404"{
+			controller = "error"
+			action = "notFound"
+		}
+		"403"{
+			controller = "error"
+			action = "forbidden"
+		}
 	}
 }
