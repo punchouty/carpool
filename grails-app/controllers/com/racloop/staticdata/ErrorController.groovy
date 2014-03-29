@@ -1,5 +1,7 @@
 package com.racloop.staticdata
 
+import grails.converters.JSON
+
 class ErrorController {
 
 	def grailsApplication
@@ -21,12 +23,24 @@ class ErrorController {
 		catch (Exception e) {
 			log.info e
 		}
+		def errorMap = [ error: "true", code: "500", message: exception.message ]
+		withFormat {
+			html exception: exception
+			json  {render errorMap as JSON}
+		}
 	}
 
 	def notFound() {
-		
+		def errorMap = [ error: "true", code: "404" ]
+		withFormat {
+			json  {render errorMap as JSON}
+		}
 	}
 
 	def forbidden() {
+		def errorMap = [ error: "true", code: "403" ]
+		withFormat {
+			json  {render errorMap as JSON}
+		}
 	}
 }

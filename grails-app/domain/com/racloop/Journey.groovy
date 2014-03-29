@@ -10,10 +10,6 @@ class Journey implements Serializable {
 	
 	static belongsTo = [user : User]
 		
-	static hasMany = {
-		travelRequests : TravelRequest
-	}
-	
 	/*static mapping ={
 		id(generator: "uuid2", type: "uuid-binary", length: 16)
 	}*/

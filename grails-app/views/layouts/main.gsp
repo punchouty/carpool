@@ -58,7 +58,7 @@
 	<g:if env="development">
 		<script>
 			$(function() {
-				/* */
+				/* 
 				$('<div class="alert alert-error"><button type="button" class="close" data-dismiss="alert">&times;</button><h4>Hard coding</h4><p>Please comment or change java script code in main.gsp layout</p></div>').insertAfter("hr");
 				var now = new Date();
 				var reserveTime = 30;//in minutes

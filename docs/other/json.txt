@@ -1,0 +1,6 @@
+curl -XPOST http://localhost:8080/racloop/mobile/login.json -d 'json={"user": "rajan", "password": "password", "rememberMe": "true" }'
+curl -XPOST http://localhost:8080/racloop/mobile/login.json -d 'json={"user": "sample.user", "password": "P@ssw0rd", "rememberMe": "true" }'
+
+curl -XPOST http://localhost:8080/racloop/mobile/logout.json -d 'json={"action": "logout"}'
+
+curl -XPOST http://localhost:8080/racloop/mobile/signup.json -d 'json={"user": "sample.user1", "password": "P@ssw0rd", "rememberMe": "true" }'

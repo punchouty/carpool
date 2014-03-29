@@ -1,0 +1,28 @@
+TODO : 
+1. MFA
+
+Create Database
+
+1. Login to AWS console
+2. Go to - https://console.aws.amazon.com/rds Important - region should be Singapore
+3. Click on "Launch a DB instance" on RDS dashboard or Go to Instances tab and then click on "Launch a DB instance"
+4. Engine Selection - MySQL
+5. Do you plan to use this database for production purposes? - Answer : No
+6. DB Instance Details
+			DB Engine:	MySQL
+			License Model:	GPL			
+			DB Engine Version: *Keep Default*		
+			DB Instance Class: db.t1.micro				
+			Multi-AZ Deployment: No				
+			Auto Minor Version Upgrade:	Yes			
+			Provide the details for your RDS Database Instance.
+			Allocated Storage:*	5GB		(Minimum: 5 GB, Maximum: 3072 GB) Higher allocated storage may improve IOPS performance.	
+			Use Provisioned IOPS:	Don't check it			
+			DB Instance Identifier:* stage-racloop-db
+			Master Username:* savitri	
+			Master Password:* BdPunch0uty	
+7. Additional Config (Leave every thing default accept following
+			Database Name: stage_racloop_db
+8. Management Options - Leaving every thing as default
+9. Review Page - Click on "Launch a DB instance"
+

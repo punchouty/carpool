@@ -80,8 +80,7 @@ class UrlMappings {
 
 		"/password/forgot"{
 			controller = "userSession"
-			acti
-			on = "forgotPassword"
+			action = "forgotPassword"
 		}
 
 		"/journeys" {
