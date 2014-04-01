@@ -7,7 +7,8 @@
 <body>
 	<g:set var="isActiveJourneys" value="true" scope="request" />
 	<h2>Active Journeys</h2>
-	<div class="row-fluid">
+	<g:if test="${journeys?.size > 0}">
+		<div class="row-fluid">
 		<div class="accordion" id="accordion1">
 		<g:each in="${journeys}" status="i" var="journeyInstance">
 			<div class="accordion-group"> <!-- Repete Element -->
@@ -141,6 +142,11 @@
    		</div><!-- accordian-group ENDS -->
    		
    		</div><!-- accordian ENDS -->
-
+		</g:if>
+		<g:else>
+			<div class="well">
+				<h4>No Records Found</h4>
+			</div>
+		</g:else>
 </body>
 </html>

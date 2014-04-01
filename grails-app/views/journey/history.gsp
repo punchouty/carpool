@@ -4,8 +4,9 @@
 <title>My Active Journeys</title>
 </head>
 <body>
-	<g:set var="isActiveJourneys" value="true" scope="request" />
+	<g:set var="isHistory" value="true" scope="request" />
 	<h2>History</h2>
+	<g:if test="${journeys?.size > 0}">
 	<div class="row-fluid">
 		<div class="accordion" id="accordion1">
 		
@@ -285,5 +286,17 @@
    		
    		</div><!-- accordian ENDS -->
 	</div><!-- row ENDS  -->
+	</g:if>
+	<g:else>
+		<div class="well">
+			<h4>No Records Found</h4>
+		</div>
+		<g:if env="development">
+			<div class="alert">
+			  <button type="button" class="close" data-dismiss="alert">&times;</button>
+			  <strong>Important Note!</strong> Look at history.gsp for sample html code and then remove this html snippet
+			</div>
+		</g:if>
+	</g:else>
 </body>
 </html>

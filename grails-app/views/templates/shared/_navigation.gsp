@@ -53,7 +53,7 @@
 				<li <g:if test="${isActiveJourneys == 'true'}">class="active"</g:if>>
 					<a href="${request.contextPath}/journeys">Active Requests</a>
 				</li>
-				<li>
+				<li <g:if test="${isHistory == 'true'}">class="active"</g:if>>
 					<a href="${request.contextPath}/history">History</a>
 				</li>
 				<%-- 
