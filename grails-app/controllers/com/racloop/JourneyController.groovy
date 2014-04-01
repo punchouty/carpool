@@ -223,7 +223,7 @@ class JourneyController {
 	
 }
 
-class JourneyRequestCommand {
+public class JourneyRequestCommand {
 	
 	String user
 	String id;//will be assigned later

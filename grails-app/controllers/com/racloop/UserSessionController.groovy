@@ -3,7 +3,6 @@ package com.racloop
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.AuthController
 import grails.plugin.nimble.core.ProfileBase
-import grails.plugin.nimble.core.UserBase
 
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
@@ -18,15 +17,16 @@ class UserSessionController {
 		def user = getAuthenticatedUser();//dynamic method added by nimble
 		JourneyRequestCommand commandInstance = new JourneyRequestCommand();
 		if(user) {
-			def criteria = TravelHistory.createCriteria();
-			def historyResults = criteria {
-				eq("user", user)
-				maxResults(7)
-				and {
-					order('searchCount', 'desc')
-					order('lastUpdatedAt', 'desc')
-				}
-			}
+//			def criteria = TravelHistory.createCriteria();
+//			def historyResults = criteria {
+//				eq("user", user)
+//				maxResults(7)
+//				and {
+//					order('searchCount', 'desc')
+//					order('lastUpdatedAt', 'desc')
+//				}
+//			}
+			def historyResults = []
 			return [commandInstance: commandInstance, history : historyResults]
 		}
 		else {			

@@ -1,5 +1,29 @@
 TODO : 
 1. MFA
+2. IAM
+3. Define rights for various instance type and groups
+
+Follow - http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/
+
+Create Elasticsearch Instance
+1. Go to aws console and click on EC2
+2. Create New Security Group : On Left Navigation > Network & Security > Security Group 
+3. Click on "New Security Group" in already not there
+4. Give name(elasticsearch) and description(elasticsearch) and add Following inbound rules
+Type				Protocol		Port Range		Source		
+Custom TCP Rule		TCP				8080			0.0.0.0/0
+SSH					TCP				22				0.0.0.0/0
+Custom TCP Rule		TCP				9300			This group-id (listed on panel similar to sg-dc8b6cb9 )
+5. Create Server Instance : On Left Navigation > Instances > Instances 
+6. Click on "Launch Instance"
+	a. Select Amazon Liunx AMI (32 bit for dev environment)
+	b. Keep on clicking next and accepting default
+	c. Select the above created security group
+	d. Click on Launch
+	e. Select or create key pair
+	f. Launch 
+7. 
+
 
 Create Database
 
@@ -20,9 +44,16 @@ Create Database
 			Use Provisioned IOPS:	Don't check it			
 			DB Instance Identifier:* stage-racloop-db
 			Master Username:* savitri	
-			Master Password:* BdPunch0uty	
+			Master Password:* BDPunch0uty	
 7. Additional Config (Leave every thing default accept following
 			Database Name: stage_racloop_db
 8. Management Options - Leaving every thing as default
 9. Review Page - Click on "Launch a DB instance"
+
+#on bash
+HOST=ec2-54-255-149-198.ap-southeast-1.compute.amazonaws.com
+SSH_OPTIONS="-o User=ec2-user -o IdentityFile=tmp/aws.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+
+ssh $SSH_OPTIONS $HOST
+
 
