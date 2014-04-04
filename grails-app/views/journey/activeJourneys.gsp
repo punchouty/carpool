@@ -51,7 +51,7 @@
 	       						<tbody>
 	       							<g:each in="${journeyInstance.matchedJourneys}" status="k" var="matchedWorkflowInstance">
 		       							<tr>
-		       								<td>${matchedWorkflowInstance.otherUser.profile.fullName}</td>
+		       								<td>${matchedWorkflowInstance?.otherUser?.profile?.fullName}</td>
 		       								<td>
 		       									<div>
 											      <blockquote>
@@ -64,7 +64,7 @@
 		       								<td>
 		       									<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-inverse':'label'))}">${matchedWorkflowInstance.state}</span>
 		       									<g:if test = "${matchedWorkflowInstance.showContactInfo}">
-		       										<p><strong>matchedWorkflowInstance.otherUser.profile.mobile</strong></p>
+		       										<p><strong>matchedWorkflowInstance.otherUser?.profile?.mobile</strong></p>
 		       									</g:if>
 		       								</td>
 		       								<td>
@@ -99,7 +99,7 @@
 	       						<tbody>
 			       					<g:each in="${journeyInstance.requestedJourneys}" status="j" var="requestWorkflowInstance">
 		       							<tr>
-		       								<td>${requestWorkflowInstance.otherUser.profile.fullName}</td>
+		       								<td>${requestWorkflowInstance.otherUser?.profile?.fullName}</td>
 		       								<td>
 		       									<div>
 											      <blockquote>
@@ -112,7 +112,7 @@
 		       								<td>
 		       									<span class="label label-info">${requestWorkflowInstance.state}</span>
 		       									<g:if test = "${requestWorkflowInstance.showContactInfo}">
-		       										<p><strong>matchedWorkflowInstance.otherUser.profile.mobile</strong></p>
+		       										<p><strong>matchedWorkflowInstance.otherUser?.profile?.mobile</strong></p>
 		       									</g:if>
 		       								</td>
        										<td>
