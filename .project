@@ -26,7 +26,7 @@
 		<link>
 			<name>.link_to_grails_plugins</name>
 			<type>2</type>
-			<locationURI>GRAILS_ROOT/2.2.1/projects/racloop/plugins</locationURI>
+			<location>C:/ggts-bundle/ggts-3.5.0.RELEASE/workspace/carpool/target/work/plugins</location>
 		</link>
 	</linkedResources>
 </projectDescription>
