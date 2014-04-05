@@ -83,14 +83,7 @@ class JourneyWorkflowService {
 		workflow.matchedToPlace = matchedJourney.toPlace
 		workflow.matchedDateTime = matchedJourney.dateOfJourney
 		workflow.isRequesterDriving = requestedJourney.isDriver
-		if(workflow.validate()) {
-			workflow.id = UUID.randomUUID()
-			return workflow
-		}
-		else {
-			log.error "Unable to create workflow ${workflow}"
-			return null
-		}
+		workflow.id = UUID.randomUUID()
 		return workflow
 		
 	}
