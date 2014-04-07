@@ -2,10 +2,10 @@ package com.racloop.staticdata
 
 class StaticData {
 
-    String key
-	String data
+    String staticDataKey
+	String pageData
 	
 	static constraints = {
-		
+		pageData type: 'text'
     }
 }

@@ -29,45 +29,12 @@
 			<tbody>
 			<g:each in="${staticDataInstanceList}" status="i" var="staticDataInstance">
 				<tr>
-					<td><g:link action="show" id="${staticDataInstance.id}">${fieldValue(bean: staticDataInstance, field: "key")}</g:link></td>	
-					<td>${fieldValue(bean: staticDataInstance, field: "data")}</td>
+					<td><g:link action="show" id="${staticDataInstance.id}">${fieldValue(bean: staticDataInstance, field: "staticDataKey")}</g:link></td>	
+					<td>${fieldValue(bean: staticDataInstance, field: "pageData")}</td>
 				</tr>
 			</g:each>
 			</tbody>
 		</table>
 		</div>
-		<%--
-		<div id="list-staticData" class="content scaffold-list" role="main">
-			<h1><g:message code="default.list.label" args="[entityName]" /></h1>
-			<g:if test="${flash.message}">
-			<div class="message" role="status">${flash.message}</div>
-			</g:if>
-			<table>
-				<thead>
-					<tr>
-						<g:sortableColumn property="key" title="${message(code: 'staticData.key.label', default: 'Key')}" />
-						<g:sortableColumn property="data" title="${message(code: 'staticData.data.label', default: 'Data')}" />
-						
-					
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${staticDataInstanceList}" status="i" var="staticDataInstance">
-					<tr class="${(i % 2) == 0 ? 'even' : 'odd'}">
-					
-						<td><g:link action="show" id="${staticDataInstance.id}">${fieldValue(bean: staticDataInstance, field: "key")}</g:link></td>
-						<td>${fieldValue(bean: staticDataInstance, field: "data")}</td>
-					
-						
-					
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
-			<div class="pagination">
-				<g:paginate total="${staticDataInstanceTotal}" />
-			</div>
-		</div>
-		 --%>
 	</body>
 </html>

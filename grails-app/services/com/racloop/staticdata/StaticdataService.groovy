@@ -2,9 +2,9 @@ package com.racloop.staticdata
 
 class StaticdataService {
 
-    public String getSaticValueBasedOnKey(String key) {
-		StaticData data  = StaticData.find {key == key}
-		return data?.data
+    public String getSaticValueBasedOnKey(String staticDataKey) {
+		StaticData data  = StaticData.find {staticDataKey == staticDataKey}
+		return data?.pageData
 		
 	}
 }

@@ -5,11 +5,11 @@ TODO :
 
 Follow - http://www.elasticsearch.org/tutorials/deploying-elasticsearch-with-chef-solo/
 
-Create Elasticsearch Instance
+Create Amazon Instance
 1. Go to aws console and click on EC2
 2. Create New Security Group : On Left Navigation > Network & Security > Security Group 
-3. Click on "New Security Group" in already not there
-4. Give name(elasticsearch) and description(elasticsearch) and add Following inbound rules
+3. Click on "New Security Group". Give name and description and click "Create"
+4. Note down group id and add Following inbound rules by editing security group just created
 Type				Protocol		Port Range		Source		
 Custom TCP Rule		TCP				8080			0.0.0.0/0
 SSH					TCP				22				0.0.0.0/0
@@ -20,10 +20,56 @@ Custom TCP Rule		TCP				9300			This group-id (listed on panel similar to sg-dc8b
 	b. Keep on clicking next and accepting default
 	c. Select the above created security group
 	d. Click on Launch
-	e. Select or create key pair
+	e. Create key pair (give a name and download it e.g. elasticsearch-racloop.pem file)
 	f. Launch 
-7. 
+7. Open command line - Use putty or git-bash or unix command line for below. 
+8. Create folder name "racloop-chef" and go to this folder"cd racloop-chef"
+9. curl -# -L -k https://gist.github.com/2050769/download | tar xz --strip 1 -C .
+10. Copy above downloaded file to /tmp
+11. chmod 600 ./tmp/racloop-es1.pem
+12. Once the instance is ready, provide it some name (racloop-es-node1) and copy its "Public DNS" in the AWS console - e.g.  ec2-54-255-143-135.ap-southeast-1.compute.amazonaws.com
+13. HOST=ec2-54-255-130-67.ap-southeast-1.compute.amazonaws.com
+14. SSH_OPTIONS="-o User=ec2-user -o IdentityFile=./tmp/racloop-es1.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+15. test connection "ssh $SSH_OPTIONS $HOST"
+16. Create and attach ebs
+[ec2-user ~]$ lsblk
+[ec2-user ~]$ sudo file -s /dev/xvdf
+[ec2-user ~]$ sudo mkfs -t ext4 device_name
+[ec2-user ~]$ sudo mkdir /data
+[ec2-user ~]$ sudo mount device_name /data
+[ec2-user@ip-172-31-1-80 var]$ sudo mkdir /data/es
+[ec2-user@ip-172-31-1-80 var]$ sudo mkdir /data/es/data
+[ec2-user@ip-172-31-1-80 var]$ sudo mkdir /data/es/work
+[ec2-user@ip-172-31-1-80 var]$ sudo mkdir /data/es/logs
+[ec2-user@ip-172-31-1-80 var]$ sudo mkdir /data/activemq
+[ec2-user@ip-172-31-1-80 var]$ sudo mkdir /data/plugins
+clean target directory
+run "grails clean"
 
+Elasticsearch Setup
+1. copy node-example.json as node.json - "cp node-example.json node.json" {IGNORE IF THIS IS NOT FIRST TIME}
+2. Edit node.json - access key, secret key, cluster name, as well as following changes
+"ebs"   : {
+	"size"                  : 5,
+	"delete_on_termination" : true,
+	"type"                  : "standard"
+  }
+ "elasticsearch" : {
+    "cluster_name" : "racloop-cluster",
+    "bootstrap" : { "mlockall" : false },
+	"version" : "1.0.1",
+    "discovery" : { "type": "ec2" },
+	....
+}
+3. scp $SSH_OPTIONS node.json $HOST:/tmp
+4. scp $SSH_OPTIONS bootstrap.sh patches.sh node.json solo.rb $HOST:/tmp
+5. time ssh -t $SSH_OPTIONS $HOST "sudo bash /tmp/bootstrap.sh"
+6. time ssh -t $SSH_OPTIONS $HOST "sudo bash /tmp/patches.sh"
+7. time ssh -t $SSH_OPTIONS $HOST "sudo chef-solo --node-name racloop-es-1 -j /tmp/node.json"
+8. test elasticsearch - curl http://rajan:Wellington0@$HOST:8080
+9. curl -X POST http://rajan:Wellington0@$HOST:8080/_shutdown
+
+curl http://rajan:Wellington0@ec2-54-255-143-135.ap-southeast-1.compute.amazonaws.com:8080
 
 Create Database
 

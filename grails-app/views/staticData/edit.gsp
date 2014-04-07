@@ -33,13 +33,13 @@
 			    <div class="control-group">
 		         	 <label class="control-label">Page Name</label>
 		             <div class="controls">
-		                 <strong>${staticDataInstance?.key}</strong>
+		                 <strong>${staticDataInstance?.staticDataKey}</strong>
 					 </div> 
 				</div>
 				 <div class="control-group">
-		              	<label class="control-label" for="data">Page Content</label>
+		              	<label class="control-label" for="pageData">Page Content</label>
 		                  <div class="controls">
-		                      <g:textArea name="data" value="${staticDataInstance?.data}" required="" style="margin: 0px; width: 650px; height: 300px; overflow-x: auto; overflow-y: auto;"/>
+		                      <g:textArea name="pageData" value="${staticDataInstance?.pageData}" required="" style="margin: 0px; width: 650px; height: 300px; overflow-x: auto; overflow-y: auto;"/>
 							  <p id="content-help-block" class="help-block"></p>
 		                  </div>
 				 </div>

@@ -102,6 +102,8 @@ class UrlMappings {
 			action = "myMatchedJourneys"
 		}
 		
+		"/health"(view:"/health")
+		
 		"500"{
 			controller = "error"
 			action = "internalError"

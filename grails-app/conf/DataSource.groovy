@@ -13,13 +13,22 @@ hibernate {
 environments {
     development {
         dataSource {
-            dbCreate = "update" //"create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-			url = "jdbc:h2:file:C:/data/h2/racloop;MVCC=TRUE;LOCK_TIMEOUT=10000"
-			loggingSql = true
-//			driverClassName = "com.mysql.jdbc.Driver"
-//			url = "jdbc:mysql://localhost/racloop"
-//			username = "root"
-//			password = "P@ssw0rd"
+			dbCreate = "create-drop"
+            url = "jdbc:mysql://localhost:3306/ebdb"
+			driverClassName = "com.mysql.jdbc.Driver"
+			pooled = true
+			username = "root"
+			password = ""
+			properties {
+               maxActive = -1
+               minEvictableIdleTimeMillis=1800000
+               timeBetweenEvictionRunsMillis=1800000
+               numTestsPerEvictionRun=3
+               testOnBorrow=true
+               testWhileIdle=true
+               testOnReturn=true
+               validationQuery="SELECT 1"
+            }
         }
     }
     test {
@@ -30,10 +39,13 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000"
+            dbCreate = "create-drop"
+            url = "jdbc:mysql://aa1yp8u4ri0ltz.cgz251990xxz.ap-southeast-1.rds.amazonaws.com:3306/ebdb?user=racloopdb&password=W!shtech0"
+			driverClassName = "com.mysql.jdbc.Driver"
             pooled = true
-            properties {
+			username = "racloopdb"
+			password = "W!shtech0"
+			properties {
                maxActive = -1
                minEvictableIdleTimeMillis=1800000
                timeBetweenEvictionRunsMillis=1800000

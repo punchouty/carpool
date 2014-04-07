@@ -1,102 +1,104 @@
 package com.racloop.staticdata
 
-import org.springframework.dao.DataIntegrityViolationException
 
+
+import static org.springframework.http.HttpStatus.*
+import grails.transaction.Transactional
+
+@Transactional(readOnly = true)
 class StaticDataController {
 
-    static allowedMethods = [save: "POST", update: "POST", delete: "POST"]
+    static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
-    def index() {
-        redirect(action: "list", params: params)
+    def index(Integer max) {
+        params.max = Math.min(max ?: 10, 100)
+        respond StaticData.list(params), model:[staticDataInstanceCount: StaticData.count()]
     }
 
-    def list(Integer max) {
-        params.max = Math.min(max ?: 10, 100)
-        [staticDataInstanceList: StaticData.list(params), staticDataInstanceTotal: StaticData.count()]
+    def show(StaticData staticDataInstance) {
+        respond staticDataInstance
     }
 
     def create() {
-        [staticDataInstance: new StaticData(params)]
+        respond new StaticData(params)
     }
 
-    def save() {
-        def staticDataInstance = new StaticData(params)
-        if (!staticDataInstance.save(flush: true)) {
-            render(view: "create", model: [staticDataInstance: staticDataInstance])
+    @Transactional
+    def save(StaticData staticDataInstance) {
+        if (staticDataInstance == null) {
+            notFound()
             return
         }
 
-        flash.message = "Page ${staticDataInstance?.key} updated successfully"
-        redirect(action: "show", id: staticDataInstance.id)
-    }
-
-    def show(Long id) {
-        def staticDataInstance = StaticData.get(id)
-        if (!staticDataInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'staticData.label', default: 'StaticData'), id])
-            redirect(action: "list")
+        if (staticDataInstance.hasErrors()) {
+            respond staticDataInstance.errors, view:'create'
             return
         }
 
-        [staticDataInstance: staticDataInstance]
-    }
+        staticDataInstance.save flush:true
 
-    def edit(Long id) {
-        def staticDataInstance = StaticData.get(id)
-        if (!staticDataInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'staticData.label', default: 'StaticData'), id])
-            redirect(action: "list")
-            return
-        }
-
-        [staticDataInstance: staticDataInstance]
-    }
-
-    def update(Long id, Long version) {
-        def staticDataInstance = StaticData.get(id)
-        if (!staticDataInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'staticData.label', default: 'StaticData'), id])
-            redirect(action: "list")
-            return
-        }
-
-        if (version != null) {
-            if (staticDataInstance.version > version) {
-                staticDataInstance.errors.rejectValue("version", "default.optimistic.locking.failure",
-                          [message(code: 'staticData.label', default: 'StaticData')] as Object[],
-                          "Another user has updated this StaticData while you were editing")
-                render(view: "edit", model: [staticDataInstance: staticDataInstance])
-                return
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.created.message', args: [message(code: 'staticDataInstance.label', default: 'StaticData'), staticDataInstance.id])
+                redirect staticDataInstance
             }
+            '*' { respond staticDataInstance, [status: CREATED] }
         }
-
-        staticDataInstance.properties = params
-
-        if (!staticDataInstance.save(flush: true)) {
-            render(view: "edit", model: [staticDataInstance: staticDataInstance])
-            return
-        }
-
-        flash.message = "Page <strong>${staticDataInstance?.key}</strong> updated successfully"
-        redirect(action: "show", id: staticDataInstance.id)
     }
 
-    def delete(Long id) {
-        def staticDataInstance = StaticData.get(id)
-        if (!staticDataInstance) {
-            flash.message = message(code: 'default.not.found.message', args: [message(code: 'staticData.label', default: 'StaticData'), id])
-            redirect(action: "list")
+    def edit(StaticData staticDataInstance) {
+        respond staticDataInstance
+    }
+
+    @Transactional
+    def update(StaticData staticDataInstance) {
+        if (staticDataInstance == null) {
+            notFound()
             return
         }
 
-        try {
-            staticDataInstance.delete(flush: true)
-            flash.message = message(code: 'default.deleted.message', args: [message(code: 'staticData.label', default: 'StaticData'), id])
-            redirect(action: "list")
+        if (staticDataInstance.hasErrors()) {
+            respond staticDataInstance.errors, view:'edit'
+            return
         }
-        catch (DataIntegrityViolationException e) {
-            flash.message = message(code: 'default.not.deleted.message', args: [message(code: 'staticData.label', default: 'StaticData'), id])
-            redirect(action: "show", id: id)
+
+        staticDataInstance.save flush:true
+
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.updated.message', args: [message(code: 'StaticData.label', default: 'StaticData'), staticDataInstance.id])
+                redirect staticDataInstance
+            }
+            '*'{ respond staticDataInstance, [status: OK] }
+        }
+    }
+
+    @Transactional
+    def delete(StaticData staticDataInstance) {
+
+        if (staticDataInstance == null) {
+            notFound()
+            return
+        }
+
+        staticDataInstance.delete flush:true
+
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.deleted.message', args: [message(code: 'StaticData.label', default: 'StaticData'), staticDataInstance.id])
+                redirect action:"index", method:"GET"
+            }
+            '*'{ render status: NO_CONTENT }
+        }
+    }
+
+    protected void notFound() {
+        request.withFormat {
+            form {
+                flash.message = message(code: 'default.not.found.message', args: [message(code: 'staticDataInstance.label', default: 'StaticData'), params.id])
+                redirect action: "index", method: "GET"
+            }
+            '*'{ render status: NOT_FOUND }
         }
     }
 }

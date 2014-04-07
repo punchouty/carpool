@@ -79,7 +79,7 @@ grails.project.dependency.resolution = {
 		//runtime ":yui-minify-resources:0.1.5"
         
 		compile (":nimble:0.7") {
-			excludes 'resources', 'jquery', 'hibernate'
+			excludes 'resources', 'jquery', 'hibernate', 'servlet-api'
 		}
 		compile (":jms:1.2") {
 			//excludes 'spring-jms', 'spring-context', 'spring-aop', 'spring-beans', 'spring-core'

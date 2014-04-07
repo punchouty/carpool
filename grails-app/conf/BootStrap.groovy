@@ -202,34 +202,34 @@ class BootStrap {
 	}
 	
 	private void intializeStaticData() {
-		StaticData staticData  = StaticData.find {key == 'safety'}
+		StaticData staticData  = StaticData.find {staticDataKey == 'safety'}
 		if(!staticData){
-			StaticData terms = [key:'safety', data :'<p>Safty</p>']
+			StaticData terms = [staticDataKey:'safety', pageData :'<p>Safty</p>']
 			terms.save()
 		}
-		staticData  = StaticData.find {key == 'faq'}
+		staticData  = StaticData.find {staticDataKey == 'faq'}
 		if(!staticData){
-			StaticData about = [key:'faq', data :'<p>FAQ</p>']
+			StaticData about = [staticDataKey:'faq', pageData :'<p>FAQ</p>']
 			about.save()
 		}
-		staticData  = StaticData.find {key == 'about'}
+		staticData  = StaticData.find {staticDataKey == 'about'}
 		if(!staticData){
-			StaticData about = [key:'about', data :'<p>About Us</p>']
+			StaticData about = [staticDataKey:'about', pageData :'<p>About Us</p>']
 			about.save()
 		}
-		staticData  = StaticData.find {key == 'terms'}
+		staticData  = StaticData.find {staticDataKey == 'terms'}
 		if(!staticData){
-			StaticData terms = [key:'terms', data :'<p>Terms and Condition</p>']
+			StaticData terms = [staticDataKey:'terms', pageData :'<p>Terms and Condition</p>']
 			terms.save()
 		}
-		staticData  = StaticData.find {key == 'privacy'}
+		staticData  = StaticData.find {staticDataKey == 'privacy'}
 		if(!staticData){
-			StaticData etiquettes = [key:'privacy', data :'<p>Privacy Policy</p>']
+			StaticData etiquettes = [staticDataKey:'privacy', pageData :'<p>Privacy Policy</p>']
 			etiquettes.save()
 		}
-		staticData  = StaticData.find {key == 'etiquettes'}
+		staticData  = StaticData.find {staticDataKey == 'etiquettes'}
 		if(!staticData){
-			StaticData etiquettes = [key:'etiquettes', data :'<p>Etiquettes</p>']
+			StaticData etiquettes = [staticDataKey:'etiquettes', pageData :'<p>Etiquettes</p>']
 			etiquettes.save()
 		}
 	}
