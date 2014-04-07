@@ -38,14 +38,14 @@
 				</g:if>
 				<input type="hidden" name="targetUri" value="${targetUri}" />
 			</g:form>
-			<a href="${request.contextPath}" class="logo-link"><h1 class="muted">raC looP</h1></a>
+			<a href="${request.contextPath}/" class="logo-link"><h1 class="muted">raC looP</h1></a>
 		</div>
 		</n:isNotLoggedIn>
 		<n:isLoggedIn>
 		<div id='navigation' class="masthead">
 			<ul class="nav nav-pills pull-right">
 				<li	<g:if test="${isHome == 'true'}">class="active"</g:if>>
-					<a href="${request.contextPath}">Home</a>
+					<a href="${request.contextPath}/">Home</a>
 				</li>
 				<li	<g:if test="${isSafety == 'true'}">class="active"</g:if>>
 					<a href="${request.contextPath}/safety">Safety</a>
@@ -89,6 +89,6 @@
 					</div>
 				</li>		
 			</ul>
-			<a href="${request.contextPath}" class="logo-link"><h1 class="muted">raC looP</h1></a>
+			<a href="${request.contextPath}/" class="logo-link"><h1 class="muted">raC looP</h1></a>
 		</div>
 		</n:isLoggedIn>

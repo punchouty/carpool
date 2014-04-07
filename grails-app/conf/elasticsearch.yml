@@ -1,6 +1,6 @@
 cluster.name: racloop-cluster
-path.data: \\data\\es\\data
-path.work: \\data\\es\\work
-path.logs: \\data\\es\\logs
-path.plugins: \\data\\plugins
+path.data: D:\\data\\es\\data
+path.work: D:\\data\\es\\work
+path.logs: D:\\data\\es\\logs
+path.plugins: D:\\data\\plugins
 bootstrap.mlockall: true
