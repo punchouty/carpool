@@ -49,8 +49,19 @@ class StaticPageController {
 		[etiquettes:value]
 	}
 	
+	def main() {
+		def user = authenticatedUser
+		if(user) {
+			redirect (controller : "userSession" , action: "search")
+		}
+		else {
+			redirect (action: "index")
+		}
+	}
+	
 	def index() {
-		
+		def user = authenticatedUser
+		[user: user]
 	}
 
 }

@@ -1,17 +1,20 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta name="layout" content="signin" />
+<meta name="layout" content="static" />
 <title>Welcome to raC looP - A Car pool Finder</title>
 </head>
 <body>
 	<g:set var="isHome" value="true" scope="request" />
 		<div class="jumbotron">
-	        <h1>Car Pool Finder</h1>
+	        <h1>Car Pool Finder</h1>${authenticatedUser?.id}
 	        <p class="lead">Share your Car, Taxi and Auto rides. Save money, Make friends and Contribute to Greener Environment.</p>
-	        <g:link controller="account" action="createuser" class="btn btn-large btn-primary">
-                Sign up today
-             </g:link>
+	        <g:if test="${user == null}">
+	        	<a class="btn btn-large btn-primary" href="${request.contextPath}/signup">Sign Up Today!</a>
+	        </g:if>
+	        <g:else>
+	        	<a class="btn btn-large btn-primary" href="${request.contextPath}/etiquettes">Car Pool Etiquettes</a>
+	        </g:else>
 		</div>
 
       <hr>

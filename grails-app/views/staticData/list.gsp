@@ -18,6 +18,8 @@
 			     </div>
 			</g:if>			
 		</div>
+		
+		<h2>Web Content</h2>
 		<div class="row-fluid">
 		<table id="results" class="table table-striped">
 			<thead>

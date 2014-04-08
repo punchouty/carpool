@@ -6,10 +6,17 @@
 <title>Welcome to raC looP</title>
 </head>
 <body>
+	<g:set var="isSearch" value="true" scope="request" />
 	<g:if test="${flash.message}">
 		<div class="alert alert-success">			
 		  <button type="button" class="close" data-dismiss="alert">&times;</button>
 		  ${flash.message}
+		</div>
+	</g:if>
+	<g:if test="${flash.error}">
+		<div class="alert alert-error">			
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  ${flash.error}
 		</div>
 	</g:if>
 	<g:hasErrors bean="${commandInstance}">
@@ -21,7 +28,6 @@
 			</ul>
 		</div>
 	</g:hasErrors>
-	<g:set var="isHome" value="true" scope="request" />
 	<div class="jumbotron" id="jumbotron">
 		<h1>Car Pool Finder</h1>
 		<%-- 
@@ -83,7 +89,7 @@
 			<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
 			
 			<div class="btn-group">
-				<button class="btn btn-primary">Car?</button>
+				<button type="button" class="btn btn-primary">Car?</button>
 				<button class="btn btn-primary dropdown-toggle"
 					data-toggle="dropdown">
 					<span class="caret"></span>

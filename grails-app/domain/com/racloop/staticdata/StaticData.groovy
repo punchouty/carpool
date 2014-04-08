@@ -5,7 +5,8 @@ class StaticData {
     String staticDataKey
 	String pageData
 	
-	static constraints = {
+	static mapping = {
+		cache true
 		pageData type: 'text'
-    }
+	}
 }

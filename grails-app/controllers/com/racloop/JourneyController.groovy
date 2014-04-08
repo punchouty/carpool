@@ -37,9 +37,10 @@ class JourneyController {
 			}
 		}
 		else {
-			currentJourney.errors.rejectValue("travelDateString", "invalid.travel.date", [message(code: 'travel.date', default: 'Travel Date')] as Object[],
+			currentJourney.errors.rejectValue("dateOfJourneyString", "invalid.travel.date", [message(code: 'travel.date', default: 'Travel Date')] as Object[],
                           "Invalid travel date")
 			log.warn 'Error in command travel dates : ' + params
+			flash.error = "Invalid Input Data"
 			redirect(controller: 'userSession', action: "search")
 		}
 	}

@@ -3,14 +3,19 @@
 		<div id='navigation' class="nav-collapse collapse">
 			<g:form controller="auth" action="signin" name="login-form" method="post"
 				class="navbar-form form-inline pull-right">
-				<input type="text" name="username" id="navigation.username" class="input-small"
-					placeholder="User Id" required  autofocus>
-				<input type="password" name="password" id="navigation.password"
-					class="input-small" placeholder="Password" required>
-				<label class="checkbox"> 
-					<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
-				</label>
-				<button id="signin_button" type="submit" class="btn">Sign in</button>
+				<g:if test="${isSignup == null || isSignup == false }">	
+					<input type="text" name="username" id="navigation.username" class="input-small"
+						placeholder="User Id" required  autofocus>
+					<input type="password" name="password" id="navigation.password"
+						class="input-small" placeholder="Password" required>
+					<label class="checkbox"> 
+						<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
+					</label>
+					<button id="signin_button" type="submit" class="btn">Sign in</button>
+				</g:if>
+				<g:else>
+					<a class="btn" href="${request.contextPath}/">Home</a>
+				</g:else>
 				<div class="btn-group">
 					<a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
 						Help <span class="caret"></span>
@@ -33,7 +38,7 @@
 						</li>
 					</ul>
 				</div>
-				<g:if test="${isSignup == null || isSignup == false}">					
+				<g:if test="${ (isSignup == null || isSignup == false) && (isHome == null || isHome == false) }">					
 					<a class="btn btn-primary" href="${request.contextPath}/signup">Sign Up</a>
 				</g:if>
 				<input type="hidden" name="targetUri" value="${targetUri}" />
@@ -44,8 +49,8 @@
 		<n:isLoggedIn>
 		<div id='navigation' class="masthead">
 			<ul class="nav nav-pills pull-right">
-				<li	<g:if test="${isHome == 'true'}">class="active"</g:if>>
-					<a href="${request.contextPath}/">Home</a>
+				<li	<g:if test="${isSearch == 'true'}">class="active"</g:if>>
+					<a href="${request.contextPath}/main">Search</a>
 				</li>
 				<li	<g:if test="${isSafety == 'true'}">class="active"</g:if>>
 					<a href="${request.contextPath}/safety">Safety</a>
