@@ -119,7 +119,7 @@ environments {
     }
     production {
         grails.logging.jul.usebridge = false
-        //grails.serverURL = "http://racloop.elasticbeanstalk.com"
+        grails.serverURL = "http://www.racloop.com"
     }
 }
 
