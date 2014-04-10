@@ -131,12 +131,9 @@ class UserSessionController {
 		log.info("Sending account registration confirmation email to $user.profile.email with subject $nimbleConfig.messaging.registration.subject")
 
 		if(nimbleConfig.messaging.enabled) {
-			log.info(user.profile.email)
-			log.info(nimbleConfig.messaging.mail.from)
-			log.info(nimbleConfig.messaging.registration.subject)
 			sendMail {
 				to user.profile.email
-				from nimbleConfig.messaging.mail.from
+				from grailsApplication.config.grails.messaging.mail.from
 				subject nimbleConfig.messaging.registration.subject
 				html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
 			}
@@ -187,7 +184,7 @@ class UserSessionController {
 			if(nimbleConfig.messaging.enabled) {
 				sendMail {
 					to user.profile.email
-					from nimbleConfig.messaging.mail.from
+					from grailsApplication.config.grails.messaging.mail.from
 					subject nimbleConfig.messaging.passwordreset.external.subject
 					html g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
 				}
@@ -209,7 +206,7 @@ class UserSessionController {
 			if(nimbleConfig.messaging.enabled) {
 				sendMail {
 					to user.profile.email
-					from nimbleConfig.messaging.mail.from
+					from grailsApplication.config.grails.messaging.mail.from
 					subject nimbleConfig.messaging.passwordreset.subject
 					html g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
 				}
