@@ -106,6 +106,46 @@ class UrlMappings {
 			controller = "journey"
 			action = "myMatchedJourneys"
 		}
+		"/mlogin"{
+			controller = "mobile"
+			action = "login"
+			parseRequest = true
+		}
+		"/mlogout"{
+			controller = "mobile"
+			action = "logout"
+			parseRequest = true
+		}
+		"/msignup"{
+			controller = "mobile"
+			action = "signup"
+			parseRequest = true
+		}
+		"/mpassword"{
+			controller = "mobile"
+			action = "changePassword"
+			parseRequest = true
+		}
+		"/mforgot"{
+			controller = "mobile"
+			action = "forgotPassword"
+			parseRequest = true
+		}
+		"/mprofile"{
+			controller = "mobile"
+			action = "getProfile"
+			parseRequest = true
+		}
+		"/meditprofile"{
+			controller = "mobile"
+			action = "editProfile"
+			parseRequest = true
+		}
+		"/msearch"{
+			controller = "journey"
+			action = "mobileFindMatching"
+			parseRequest = true
+		}
 		
 		"/health"(view:"/health")
 		

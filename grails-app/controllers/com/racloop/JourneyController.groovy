@@ -45,6 +45,69 @@ class JourneyController {
 		}
 	}
 	
+	def mobileFindMatching() {
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def errors = null
+		def searchResultMap = null
+		String dateOfJourneyString = json?.dateOfJourneyString
+		String validStartTimeString = json?.validStartTimeString
+		String fromPlace = json?.fromPlace
+		Double fromLatitude = json?.fromLatitude;
+		Double fromLongitude = json?.fromLongitude;
+		String toPlace = json?.toPlace
+		Double toLatitude = json?.toLatitude;
+		Double toLongitude = json?.toLongitude;
+		Boolean isDriver = json?.isDriver;
+		Double tripDistance = json?.tripDistance;
+		String tripUnit = json?.tripUnit;
+		String ip = request.remoteAddr;
+		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
+		currentJourney.dateOfJourneyString = dateOfJourneyString
+		currentJourney.validStartTimeString = validStartTimeString
+		currentJourney.fromPlace = fromPlace
+		currentJourney.fromLatitude = fromLatitude
+		currentJourney.fromLongitude = fromLongitude
+		currentJourney.toPlace = toPlace
+		currentJourney.toLatitude = toLatitude
+		currentJourney.toLongitude = toLongitude
+		currentJourney.isDriver = isDriver
+		currentJourney.tripDistance = tripDistance
+		currentJourney.tripUnit = tripUnit
+		currentJourney.ip = ip
+		if(chainModel && chainModel.currentJourney) {
+			currentJourney = chainModel.currentJourney
+		}
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			setUserInformation(currentUser,currentJourney)
+			currentJourney.ip = request.remoteAddr
+			setDates(currentJourney)
+			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
+				if(currentJourney.validate()) {
+					searchResultMap = getSearchResultMap(currentUser, currentJourney)
+					jsonMessage = "Successfully executed search"
+					jsonResponse = "ok"
+				}
+			}
+			else {
+				jsonMessage = "Invalid travel date and time"
+			}
+		}
+		else {
+			jsonMessage = "User is not logged in. Cannot fetch search results"
+		}
+		
+		def jsonResponseBody = [
+			"response": jsonResponse,
+			"message": jsonMessage,
+			"errors" : errors,
+			"searchResults" : searchResultMap
+		]
+		render jsonResponseBody as JSON
+	}
+	
 	private setUserInformation(User currentUser, JourneyRequestCommand currentJourney) {
 		if(currentUser) {
 			currentJourney.user = currentUser.username
