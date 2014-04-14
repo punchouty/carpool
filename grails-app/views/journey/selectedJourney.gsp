@@ -165,12 +165,12 @@
 	                                data-original-title="Send message to user">Send Request <i class="icon-envelope icon-white"></i></button>
 						</g:link>                                
                         <span class="pull-right">
+			<g:link action="backToSearchResult" id="backToSearchResult">                        	
                             <button class="btn btn-warning" type="button"
                                     data-toggle="tooltip"
                                     data-original-title="Edit this user">Back to Results <i class="icon-share-alt icon-white"></i></button>
-                            <button class="btn btn-danger" type="button"
-                                    data-toggle="tooltip"
-                                    data-original-title="Remove this user">Cancel <i class="icon-remove icon-white"></i></button>
+                            </g:link>        
+                            
                         </span>
                     </div>
                 </div>

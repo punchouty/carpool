@@ -222,6 +222,12 @@ class JourneyController {
 		render(view: "myMatchedJourneys", model: [currentUser: currentUser, numberOfRecords : numberOfRecords, workflows:workflows])
 	}
 	
+	def backToSearchResult() {
+		def currentJourney = session.currentJourney
+		chain(action: 'findMatching', model: [currentJourney: currentJourney])
+	
+	}
+	
 }
 
 public class JourneyRequestCommand {
