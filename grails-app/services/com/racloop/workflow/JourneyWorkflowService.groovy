@@ -160,6 +160,10 @@ class JourneyWorkflowService {
 		return showContactInfo
 	}
 	
+	public updateWorkflowState (String workflowId, String newState) {
+		return elasticSearchService.updateWorkflowState(workflowId, newState)
+	}
+	
 	
 }
 	

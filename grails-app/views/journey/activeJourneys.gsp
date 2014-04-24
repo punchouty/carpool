@@ -64,16 +64,20 @@
 		       								<td>
 		       									<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-inverse':'label'))}">${matchedWorkflowInstance.state}</span>
 		       									<g:if test = "${matchedWorkflowInstance.showContactInfo}">
-		       										<p><strong>matchedWorkflowInstance.otherUser?.profile?.mobile</strong></p>
+		       										<p><strong>${matchedWorkflowInstance.otherUser?.profile?.mobile}</strong></p>
 		       									</g:if>
 		       								</td>
 		       								<td>
 		       									<g:each in ="${matchedWorkflowInstance.actionButtons}" var="action">
 		       										<g:if test = "${action=='Accept'}">
-		       											<button class="btn btn-success"><i class="icon-ok icon-white"></i> Accept</button>
+		       											<g:link action="acceptIncomingRequest" id="acceptIncomingRequest"  params="[workflowId: matchedWorkflowInstance.workflow.id]">
+		       												<button class="btn btn-success"><i class="icon-ok icon-white"></i> Accept</button>
+		       											</g:link>
 		       										</g:if>
 		       										<g:if test = "${action=='Reject'}">
-		       											<button class="btn btn-warning"><i class="icon-ban-circle icon-white"></i> Reject</button>
+		       											<g:link action="rejectIncomingRequest" id="rejectIncomingRequest"  params="[workflowId: matchedWorkflowInstance.workflow.id]">
+		       												<button class="btn btn-warning"><i class="icon-ban-circle icon-white"></i> Reject</button>
+		       											</g:link>
 		       										</g:if>
 		       										<g:if test = "${action=='Cancel'}">
 		       											<button class="btn btn-danger"><i class="icon-trash icon-white"></i> Cancel</button>

@@ -693,4 +693,11 @@ class ElasticSearchService {
 		workflow.isRequesterDriving = searchHit.getSource().get('isRequesterDriving');
 		return workflow
 	}
+	
+	public void updateWorkflowState (String workflowId, String newState){
+		def myMap =["state":newState]
+		node.client().prepareUpdate(WORKFLOW.toLowerCase(),WORKFLOW,workflowId).setDoc(myMap).setRefresh(true).execute().actionGet()
+			//setScript("ctx._state=\"" + newState+ "\"").execute().get()
+		
+	}
 }

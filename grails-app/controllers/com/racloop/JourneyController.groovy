@@ -6,6 +6,8 @@ import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
+import com.racloop.journey.workkflow.WorkflowState;
+
 class JourneyController {
 	
 	// Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
@@ -289,6 +291,16 @@ class JourneyController {
 		def currentJourney = session.currentJourney
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	
+	}
+	
+	def acceptIncomingRequest() {
+		def workflowId = params.workflowId
+		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
+		redirect(action: "activeJourneys")
+	}
+	
+	def rejectIncomingRequest() {
+		def workflowId = params.workflowId
 	}
 	
 }
