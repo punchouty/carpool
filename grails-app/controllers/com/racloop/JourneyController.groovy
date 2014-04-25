@@ -301,6 +301,8 @@ class JourneyController {
 	
 	def rejectIncomingRequest() {
 		def workflowId = params.workflowId
+		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
+		redirect(action: "activeJourneys")
 	}
 	
 }
