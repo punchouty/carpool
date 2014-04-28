@@ -199,4 +199,8 @@ class JourneyService {
 		return journeyDetails
 	}
 	
+	def findJourneyById(String journeyId, String indexName, boolean isDriver) {
+		return elasticSearchService.findJounreyById(journeyId, indexName, isDriver)
+	}
+	
 }

@@ -5,8 +5,9 @@ import grails.converters.JSON
 import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
+import org.elasticsearch.common.joda.time.format.ISODateTimeFormat
 
-import com.racloop.journey.workkflow.WorkflowState;
+import com.racloop.journey.workkflow.WorkflowState
 
 class JourneyController {
 	
@@ -25,7 +26,7 @@ class JourneyController {
 			currentJourney = chainModel.currentJourney
 		}
 		def currentUser = getAuthenticatedUser();
-		setUserInformation(currentUser,currentJourney )
+		setUserInformation(currentUser,currentJourney)
 		currentJourney.ip = request.remoteAddr
 		setDates(currentJourney)
 		if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
@@ -303,6 +304,15 @@ class JourneyController {
 		def workflowId = params.workflowId
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
 		redirect(action: "activeJourneys")
+	}
+	
+	def searchAgain() {
+		def journeyId = params.journeyId 
+		def indexName = params.indexName
+		boolean isDriver =params.boolean('isDriver')
+		//Date dateOfJourney = ISODateTimeFormat.dateOptionalTimeParser().parseDateTime(journeyDate)
+		def journey = journeyService.findJourneyById(journeyId, indexName, isDriver)
+		chain(action: 'findMatching', model: [currentJourney: journey])
 	}
 	
 }

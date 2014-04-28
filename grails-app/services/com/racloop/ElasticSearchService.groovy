@@ -452,7 +452,7 @@ class ElasticSearchService {
 		String dateStr = getResponse.getSource().get('dateOfJourney');
 		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
 		journeyTemp.dateOfJourney = dateTime.toDate();
-		journeyTemp.isDriver = getResponse.getSource().get('isDriver');
+		//journeyTemp.isDriver = getResponse.getSource().get('isDriver');
 		journeyTemp.fromPlace = getResponse.getSource().get('fromPlace');
 		GeoPoint from = getResponse.getSource().get('from');
 		journeyTemp.fromLatitude = from.lat();
@@ -467,7 +467,7 @@ class ElasticSearchService {
 		journeyTemp.fromLongitude=getResponse.getSource().get('from')?.get("lon")
 		journeyTemp.toLatitude=getResponse.getSource().get('to')?.get("lat")
 		journeyTemp.toLongitude=getResponse.getSource().get('to')?.get("lon")
-		
+		journeyTemp.isSaved = true
 		return journeyTemp
 	}
 
@@ -539,6 +539,14 @@ class ElasticSearchService {
 			searchTypeOpposite = TYPE_DRIVER;
 		}
 		GetResponse response = node.client.prepareGet(indexName, searchTypeOpposite, matchedJourneyId).execute().actionGet();
+		JourneyRequestCommand journeyTemp = parseJourneyFromGetResponse(response)
+		return journeyTemp
+	}
+	
+	def findJounreyById(String journeyId, String indexName, boolean isDriver) {
+		//String indexName = getIndexName(journeyDate)
+		String indexType = isDriver?TYPE_DRIVER:TYPE_RIDER
+		GetResponse response = node.client.prepareGet(indexName, indexType, journeyId).execute().actionGet();
 		JourneyRequestCommand journeyTemp = parseJourneyFromGetResponse(response)
 		return journeyTemp
 	}

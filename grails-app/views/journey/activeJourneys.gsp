@@ -27,7 +27,9 @@
 					       <p>${journeyInstance.journey.isDriver?'Driving ':'Riding '}<span class="label label-info">Active</span></p>
 					       <small><i class="icon-home"></i> From : <cite title="Source Title">${journeyInstance.journey.fromPlace}</cite></small>
 					       <small><i class="icon-map-marker"></i> To : <cite title="Source Title">${journeyInstance.journey.toPlace}</cite></small>
-					       <button class="btn btn-success"><i class="icon-refresh icon-white"></i> Search Again</button>
+					       <g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journey.id, indexName:journeyInstance.journey.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.journey.isDriver?true:false]">
+					       		<button class="btn btn-success"><i class="icon-refresh icon-white"></i> Search Again</button>
+					       </g:link>
 				       	   <button class="btn btn-danger"><i class="icon-trash icon-white"></i> Cancel</button>
 					     </blockquote>
 					   </div>
