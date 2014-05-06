@@ -315,6 +315,12 @@ class JourneyController {
 		chain(action: 'findMatching', model: [currentJourney: journey])
 	}
 	
+	def cancelOutgoingRequest() {
+		def workflowId = params.workflowId
+		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.CANCELLED.state)
+		redirect(action: "activeJourneys")
+	}
+	
 }
 
 public class JourneyRequestCommand {

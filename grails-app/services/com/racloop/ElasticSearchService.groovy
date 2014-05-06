@@ -623,6 +623,21 @@ class ElasticSearchService {
 		return workflows
 	}
 	
+	def searchWorkflowByMatchedJourney(JourneyRequestCommand command) {
+		String indexName = WORKFLOW.toLowerCase()
+		
+		FilterBuilder incomingRequestFilter = FilterBuilders.andFilter(
+			FilterBuilders.termFilter('matchingUser', command.user),
+			FilterBuilders.termFilter('matchedJourneyId', command.id)
+			//FilterBuilders.termFilter('state', "")
+		)
+		
+		
+		def workflows = searchWorkflow(indexName, WORKFLOW, incomingRequestFilter, null)
+		
+		return workflows
+	}
+	
 	def findAllJourneysForUserAfterADate(User user, DateTime inputDate) {
 		FilterBuilder filter = FilterBuilders.andFilter(
 			FilterBuilders.rangeFilter("dateOfJourney").gte(inputDate),

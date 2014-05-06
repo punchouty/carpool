@@ -63,6 +63,11 @@ class JourneyWorkflowService {
 			selectedWorkflows.each {it->
 				selectedJourneyIds<<it.matchedJourneyId
 			}
+			
+			def incomingWorkflow = elasticSearchService.searchWorkflowByMatchedJourney(currentJourney)
+			incomingWorkflow.each {it->
+				selectedJourneyIds<<it.requestJourneyId
+			}
 		}
 		
 		return selectedJourneyIds

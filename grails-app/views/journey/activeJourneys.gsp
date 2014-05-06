@@ -130,8 +130,11 @@
 		       											<button class="btn btn-warning"><i class="icon-ban-circle icon-white"></i> Reject</button>
 		       										</g:if>
 		       										<g:if test = "${action=='Cancel'}">
-		       											<button class="btn btn-danger"><i class="icon-trash icon-white"></i> Cancel</button>
+		       											<g:link action="cancelOutgoingRequest" id="cancelOutgoingRequest"  params="[workflowId: requestWorkflowInstance.workflow.id]">
+		       												<button class="btn btn-danger"><i class="icon-trash icon-white"></i> Cancel</button>
+		       											</g:link>
 		       										</g:if>
+		       										
 		       									</g:each>
 		       								</td>
 		       							</tr>
