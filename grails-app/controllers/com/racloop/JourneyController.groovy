@@ -207,11 +207,14 @@ class JourneyController {
 	def newJourney() {
 		def currentUser = getAuthenticatedUser();
 		def currentJourney = session.currentJourney
-		journeyManagerService.createJourney(currentUser, currentJourney)
+		if(!currentJourney.id) {
+			journeyManagerService.createJourney(currentUser, currentJourney)
+		}
 		session.currentJourney.isSaved = true
 		flash.message ="Successfully saved your request"
 		//redirect(controller: 'staticPage', action: "search")
-		render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney])
+		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney])
+		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	}
 	
 	def requestService(JourneyRequestCommand myJourney) {
