@@ -39,6 +39,7 @@ class ElasticSearchService {
 	public static final String TYPE_DRIVER = "driver"
 	public static final String TYPE_RIDER = "rider"
 	public static final String WORKFLOW = "workflow"
+	public static final String JOURNEY = "journey"
 	public static final DateTimeFormatter BASIC_DATE_FORMAT = ISODateTimeFormat.dateOptionalTimeParser();
 	private Node node
 
@@ -59,7 +60,7 @@ class ElasticSearchService {
 	def indexJourney(User user, JourneyRequestCommand journey) {
 		log.info "Adding record to elastic search ${journey}"
 		def sourceBuilder = createJourneyJson(user, journey)
-		String indexName = getIndexName(journey.dateOfJourney)
+		String indexName = JOURNEY//getIndexName(journey.dateOfJourney)
 		String type = getType(journey);
 		IndexRequest indexRequest = new IndexRequest(indexName, type).id(journey.id + '').source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
@@ -97,6 +98,11 @@ class ElasticSearchService {
 			indexDefinitor.createMainIndex(node, indexName)
 			date = date.next()
 		}		
+	}
+	
+	def createMainJourneyIndex() {
+		IndexDefinitor indexDefinitor = new IndexDefinitor()
+		indexDefinitor.createMainIndex(node, JOURNEY)
 	}
 	
 	def closeMainIndexForPreviousWeek() {
@@ -194,7 +200,7 @@ class ElasticSearchService {
 	}
 
 	JourneyRequestCommand getJourney(def journeyId, boolean isDriver, def dateOfJourney) {
-		String indexName = getIndexName(dateOfJourney);
+		String indexName = JOURNEY//getIndexName(dateOfJourney);
 		String searchType = null;
 		if(isDriver) {
 			searchType = TYPE_DRIVER;
@@ -207,7 +213,7 @@ class ElasticSearchService {
 	}
 
 	def search(User user, JourneyRequestCommand journey) {
-		String indexName = getIndexName(journey.dateOfJourney);
+		String indexName = JOURNEY//getIndexName(journey.dateOfJourney);
 		String searchTypeOpposite = null;
 		if(journey.isDriver) {
 			searchTypeOpposite = TYPE_RIDER;
@@ -409,7 +415,7 @@ class ElasticSearchService {
 	def deleteSampleData() {
 		Calendar time = Calendar.getInstance();
 		Date date = new Date(time.timeInMillis);
-		String indexName = getIndexName(date);
+		String indexName = JOURNEY//getIndexName(date);
 		log.info "Removing data from journeys"
 		DeleteByQueryResponse response = node.client.prepareDeleteByQuery(indexName).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
 		log.info "Data removed from journeys successfully"
@@ -528,7 +534,7 @@ class ElasticSearchService {
 			indexName = grailsApplication.config.grails.generatedData.index.name
 		}
 		else {
-			indexName = getIndexName(currentJourney.dateOfJourney);
+			indexName = JOURNEY//getIndexName(currentJourney.dateOfJourney);
 			
 		}
 		String searchTypeOpposite = null;

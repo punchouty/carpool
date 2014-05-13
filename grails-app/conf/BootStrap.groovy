@@ -63,7 +63,7 @@ class BootStrap {
 	
 	private def createIndexes() {
 		// Main Index
-		elasticSearchService.createMainIndex();		
+		elasticSearchService.createMainJourneyIndex()		
 		// Master Data Index
 		elasticSearchService.createMasterLocationIndexIfNotExists();//TODO - check if it need to be here???
 		//Dummy Data Index

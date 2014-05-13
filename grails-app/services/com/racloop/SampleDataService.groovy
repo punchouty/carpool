@@ -42,6 +42,7 @@ class SampleDataService {
 			journeyCommand.toLatitude = Double.parseDouble(line[9])
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = true
+			journeyCommand.tripDistance = 250.0d
 			journeyManagerService.createJourney(user3, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}
@@ -62,6 +63,7 @@ class SampleDataService {
 			journeyCommand.toLatitude = Double.parseDouble(line[9])
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = false
+			journeyCommand.tripDistance = 250.0d
 			journeyManagerService.createJourney(user4, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}		
@@ -81,6 +83,7 @@ class SampleDataService {
 			journeyCommand.toLatitude = Double.parseDouble(line[9])
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = true
+			journeyCommand.tripDistance = 250.0d
 			journeyManagerService.createJourney(user1, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}
@@ -101,6 +104,7 @@ class SampleDataService {
 			journeyCommand.toLatitude = Double.parseDouble(line[9])
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = false
+			journeyCommand.tripDistance = 250.0d
 			journeyManagerService.createJourney(user1, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
 		}
