@@ -1,6 +1,6 @@
-cluster.name: racloop
-path.data: /devlopment/software/index/carpool/data
-path.work: /devlopment/software/index/carpool/work
-path.logs: /devlopment/software/index/carpool/logs
-path.plugins: /devlopment/software/software-mac/elasticsearch-1.0.1/plugins
+cluster.name: racloop-cluster
+path.data: D:\\data\\es\\data
+path.work: D:\\data\\es\\work
+path.logs: D:\\data\\es\\logs
+path.plugins: D:\\data\\plugins
 bootstrap.mlockall: true

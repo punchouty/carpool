@@ -311,7 +311,7 @@ class JourneyController {
 	
 	def searchAgain() {
 		def journeyId = params.journeyId 
-		def indexName = ElasticSearchService.JOURNEY //params.indexName
+		def indexName = params.indexName
 		boolean isDriver =params.boolean('isDriver')
 		//Date dateOfJourney = ISODateTimeFormat.dateOptionalTimeParser().parseDateTime(journeyDate)
 		def journey = journeyService.findJourneyById(journeyId, indexName, isDriver)
