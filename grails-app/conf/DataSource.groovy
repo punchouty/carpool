@@ -14,11 +14,11 @@ environments {
     development {
         dataSource {
 			dbCreate = "create-drop"
-            url = "jdbc:mysql://localhost:3306/ebdb"
+            url = "jdbc:mysql://localhost:8889/carpool"
 			driverClassName = "com.mysql.jdbc.Driver"
 			pooled = true
 			username = "root"
-			password = ""
+			password = "root"
 			logSql = true
 			properties {
                maxActive = -1
