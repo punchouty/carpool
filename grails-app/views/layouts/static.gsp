@@ -11,6 +11,16 @@
 <html lang="en" class="no-js">
 <!--<![endif]-->
 <head>
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+<!--[if lt IE 9]>
+  <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+  <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+<![endif]-->
 <g:render template="/templates/shared/head" />
 <g:layoutHead />
 <r:require module="core" />
@@ -19,9 +29,8 @@
 <body>
 	<g:set var="currentUser"
 		value="${UserBase.get(SecurityUtils.subject.principal)}" />
-	<div class="container-narrow">
 	<g:render template="/templates/shared/navigation" />
-	<hr>		
+	<div class="container">
 		
 	<g:layoutBody />
       
@@ -35,7 +44,6 @@
 		${params }
 	</div>
 	</g:if>	
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places"></script><r:layoutResources />
 	<r:layoutResources />
 </body>

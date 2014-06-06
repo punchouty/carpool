@@ -1,6 +1,7 @@
 		<%@ page import="grails.plugin.nimble.core.AdminsService"%>
+		<%-- 
 		<n:isNotLoggedIn>
-		<div id='navigation' class="nav-collapse collapse">
+		<div id='navigation' class="nav-collapse" data-toggle="collapse">
 			<g:form controller="auth" action="signin" name="login-form" method="post"
 				class="navbar-form form-inline pull-right">
 				<g:if test="${isSignup == null || isSignup == false }">	
@@ -38,7 +39,7 @@
 						</li>
 					</ul>
 				</div>
-				<g:if test="${ (isSignup == null || isSignup == false) && (isHome == null || isHome == false) }">					
+				<g:if test="${ (isSignup == null || isSignup == false)required && (isHome == null || isHome == false) }">					
 					<a class="btn btn-primary" href="${request.contextPath}/signup">Sign Up</a>
 				</g:if>
 				<input type="hidden" name="targetUri" value="${targetUri}" />
@@ -61,18 +62,13 @@
 				<li <g:if test="${isHistory == 'true'}">class="active"</g:if>>
 					<a href="${request.contextPath}/history">History</a>
 				</li>
-				<%-- 
-				<li>
-					<a href="${request.contextPath}/notifications">Notifications <span class="badge badge-info">4</span></a>
-				</li>
-				--%>
 				<li>
 					<div class="btn-group">
 						<button class="btn">${currentUser.profile.fullName}&nbsp;<i	class="icon-user"></i></button>
 						  <button class="btn dropdown-toggle" data-toggle="dropdown">
 						    <span class="caret"></span>
 						  </button>
-						  <ul class="dropdown-menu">
+						  <ul class="dropdown-menu">required
 						    <n:hasRole name="${AdminsService.ADMIN_ROLE}">
 							<li>
 								<g:link controller="admins" action="index" target="_blank">User Administration</g:link>
@@ -89,7 +85,7 @@
 							</li>
 							<li>
 								<a href="${request.contextPath}/signout">Sign Out</a>
-							</li>
+							</li>auth/login
 						  </ul>
 					</div>
 				</li>		
@@ -97,3 +93,56 @@
 			<a href="${request.contextPath}/" class="logo-link"><h1 class="muted">raC looP</h1></a>
 		</div>
 		</n:isLoggedIn>
+		--%>
+	<div class="navbar navbar-default navbar-static-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">raC looP</a>
+        </div>
+        <%--
+        <div class="navbar-collapse collapse">
+          <g:form controller="auth" action="signin" name="login-form" method="post"
+				class="navbar-form navbar-right" role="form">
+            <div class="form-group">
+              <input type="text" placeholder="Username" name="username" class="form-control" required  autofocus>
+            </div>
+            <div class="form-group">
+              <input placeholder="Password" class="form-control" type="password" name="password">
+            </div>
+            <button type="submit" class="btn btn-success">Sign in</button>
+          </g:form>
+        </div><!--/.navbar-collapse -->
+         --%>
+        
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="#">Home</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#contact">Contact</a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+              <ul class="dropdown-menu">
+                <li><a href="#">Action</a></li>
+                <li><a href="#">Another action</a></li>
+                <li><a href="#">Something else here</a></li>
+                <li class="divider"></li>
+                <li class="dropdown-header">Nav header</li>
+                <li><a href="#">Separated link</a></li>
+                <li><a href="#">One more separated link</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="../navbar/">Default</a></li>
+            <li class="active"><a href="./">Static top</a></li>
+            <li><a href="../navbar-fixed-top/">Fixed top</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </div>

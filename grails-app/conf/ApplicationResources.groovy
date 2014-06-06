@@ -1,14 +1,14 @@
 modules = {
     core {		
 		
-		resource url:'css/bootstrap.css'
+		//resource url:'css/bootstrap.css'
 		resource url:'css/bootstrap-datetimepicker.min.css'
-		resource url:'css/bootstrap-responsive.css'
+		//resource url:'css/bootstrap-responsive.css'
 		resource url:'css/bootstrap-datatable.css'
-		resource url:'css/custom.css'
+		//resource url:'css/custom.css'
 		
 		resource url:'js/application.js'
-		resource url:'js/bootstrap.js'
+		//resource url:'js/bootstrap.js'
 		resource url:'js/bootstrap-datetimepicker.min.js'
 		resource url:'js/date.js'
 		resource url:'js/jquery.places-search.js'
