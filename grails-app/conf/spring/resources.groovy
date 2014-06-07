@@ -8,7 +8,7 @@ beans = {
 
 	amq.broker(xmlns:"http://activemq.apache.org/schema/core",
 	brokerName:"localhost",
-	dataDirectory:"\\home\\kamal\\data\\activemq" ){
+	dataDirectory:"\\home\\parminder\\data\\activemq" ){
 
 		amq.transportConnectors{
 			amq.transportConnector(name:"vm", uri:"vm://localhost" )
