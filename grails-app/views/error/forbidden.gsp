@@ -10,7 +10,7 @@
 <body>
 	<div class="row">
 		<div>
-			<div class="hero-unit center">
+			<div class="jumbotron center">
 				<h1>
 					Unauthorized Access <small><font face="Tahoma" color="red">Error
 							403</font></small>

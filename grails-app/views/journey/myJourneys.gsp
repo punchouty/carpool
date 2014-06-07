@@ -10,7 +10,7 @@
 	<div class="message" role="status">${flash.message}</div>
 	</g:if>
 	<g:if test="${numberOfRecords != 0}">
-	<div class="row-fluid">
+	<div class="row">
 		<table id="results" class="table table-striped">
 			<thead>
 				<tr>
@@ -42,7 +42,7 @@
 	</div>
 	</g:if>
 	<g:else>
-		<div class="row-fluid">
+		<div class="row">
 			<p class="text-error">Sorry no active request found</p>
 		</div>
 	</g:else>

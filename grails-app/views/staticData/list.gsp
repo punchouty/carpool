@@ -9,7 +9,7 @@
 		<title><g:message code="default.list.label" args="[entityName]" /></title>
 	</head>
 	<body>
-		<div class="row-fluid">
+		<div class="row">
 			<g:if test="${flash.message != null && flash.message.length() > 0}">
 				<div id="flash-message" class="alert alert-info">
 			         <a class="close" data-dismiss="alert" href="#">×</a>
@@ -20,7 +20,7 @@
 		</div>
 		
 		<h2>Web Content</h2>
-		<div class="row-fluid">
+		<div class="row">
 		<table id="results" class="table table-striped">
 			<thead>
 				<tr>

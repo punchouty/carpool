@@ -9,18 +9,18 @@
 	<g:if test="${flash.message}">
 	<div class="message" role="status">${flash.message}</div>
 	</g:if>
-	<div class="row-fluid para well well-large">
-		<div class="span9">
+	<div class="row para well well-large">
+		<div class="col-md-9">
 			You want to travel from <em>${currentJourney.fromPlace}</em> to <em>${currentJourney.toPlace}</em> 
 			on <strong><g:formatDate format="dd MMM HH:mm" date="${currentJourney.dateOfJourney}"/></strong> 
 		</div>
-		<div class="span3">
+		<div class="col-md-3">
 			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<a href="${request.contextPath}/" class="btn">Cancel</a>
 		</div>
 	</div>
 	<g:if test="${isDummyData}">
 		<g:if test="${numberOfRecords != 0}">
-		<div class="row-fluid">
+		<div class="row">
 			<table id="results" class="table table-striped">
 				<thead>
 					<tr>
@@ -72,13 +72,13 @@
 		</div>
 		</g:if>
 		<g:else>
-			<div class="row-fluid">
+			<div class="row">
 				<p class="text-error">Sorry your search did not match any results</p>
 			</div>
 		</g:else>
 	</g:if>
 	<g:else>
-	<div class="row-fluid">
+	<div class="row">
 		<table id="results" class="table table-striped">
 			<thead>
 				<tr>

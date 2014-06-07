@@ -24,3 +24,4 @@ stacktrace.log
 *.iws
 grails-app/conf/ApplicationResources.groovy
 grails-app/conf/elasticsearch.yml
+.project

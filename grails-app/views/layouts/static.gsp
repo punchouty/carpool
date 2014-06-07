@@ -34,7 +34,7 @@
 		
 	<g:layoutBody />
       
-	<nav class="container-narrow" role="navigation">
+	<nav class="container" role="navigation">
         <g:render template="/templates/shared/footer" />
    	</nav>
 		
