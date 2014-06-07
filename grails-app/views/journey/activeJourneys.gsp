@@ -8,7 +8,7 @@
 	<g:set var="isActiveJourneys" value="true" scope="request" />
 	<h2>Active Journeys</h2>
 	<g:if test="${journeys?.size > 0}">
-		<div class="row-fluid">
+		<div class="row">
 		<div class="accordion" id="accordion1">
 		<g:each in="${journeys}" status="i" var="journeyInstance">
 			<div class="accordion-group"> <!-- Repete Element -->

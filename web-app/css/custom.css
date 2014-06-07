@@ -15,7 +15,7 @@ Custom container
 .container-narrow>hr {
 	margin: 20px 0;
 }
-
+*/
 Main marketing message and sign up button
 .jumbotron {
 	margin: 0px 0;
@@ -123,4 +123,7 @@ Supporting marketing content
 
 .site-footer-links img {
 	display: block
-} */
+} 
+.button_space {
+	margin: 0 10px;
+}

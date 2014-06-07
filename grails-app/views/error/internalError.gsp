@@ -10,7 +10,7 @@
 <body>
 	<div class="row">
 		<div>
-			<div class="hero-unit center">
+			<div class="jumbotron center">
 				<h1>
 					This is embarrassing :(
 				</h1>
