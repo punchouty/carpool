@@ -7,7 +7,7 @@
 	<g:set var="isHistory" value="true" scope="request" />
 	<h2>History</h2>
 	<g:if test="${journeys?.size > 0}">
-	<div class="row-fluid">
+	<div class="row">
 		<div class="accordion" id="accordion1">
 		
 		<div class="accordion-group"> <!-- Repete Element -->

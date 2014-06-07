@@ -29,14 +29,14 @@
 <body>
 	<g:set var="currentUser"
 		value="${UserBase.get(SecurityUtils.subject.principal)}" />
-	<div class="container-narrow">
+	<div class="container">
 		
 		<g:render template="/templates/shared/login" />
 		<hr>
 		
 		<g:layoutBody />
       
-		<nav class="container-narrow" role="navigation">
+		<nav class="container" role="navigation">
 	        <g:render template="/templates/shared/footer" />
 	   	</nav>
 	</div>

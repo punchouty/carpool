@@ -98,19 +98,19 @@
 	<g:if test="${flash.message}">
 	<div class="message" role="status">${flash.message}</div>
 	</g:if>
-	<div class="row-fluid user-infos cyruxx">
-            <div class="span10 offset1">
+	<div class="row user-infos cyruxx">
+            <div class="col-md-10 offset1">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <h3 class="panel-title">Driver Information</h3>
                     </div>
                     <div class="panel-body">
                         <div class="row-fluid">
-                            <div class="span3">
+                            <div class="col-md-3">
                             	<g:img dir="images" file="driver.png" width="100" height="100" class="img-circle"/>
                                 
                             </div>
-                            <div class="span6">
+                            <div class="col-md-6">
                             	<g:if test="${matchedUser}">
                             		<strong>${matchedUser.profile.fullName}</strong><br>
                             	</g:if>
