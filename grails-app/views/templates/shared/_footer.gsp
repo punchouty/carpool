@@ -1,5 +1,5 @@
-		<div class="navbar-inner">
-            <ul class="container-fluid">
+		<div class="site-footer">
+            <ul class="site-footer-links">
             	<li>
             		&copy; racloop 2014
             	</li>
