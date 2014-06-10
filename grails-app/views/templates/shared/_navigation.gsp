@@ -153,7 +153,7 @@
 					</div>	
 					</li>	
 				<g:if test="${ (isSignup == null || isSignup == false) && (isHome == null || isHome == false) }">					
-					<li><a class="btn btn-primary" href="${request.contextPath}/signup">Sign Up</a></li>
+					<li class="pull-right button_space"><a class="btn btn-primary" href="${request.contextPath}/signup">Sign Up</a></li>
 				</g:if>
 				<input type="hidden" name="targetUri" value="${targetUri}" />				
           </g:form>

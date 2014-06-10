@@ -77,7 +77,7 @@ $(function() {
 	directionsDisplay.setMap(map);
 });
 //*/		
-$(function() {
+$(function() {	
 	$('#fromPlace').placesSearch({
 		onSelectAddress : function(result) {
 			from = result.geometry.location;
@@ -210,7 +210,7 @@ $(function() {
 //	});
 //	picker = $('#travelDateDiv').data('datetimepicker');
 //	picker.setLocalDate(initialTime);
-	$('.form_datetime').datetimepicker({
+	$('#travelDateDiv').datetimepicker({
         //language:  'fr',
         weekStart: 1,
         todayBtn:  1,
@@ -223,13 +223,17 @@ $(function() {
 });
 
 $(function() {
-	$('#driver').click(function() {
+	$('#driver').click(function() {		
 		var errorMessage = getErrorMessage();
-		if(errorMessage){
+		alert(errorMessage.length);
+		if(errorMessage){	
+			alert("if "+errorMessage);
 			$('#errorMessage').text(errorMessage);
-			$('#myModal').modal();
+			$('#myModal').modal('show')
+			$('#myModal').modal({show:true})
 		}
 		else {
+			alert("else");
 			$('#isDriver').val('true');
 			$('#search-form').submit();
 		}
