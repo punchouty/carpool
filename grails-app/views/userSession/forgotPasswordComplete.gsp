@@ -6,7 +6,7 @@
 
 <body>
 	<div class="row">
-        <div class="span9">
+        <div class="col-md-9">
     		<div class="thumbnail center well well-small text-center">
                 <h2>Password Reset Successful</h2>
                 

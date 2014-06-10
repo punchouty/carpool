@@ -16,19 +16,21 @@ Custom container
 	margin: 20px 0;
 }
 */
-Main marketing message and sign up button
-.jumbotron {
+/* Main marketing message and sign up button */
+
+
+.jumbobox {
 	margin: 0px 0;
 	text-align: center;
 }
 
-.jumbotron h1 {
+.jumbobox h1 {
 	font-size: 72px;
 	line-height: 1;
 	margin: 0px 0;
 }
 
-.jumbotron .btn {
+.jumbobox .btn {
 	font-size: 21px;
 	padding: 14px 24px;
 }
@@ -127,3 +129,7 @@ Supporting marketing content
 .button_space {
 	margin: 0 10px;
 }
+#logo {
+font-size:450%;
+font-weight: bold;
+} 
