@@ -28,7 +28,8 @@
 			</ul>
 		</div>
 	</g:hasErrors>
-	<div class="jumbotron" id="jumbotron">
+	<br>
+	<div class="jumbobox" id="jumbobox">
 		<h1>Car Pool Finder</h1>
 		<%-- 
 		<p class="lead">Share your Car, Taxi and Auto rides. Make new friends and Contribute to Greener Environment.
