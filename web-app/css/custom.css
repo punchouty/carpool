@@ -125,5 +125,14 @@ Supporting marketing content
 	display: block
 } 
 .button_space {
-	margin: 0 10px;
+ margin: 0 0 0 10px;
+}
+.nav .open > a, .nav .open > a:hover, .nav .open > a:focus {
+   background-color: #39B3D7;
+    border-color: #269ABC;
+    color: #FFFFFF;
+}
+#search-form > .col-md-4 {
+    width: 30%;
+    padding-right:0px;
 }

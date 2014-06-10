@@ -11,6 +11,7 @@ modules = {
 		//resource url:'js/bootstrap.js'
 		resource url:'js/bootstrap-datetimepicker.min.js'
 		resource url:'js/date.js'
+		resource url:'js/bootstrap3-typeahead.js'
 		resource url:'js/jquery.places-search.js'
 		resource url:'js/jquery.dataTables.js'
 		resource url:'js/bootstrap-datatable.js'
