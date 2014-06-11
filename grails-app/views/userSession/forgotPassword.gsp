@@ -24,7 +24,7 @@
                 <g:form controller="userSession" action="forgotPasswordProcess" method="POST">
 	                <div class="control-group">
 	                	<div class="input-prepend">
-	                		<span class="add-on"><i class="icon-envelope"></i></span>
+	                		<span class="input-group-addon"><i class="icon-envelope"></i></span>
 							<input name="email" id="email" type="email" placeholder="your@email.com" required>
 	                    </div>
 						<p id="email-help-block" class="help-block"></p> 

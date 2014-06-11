@@ -25,8 +25,8 @@
 		</g:hasErrors>	
 	</div>
 	<div class="row">
-		<div class="span2"></div>
-		<div class="span5">
+		<div class="col-md-2"></div>
+		<div class="col-md-5">
 			<fieldset>
 	          <legend>Registration Form</legend>
                 <g:form action="saveuser" name="signup-form" method="post"  class="form-horizontal">

@@ -22,6 +22,7 @@ stacktrace.log
 /*.war
 /*.zip
 *.iws
-grails-app/conf/ApplicationResources.groovy
-grails-app/conf/elasticsearch.yml
+/grails-app/conf/ApplicationResources.groovy
+/grails-app/conf/elasticsearch.yml
 .project
+/grails-app/conf/spring/resources.groovy
