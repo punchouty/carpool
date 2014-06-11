@@ -105,7 +105,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">raC looP</a>
+          <a class="navbar-brand" href="${request.contextPath}/">raC looP</a>
         </div>
         
        

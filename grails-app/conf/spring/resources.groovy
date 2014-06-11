@@ -10,6 +10,7 @@ beans = {
 	brokerName:"localhost",
 	dataDirectory:"\\home\\parminder\\data\\activemq" ){
 
+
 		amq.transportConnectors{
 			amq.transportConnector(name:"vm", uri:"vm://localhost" )
 		}
