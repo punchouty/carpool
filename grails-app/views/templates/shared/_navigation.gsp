@@ -179,7 +179,7 @@
 					<a href="${request.contextPath}/history">History</a>
 				</li>
 				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">${currentUser.profile.fullName}&nbsp;<i	class="icon-user"></i> 
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">${currentUser.profile.fullName}&nbsp;<i class="glyphicon glyphicon-user"></i>&nbsp; 
 					<b class="caret"></b></a>		
 						  <ul class="dropdown-menu">
 						    <n:hasRole name="${AdminsService.ADMIN_ROLE}">

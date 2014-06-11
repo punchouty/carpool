@@ -224,16 +224,12 @@ $(function() {
 
 $(function() {
 	$('#driver').click(function() {		
-		var errorMessage = getErrorMessage();
-		alert(errorMessage.length);
+		var errorMessage = getErrorMessage();		
 		if(errorMessage){	
-			alert("if "+errorMessage);
 			$('#errorMessage').text(errorMessage);
-			$('#myModal').modal('show')
-			$('#myModal').modal({show:true})
+			 $("#myModal").modal('show');			 
 		}
 		else {
-			alert("else");
 			$('#isDriver').val('true');
 			$('#search-form').submit();
 		}

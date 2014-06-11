@@ -14,7 +14,7 @@
 		</div>
 	</g:if>
 	<g:if test="${flash.error}">
-		<div class="alert alert-error">			
+		<div class="alert alert-danger">			
 		  <button type="button" class="close" data-dismiss="alert">&times;</button>
 		  ${flash.error}
 		</div>
@@ -42,7 +42,7 @@
 		
 		  
        <div class="form-group col-md-4">                
-                <div id="travelDateDiv" class="input-group date form_datetime "  data-date-format="dd MM yyyy - HH:ii p" data-link-field="dtp_input1">
+                <div id="travelDateDiv" class="input-group date form_datetime "  data-date-format="dd MM yyyy    HH:ii P" data-link-field="dtp_input1">
                     <input id="dateOfJourneyString" class="form-control" name="dateOfJourneyString" size="16" type="text" value="" placeholder="Date and Time"  autocomplete="off" readonly>
                     <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
 					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
@@ -180,19 +180,18 @@
     <div class="modal-content">
       <div class="modal-header">
         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-        <h4 class="modal-title" id="myModalLabel">Error Message</h4>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
       </div>
       <div class="modal-body">
-        <p id="errorMessage"></p>
+        ...
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
 </div>
-
 
 
 
