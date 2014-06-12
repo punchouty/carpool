@@ -223,7 +223,7 @@ $(function() {
 });
 
 $(function() {
-	$('#driver').click(function() {		
+	$('#driver').click(function() {	
 		var errorMessage = getErrorMessage();		
 		if(errorMessage){	
 			$('#errorMessage').text(errorMessage);
