@@ -100,10 +100,16 @@ h3.highlight  {
   	background-color:#66BBCC;
 }
 
+
+.nav > li > a:hover, .nav > li > a:focus {
+    background-color: #39B3D7;
+    text-decoration: none;
+}
+
 .navbar-nav > .open > a, .navbar-nav > .open > a:hover, .navbar-nav > .open > a:focus {
 	color: #000;
   	opacity:.9;
-  	background-color: #39B3D7 !important;
+  	background-color: #39B3D7;
 }
 
 .navbar-brand {
