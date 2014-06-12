@@ -111,7 +111,7 @@
         <ul class="nav navbar-nav navbar-right">        
         
           <g:form controller="auth" action="signin" name="login-form" method="post"
-				class="navbar-form " role="form">				
+				class="navbar-form pull-left" role="form">				
 				<g:if test="${isSignup == null || isSignup == false }">	
 				
             <div class="form-group ">
@@ -125,9 +125,11 @@
 		<g:else>
 		<li><a class="btn" href="${request.contextPath}/">Home</a></li>
 		</g:else>
-		<li class="dropdown pull-right button_space">
-              <div class="btn-group">
-					<a class="btn btn-info dropdown-toggle" data-toggle="dropdown" href="#">
+		<input type="hidden" name="targetUri" value="${targetUri}" />				
+        </g:form>
+		<li class="dropdown pull-right">
+              
+					<a class=" dropdown-toggle" data-toggle="dropdown" href="#">
 						Help <span class="caret"></span>
 					</a>
 				  <ul class="dropdown-menu">
@@ -146,14 +148,12 @@
 						<li <g:if test="${isTerms == 'true'}">class="active"</g:if>><g:link
 								controller="staticPage" action="terms">Terms</g:link>
 						</li>
-					</ul>	
-					</div>	
+					</ul>						
 					</li>	
 				<g:if test="${ (isSignup == null || isSignup == false) && (isHome == null || isHome == false) }">					
-					<li class="pull-right button_space"><a class="btn btn-primary" href="${request.contextPath}/signup">Sign Up</a></li>
+					<li class="pull-right button_space"><a class="" href="${request.contextPath}/signup">Sign Up</a></li>
 				</g:if>
-				<input type="hidden" name="targetUri" value="${targetUri}" />				
-          </g:form>
+				
           </ul>
         </div><!--/.navbar-collapse -->
         </n:isNotLoggedIn>        

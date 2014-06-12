@@ -135,8 +135,17 @@ Supporting marketing content
     border-color: #269ABC;
     color: #FFFFFF;
 }
-#search-form > .col-md-4 {
-    width: 30%;
-    padding-right:0px;
+
+#search-form > .row > .col-md-10 {
+padding-right:0px;	
+	
 }
+
+
+#search-form > .row > .col-md-2 {
+	padding-left:0;
+	width: 10%;
+	}
+
+
 
