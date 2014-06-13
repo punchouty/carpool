@@ -60,7 +60,7 @@ body {
   background-color:#efefef;
 }
 
-a,a:hover {
+a,a:hover, a:focus {
 	color:#77CCDD;
   	text-decoration:none;
 }

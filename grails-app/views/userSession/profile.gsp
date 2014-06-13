@@ -17,7 +17,7 @@
 		     </div>
 		</g:if>
 		<g:hasErrors bean="${user}">
-			<div id="flash-error" class="alert alert-error">
+			<div id="flash-error" class="alert alert-danger">
 				<a class="close" data-dismiss="alert" href="#">×</a>
 				<h4>Error!</h4>
 				<g:renderErrors bean="${user}" as="list" />
