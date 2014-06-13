@@ -9,19 +9,19 @@
 	<h2>Active Journeys</h2>
 	<g:if test="${journeys?.size > 0}">
 		<div class="row">
-		<div class="accordion" id="accordion1">
+		<div class="panel-group" id="accordion1">
 		<g:each in="${journeys}" status="i" var="journeyInstance">
-			<div class="accordion-group"> <!-- Repete Element -->
-	   			<div class="accordion-heading ">
+			<div class="panel panel-default"> <!-- panel panel-default -->
+	   			<div class="panel-heading ">
 	                 	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href= "#journey${i}">
-	                 		<i class="icon-calendar"></i> <g:formatDate format="dd MMM HH:mm" date="${journeyInstance.journey.dateOfJourney}"/>
-						| <i class="icon-bell"></i> Incoming Requests <strong>(${journeyInstance.matchedJourneys.size()})</strong>
-					  	| <i class="icon-comment"></i> Outgoing Responses <strong>(${journeyInstance.requestedJourneys.size()})</strong>
+	                 		<i class="glyphicon glyphicon-calendar"></i> <g:formatDate format="dd MMM HH:mm" date="${journeyInstance.journey.dateOfJourney}"/>
+						| <i class="glyphicon glyphicon-bell"></i> Incoming Requests <strong>(${journeyInstance.matchedJourneys.size()})</strong>
+					  	| <i class="glyphicon glyphicon-comment"></i> Outgoing Responses <strong>(${journeyInstance.requestedJourneys.size()})</strong>
 					  	| Show Details
 	                 	</a>        				
 	   			</div> <!-- accordion-heading ENDS  -->
-	   			<div id="journey${i}" class="accordion-body collapse">
-	   				<div class="accordion-inner">
+	   			<div id="journey${i}" class="panel-collapse collapse ">
+	   				<div class="panel-body">
 					   <div>
 					     <blockquote>
 					       <p>${journeyInstance.journey.isDriver?'Driving ':'Riding '}<span class="label label-info">Active</span></p>

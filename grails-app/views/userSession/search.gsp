@@ -40,7 +40,7 @@
 	<div id="main-controls">
 		<g:form name="search-form" controller="journey" action="findMatching" class="form-inline">
 		<div class="row">
-		  <div class="col-md-10">
+		  
        <div class="form-group col-md-4">                
                 <div id="travelDateDiv" class="input-group date form_datetime "  data-date-format="dd MM yyyy    HH:ii P" data-link-field="dtp_input1">
                     <input id="dateOfJourneyString" class="form-control" name="dateOfJourneyString" size="16" type="text" value="" placeholder="Date and Time"  autocomplete="off" readonly>
@@ -105,8 +105,7 @@
 			</g:each>
 			<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
 			<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
-			</div>
-			<div class="col-md-2 ">
+			
 			<div class="btn-group ">
 				<button type="button" class="btn btn-primary">Car?</button>
 				<button class="btn btn-primary dropdown-toggle"
@@ -123,7 +122,7 @@
 			<g:hiddenField name="tripUnit" value="${commandInstance?.tripUnit}" />
 			<g:hiddenField name="isDriver" value="${commandInstance?.isDriver}" />	
 			</div>
-			</div>		
+				
 		</g:form>
 		<br>
 	</div>
