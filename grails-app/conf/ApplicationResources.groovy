@@ -1,7 +1,8 @@
 modules = {
     core {		
 		
-		//resource url:'css/bootstrap.css'
+		resource url:'css/bootstrap.css'
+		resource url:'css/bootstrap-theme.css'
 		resource url:'css/bootstrap-datetimepicker.min.css'
 		//resource url:'css/bootstrap-responsive.css'
 		resource url:'css/bootstrap-datatable.css'
@@ -9,7 +10,7 @@ modules = {
 		resource url:'css/styles.css'
 		
 		resource url:'js/application.js'
-		//resource url:'js/bootstrap.js'
+		resource url:'js/bootstrap.js'
 		resource url:'js/bootstrap-datetimepicker.min.js'
 		resource url:'js/date.js'
 		resource url:'js/bootstrap3-typeahead.js'

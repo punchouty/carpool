@@ -225,9 +225,9 @@ $(function() {
 $(function() {
 	$('#driver').click(function() {	
 		var errorMessage = getErrorMessage();		
-		if(errorMessage){	
-			$('#errorMessage').text(errorMessage);
-			 $("#myModal").modal('show');			 
+		if(errorMessage){				
+			$('#errorMessage').text(errorMessage);					
+			$('#myModal').modal({show:true});
 		}
 		else {
 			$('#isDriver').val('true');
@@ -237,8 +237,8 @@ $(function() {
 	$('#rider').click(function() {
 		var errorMessage = getErrorMessage();
 		if(errorMessage){
-			$('#errorMessage').text(errorMessage);
-			$('#myModal').modal();
+			$('#errorMessage').text(errorMessage);			
+			$('#myModal').modal({show:true});
 		}
 		else {
 			$('#isDriver').val('false');
