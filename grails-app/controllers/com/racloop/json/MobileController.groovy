@@ -11,10 +11,15 @@ import org.apache.shiro.authc.IncorrectCredentialsException
 import org.apache.shiro.authc.UsernamePasswordToken
 import org.apache.shiro.crypto.hash.Sha256Hash
 
+import com.racloop.ElasticSearchService
+import com.racloop.JourneyRequestCommand
+import com.racloop.User
+
 class MobileController {
 
 	def shiroSecurityManager
 	def userService
+	def journeyManagerService
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST' ]
 
 	/**
@@ -302,7 +307,7 @@ class MobileController {
 		if(sex != 'male') {
 			isMale = false
 		}
-		def user = authenticatedUser
+		def user = getAuthenticatedUser()
 		if(user) {
 			user.profile.fullName = fullName
 			user.profile.email = email
@@ -329,6 +334,27 @@ class MobileController {
 			"jsessionid" : session.id
 		]
 		render jsonResponseBody as JSON
+	}
+	
+	def addJourney() {
+		def user = getAuthenticatedUser()
+		def json = request.JSON
+		JourneyRequestCommand journeyRequestCommand = new JourneyRequestCommand()
+		journeyRequestCommand.user = json.user
+		journeyRequestCommand.fromLatitude = json.fromLatitude
+		journeyRequestCommand.fromLongitude =json.fromLongitude
+		journeyRequestCommand.fromPlace = json.fromPlace
+		journeyRequestCommand.toPlace = json.toPlace
+		journeyRequestCommand.toLatitude =json.toLatitude
+		journeyRequestCommand.toLongitude = json.toLongitude
+		journeyRequestCommand.isDriver = json.isDriver
+		journeyRequestCommand.dateOfJourney = ElasticSearchService.BASIC_DATE_FORMAT.parseDateTime(json.dateOfJourney).toDate()
+		if(!user) {
+			user = User.findByUsername(journeyRequestCommand.user);
+		}
+		journeyManagerService.createJourney(user, journeyRequestCommand)
+		render journeyRequestCommand as JSON
+		
 	}
 
 	/*
