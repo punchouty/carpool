@@ -314,7 +314,7 @@ class JourneyController {
 		def indexName = ElasticSearchService.JOURNEY //params.indexName
 		boolean isDriver =params.boolean('isDriver')
 		//Date dateOfJourney = ISODateTimeFormat.dateOptionalTimeParser().parseDateTime(journeyDate)
-		def journey = journeyService.findJourneyById(journeyId, indexName, isDriver)
+		def journey = journeyService.findJourneyById(journeyId, indexName)
 		chain(action: 'findMatching', model: [currentJourney: journey])
 	}
 	

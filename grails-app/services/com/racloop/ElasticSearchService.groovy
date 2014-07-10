@@ -529,14 +529,8 @@ class ElasticSearchService {
 	
 	
 	def findJourneyById(String matchedJourneyId , JourneyRequestCommand currentJourney, boolean isDummyData) {
-		String indexName = null 
-		if(isDummyData) {
-			indexName = grailsApplication.config.grails.generatedData.index.name
-		}
-		else {
-			indexName = JOURNEY//getIndexName(currentJourney.dateOfJourney);
-			
-		}
+		String indexName = resolveIndexName(isDummyData) 
+		
 		String searchTypeOpposite = null;
 		if(currentJourney.isDriver) {
 			searchTypeOpposite = TYPE_RIDER;
@@ -549,12 +543,29 @@ class ElasticSearchService {
 		return journeyTemp
 	}
 	
-	def findJounreyById(String journeyId, String indexName, boolean isDriver) {
-		//String indexName = getIndexName(journeyDate)
-		String indexType = isDriver?TYPE_DRIVER:TYPE_RIDER
-		GetResponse response = node.client.prepareGet(indexName, indexType, journeyId).execute().actionGet();
+	def findJounreyById(String journeyId, String indexName) {
+		GetResponse response =node.client().prepareGet().setId(journeyId).setIndex(indexName).execute().actionGet();
+		//GetResponse response = node.client.prepareGet(indexName, indexType, journeyId).execute().actionGet();
 		JourneyRequestCommand journeyTemp = parseJourneyFromGetResponse(response)
 		return journeyTemp
+	}
+	
+	def findJounreyById(String journeyId, boolean isDummyData) {
+		String indexName = resolveIndexName(isDummyData)
+		return findJounreyById(journeyId, indexName)
+	}
+	
+	private String resolveIndexName(boolean isDummy) {
+		String indexName = null
+		if(isDummy) {
+			indexName = grailsApplication.config.grails.generatedData.index.name
+		}
+		else {
+			indexName = JOURNEY//getIndexName(currentJourney.dateOfJourney);
+			
+		}
+		
+		return indexName
 	}
 	
 	def searchWorkflowRequestedByUser(User user) {
