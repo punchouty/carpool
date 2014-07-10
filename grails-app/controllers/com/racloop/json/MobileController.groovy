@@ -20,6 +20,8 @@ class MobileController {
 	def shiroSecurityManager
 	def userService
 	def journeyManagerService
+	def journeyService
+	def journeyWorkflowService
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST' ]
 
 	/**
@@ -356,8 +358,125 @@ class MobileController {
 		render journeyRequestCommand as JSON
 		
 	}
+	
+	def myJourneys() {
+		def currentUser = getAuthenticatedUser()	
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		JourneyRequestCommand journeyRequestCommand = new JourneyRequestCommand()
+		journeyRequestCommand.user = json.user
 
-	/*
+		def workflows =[]
+		def journeys =[]
+		int numberOfRecords = 0				
+		if(!currentUser) {
+			currentUser = User.findByUsername(journeyRequestCommand.user);
+		}
+				
+			journeys = journeyService.findAllActiveJourneyDetailsForUser(currentUser)
+			numberOfRecords = journeys?.size()
+			jsonMessage = "Successfully executed myJourneys"
+			jsonResponse = "ok"
+		
+		def jsonResponseBody = [
+			"response": jsonResponse,
+			"message": jsonMessage,
+			"errors" : errors,
+			"journeys" : journeys
+		]
+		
+		render jsonResponseBody as JSON
+	}
+	
+	def search() {
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def errors = null
+		def searchResultMap = null
+		String dateOfJourneyString = json?.dateOfJourneyString
+		String validStartTimeString = json?.validStartTimeString
+		String fromPlace = json?.fromPlace
+		Double fromLatitude = json?.fromLatitude;
+		Double fromLongitude = json?.fromLongitude;
+		String toPlace = json?.toPlace
+		Double toLatitude = json?.toLatitude;
+		Double toLongitude = json?.toLongitude;
+		Boolean isDriver = json?.isDriver;
+		Double tripDistance = json?.tripDistance;
+		String tripUnit = json?.tripUnit;
+		String ip = request.remoteAddr;
+		String name=json?.name
+		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
+		currentJourney.dateOfJourneyString = dateOfJourneyString
+		currentJourney.validStartTimeString = validStartTimeString
+		currentJourney.fromPlace = fromPlace
+		currentJourney.fromLatitude = fromLatitude
+		currentJourney.fromLongitude = fromLongitude
+		currentJourney.toPlace = toPlace
+		currentJourney.toLatitude = toLatitude
+		currentJourney.toLongitude = toLongitude
+		currentJourney.isDriver = isDriver
+		currentJourney.tripDistance = tripDistance
+		currentJourney.tripUnit = tripUnit
+		currentJourney.ip = ip
+		currentJourney.user=name
+		if(chainModel && chainModel.currentJourney) {
+			currentJourney = chainModel.currentJourney
+		}
+		def currentUser = getAuthenticatedUser();
+		if (!currentuser) {
+			currentUser = User.findByUsername(currentJourney.user);
+		}
+		
+		if(currentUser) {
+			setUserInformation(currentUser,currentJourney)
+			currentJourney.ip = request.remoteAddr
+			setDates(currentJourney)
+			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
+				if(currentJourney.validate()) {
+					searchResultMap = getSearchResultMap(currentUser, currentJourney)
+					jsonMessage = "Successfully executed search"
+					jsonResponse = "ok"
+				}
+			}
+			else {
+				jsonMessage = "Invalid travel date and time"
+			}
+		}
+		else {
+			jsonMessage = "User is not logged in. Cannot fetch search results"
+		}
+		
+		def jsonResponseBody = [
+			"response": jsonResponse,
+			"message": jsonMessage,
+			"errors" : errors,
+			"searchResults" : searchResultMap
+		]
+		render jsonResponseBody as JSON
+		
+	}
+	
+	
+/*
+//	def rejectResponse() {
+//		String jsonMessage = null
+//		String jsonResponse = "error"
+//		def workflowId = params.workflowId
+//		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
+//		jsonMessage = "Successfully executed rejectResponse"
+//		jsonResponse = "ok"		
+//			def jsonResponseBody = [
+//			"response": jsonResponse,
+//			"message": jsonMessage,
+//			"errors" : errors
+//		]			
+//	  render jsonResponseBody as JSON
+//	}
+	
+	
 	//User 1
 	def search() { 
 		
@@ -366,7 +485,7 @@ class MobileController {
 	//User 1 - commercial driver
 	def searchStartPoint() { }
 
-	//User 1 - persist request for other to respond
+	//User 1 -Category persist request for other to respond
 	def addJourney() { }
 
 	//User 1 - List of journeys
@@ -390,13 +509,13 @@ class MobileController {
 	def myIncomingResponses() { }
 
 	//User 1 - accept request
-	def acceptResponse() { }
+	def acceptResponse() { } acceptIncomingRequest
 
 	//User 1 - reject request
-	def rejectResponse() { }
+	def rejectResponse() { } rejectIncomingRequest
 
 	//User 2 - cancel earlier sent response
-	def cancelResponse() { }
+	def cancelResponse() { } cancelOutgoingRequest
 	*/
 
 	private getNimbleConfig() {

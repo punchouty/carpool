@@ -6,7 +6,7 @@
 </head>
 <body>
 	<g:set var="isHome" value="true" scope="request" />
-		<div class="jumbotron">
+		<div class="jumbotron well">
 	        <h1>Car Pool Finder</h1>${authenticatedUser?.id}
 	        <p class="lead">Share your Car, Taxi and Auto rides. Save money, Make friends and Contribute to Greener Environment.</p>
 	        <g:if test="${user == null}">
