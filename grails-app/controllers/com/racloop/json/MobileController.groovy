@@ -359,6 +359,8 @@ class MobileController {
 		
 	}
 	
+//	curl -X POST -H "Content-Type: application/json" -d '{"user":"admin","name":"Administrator"}' http://localhost:8080/app/mobile/myJourneys
+	
 	def myJourneys() {
 		def currentUser = getAuthenticatedUser()	
 		def json = request.JSON
@@ -389,77 +391,69 @@ class MobileController {
 		render jsonResponseBody as JSON
 	}
 	
-	def search() {
+//	curl -X POST -H "Content-Type: application/json" -d '{"user":"admin","name":"Administrator","myJourneyId":"89","matchedJourneyId":"12de4899-74af-451a-a5ad-f3a8bfd1f678","isDummy":true}' http://localhost:8080/app/mobile/requestService
+	
+	def requestService() {
 		def json = request.JSON
 		String jsonMessage = null
 		String jsonResponse = "error"
 		def errors = null
-		def searchResultMap = null
-		String dateOfJourneyString = json?.dateOfJourneyString
-		String validStartTimeString = json?.validStartTimeString
-		String fromPlace = json?.fromPlace
-		Double fromLatitude = json?.fromLatitude;
-		Double fromLongitude = json?.fromLongitude;
-		String toPlace = json?.toPlace
-		Double toLatitude = json?.toLatitude;
-		Double toLongitude = json?.toLongitude;
-		Boolean isDriver = json?.isDriver;
-		Double tripDistance = json?.tripDistance;
-		String tripUnit = json?.tripUnit;
-		String ip = request.remoteAddr;
-		String name=json?.name
-		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
-		currentJourney.dateOfJourneyString = dateOfJourneyString
-		currentJourney.validStartTimeString = validStartTimeString
-		currentJourney.fromPlace = fromPlace
-		currentJourney.fromLatitude = fromLatitude
-		currentJourney.fromLongitude = fromLongitude
-		currentJourney.toPlace = toPlace
-		currentJourney.toLatitude = toLatitude
-		currentJourney.toLongitude = toLongitude
-		currentJourney.isDriver = isDriver
-		currentJourney.tripDistance = tripDistance
-		currentJourney.tripUnit = tripUnit
-		currentJourney.ip = ip
-		currentJourney.user=name
-		if(chainModel && chainModel.currentJourney) {
-			currentJourney = chainModel.currentJourney
-		}
-		def currentUser = getAuthenticatedUser();
-		if (!currentuser) {
-			currentUser = User.findByUsername(currentJourney.user);
-		}
+		String myJourneyId=json?.myJourneyId
+		String user=json?.user
+		boolean isDummy =json?.isDummy
 		
-		if(currentUser) {
-			setUserInformation(currentUser,currentJourney)
-			currentJourney.ip = request.remoteAddr
-			setDates(currentJourney)
-			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
-				if(currentJourney.validate()) {
-					searchResultMap = getSearchResultMap(currentUser, currentJourney)
-					jsonMessage = "Successfully executed search"
-					jsonResponse = "ok"
-				}
-			}
-			else {
-				jsonMessage = "Invalid travel date and time"
-			}
+		def matchedJourneyId = json?.matchedJourneyId		
+		def currentUser = getAuthenticatedUser()
+		if(!currentUser) {
+			currentUser = User.findByUsername(user);
 		}
-		else {
-			jsonMessage = "User is not logged in. Cannot fetch search results"
-		}
+	
+		def currentJourney= journeyService.findJourneyById(myJourneyId, false)
+		def matchedJourney = journeyService.findJourneyById(matchedJourneyId, isDummy)
+		
+		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
+		
+		jsonMessage = "Successfully executed requestService"
+			jsonResponse = "ok"
 		
 		def jsonResponseBody = [
 			"response": jsonResponse,
 			"message": jsonMessage,
 			"errors" : errors,
-			"searchResults" : searchResultMap
+			"workflow" : workflow
 		]
-		render jsonResponseBody as JSON
 		
+		render jsonResponseBody as JSON
 	}
 	
+//	curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"89","matchedJourneyId":"91","isDummy":false}' http://localhost:8080/app/mobile/sendResponse
 	
+	
+	def sendResponse(){
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def errors = null
+		String myJourneyId=json?.myJourneyId
+		boolean isDummy =json?.isDummy
+		def currentJourney = journeyService.findJourneyById(myJourneyId, false)
+		def matchedJourneyId = json?.matchedJourneyId	
+		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
+		def matchedUser = User.findByUsername(matchedJourney.user)
+		
+		jsonMessage = "Successfully executed requestService"
+		jsonResponse = "ok"
+	
+	def jsonResponseBody = [
+		"response": jsonResponse,
+		"message": jsonMessage,
+		"errors" : errors,
+		"matchedJourney" : matchedJourney,
+		"matchedUser":matchedUser
+	]	
+	render jsonResponseBody as JSON
+	}
+			
 /*
 //	def rejectResponse() {
 //		String jsonMessage = null

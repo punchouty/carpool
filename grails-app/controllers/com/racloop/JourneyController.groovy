@@ -66,6 +66,7 @@ class JourneyController {
 		Double tripDistance = json?.tripDistance;
 		String tripUnit = json?.tripUnit;
 		String ip = request.remoteAddr;
+		String user=json?.user
 		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
 		currentJourney.dateOfJourneyString = dateOfJourneyString
 		currentJourney.validStartTimeString = validStartTimeString
@@ -79,10 +80,14 @@ class JourneyController {
 		currentJourney.tripDistance = tripDistance
 		currentJourney.tripUnit = tripUnit
 		currentJourney.ip = ip
+		currentJourney.user = user
 		if(chainModel && chainModel.currentJourney) {
 			currentJourney = chainModel.currentJourney
 		}
 		def currentUser = getAuthenticatedUser();
+		if(!currentUser) {
+			currentUser = User.findByUsername(journeyRequestCommand.user);
+		}
 		if(currentUser) {
 			setUserInformation(currentUser,currentJourney)
 			currentJourney.ip = request.remoteAddr
