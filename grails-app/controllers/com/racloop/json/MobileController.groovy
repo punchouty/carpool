@@ -433,7 +433,7 @@ class MobileController {
 		def json = request.JSON
 		String jsonMessage = null
 		String jsonResponse = "error"
-		def errors = null
+		def errors = null		
 		String myJourneyId=json?.myJourneyId
 		boolean isDummy =json?.isDummy
 		def currentJourney = journeyService.findJourneyById(myJourneyId, false)
@@ -454,6 +454,42 @@ class MobileController {
 	render jsonResponseBody as JSON
 	}
 			
+//	curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"93","matchedJourneyId":"92","user":"sample.user","isDummy":false}' http://localhost:8080/app/mobile/myOutgoingResponses
+	
+	def myOutgoingResponses() {
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def errors = null
+		String user=json?.user
+		def currentUser = null
+		if(!currentUser) {
+			currentUser = User.findByUsername(user);
+		}
+		String myJourneyId=json?.myJourneyId
+		boolean isDummy =json?.isDummy
+		def journeyInstance = journeyService.findJourneyById(myJourneyId, false)
+		/*def matchedJourneyId = json?.matchedJourneyId
+		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, journeyInstance, isDummy)*/
+		def requestWorkflowDetails = journeyWorkflowService.getWorkflowRequestedByUserForAJourney(journeyInstance.id, currentUser)
+		
+		jsonMessage = "Successfully executed myOutgoingResponses"
+		jsonResponse = "ok"
+		
+		def jsonResponseBody = [
+			"response": jsonResponse,
+			"message": jsonMessage,
+			"errors" : errors,
+			"requestWorkflowDetails" : requestWorkflowDetails
+		]
+		render jsonResponseBody as JSON
+	}
+	
+	
+	def myIncomingResponses() {
+		
+	}
+	
 /*
 //	def rejectResponse() {
 //		String jsonMessage = null
