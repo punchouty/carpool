@@ -14,6 +14,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import com.racloop.ElasticSearchService
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
+import com.racloop.journey.workkflow.WorkflowState
 
 class MobileController {
 
@@ -517,23 +518,63 @@ class MobileController {
 		render jsonResponseBody as JSON
 	}
 	
-/*
-//	def rejectResponse() {
-//		String jsonMessage = null
-//		String jsonResponse = "error"
-//		def workflowId = params.workflowId
-//		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
-//		jsonMessage = "Successfully executed rejectResponse"
-//		jsonResponse = "ok"		
-//			def jsonResponseBody = [
-//			"response": jsonResponse,
-//			"message": jsonMessage,
-//			"errors" : errors
-//		]			
-//	  render jsonResponseBody as JSON
-//	}
+	
+//	curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"89","workflowId":"43d27623-45cb-4201-aba3-cac07ea03f41","user":"sample.rider"}' http://localhost:8080/app/mobile/acceptResponse
+	
+	def acceptResponse() { 
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def errors = null
+		String mobile = null
+		String user=json?.user
+		def currentUser = null
+		if(!currentUser) {
+			currentUser = User.findByUsername(user);
+		}
+		String myJourneyId=json?.myJourneyId
+		def journeyInstance = journeyService.findJourneyById(myJourneyId, false)
+		def workflowId = json?.workflowId
+		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
+		def matchedWorkflowDetails = journeyWorkflowService.getWorkflowMatchedForUserForAJourney(journeyInstance.id, currentUser)
+		if(matchedWorkflowDetails.showContactInfo){
+			mobile=matchedWorkflowDetails.otherUser?.profile?.mobile
+		}
+		
+		jsonMessage = "Successfully executed acceptResponse"
+		jsonResponse = "ok"
+		def jsonResponseBody = [
+			"response": jsonResponse,
+			"message": jsonMessage,
+			"errors" : errors,
+//			"journeyWorkflowService" : journeyWorkflowService,
+			"mobile":mobile
+		]
+		render jsonResponseBody as JSON
+		
+	}
+
+	// curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"89","workflowId":"43d27623-45cb-4201-aba3-cac07ea03f41","user":"sample.rider"}' http://localhost:8080/app/mobile/rejectResponse
 	
 	
+	def rejectResponse() {
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def errors = null
+		def workflowId = json?.workflowId
+		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
+		jsonMessage = "Successfully executed rejectResponse"
+		jsonResponse = "ok"		
+			def jsonResponseBody = [
+			"response": jsonResponse,
+			"message": jsonMessage,
+			"errors" : errors
+		]			
+	  render jsonResponseBody as JSON
+}
+	
+	/*
 	//User 1
 	def search() { 
 		
