@@ -8,6 +8,7 @@ modules = {
 		resource url:'css/bootstrap-datatable.css'
 		resource url:'css/custom.css'
 		resource url:'css/styles.css'
+//		resource url:'css/theme.css'
 		
 		resource url:'js/application.js'
 		resource url:'js/bootstrap.js'

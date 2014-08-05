@@ -10,11 +10,16 @@ import org.apache.shiro.authc.DisabledAccountException
 import org.apache.shiro.authc.IncorrectCredentialsException
 import org.apache.shiro.authc.UsernamePasswordToken
 import org.apache.shiro.crypto.hash.Sha256Hash
+import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
 
 import com.racloop.ElasticSearchService
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
+import org.elasticsearch.common.joda.time.DateTime
+import org.elasticsearch.common.joda.time.format.DateTimeFormat
+import org.elasticsearch.common.joda.time.format.DateTimeFormatter
+import org.elasticsearch.common.joda.time.format.ISODateTimeFormat
 
 class MobileController {
 
@@ -24,7 +29,8 @@ class MobileController {
 	def journeyService
 	def journeyWorkflowService
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST' ]
-
+	public static final String JAVA_DATE_FORMAT = "dd MMMM yyyy    HH:mm a";
+	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern(JAVA_DATE_FORMAT);
 	/**
 	 * curl -X POST -H "Content-Type: application/json" -d '{ "user": "sample.user", "password": "P@ssw0rd", "rememberMe": "true" }' http://localhost:8080/app/mlogin
 	 * @param user
@@ -339,6 +345,74 @@ class MobileController {
 		render jsonResponseBody as JSON
 	}
 	
+	def search() {
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def errors = null
+		def searchResultMap = null
+		String dateOfJourneyString = json?.dateOfJourneyString
+		String validStartTimeString = json?.validStartTimeString
+		String fromPlace = json?.fromPlace
+		Double fromLatitude = json?.fromLatitude;
+		Double fromLongitude = json?.fromLongitude;
+		String toPlace = json?.toPlace
+		Double toLatitude = json?.toLatitude;
+		Double toLongitude = json?.toLongitude;
+		Boolean isDriver = json?.isDriver;
+		Double tripDistance = json?.tripDistance;
+		String tripUnit = json?.tripUnit;
+		String ip = request.remoteAddr;
+		String user=json?.user
+		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
+		currentJourney.dateOfJourneyString = dateOfJourneyString
+		currentJourney.validStartTimeString = validStartTimeString
+		currentJourney.fromPlace = fromPlace
+		currentJourney.fromLatitude = fromLatitude
+		currentJourney.fromLongitude = fromLongitude
+		currentJourney.toPlace = toPlace
+		currentJourney.toLatitude = toLatitude
+		currentJourney.toLongitude = toLongitude
+		currentJourney.isDriver = isDriver
+		currentJourney.tripDistance = tripDistance
+		currentJourney.tripUnit = tripUnit
+		currentJourney.ip = ip
+		currentJourney.user = user
+		if(chainModel && chainModel.currentJourney) {
+			currentJourney = chainModel.currentJourney
+		}
+		def currentUser = getAuthenticatedUser();
+		if(!currentUser) {
+			currentUser = User.findByUsername(currentJourney.user);
+		}
+		if(currentUser) {
+			setUserInformation(currentUser,currentJourney)
+			currentJourney.ip = request.remoteAddr
+			setDates(currentJourney)
+			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
+				if(currentJourney.validate()) {
+					searchResultMap = getSearchResultMap(currentUser, currentJourney)
+					jsonMessage = "Successfully executed search"
+					jsonResponse = "ok"
+				}
+			}
+			else {
+				jsonMessage = "Invalid travel date and time"
+			}
+		}
+		else {
+			jsonMessage = "User is not logged in. Cannot fetch search results"
+		}
+		
+		def jsonResponseBody = [
+			"response": jsonResponse,
+			"message": jsonMessage,
+			"errors" : errors,
+			"searchResults" : searchResultMap
+		]
+		render jsonResponseBody as JSON
+    }
+	
 	def addJourney() {
 		def user = getAuthenticatedUser()
 		def json = request.JSON
@@ -618,5 +692,37 @@ class MobileController {
 
 	private getNimbleConfig() {
 		grailsApplication.config.nimble
+	}
+	
+	private setUserInformation(User currentUser, JourneyRequestCommand currentJourney) {
+		if(currentUser) {
+			currentJourney.user = currentUser.username
+			currentJourney.name = currentUser.profile.fullName
+			currentJourney.isMale = currentUser.profile.isMale
+		}
+	}
+	
+	private getSearchResultMap(User currentUser, JourneyRequestCommand currentJourney) {
+		currentJourney = getExisitngJourneyForUser(currentUser, currentJourney)
+		def selectedJourneyIds = getAlreadySelectedJourneyIdsForCurrentJourney(currentJourney)
+		updateHttpSession(currentJourney,selectedJourneyIds)
+		def matchedJourney = searchJourneys(currentUser, currentJourney)
+		def matchResult =[currentUser: currentUser, currentJourney: currentJourney, journeys : matchedJourney.matchedJourneys, numberOfRecords : matchedJourney.numberOfRecords, isDummyData: matchedJourney.isDummyData]
+		return matchResult
+	}
+	
+	private setDates(JourneyRequestCommand currentJourney) {
+		if(currentJourney.dateOfJourneyString) {
+			currentJourney.dateOfJourney = UI_DATE_FORMAT.parseDateTime(currentJourney.dateOfJourneyString).toDate()
+		}
+		if(currentJourney.validStartTimeString) {
+			currentJourney.validStartTime = UI_DATE_FORMAT.parseDateTime(currentJourney.validStartTimeString).toDate()
+		}
+		if(!currentJourney.validStartTime) {
+			DateTime currentDate = new DateTime()
+			//TODO - get this Info from config
+			currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
+			currentJourney.validStartTime = currentDate.toDate()
+		}
 	}
 }

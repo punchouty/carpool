@@ -107,8 +107,8 @@
 			<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
 			
 			<div class="btn-group ">
-				<button type="button" class="btn btn-primary">Car?</button>
-				<button class="btn btn-primary dropdown-toggle"
+				<button type="button" class="btn btn-success">Car?</button>
+				<button class="btn btn-success dropdown-toggle"
 					data-toggle="dropdown">
 					<span class="caret"></span>
 				</button>

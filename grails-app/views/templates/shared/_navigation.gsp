@@ -1,6 +1,6 @@
 		<%@ page import="grails.plugin.nimble.core.AdminsService"%>		
 		
-	<div class="navbar  navbar-static-top" role="navigation">
+	<div class="navbar  navbar-static-top navbar-bold " role="navigation">
       <div class="container">
         <div class="navbar-header">
           <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">

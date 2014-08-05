@@ -22,6 +22,8 @@ class JourneyController {
 	def journeyManagerService
 
     def findMatching(JourneyRequestCommand currentJourney) {
+		println params.inspect()
+		
 		if(chainModel && chainModel.currentJourney) {
 			currentJourney = chainModel.currentJourney
 		}
@@ -86,7 +88,7 @@ class JourneyController {
 		}
 		def currentUser = getAuthenticatedUser();
 		if(!currentUser) {
-			currentUser = User.findByUsername(journeyRequestCommand.user);
+			currentUser = User.findByUsername(currentJourney.user);
 		}
 		if(currentUser) {
 			setUserInformation(currentUser,currentJourney)
