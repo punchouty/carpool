@@ -5,6 +5,7 @@ class Profile extends grails.plugin.nimble.core.ProfileBase {
 	
 	String mobile;
 	Boolean isMale = true;
+	String getGravatarUri() { "http://www.gravatar.com/avatar/" + emailHash}
 	Integer ratingAsDriverTotalVotes = 0
 	Integer ratingAsDriverOverAllExperienceGood = 0
 	Integer ratingAsDriverOverAllExperienceOk = 0
@@ -23,6 +24,8 @@ class Profile extends grails.plugin.nimble.core.ProfileBase {
 	Integer ratingAsRiderPunctualtyGood = 0
 	Integer ratingAsRiderPunctualtyOk = 0
 	Integer ratingAsRiderPunctualtyBad = 0
+	
+	static transients = ['gravatarUri']
 	
 	static constraints = {
 		mobile blank: false, nullable: false, matches:'\\d{10}', unique: true
