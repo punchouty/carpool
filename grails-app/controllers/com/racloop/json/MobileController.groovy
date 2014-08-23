@@ -12,10 +12,13 @@ import org.apache.shiro.authc.UsernamePasswordToken
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
 
+
 import com.racloop.ElasticSearchService
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.mobile.data.response.MobileResponse;
+
 import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
@@ -91,7 +94,9 @@ class MobileController {
 				"message":"Invalid JSON request"
 			]
 		}
-		render jsonResponse as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponse)
+		render mobileResponse as JSON
+		
 	}
 
 	/**
@@ -104,7 +109,9 @@ class MobileController {
 			"response":"ok",
 			"message":"User logout successfully"
 		]
-		render jsonResponse as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponse)
+		render mobileResponse as JSON
+		
 	}
 
 	
@@ -168,7 +175,9 @@ class MobileController {
 			"errors" : errors,
 			"jsessionid" : session.id
 		]
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
+		
 	}
 
 	/**
@@ -218,7 +227,8 @@ class MobileController {
 			"errors" : errors,
 			"jsessionid" : session.id
 		]
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 
 	/**
@@ -267,7 +277,8 @@ class MobileController {
 			"errors" : errors,
 			"jsessionid" : session.id
 		]
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 	
 	/**
@@ -300,7 +311,8 @@ class MobileController {
 				"jsessionid" : session.id
 			]
 		}
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 	
 	def editProfile() {
@@ -343,7 +355,8 @@ class MobileController {
 			"errors" : errors,
 			"jsessionid" : session.id
 		]
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 	
 	def search() {
@@ -411,7 +424,8 @@ class MobileController {
 			"errors" : errors,
 			"searchResults" : searchResultMap
 		]
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
     }
 	
 	def addJourney() {
@@ -431,7 +445,8 @@ class MobileController {
 			user = User.findByUsername(journeyRequestCommand.user);
 		}
 		journeyManagerService.createJourney(user, journeyRequestCommand)
-		render journeyRequestCommand as JSON
+		MobileResponse mobileResponse = getMobileResoponse(journeyRequestCommand)
+		render mobileResponse as JSON
 		
 	}
 	
@@ -464,7 +479,8 @@ class MobileController {
 			"journeys" : journeys
 		]
 		
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 	
 //	curl -X POST -H "Content-Type: application/json" -d '{"user":"admin","name":"Administrator","myJourneyId":"89","matchedJourneyId":"12de4899-74af-451a-a5ad-f3a8bfd1f678","isDummy":true}' http://localhost:8080/app/mobile/requestService
@@ -499,7 +515,8 @@ class MobileController {
 			"workflow" : workflow
 		]
 		
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 	
 //	curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"89","matchedJourneyId":"91","isDummy":false}' http://localhost:8080/app/mobile/sendResponse
@@ -527,7 +544,8 @@ class MobileController {
 		"matchedJourney" : matchedJourney,
 		"matchedUser":matchedUser
 	]	
-	render jsonResponseBody as JSON
+	MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 			
 //	curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"93","matchedJourneyId":"92","user":"sample.user","isDummy":false}' http://localhost:8080/app/mobile/myOutgoingResponses
@@ -558,7 +576,8 @@ class MobileController {
 			"errors" : errors,
 			"requestWorkflowDetails" : requestWorkflowDetails
 		]
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 	
 	
@@ -590,7 +609,8 @@ class MobileController {
 			"errors" : errors,
 			"matchedWorkflowDetails" : matchedWorkflowDetails
 		]
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 	}
 	
 	
@@ -625,7 +645,8 @@ class MobileController {
 //			"journeyWorkflowService" : journeyWorkflowService,
 			"mobile":mobile
 		]
-		render jsonResponseBody as JSON
+		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 		
 	}
 
@@ -646,8 +667,14 @@ class MobileController {
 			"message": jsonMessage,
 			"errors" : errors
 		]			
-	  render jsonResponseBody as JSON
+	  MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		render mobileResponse as JSON
 }
+	
+	private MobileResponse getMobileResoponse(Object data){
+		MobileResponse mobileResponse = new MobileResponse(data:data, message:'Success',total:1,success:true)
+		return mobileResponse
+	}
 	
 	/*
 	//User 1
