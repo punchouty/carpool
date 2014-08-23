@@ -39,6 +39,7 @@ class MobileController {
 	 * @return
 	 */
 	def login() {
+		printf "In login"
 		def json = request.JSON
 		def jsonResponse = null
 		if(json) {
