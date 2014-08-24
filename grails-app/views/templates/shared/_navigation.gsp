@@ -1,4 +1,5 @@
-		<%@ page import="grails.plugin.nimble.core.AdminsService"%>		
+		<%@ page import="grails.plugin.nimble.core.AdminsService"%>	
+		<%@ page import="org.apache.shiro.SecurityUtils"%>		
 		
 	<div class="navbar  navbar-static-top navbar-bold " role="navigation">
       <div class="container">
@@ -10,7 +11,7 @@
         </div>
         
        
-        <n:isNotLoggedIn>
+        <n:notUser>
         <div class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">        
         
@@ -24,6 +25,9 @@
             <div class="form-group">
               <input placeholder="Password" class="form-control" type="password" name="password">
             </div>
+            <label class="checkbox"> 
+                        <input type="hidden" name="_rememberme" /><input type="checkbox" name="rememberme" id="rememberme"  /> Remember Me
+            </label>
             <button type="submit" class="btn btn-success">Sign in</button>
             </g:if>
 		<g:else>
@@ -60,10 +64,10 @@
 				
           </ul>
         </div><!--/.navbar-collapse -->
-        </n:isNotLoggedIn>        
+        </n:notUser>        
         
         
-        <n:isLoggedIn> 
+        <g:if test="${SecurityUtils.subject.principal != null}">
          <div class="navbar-collapse collapse">      
           <ul class="nav navbar-nav navbar-right">
            
@@ -79,6 +83,9 @@
 				<li <g:if test="${isHistory == 'true'}">class="active"</g:if>>
 					<a href="${request.contextPath}/history">History</a>
 				</li>
+				<!-- <li <g:if test="${isHistory == 'true'}">class="active"</g:if>>
+					<img src="${currentUser.profile.gravatarUri}" width="42" height="48">
+				</li> -->
 				<li class="dropdown">
 					<a href="#" class="dropdown-toggle" data-toggle="dropdown">${currentUser.profile.fullName}&nbsp;<i class="glyphicon glyphicon-user"></i>&nbsp; 
 					<b class="caret"></b></a>		
@@ -105,7 +112,7 @@
            
           </ul>
         </div><!--/.nav-collapse -->
-        </n:isLoggedIn>	
+        </g:if>
         
       </div>
     </div>
