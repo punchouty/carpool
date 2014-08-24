@@ -10,10 +10,10 @@
 	        <h1>Car Pool Finder</h1>${authenticatedUser?.id}
 	        <p class="lead">Share your Car, Taxi and Auto rides. Save money, Make friends and Contribute to Greener Environment.</p>
 	        <g:if test="${user == null}">
-	        	<a class="btn btn-large btn-primary" href="${request.contextPath}/signup">Sign Up Today!</a>
+	        	<a class="btn btn-large btn-success" href="${request.contextPath}/signup">Sign Up Today!</a>
 	        </g:if>
 	        <g:else>
-	        	<a class="btn btn-large btn-primary" href="${request.contextPath}/etiquettes">Car Pool Etiquettes</a>
+	        	<a class="btn btn-large btn-success" href="${request.contextPath}/etiquettes">Car Pool Etiquettes</a>
 	        </g:else>
 		</div>
 
