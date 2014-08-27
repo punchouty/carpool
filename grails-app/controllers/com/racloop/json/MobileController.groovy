@@ -45,6 +45,7 @@ class MobileController {
 		printf "In login"
 		def json = request.JSON
 		def jsonResponse = null
+		def mobileResponse = new MobileResponse()
 		if(json) {
 			def username = json.user
 			def password = json.password
@@ -57,44 +58,53 @@ class MobileController {
 				//TODO - do we need this event mechanism below. See AuthController
 				SecurityUtils.subject.login(authToken)
 				userService.createLoginRecord(request)
-				jsonResponse = [
-					"response":"ok",
-					"message":"Login Successfull",
-					"username" : authenticatedUser.username,
-					"name" : authenticatedUser.profile.fullName,
-					"email" : authenticatedUser.profile.email,
-					"jsessionid" : session.id
+				jsonResponse = [[
+						"username" : authenticatedUser.username,
+						"name" : authenticatedUser.profile.fullName,
+						"email" : authenticatedUser.profile.email,
+						"mobile": authenticatedUser.profile.mobile,
+						"gender": authenticatedUser.profile.isMale?"Male":"Female"
+						]
 				]
+				mobileResponse.data=jsonResponse
+				mobileResponse.message="Login Successfull"
+				mobileResponse.total=1
+				mobileResponse.success=true
 			}
 			catch (IncorrectCredentialsException e) {
 				log.info "Credentials failure for user '${username}'."
-				jsonResponse = [
-					"response":"error",
-					"message":"Login Failed"
-				]
+				
+				mobileResponse.data=[]
+				mobileResponse.message="Wrong Username/Password combination"
+				mobileResponse.total=0
+				mobileResponse.success=false
 			}
 			catch (DisabledAccountException e) {
 				log.info "Attempt to login to disabled account for user '${username}'."
-				jsonResponse = [
-					"response":"error",
-					"message":"Acount Disabled"
-				]
+				mobileResponse.data=[]
+				mobileResponse.message="Acount Disabled"
+				mobileResponse.total=0
+				mobileResponse.success=false
 			}
 			catch (AuthenticationException e) {
 				log.info "General authentication failure for user '${username}'."
-				jsonResponse = [
-					"response":"error",
-					"message":"Authentication Failure"
-				]
+				
+				mobileResponse.data=[]
+				mobileResponse.message="Authentication Failure"
+				mobileResponse.total=0
+				mobileResponse.success=false
 			}
 		}
 		else {
-			jsonResponse = [
-				"response":"error",
-				"message":"Invalid JSON request"
-			]
+		
+			mobileResponse.data=[]
+			mobileResponse.message="Invalid JSON request"
+			mobileResponse.total=0
+			mobileResponse.success=false
+			
 		}
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponse)
+		
+		//MobileResponse mobileResponse = getMobileResoponse(jsonResponse)
 		render mobileResponse as JSON
 		
 	}
