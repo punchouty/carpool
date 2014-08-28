@@ -39,10 +39,11 @@
 			<g:form action="signin"  controller="auth" name="login-form" method="post">
 				<input type="hidden" name="targetUri" value="${targetUri}" />
 	            <div class="control-group">
-					<label class="control-label">Username</label>
-					<input type="text" name="username" id="username" placeholder="Username" value="${username}" data-validation-required-message="Username is required field" class="form-control" required />
+					<label class="control-label">Email</label>
+					<input type="text" name="username" id="username" placeholder="email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Username is required field" class="form-control" required />
 	      			<p class="help-block"></p>
 	      		</div>
+	      		
 				<div class="control-group">
 					<label class="control-label">Password</label>
 					<input type="password" name="password" id="password" placeholder="Password" data-validation-required-message="Password is required field" class="form-control" required />

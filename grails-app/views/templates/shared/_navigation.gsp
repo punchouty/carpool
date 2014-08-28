@@ -20,7 +20,7 @@
 				<g:if test="${isSignup == null || isSignup == false }">	
 				
             <div class="form-group ">
-              <input type="text" placeholder="Username" name="username" class="form-control" required  autofocus>
+              <input type="text" placeholder="email" name="username" class="form-control" required  autofocus>
             </div>
             <div class="form-group">
               <input placeholder="Password" class="form-control" type="password" name="password">

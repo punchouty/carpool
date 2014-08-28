@@ -80,6 +80,7 @@ class UserSessionController {
 		user.profile.owner = user
 		user.properties['username', 'pass', 'passConfirm'] = params
 		user.profile.properties['fullName', 'email', 'mobile'] = params
+		user.username = user.profile.email
 		user.profile.isMale = isMale
 		user.enabled = nimbleConfig.localusers.provision.active
 		user.external = false
@@ -89,7 +90,7 @@ class UserSessionController {
 		log.debug("Attempting to create new user account identified as $user.username")
 
 		// Enforce username restrictions on local accounts, letters + numbers only
-		if (user.username == null || user.username.length() < nimbleConfig.localusers.usernames.minlength || !user.username.matches(nimbleConfig.localusers.usernames.validregex)) {
+		if (user.username == null || user.username.length() < nimbleConfig.localusers.usernames.minlength) {
 			log.debug("Supplied username of $user.username does not meet requirements for local account usernames")
 			user.errors.rejectValue('username', 'nimble.user.username.invalid')
 		}

@@ -1,3 +1,5 @@
+<%@ page import="grails.plugin.nimble.core.AdminsService"%>	
+		<%@ page import="org.apache.shiro.SecurityUtils"%>	
 <%--		<div class="masthead">
 			<ul class="nav nav-pills pull-right">
 				<n:isNotLoggedIn>
@@ -96,7 +98,7 @@
 		
 		
 		
-<div class="navbar  navbar-static-top" role="navigation">
+<div class="navbar  navbar-static-top navbar-bold" role="navigation">
    <div class="container">
     <div class="navbar-header">
       <a class="navbar-brand" href="${request.contextPath}/" target="ext"><b>raC looP</b></a>
@@ -110,7 +112,7 @@
         <ul class="nav pull-right navbar-nav">
           
           
-          <n:isNotLoggedIn>
+          <n:notUser>
 					<li	<g:if test="${isHome == 'true'}">class="active"</g:if>>
 						<a href="${request.contextPath}">Home</a>
 					</li>
@@ -130,18 +132,8 @@
 						<a href="${request.contextPath}/signup">Sign Up</a>
 					</li>
 					</g:if>
-				</n:isNotLoggedIn>
-				<n:isLoggedIn>
-					<li	<g:if test="${isHome == 'true'}">class="active"</g:if>>
-						<a href="${request.contextPath}">Home</a>
-					</li>
-					<li	<g:if test="${isSafety == 'true'}">class="active"</g:if>>
-						<a href="${request.contextPath}/safety">Safety</a>
-					</li>
-					<li	<g:if test="${isFaq == 'true'}">class="active"</g:if>>
-						<a href="${request.contextPath}/faq">FAQ</a>
-					</li>
-					 
+				</n:notUser>
+				<g:if test="${SecurityUtils.subject.principal != null}">
 					<li class="active dropdown"><a class="dropdown-toggle"
 						data-toggle="dropdown" href="#"> Home <b class="caret"></b>
 					</a>
@@ -154,11 +146,16 @@
 									controller="staticPage" action="about">About</g:link></li>
 						</ul></li>
 					
+					<li	<g:if test="${isSafety == 'true'}">class="active"</g:if>>
+						<a href="${request.contextPath}/safety">Safety</a>
+					</li>
+					<li	<g:if test="${isFaq == 'true'}">class="active"</g:if>>
+						<a href="${request.contextPath}/faq">FAQ</a>
+					</li>
+					 
+					
 					<li>
 						<a href="${request.contextPath}/requests">Active Requests</a>
-					</li>
-					<li>
-						<a href="${request.contextPath}/notifications">Notifications <span class="badge badge-important">4</span></a>
 					</li>
 					<li>
 						<a href="${request.contextPath}/history">History</a>
@@ -184,7 +181,7 @@
 							</li>
 						</ul>
 					</li>
-				</n:isLoggedIn>
+				</g:if>
           
           
           

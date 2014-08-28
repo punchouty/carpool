@@ -31,11 +31,18 @@
 			<fieldset>
 	          <legend>Registration Form</legend>
                
-				<div class="form-group" >
+				<!-- <div class="form-group" >
 					<label class="col-sm-5 control-label" for="username">User name</label>
 					<div class="col-sm-7">
 						<input type="text" id="username" class="form-control" name="username" value="${fieldValue(bean: user, field: 'username')}" placeholder="Username" data-validation-regex-regex="[a-z0-9_.-]{5,15}" data-validation-regex-message="Minimum 5 chracters - matching a-z, 0-9, underscore, hyphen" class="span3" required/>
 						<p id="username-help-block" class="help-block"></p> 
+					</div>
+				</div> -->
+				<div class="form-group">
+					<label class="col-sm-5 control-label" for="email">Email</label>
+					<div class="col-sm-7">
+						<input size="50" id="email" class="form-control" name="email" type="email" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" required/>
+						<p id="email-help-block" class="help-block"></p> 
 					</div>
 				</div>
 				<div class="form-group">
@@ -74,13 +81,7 @@
 						<p id="sex-help-block" class="help-block"></p>
 					</div>
 				</div>
-				<div class="form-group">
-					<label class="col-sm-5 control-label" for="email">Email</label>
-					<div class="col-sm-7">
-						<input size="50" id="email" class="form-control" name="email" type="email" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" required/>
-						<p id="email-help-block" class="help-block"></p> 
-					</div>
-				</div>
+				
 				<div class="form-group">
 					<label class="col-sm-5 control-label" for="mobile">Mobile Number</label>
 					<div class="col-sm-7">

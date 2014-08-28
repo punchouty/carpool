@@ -73,18 +73,19 @@ class BootStrap {
 	}
 	
 	private def createRequiredUsers() {
-		if(!UserBase.findByUsername("admin")) {
+		String adminUser ='admin@racloop.com'
+		if(!UserBase.findByUsername(adminUser)) {
 			// Create example Administrative account
 			def admins = Role.findByName(AdminsService.ADMIN_ROLE)
 			def admin = InstanceGenerator.user(grailsApplication)
-			admin.username = "admin"
+			admin.username = adminUser
 			admin.pass = "admiN123!"
 			admin.passConfirm = "admiN123!"
 			admin.enabled = true
 
 			def adminProfile = InstanceGenerator.profile(grailsApplication)
 			adminProfile.fullName = "Administrator"
-			adminProfile.email = "admin@racloop.com"
+			adminProfile.email = adminUser
 			adminProfile.owner = admin
 			adminProfile.isMale = true
 			adminProfile.mobile = '9800000001'
@@ -103,18 +104,21 @@ class BootStrap {
 	}
 	
 	private def createUsers() {
+		String sampleUser = 'sample.user@racloop.com'
+		String sampleDriver ='sample.driver@racloop.com'
+		String sampleRider = 'sample.rider@racloop.com'
 		//mail.live.com - user : sample.user@racloop.com, password : S@pient1
-		if(!UserBase.findByUsername("sample.user")) {
+		if(!UserBase.findByUsername(sampleUser)) {
 			// Create example User account
 			def user = InstanceGenerator.user(grailsApplication)
-			user.username = "sample.user"
+			user.username = sampleUser
 			user.pass = 'P@ssw0rd'
 			user.passConfirm = 'P@ssw0rd'
 			user.enabled = true
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Sample User"
-			userProfile.email = "sample.user@racloop.com"
+			userProfile.email = sampleUser
 			userProfile.owner = user
 			userProfile.isMale = true
 			userProfile.mobile = '9800000002'
@@ -130,17 +134,17 @@ class BootStrap {
 		}
 		
 		//mail.live.com - user : sample.driver@racloop.com, password : S@pient1
-		if(!UserBase.findByUsername("sample.driver")) {
+		if(!UserBase.findByUsername(sampleDriver)) {
 			// Create example User account
 			def user = InstanceGenerator.user(grailsApplication)
-			user.username = "sample.driver"
+			user.username = sampleDriver
 			user.pass = 'P@ssw0rd'
 			user.passConfirm = 'P@ssw0rd'
 			user.enabled = true
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Sample Driver"
-			userProfile.email = "sample.driver@racloop.com"
+			userProfile.email = sampleDriver
 			userProfile.owner = user
 			userProfile.isMale = true
 			userProfile.mobile = '9800000003'
@@ -156,17 +160,17 @@ class BootStrap {
 		}
 		
 		//mail.live.com - user : sample.rider@racloop.com, password : S@pient1
-		if(!UserBase.findByUsername("sample.rider")) {
+		if(!UserBase.findByUsername(sampleRider)) {
 			// Create example User account
 			def user = InstanceGenerator.user(grailsApplication)
-			user.username = "sample.rider"
+			user.username = sampleRider
 			user.pass = 'P@ssw0rd'
 			user.passConfirm = 'P@ssw0rd'
 			user.enabled = true
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Sample Rider"
-			userProfile.email = "sample.rider@racloop.com"
+			userProfile.email = sampleRider
 			userProfile.owner = user
 			userProfile.isMale = false
 			userProfile.mobile = '9800000004'
