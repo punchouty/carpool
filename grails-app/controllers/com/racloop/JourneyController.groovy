@@ -5,16 +5,16 @@ import grails.converters.JSON
 import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
-import org.elasticsearch.common.joda.time.format.ISODateTimeFormat
 
 import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.workflow.JourneyWorkflow
 
 class JourneyController {
 	
 	// Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
 	// This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
 	// This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
-	public static final String JAVA_DATE_FORMAT = "dd MMMM yyyy    HH:mm a";
+	public static final String JAVA_DATE_FORMAT = "dd MMMM yyyy    hh:mm a";
 	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern(JAVA_DATE_FORMAT);
 	def grailsApplication
 	def journeyService
@@ -179,10 +179,10 @@ class JourneyController {
 		return currentJourneyFromWeb
 	}
 	
-	private updateHttpSession(JourneyRequestCommand currentJourney, List selectedJourneyIds) {
+	private updateHttpSession(JourneyRequestCommand currentJourney, Map selectedJourneyMapForCurrentJourney) {
 		session.currentJourney = currentJourney
-		selectedJourneyIds.each {journeyId ->
-			setSelectedJounreyInSession(currentJourney, journeyId)
+		selectedJourneyMapForCurrentJourney.each {selectedJourneyId, selectedWorkflow ->
+			setSelectedJounreyInSession(currentJourney, selectedJourneyId, selectedWorkflow)
 		}
 	}
 	private getAlreadySelectedJourneyIdsForCurrentJourney(JourneyRequestCommand currentJourney) {
@@ -237,26 +237,26 @@ class JourneyController {
 		}
 		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
 		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
-		setSelectedJounreyInSession(currentJourney,matchedJourneyId)
+		setSelectedJounreyInSession(currentJourney,matchedJourneyId, workflow)
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	}
 
-	private setSelectedJounreyInSession(def currentJourney, String matchedJourneyId) {
+	private setSelectedJounreyInSession(def currentJourney, String matchedJourneyId, JourneyWorkflow matchedWorkflow) {
 		def currentJourneyId = currentJourney.id
 		def selectedJourneysMap = session.selectedJourneysMap
-		def  selectedJourneyIdList=[] as Set
+		def  selectedJourneyForCurrentJourneyMap=[:]
 		if(!selectedJourneysMap) {
 			selectedJourneysMap =[:]
 			session.selectedJourneysMap = selectedJourneysMap
 		}
 		else {
 			if(session.selectedJourneysMap.get(currentJourneyId)) {
-				selectedJourneyIdList =session.selectedJourneysMap.get(currentJourneyId)
+				selectedJourneyForCurrentJourneyMap =session.selectedJourneysMap.get(currentJourneyId)
 			}
 		}
-		selectedJourneyIdList<<matchedJourneyId
-		session.selectedJourneysMap.put(currentJourneyId,selectedJourneyIdList)
+		selectedJourneyForCurrentJourneyMap .put(matchedJourneyId,matchedWorkflow)
+		session.selectedJourneysMap.put(currentJourneyId,selectedJourneyForCurrentJourneyMap)
 	}
 	
 	def getWorkflow(){
@@ -307,13 +307,23 @@ class JourneyController {
 	def acceptIncomingRequest() {
 		def workflowId = params.workflowId
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
-		redirect(action: "activeJourneys")
+		if(params.redirectToSearch) {
+			chain(action: 'findMatching', model: [currentJourney: session.currentJourney])
+		}
+		else {
+			redirect(action: "activeJourneys")
+		}
 	}
 	
 	def rejectIncomingRequest() {
 		def workflowId = params.workflowId
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
-		redirect(action: "activeJourneys")
+		if(params.redirectToSearch) {
+			chain(action: 'findMatching', model: [currentJourney: session.currentJourney])
+		}
+		else {
+			redirect(action: "activeJourneys")
+		}
 	}
 	
 	def cancelJourneyRequest() {

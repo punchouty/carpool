@@ -64,7 +64,7 @@
 		       								</td>
 		       								<td><g:formatDate format="dd MMM HH:mm" date="${matchedWorkflowInstance.workflow.matchedDateTime}"/></td>
 		       								<td>
-		       									<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-inverse':'label'))}">${matchedWorkflowInstance.state}</span>
+		       									<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-info':'label'))}">${matchedWorkflowInstance.state}</span>
 		       									<g:if test = "${matchedWorkflowInstance.showContactInfo}">
 		       										<p><strong>${matchedWorkflowInstance.otherUser?.profile?.mobile}</strong></p>
 		       									</g:if>
