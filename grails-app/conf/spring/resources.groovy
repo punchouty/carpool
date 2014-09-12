@@ -8,7 +8,7 @@ beans = {
 
 	amq.broker(xmlns:"http://activemq.apache.org/schema/core",
 	brokerName:"localhost",
-	dataDirectory:"\\home\\parminder\\data\\activemq" ){
+	dataDirectory:"/Users/rpunch/tmp/data/activemq" ){
 
 
 		amq.transportConnectors{
