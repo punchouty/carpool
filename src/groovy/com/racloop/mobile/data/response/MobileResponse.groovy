@@ -2,9 +2,9 @@ package com.racloop.mobile.data.response
 
 class MobileResponse {
 	
-	int total
-	boolean success
-	String message
-	Object data
+	int total = 0
+	boolean success = false
+	String message = ""
+	Object data = null
 
 }

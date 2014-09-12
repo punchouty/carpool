@@ -4,6 +4,7 @@ import grails.converters.JSON
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.ProfileBase
 
+
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.authc.AuthenticationException
 import org.apache.shiro.authc.DisabledAccountException
@@ -13,11 +14,16 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
 
 
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator;
+
 import com.racloop.ElasticSearchService
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.mobile.data.response.MobileResponse;
+
+import grails.plugin.nimble.core.ProfileBase
+import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
@@ -31,26 +37,26 @@ class MobileController {
 	def journeyManagerService
 	def journeyService
 	def journeyWorkflowService
+	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST' ]
 	public static final String JAVA_DATE_FORMAT = "dd MMMM yyyy    HH:mm a";
 	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern(JAVA_DATE_FORMAT);
 	/**
-	 * curl -X POST -H "Content-Type: application/json" -d '{ "user": "sample.user", "password": "P@ssw0rd", "rememberMe": "true" }' http://localhost:8080/app/mlogin
+	 * curl -X POST -H "Content-Type: application/json" -d '{ "email": "sample.user@racloop.com", "password": "P@ssw0rd", "rememberMe": "true" }' http://localhost:8080/app/mlogin
 	 * @param user
 	 * @param password
 	 * @param rememberMe
 	 * @return
 	 */
 	def login() {
-		printf "In login"
 		def json = request.JSON
 		def jsonResponse = null
 		def mobileResponse = new MobileResponse()
 		if(json) {
-			def username = json.user
+			def email = json.email
 			def password = json.password
 			def rememberMe = json.rememberMe
-			def authToken = new UsernamePasswordToken(username, password)			
+			def authToken = new UsernamePasswordToken(email, password)			
 			if (rememberMe) {
 				authToken.rememberMe = true
 			}
@@ -58,53 +64,32 @@ class MobileController {
 				//TODO - do we need this event mechanism below. See AuthController
 				SecurityUtils.subject.login(authToken)
 				userService.createLoginRecord(request)
-				jsonResponse = [[
-						"username" : authenticatedUser.username,
-						"name" : authenticatedUser.profile.fullName,
-						"email" : authenticatedUser.profile.email,
-						"mobile": authenticatedUser.profile.mobile,
-						"gender": authenticatedUser.profile.isMale?"Male":"Female"
-						]
-				]
-				mobileResponse.data=jsonResponse
-				mobileResponse.message="Login Successfull"
-				mobileResponse.total=1
+				authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
+				mobileResponse.data=authenticatedUser
 				mobileResponse.success=true
 			}
 			catch (IncorrectCredentialsException e) {
-				log.info "Credentials failure for user '${username}'."
-				
-				mobileResponse.data=[]
+				log.info "Credentials failure for user '${email}'."
 				mobileResponse.message="Wrong Username/Password combination"
-				mobileResponse.total=0
 				mobileResponse.success=false
 			}
 			catch (DisabledAccountException e) {
-				log.info "Attempt to login to disabled account for user '${username}'."
-				mobileResponse.data=[]
+				log.info "Attempt to login to disabled account for user '${email}'."
 				mobileResponse.message="Acount Disabled"
-				mobileResponse.total=0
 				mobileResponse.success=false
 			}
 			catch (AuthenticationException e) {
-				log.info "General authentication failure for user '${username}'."
-				
-				mobileResponse.data=[]
+				log.info "General authentication failure for user '${email}'."
 				mobileResponse.message="Authentication Failure"
 				mobileResponse.total=0
 				mobileResponse.success=false
 			}
 		}
 		else {
-		
-			mobileResponse.data=[]
-			mobileResponse.message="Invalid JSON request"
-			mobileResponse.total=0
+			mobileResponse.message="Invalid input JSON request"
 			mobileResponse.success=false
 			
 		}
-		
-		//MobileResponse mobileResponse = getMobileResoponse(jsonResponse)
 		render mobileResponse as JSON
 		
 	}
@@ -119,7 +104,9 @@ class MobileController {
 			"response":"ok",
 			"message":"User logout successfully"
 		]
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponse)
+		MobileResponse mobileResponse = new MobileResponse();//getMobileResoponse(jsonResponse)
+		mobileResponse.message = "Successful Logout"
+		mobileResponse.success = true
 		render mobileResponse as JSON
 		
 	}
@@ -127,24 +114,23 @@ class MobileController {
 	
 
 	/**
-	 * curl -X POST -H "Content-Type: application/json" -d '{ "username": "rajan", "password" : "P@ssw0rd", "passwordConfirm" : "P@ssw0rd", "fullName" : "Rajan Punchouty", "email" : "rajan@racloop.com", "mobile" : "9717744392" }' http://localhost:8080/app/msignup
+	 * curl -X POST -H "Content-Type: application/json" -d '{ "email": "rajan@racloop.com", "password" : "P@ssw0rd", "passwordConfirm" : "P@ssw0rd", "fullName" : "Rajan Punchouty", "mobile" : "9717744392", "gender" : "male" }' http://localhost:8080/app/msignup
 	 * @return
 	 */
 	def signup() {
+		MobileResponse mobileResponse = new MobileResponse();
 		def json = request.JSON
-		String jsonMessage = null
-		String jsonResponse = "error"
 		def errors = null
 		if(json) {
-			def sex = json?.sex
+			def gender = json?.gender
 			boolean isMale = true
-			if(sex != 'male') {
+			if(gender != 'male') {
 				isMale = false
 			}
 			def user = InstanceGenerator.user(grailsApplication)
 			user.profile = InstanceGenerator.profile(grailsApplication)
 			user.profile.owner = user
-			user.username = json?.username
+			user.username = json?.email
 			user.pass = json?.password
 			user.passConfirm = json?.passwordConfirm
 			user.profile.fullName = json?.fullName
@@ -153,39 +139,49 @@ class MobileController {
 			user.profile.isMale = isMale
 			user.enabled = true
 			user.external = false
-	
-			def savedUser
-			if(user.validate()) {
-				userService.generateValidationHash(user)
-				savedUser = userService.createUser(user)
-				if (savedUser.hasErrors()) {
-					errors = savedUser.errors
-					jsonMessage = "Input Errors"
-				}
-				else {
-					def authToken = new UsernamePasswordToken(user.username, user.pass)
-					SecurityUtils.subject.login(authToken)
-					userService.createLoginRecord(request)
-					jsonResponse = "ok"
-					jsonMessage = "User sign up sucessfully"
-				}
+			
+			
+			def profile = ProfileBase.findByEmail(json?.email)
+			if(profile) {
+				mobileResponse.success = false
+				mobileResponse.message = "This email is already in use"
 			}
 			else {
-				errors = user.errors
-				jsonMessage = "Input Errors"
-			}		
+				def savedUser
+				if(user.validate()) {
+					userService.generateValidationHash(user)
+					savedUser = userService.createUser(user)
+					if (savedUser.hasErrors()) {
+						errors = savedUser.errors
+						mobileResponse.success = false
+						mobileResponse.message = "Input Errors"
+					}
+					else {
+						sendMail {
+							to user.profile.email
+							from grailsApplication.config.grails.messaging.mail.from
+							subject nimbleConfig.messaging.passwordreset.external.subject
+							html g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
+						}
+//						def authToken = new UsernamePasswordToken(user.username, user.pass)
+//						SecurityUtils.subject.login(authToken)
+//						userService.createLoginRecord(request)
+//						authenticatedUser.pass = json?.password //TODO need to remove storing of password. Potential security threat
+//						mobileResponse.data=authenticatedUser
+						mobileResponse.success=true
+						mobileResponse.message = "User sign up sucessfully. Please check your email and activate your account."
+					}
+				}
+				else {
+					errors = user.errors
+					mobileResponse.message = "Input Errors"
+				}	
+				
+			}	
 		}
 		else {
-			jsonMessage = "Invalid Json"
+			mobileResponse.message = "Invalid Json"
 		}
-		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"jsessionid" : session.id
-		]
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
 		render mobileResponse as JSON
 		
 	}
@@ -296,32 +292,17 @@ class MobileController {
 	 * @return
 	 */
 	def getProfile() {
-		def json = request.JSON
-		String jsonMessage = null
-		String jsonResponse = "error"
-		def errors = null
-		def jsonResponseBody = null
+		MobileResponse mobileResponse = new MobileResponse();
 		def user = authenticatedUser
 		if(user) {
-			jsonResponseBody = [
-				"response": "ok",
-				"message": "Fetch successful",
-				"username" : user.username,
-				"fullName" : user.profile.fullName,
-				"email" : user.profile.email,
-				"mobile" : user.profile.mobile,
-				"isMale" : user.profile.isMale,
-				"jsessionid" : session.id
-			]
+			mobileResponse.message = "Successfully get profile"
+			mobileResponse.success = true
+			mobileResponse.data = user
 		}
 		else {
-			jsonResponseBody = [
-				"response": "error",
-				"message": "User is not logged in. Cannot fetch user profile",
-				"jsessionid" : session.id
-			]
+			mobileResponse.message = "Session Expired. Please login again"
+			mobileResponse.success = false
 		}
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
 		render mobileResponse as JSON
 	}
 	
@@ -679,7 +660,7 @@ class MobileController {
 		]			
 	  MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
 		render mobileResponse as JSON
-}
+	}
 	
 	private MobileResponse getMobileResoponse(Object data){
 		MobileResponse mobileResponse = new MobileResponse(data:data, message:'Success',total:1,success:true)
