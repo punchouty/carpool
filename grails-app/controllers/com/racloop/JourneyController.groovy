@@ -363,6 +363,16 @@ class JourneyController {
 		redirect(action: "activeJourneys")
 	}
 	
+	def redoSearch() {
+		def currentJourney = session.currentJourney
+		chain(action: 'findMatching', model: [currentJourney: currentJourney])
+	}
+	def deleteJourney() {
+		def journeyId = params.journeyId
+		journeyManagerService.deleteJourney(journeyId)
+		redirect(action: "activeJourneys")
+	}
+	
 }
 
 public class JourneyRequestCommand {

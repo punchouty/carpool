@@ -173,6 +173,29 @@ class JourneyWorkflowService {
 		return elasticSearchService.searchWorkflowByJourneyTuple(requestJourneyId, matchedJourneyId)
 	}
 	
+	public void cancelAllWorkflowsForAJounrey(String journeyId) {
+		cancelOutgoingRequestForAJourney(journeyId)
+		cancelIncomingRequestForAJourney(journeyId)
+	}
+	
+	private cancelOutgoingRequestForAJourney (String requestJourneyId) {
+		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney("requestJourneyId", requestJourneyId)
+		cancelWorkflowsAndSendNotification(workflowList, false)
+		
+	}
+	
+	private cancelIncomingRequestForAJourney (String matchedJourneyId) {
+		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney("matchedJourneyId", matchedJourneyId)
+		cancelWorkflowsAndSendNotification(workflowList, true)
+	}
+	
+	private void cancelWorkflowsAndSendNotification(List workflowList, boolean isIncoming) {
+		workflowList.each {workflow ->
+			elasticSearchService.updateWorkflowState(workflow.id.toString(), WorkflowState.CANCELLED.state)
+			//TODO - send notification
+		}
+	}
+	
 	
 }
 	

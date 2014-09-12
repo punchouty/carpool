@@ -207,4 +207,10 @@ class JourneyService {
 		return elasticSearchService.findJounreyById(journeyId, isDummy)
 	}
 	
+	public void markJourneyAsDeleted(String journeyId) {
+		String indexName = ElasticSearchService.JOURNEY.toLowerCase()
+		JourneyRequestCommand currentJourney = elasticSearchService.findJounreyById(journeyId, indexName)
+		elasticSearchService.markJourneyAsDeleted(currentJourney)
+	}
+	
 }

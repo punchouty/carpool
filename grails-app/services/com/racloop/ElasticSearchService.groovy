@@ -29,6 +29,7 @@ import org.elasticsearch.search.sort.SortBuilders
 import org.elasticsearch.search.sort.SortOrder
 
 import com.racloop.elasticsearch.IndexDefinitor
+import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.workflow.JourneyWorkflow
 
 
@@ -230,23 +231,28 @@ class ElasticSearchService {
 			start = validStartTime;
 		}
 		FilterBuilder filter = null;
+		FilterBuilder deletedFilter =getFilterOnDeletedJourney() 
+		FilterBuilder dateRanageFilter=FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end)
+		FilterBuilder geoDistanceFilterFrom =FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+		FilterBuilder geoDistanceFilterTo =FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+		
 		if(user) {
 			filter = FilterBuilders.andFilter(
 				//FilterBuilders.limitFilter(10),
-				FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
-				FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
-				FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+				dateRanageFilter,
+				geoDistanceFilterFrom,
+				geoDistanceFilterTo,
+				deletedFilter,
 				FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
 				
 			);
 		}
 		else {
 			filter = FilterBuilders.andFilter(
-				//FilterBuilders.limitFilter(10),
-				FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
-				FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
-				FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
-				
+				dateRanageFilter,
+				geoDistanceFilterFrom,
+				geoDistanceFilterTo,
+				deletedFilter
 			);
 		}
 		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
@@ -294,6 +300,7 @@ class ElasticSearchService {
 			FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
 			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
 			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+			getFilterOnDeletedJourney(),
 			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username))
 			
 		)
@@ -348,6 +355,7 @@ class ElasticSearchService {
 		FilterBuilder filter = FilterBuilders.andFilter(
 			//FilterBuilders.limitFilter(10),
 			FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
+			getFilterOnDeletedJourney(),
 			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE),
 			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE)			
 		);
@@ -562,6 +570,19 @@ class ElasticSearchService {
 		return findJounreyById(journeyId, indexName)
 	}
 	
+	public void markJourneyAsDeleted(JourneyRequestCommand journey) {
+		String indexName = JOURNEY.toLowerCase()
+		def myMap =["isDeleted":true]
+		String indexType = null;
+		if(journey.isDriver) {
+			indexType = TYPE_DRIVER;
+		}
+		else {
+			indexType = TYPE_RIDER;
+		}
+		node.client().prepareUpdate(indexName,indexType,journey.id).setDoc(myMap).setRefresh(true).execute().actionGet()
+	}
+	
 	private String resolveIndexName(boolean isDummy) {
 		String indexName = null
 		if(isDummy) {
@@ -662,6 +683,20 @@ class ElasticSearchService {
 		return workflows
 	}
 	
+	def searchActiveWorkflowByMatchedJourney(String searchParam ,String searchRequest) {
+		String indexName = WORKFLOW.toLowerCase()
+		
+		FilterBuilder incomingRequestFilter = FilterBuilders.andFilter(
+			FilterBuilders.termFilter(searchParam, searchRequest),
+			FilterBuilders.termsFilter('state', WorkflowState.INITIATED.state, WorkflowState.ACCEPTED.state)
+		)
+		
+		
+		def workflows = searchWorkflow(indexName, WORKFLOW, incomingRequestFilter, null)
+		
+		return workflows
+	}
+	
 	def searchWorkflowByJourneyTuple(String requestJourneyId, String matchedJourneyId) {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
@@ -674,17 +709,19 @@ class ElasticSearchService {
 		return workflows
 	}
 	
+	
 	def findAllJourneysForUserAfterADate(User user, DateTime inputDate) {
 		FilterBuilder filter = FilterBuilders.andFilter(
 			FilterBuilders.rangeFilter("dateOfJourney").gte(inputDate),
-			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username))
+			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username),
+				getFilterOnDeletedJourney())
 			
 		)
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
 		sorter.order(SortOrder.ASC);
 		def journeys = []
 		try {
-			SearchResponse searchResponse = node.client.prepareSearch()
+			SearchResponse searchResponse = node.client.prepareSearch(JOURNEY)
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
 				.setPostFilter(filter)   // Filter
@@ -758,5 +795,10 @@ class ElasticSearchService {
 		node.client().prepareUpdate(WORKFLOW.toLowerCase(),WORKFLOW,workflowId).setDoc(myMap).setRefresh(true).execute().actionGet()
 			//setScript("ctx._state=\"" + newState+ "\"").execute().get()
 		
+	}
+	
+	private FilterBuilder getFilterOnDeletedJourney() {
+		FilterBuilder deletedFilter =FilterBuilders.missingFilter("isDeleted").existence(true).nullValue(true)
+		return deletedFilter
 	}
 }

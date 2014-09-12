@@ -41,4 +41,9 @@ class JourneyManagerService {
 		JourneyWorkflow workflow = journeyWorkflowService.initiateWorkflow(requestedJourney, matchedJourney)
 		return workflow
 	}
+	
+	def deleteJourney(String jounreyId) {
+		journeyWorkflowService.cancelAllWorkflowsForAJounrey(jounreyId)
+		journeyService.markJourneyAsDeleted(jounreyId)
+	}
 }

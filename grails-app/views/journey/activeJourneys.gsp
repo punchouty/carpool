@@ -30,7 +30,10 @@
 					       <g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journey.id, indexName:journeyInstance.journey.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.journey.isDriver?true:false]">
 					       		<button class="btn btn-success"><i class="icon-refresh icon-white"></i> Search Again</button>
 					       </g:link>
-				       	   <button class="btn btn-danger"><i class="icon-trash icon-white"></i> Cancel</button>
+					       <g:link action="deleteJourney"id="deleteJourney"  params="[journeyId: journeyInstance.journey.id]">
+					       		<button class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</button>
+					       </g:link>
+				       	   
 					     </blockquote>
 					   </div>
 			   		<div>
@@ -64,7 +67,7 @@
 		       								</td>
 		       								<td><g:formatDate format="dd MMM HH:mm" date="${matchedWorkflowInstance.workflow.matchedDateTime}"/></td>
 		       								<td>
-		       									<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-info':'label'))}">${matchedWorkflowInstance.state}</span>
+		       									<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-info':'label-info'))}">${matchedWorkflowInstance.state}</span>
 		       									<g:if test = "${matchedWorkflowInstance.showContactInfo}">
 		       										<p><strong>${matchedWorkflowInstance.otherUser?.profile?.mobile}</strong></p>
 		       									</g:if>
@@ -118,7 +121,7 @@
 		       								<td>
 		       									<span class="label label-info">${requestWorkflowInstance.state}</span>
 		       									<g:if test = "${requestWorkflowInstance.showContactInfo}">
-		       										<p><strong>matchedWorkflowInstance.otherUser?.profile?.mobile</strong></p>
+		       										<p><strong>${requestWorkflowInstance.otherUser?.profile?.mobile}</strong></p>
 		       									</g:if>
 		       								</td>
        										<td>

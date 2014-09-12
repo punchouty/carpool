@@ -16,7 +16,13 @@
 			on <strong><g:formatDate format="dd MMM HH:mm" date="${currentJourney.dateOfJourney}"/></strong> 
 		</div>
 		<div class="col-md-3">
-			<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<a href="${request.contextPath}/" class="btn">Cancel</a>
+			<g:if test ="${session?.currentJourney?.id }">
+				<g:link controller="journey" action="redoSearch" class="btn btn-info">Search again</g:link>
+			</g:if>
+			<g:else>
+				<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<a href="${request.contextPath}/" class="btn">Cancel</a>
+			</g:else>
+			
 		</div>
 	</div>
 	

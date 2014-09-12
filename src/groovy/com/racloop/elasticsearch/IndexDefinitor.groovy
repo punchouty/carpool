@@ -170,6 +170,9 @@ class IndexDefinitor {
 					startObject("tripDistance").
 					field("type", "double").
 					endObject().
+					startObject("isDeleted").
+					field("type", "boolean").field("null_value", false).
+					endObject().
 				endObject().
 			endObject().
 		endObject();

@@ -115,7 +115,7 @@
                             		<strong>${matchedUser.profile.fullName}</strong><br>
                             	</g:if>
                             	<g:else>
-                            		<strong>Rajan Punchouty</strong><br>
+                            		<strong>Dummy User</strong><br>
                             	</g:else>
                                 
                                 <table class="table table-condensed table-responsive table-user-information">
