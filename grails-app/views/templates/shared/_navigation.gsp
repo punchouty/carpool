@@ -28,7 +28,7 @@
             <label class="checkbox"> 
                         <input type="hidden" name="_rememberme" /><input type="checkbox" name="rememberme" id="rememberme"  /> Remember Me
             </label>
-            <button type="submit" class="btn btn-success">Sign in</button>
+            <button type="submit"  id ="signin" class="btn btn-success">Sign in</button>
             </g:if>
 		<g:else>
 		<%-- <li><a class="btn" href="${request.contextPath}/">Home</a></li>--%>
