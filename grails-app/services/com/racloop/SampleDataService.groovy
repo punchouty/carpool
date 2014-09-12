@@ -1,6 +1,5 @@
 package com.racloop
 
-import grails.util.Environment
 import liquibase.util.csv.opencsv.CSVReader
 
 class SampleDataService {
@@ -9,12 +8,16 @@ class SampleDataService {
 	def elasticSearchService
 	def journeyManagerService
 	
+	
 	def deleteSampleData() {
 		elasticSearchService.deleteSampleData();
 		elasticSearchService.deleteWorkflowData()
 	}
 
     def populateSampleData() {
+		
+		def outgoingRequest =[] 
+		def incomingRequest = []
 		
 		int timeInterval = 10
 		User user1 = User.findByUsername('admin@racloop.com');
@@ -42,8 +45,10 @@ class SampleDataService {
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = true
 			journeyCommand.tripDistance = 250.0d
+			journeyCommand.user = user3.username
 			journeyManagerService.createJourney(user3, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
+			outgoingRequest<<journeyCommand
 		}
 		
 		i = 0;
@@ -63,8 +68,11 @@ class SampleDataService {
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = false
 			journeyCommand.tripDistance = 250.0d
+
+			journeyCommand.user = user4.username
 			journeyManagerService.createJourney(user4, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
+			incomingRequest<<journeyCommand
 		}		
 		i = 0;
 		time = Calendar.getInstance();
@@ -83,8 +91,10 @@ class SampleDataService {
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = true
 			journeyCommand.tripDistance = 250.0d
-			journeyManagerService.createJourney(user1, journeyCommand)
+			journeyCommand.user = user2.username
+			journeyManagerService.createJourney(user2, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
+			outgoingRequest<<journeyCommand
 		}
 		
 		i = 0;
@@ -104,8 +114,24 @@ class SampleDataService {
 			journeyCommand.toLongitude = Double.parseDouble(line[10])
 			journeyCommand.isDriver = false
 			journeyCommand.tripDistance = 250.0d
+			journeyCommand.user = user1.username
 			journeyManagerService.createJourney(user1, journeyCommand)
 			time.add(Calendar.MINUTE, timeInterval);
+			incomingRequest<<journeyCommand
+		}
+		
+		for ( x in 0..5 ) {
+			try {
+				JourneyRequestCommand requestObj = outgoingRequest.get(x)
+				outgoingRequest.remove(x)
+				JourneyRequestCommand responseObj = incomingRequest.get(x)
+				incomingRequest.remove(x)
+				journeyManagerService.saveJourneyAndInitiateWorkflow(requestObj, responseObj)
+			}
+			catch(Exception e) {
+				
+			}
 		}
 	}
+	
 }
