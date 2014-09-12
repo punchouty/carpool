@@ -48,8 +48,10 @@ class BootStrap {
 		intializeStaticData();
 		
 		if (Environment.current == Environment.DEVELOPMENT) {
+			sampleDataService.deleteSampleData()
 			log.info("Populating Sample Data");
 			sampleDataService.populateSampleData();
+			
         }
     }
 	

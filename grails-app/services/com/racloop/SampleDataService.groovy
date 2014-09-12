@@ -11,17 +11,16 @@ class SampleDataService {
 	
 	def deleteSampleData() {
 		elasticSearchService.deleteSampleData();
+		elasticSearchService.deleteWorkflowData()
 	}
 
     def populateSampleData() {
-		log.info "Removing old sample data if it exists"
-		elasticSearchService.deleteSampleData();
-		log.info "Old sample data removed"
+		
 		int timeInterval = 10
-		User user1 = User.findByUsername('admin');
-		User user2 = User.findByUsername('sample.user');
-		User user3 = User.findByUsername('sample.driver');
-		User user4 = User.findByUsername('sample.rider');
+		User user1 = User.findByUsername('admin@racloop.com');
+		User user2 = User.findByUsername('sample.user@racloop.com');
+		User user3 = User.findByUsername('sample.driver@racloop.com');
+		User user4 = User.findByUsername('sample.rider@racloop.com');
 		String dateFormat = grailsApplication.config.grails.dateFormat
 		CSVReader reader = new CSVReader(new InputStreamReader(this.class.classLoader.getResourceAsStream(grailsApplication.config.grails.startup.sampleData.file)));
 		List lines = reader.readAll();

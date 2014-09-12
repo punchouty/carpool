@@ -421,6 +421,13 @@ class ElasticSearchService {
 		log.info "Data removed from journeys successfully"
 	}
 	
+	def deleteWorkflowData() {
+		String indexName = WORKFLOW
+		log.info "Removing data from workflows"
+		DeleteByQueryResponse response = node.client.prepareDeleteByQuery(indexName).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
+		log.info "Data removed from workflows successfully"
+	}
+	
 	private Place parsePlaceFromSearchHit(SearchHit searchHit) {
 		Place place = new Place();
 		place.name = searchHit.getSource().get('name');
