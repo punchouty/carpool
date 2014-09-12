@@ -316,6 +316,28 @@ class JourneyController {
 		redirect(action: "activeJourneys")
 	}
 	
+	def cancelJourneyRequest() {
+		def workflowId
+		def currentJourney = session.currentJourney
+		def requestedJourneyId = params.requestedJourneyId
+		def matchedJourneyId = params.matchedJourneyId
+		List requestWorkflows = journeyWorkflowService.getWorkFlowByJounreyTuple(requestedJourneyId, matchedJourneyId)
+		if (requestWorkflows) {
+			workflowId = requestWorkflows.get(0).id
+		}
+		if(!workflowId) {
+			List matchedWorkflows = journeyWorkflowService.getWorkFlowByJounreyTuple(matchedJourneyId, requestedJourneyId)
+			if (matchedWorkflows) {
+				workflowId = matchedWorkflows.get(0).id
+			}
+		}
+		if(!workflowId){
+			log.error 'Something is wrong. Trying to cancel a request which does not exists' + params
+		}
+		journeyWorkflowService.updateWorkflowState(workflowId.toString(), WorkflowState.CANCELLED.state)
+		chain(action: 'findMatching', model: [currentJourney: currentJourney])
+	}
+	
 	def searchAgain() {
 		def journeyId = params.journeyId 
 		def indexName = ElasticSearchService.JOURNEY //params.indexName

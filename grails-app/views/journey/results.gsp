@@ -47,7 +47,7 @@
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a id="driver" href="#">Cancel</a></li>
+									<li><g:link action="cancelJourneyRequest" id="cancelled" params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]">Cancel</g:link></li>
 								</ul>
 							</div>
 							</td>
@@ -105,7 +105,7 @@
 									<span class="caret"></span>
 								</button>
 								<ul class="dropdown-menu">
-									<li><a id="driver" href="#">Cancel</a></li>
+									<li><g:link action="cancelJourneyRequest" id="cancelled" params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]">Cancel</g:link></li>
 								</ul>
 							</div>
 							</td>

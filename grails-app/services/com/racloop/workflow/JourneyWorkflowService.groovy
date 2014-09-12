@@ -169,6 +169,10 @@ class JourneyWorkflowService {
 		return elasticSearchService.updateWorkflowState(workflowId, newState)
 	}
 	
+	public getWorkFlowByJounreyTuple (String requestJourneyId, String matchedJourneyId) {
+		return elasticSearchService.searchWorkflowByJourneyTuple(requestJourneyId, matchedJourneyId)
+	}
+	
 	
 }
 	
