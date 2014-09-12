@@ -6,6 +6,7 @@ import grails.util.Environment
 import liquibase.util.csv.opencsv.CSVReader
 
 import org.elasticsearch.common.geo.GeoPoint
+import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import com.racloop.Place
 import com.racloop.staticdata.StaticData
@@ -23,6 +24,11 @@ class BootStrap {
 		
     def init = { servletContext ->
 		internalBootStap(servletContext)
+		
+		//JSON marshallars
+		def springContext = WebApplicationContextUtils.getWebApplicationContext( servletContext )
+		springContext.getBean( "customObjectMarshallers" ).register()
+		
 		createRequiredUsers()
 		Boolean createSampleUsers = grailsApplication.config.grails.startup.sampleUsers.create
 		if(createSampleUsers) {

@@ -2,6 +2,9 @@
 import org.apache.activemq.ActiveMQConnectionFactory
 import org.springframework.jms.connection.SingleConnectionFactory
 
+import com.racloop.marshaller.CustomObjectMarshallers
+import com.racloop.marshaller.UserMarshaller
+
 beans = {
 
 	xmlns amq:"http://activemq.apache.org/schema/core"
@@ -21,4 +24,10 @@ beans = {
             brokerURL = 'vm://localhost?create=false&waitForStart=100'
         }
     }
+	
+	customObjectMarshallers( CustomObjectMarshallers ) {
+		marshallers = [
+				new UserMarshaller()
+		]
+	}
 }
