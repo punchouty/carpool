@@ -4,6 +4,12 @@
 <head>
 <meta name="layout" content="static" />
 <title>Search Results -  ${numberOfRecords} records returned</title>
+<script type="text/javascript">
+        $(document).ready(function () {
+            $("#results").dataTable({
+            	"aaSorting": []
+            });
+        });
         </script>
 </head>
 <body>
