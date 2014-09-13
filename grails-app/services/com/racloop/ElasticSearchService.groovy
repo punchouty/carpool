@@ -235,10 +235,10 @@ class ElasticSearchService {
 			start = validStartTime;
 		}
 		FilterBuilder filter = null;
-		FilterBuilder deletedFilter =getFilterOnDeletedJourney() 
-		FilterBuilder dateRanageFilter=FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end)
-		FilterBuilder geoDistanceFilterFrom =FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
-		FilterBuilder geoDistanceFilterTo =FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+		FilterBuilder deletedFilter = getFilterOnDeletedJourney()
+		FilterBuilder dateRanageFilter=getFilterOnJourneyStart(start, end)
+		FilterBuilder geoDistanceFilterFrom = getFilterOnJourneyFromPositon(journey, filterDistance)
+		FilterBuilder geoDistanceFilterTo = getFilterOnJourneyToPositon(journey, filterDistance)
 		
 		if(user) {
 			filter = FilterBuilders.andFilter(
@@ -259,36 +259,27 @@ class ElasticSearchService {
 				deletedFilter
 			);
 		}
+		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey);
+		FieldSortBuilder startTimeSorter = getJourneyStartTimeSorter()
+		return searchJourney(indexName, searchTypeOpposite, filter , sorter, startTimeSorter)
+	}
+
+	private GeoDistanceSortBuilder getJourneyFromGeoDistanceSorter(JourneyRequestCommand journey) {
 		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
 		sorter.point(journey.fromLatitude, journey.fromLongitude);
-		sorter.order(SortOrder.ASC);
-		def journeys = []
-		try {			
-			SearchResponse searchResponse = node.client.prepareSearch(indexName)
-				.setTypes(searchTypeOpposite)
-				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setPostFilter(filter)   // Filter
-				.addSort(sorter)
-				.addSort("dateOfJourney", SortOrder.ASC)
-				.setSize(100)
-				.execute()
-				.actionGet();
-			SearchHits searchHits = searchResponse.getHits();
-			SearchHit[] hits = searchHits.hits;
-			for (SearchHit searchHit : hits) {
-				JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
-				journeys << journeyTemp
-			}
-		}
-		catch (IndexMissingException exception) {
-			log.error "Index name ${indexName} does not exists"
-		}
-		return journeys
+		sorter.order(SortOrder.ASC)
+		return sorter
 	}
+
+	private FieldSortBuilder getJourneyStartTimeSorter() {
+		FieldSortBuilder startTimeSorter = new FieldSortBuilder("dateOfJourney").order(SortOrder.ASC)
+		return startTimeSorter
+	}
+
+	
 	
 	def searchPossibleExistingJourneyForUser(User user, JourneyRequestCommand journey) {
-		String indexName = getIndexName(journey.dateOfJourney);
+		String indexName = JOURNEY.toLowerCase()//getIndexName(journey.dateOfJourney);
 		String searchType = null;
 		if(journey.isDriver) {
 			searchType = TYPE_DRIVER;
@@ -303,38 +294,15 @@ class ElasticSearchService {
 		FilterBuilder filter = null;
 		filter = FilterBuilders.andFilter(
 			//FilterBuilders.limitFilter(10),
-			FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
-			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
-			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC),
+			getFilterOnJourneyStart(start, end),
+			getFilterOnJourneyFromPositon(journey, filterDistance),
+			getFilterOnJourneyToPositon(journey, filterDistance),
 			getFilterOnDeletedJourney(),
 			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username))
 			
 		)
-		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
-		sorter.point(journey.fromLatitude, journey.fromLongitude);
-		sorter.order(SortOrder.ASC);
-		def journeys = []
-		try {
-			SearchResponse searchResponse = node.client.prepareSearch(indexName)
-				.setTypes(searchType)
-				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setPostFilter(filter)   // Filter
-				.addSort(sorter)
-				.addSort("dateOfJourney", SortOrder.ASC)
-				.execute()
-				.actionGet();
-			SearchHits searchHits = searchResponse.getHits();
-			SearchHit[] hits = searchHits.hits;
-			for (SearchHit searchHit : hits) {
-				JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
-				journeys << journeyTemp
-			}
-		}
-		catch (IndexMissingException exception) {
-			log.error "Index name ${indexName} does not exists"
-		}
-		return journeys
+		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey)
+		return searchJourney(indexName, searchType, filter, sorter)
 	}
 	/**
 	 * 
@@ -361,35 +329,14 @@ class ElasticSearchService {
 		}
 		FilterBuilder filter = FilterBuilders.andFilter(
 			//FilterBuilders.limitFilter(10),
-			FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end),
+			getFilterOnJourneyStart(start, end),
 			getFilterOnDeletedJourney(),
-			FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE),
-			FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.PLANE)			
+			getFilterOnJourneyFromPositon(journey, filterDistance),
+			getFilterOnJourneyToPositon(journey, filterDistance)			
 		);
-		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("from");
-		sorter.point(journey.fromLatitude, journey.fromLongitude);
-		sorter.order(SortOrder.ASC);
-		def journeys = []
-		try {
-			SearchResponse searchResponse = node.client.prepareSearch(indexName)
-				.setTypes(searchTypeOpposite)
-				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setPostFilter(filter)   // Filter
-				.addSort(sorter)
-				.execute()
-				.actionGet();
-			SearchHits searchHits = searchResponse.getHits();
-			SearchHit[] hits = searchHits.hits;
-			for (SearchHit searchHit : hits) {
-				JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
-				journeys << journeyTemp
-			}
-		}
-		catch (IndexMissingException exception) {
-			log.error "Index name ${indexName} does not exists"
-		}
-		return journeys
+		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey)
+		return searchJourney(indexName, searchTypeOpposite, filter, sorter)
+		
 	}
 	
 	def searchNearLocations(double maxDistance, double lattitude, double longitude, int maxRecords) {
@@ -404,26 +351,13 @@ class ElasticSearchService {
 		sorter.point(lattitude, longitude);
 		sorter.order(SortOrder.ASC);
 		def places = [];
-		try {
-			SearchResponse searchResponse = node.client.prepareSearch(indexName)
-				.setTypes(indexType)
-				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setPostFilter(filter)   // Filter
-				.addSort(sorter)
-				.setSize(maxRecords)
-				.execute()
-				.actionGet();
-			SearchHits searchHits = searchResponse.getHits();
-			SearchHit[] hits = searchHits.hits;
-			for (SearchHit searchHit : hits) {
-				Place place = parsePlaceFromSearchHit(searchHit);
-				places << place
-			}
+
+		SearchHit[] hits = queryDocument(indexName, [indexType] as String[], filter, maxRecords, sorter)
+		for (SearchHit searchHit : hits) {
+			Place place = parsePlaceFromSearchHit(searchHit);
+			places << place
 		}
-		catch (IndexMissingException exception) {
-			log.error "Index name ${indexName} does not exists"
-		}
+		
 		return places
 	}
 	
@@ -734,51 +668,24 @@ class ElasticSearchService {
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
 		sorter.order(SortOrder.ASC);
 		def journeys = []
-		try {
-			SearchResponse searchResponse = node.client.prepareSearch(JOURNEY)
-				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())             // Query
-				.setPostFilter(filter)   // Filter
-				.addSort(sorter)
-				.setSize(100) //size
-				.execute()
-				.actionGet();
-			SearchHits searchHits = searchResponse.getHits();
-			SearchHit[] hits = searchHits.hits;
-			for (SearchHit searchHit : hits) {
-				JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
-				journeys << journeyTemp
-			}
+		SearchHit[] hits = queryDocument(JOURNEY, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 100, sorter)
+		for (SearchHit searchHit : hits) {
+			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
+			journeys << journeyTemp
 		}
-		catch (IndexMissingException exception) {
-			log.error ("Index name does not exists", exception)
-		}
+		
 		return journeys
 	}
 	
 	private List searchWorkflow(String indexName, String type, FilterBuilder filter, FieldSortBuilder  sorter ) {
 		def workflows = []
-		try {
-			SearchRequestBuilder searchRequestBuilder = node.client.prepareSearch(indexName)
-			searchRequestBuilder = searchRequestBuilder.setTypes(WORKFLOW)
-				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())
-				.setPostFilter(filter)   // Filter
-			if(sorter) {
-				searchRequestBuilder.addSort(sorter)
-			}	
-				
-			SearchResponse searchResponse =searchRequestBuilder.execute().actionGet();
-			SearchHits searchHits = searchResponse.getHits();
-			SearchHit[] hits = searchHits.hits;
-			for (SearchHit searchHit : hits) {
-				JourneyWorkflow workflow = parseWorkflowFromSearchHit(searchHit);
-				workflows << workflow
-			}
+
+		SearchHit[] hits = queryDocument(indexName, [type] as String[], filter, 10, sorter)
+		for (SearchHit searchHit : hits) {
+			JourneyWorkflow workflow = parseWorkflowFromSearchHit(searchHit);
+			workflows << workflow
 		}
-		catch (IndexMissingException exception) {
-			log.error "Index name ${indexName} does not exists"
-		}
+
 		return workflows
 	}
 	
@@ -833,8 +740,66 @@ class ElasticSearchService {
 		
 	}
 	
-	private FilterBuilder getFilterOnDeletedJourney() {
+	private FilterBuilder getFilterOnDeletedJourney () {
 		FilterBuilder deletedFilter =FilterBuilders.missingFilter("isDeleted").existence(true).nullValue(true)
 		return deletedFilter
+	}
+	
+	private FilterBuilder getFilterOnJourneyStart(DateTime start, DateTime end) {
+		return FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end)
+	}
+	
+	private FilterBuilder getFilterOnJourneyFromPositon(JourneyRequestCommand journey, double filterDistance) {
+		FilterBuilder geoDistanceFilterFrom =FilterBuilders.geoDistanceFilter("from").point(journey.fromLatitude, journey.fromLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+		return geoDistanceFilterFrom
+	}
+	
+	private FilterBuilder getFilterOnJourneyToPositon(JourneyRequestCommand journey, double filterDistance) {
+		FilterBuilder geoDistanceFilterTo =FilterBuilders.geoDistanceFilter("to").point(journey.toLatitude, journey.toLongitude).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+	
+		return geoDistanceFilterTo
+	}
+	
+	
+	
+	
+	private searchJourney(String indexName, String type, FilterBuilder filter, int size=100, SortBuilder...sorters) {
+		def journeys = []
+
+		SearchHit[] hits = queryDocument(indexName, [type] as String[], filter, size, sorters)
+		for (SearchHit searchHit : hits) {
+			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
+			journeys << journeyTemp
+		}
+
+		return journeys
+	}
+	
+	private SearchRequestBuilder enrichBuilderWithSortInformation (SearchRequestBuilder builder, SortBuilder...sorters) {
+		for(SortBuilder sorter : sorters) {
+			builder.addSort(sorter)
+		}
+		
+		return builder
+	}
+	
+	private SearchHit[] queryDocument(String indexName, String[] indexType, FilterBuilder filter, int size=100, SortBuilder...sorters){
+		SearchHit[] hits = []
+		try {
+		SearchRequestBuilder builder = node.client.prepareSearch(indexName)
+				.setTypes(indexType)
+				.setSearchType(SearchType.QUERY_THEN_FETCH)
+				.setQuery(QueryBuilders.matchAllQuery())
+				.setPostFilter(filter)   // Filter
+		enrichBuilderWithSortInformation(builder, sorters)
+		builder.setSize(size)
+		SearchResponse searchResponse = builder.execute().actionGet();
+		SearchHits searchHits = searchResponse.getHits();
+		hits = searchHits.hits;
+		}
+		catch (IndexMissingException exception) {
+			log.error "Index name ${indexName} does not exists"
+		}
+		return hits
 	}
 }
