@@ -268,7 +268,7 @@ class ElasticSearchService {
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
 				.setPostFilter(filter)   // Filter
-				.addSort(sorter)
+				.addSort(sorter).setSize(100)
 				.execute()
 				.actionGet();
 			SearchHits searchHits = searchResponse.getHits();
