@@ -599,6 +599,13 @@ class ElasticSearchService {
 		return indexName
 	}
 	
+	def findWorkfowById(String workflowId) {
+		String indexName = WORKFLOW.toLowerCase()
+		GetResponse response = node.client.prepareGet(indexName, WORKFLOW, workflowId).execute().actionGet();
+		JourneyWorkflow journeyWorkflow = parseWorkflowFromGetResponse(response)
+		return journeyWorkflow
+	}
+	
 	def searchWorkflowRequestedByUser(User user) {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
@@ -790,6 +797,28 @@ class ElasticSearchService {
 		workflow.matchedDateTime = convertElasticSearchDateToDateTime(matchedDateTimeStr).toDate()
 
 		workflow.isRequesterDriving = searchHit.getSource().get('isRequesterDriving');
+		return workflow
+	}
+	
+	private JourneyWorkflow parseWorkflowFromGetResponse(GetResponse getResponse) {
+		JourneyWorkflow workflow = new JourneyWorkflow();
+		String workflowId = getResponse.id
+		workflow.id = UUID.fromString(workflowId)
+		workflow.requestJourneyId = getResponse.getSource().get('requestJourneyId');
+		String requestedDateTimeStr = getResponse.getSource().get('requestedDateTime');
+		workflow.requestedDateTime = convertElasticSearchDateToDateTime(requestedDateTimeStr).toDate()
+		workflow.requestedFromPlace = getResponse.getSource().get('requestedFromPlace');
+		workflow.requestedToPlace = getResponse.getSource().get('requestedToPlace');
+		workflow.requestUser = getResponse.getSource().get('requestUser');
+		workflow.state = getResponse.getSource().get('state')
+		workflow.matchingUser = getResponse.getSource().get('matchingUser');
+		workflow.matchedJourneyId= getResponse.getSource().get('matchedJourneyId');
+		workflow.matchedFromPlace = getResponse.getSource().get('matchedFromPlace');
+		workflow.matchedToPlace = getResponse.getSource().get('matchedToPlace');
+		String matchedDateTimeStr = getResponse.getSource().get('matchedDateTime');
+		workflow.matchedDateTime = convertElasticSearchDateToDateTime(matchedDateTimeStr).toDate()
+
+		workflow.isRequesterDriving = getResponse.getSource().get('isRequesterDriving');
 		return workflow
 	}
 	
