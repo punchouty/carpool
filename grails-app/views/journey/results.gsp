@@ -4,6 +4,7 @@
 <head>
 <meta name="layout" content="static" />
 <title>Search Results -  ${numberOfRecords} records returned</title>
+        </script>
 </head>
 <body>
 	<g:set var="isHome" value="true" scope="request" />
@@ -28,7 +29,7 @@
 	
 		<g:if test="${numberOfRecords != 0}">
 		<div class="row">
-			<table id="results" class="table table-striped">
+			<table id="results" class="table table-striped" >
 				<thead>
 					<tr>
 						<th>Name</th>

@@ -25,6 +25,7 @@ import org.elasticsearch.search.SearchHit
 import org.elasticsearch.search.SearchHits
 import org.elasticsearch.search.sort.FieldSortBuilder
 import org.elasticsearch.search.sort.GeoDistanceSortBuilder
+import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders
 import org.elasticsearch.search.sort.SortOrder
 
@@ -268,7 +269,9 @@ class ElasticSearchService {
 				.setSearchType(SearchType.QUERY_THEN_FETCH)
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
 				.setPostFilter(filter)   // Filter
-				.addSort(sorter).setSize(100)
+				.addSort(sorter)
+				.addSort("dateOfJourney", SortOrder.ASC)
+				.setSize(100)
 				.execute()
 				.actionGet();
 			SearchHits searchHits = searchResponse.getHits();
@@ -318,6 +321,7 @@ class ElasticSearchService {
 				.setQuery(QueryBuilders.matchAllQuery())             // Query
 				.setPostFilter(filter)   // Filter
 				.addSort(sorter)
+				.addSort("dateOfJourney", SortOrder.ASC)
 				.execute()
 				.actionGet();
 			SearchHits searchHits = searchResponse.getHits();
