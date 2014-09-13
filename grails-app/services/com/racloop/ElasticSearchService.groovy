@@ -30,7 +30,11 @@ import org.elasticsearch.search.sort.SortOrder
 
 import com.racloop.elasticsearch.IndexDefinitor
 import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.util.date.DateUtil;
 import com.racloop.workflow.JourneyWorkflow
+
+import static com.racloop.util.date.DateUtil.convertElasticSearchDateToDateTime
+
 
 
 class ElasticSearchService {
@@ -41,7 +45,6 @@ class ElasticSearchService {
 	public static final String TYPE_RIDER = "rider"
 	public static final String WORKFLOW = "workflow"
 	public static final String JOURNEY = "journey"
-	public static final DateTimeFormatter BASIC_DATE_FORMAT = ISODateTimeFormat.dateOptionalTimeParser();
 	private Node node
 
 	def init() {
@@ -450,7 +453,7 @@ class ElasticSearchService {
 		journeyTemp.user = searchHit.getSource().get('user');
 		journeyTemp.name = searchHit.getSource().get('name');
 		String dateStr = searchHit.getSource().get('dateOfJourney');
-		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
+		DateTime dateTime = convertElasticSearchDateToDateTime(dateStr)
 		journeyTemp.dateOfJourney = dateTime.toDate();
 		journeyTemp.fromPlace = searchHit.getSource().get('fromPlace');
 		journeyTemp.toPlace = searchHit.getSource().get('toPlace')
@@ -471,7 +474,7 @@ class ElasticSearchService {
 		journeyTemp.user = getResponse.getSource().get('user');
 		journeyTemp.name = getResponse.getSource().get('name');
 		String dateStr = getResponse.getSource().get('dateOfJourney');
-		DateTime dateTime = BASIC_DATE_FORMAT.parseDateTime(dateStr);
+		DateTime dateTime = convertElasticSearchDateToDateTime(dateStr)
 		journeyTemp.dateOfJourney = dateTime.toDate();
 		//journeyTemp.isDriver = getResponse.getSource().get('isDriver');
 		journeyTemp.fromPlace = getResponse.getSource().get('fromPlace');
@@ -774,7 +777,7 @@ class ElasticSearchService {
 		workflow.id = UUID.fromString(workflowId)
 		workflow.requestJourneyId = searchHit.getSource().get('requestJourneyId');
 		String requestedDateTimeStr = searchHit.getSource().get('requestedDateTime');
-		workflow.requestedDateTime = BASIC_DATE_FORMAT.parseDateTime(requestedDateTimeStr).toDate()
+		workflow.requestedDateTime = convertElasticSearchDateToDateTime(requestedDateTimeStr).toDate()
 		workflow.requestedFromPlace = searchHit.getSource().get('requestedFromPlace');
 		workflow.requestedToPlace = searchHit.getSource().get('requestedToPlace');
 		workflow.requestUser = searchHit.getSource().get('requestUser');
@@ -784,7 +787,7 @@ class ElasticSearchService {
 		workflow.matchedFromPlace = searchHit.getSource().get('matchedFromPlace');
 		workflow.matchedToPlace = searchHit.getSource().get('matchedToPlace');
 		String matchedDateTimeStr = searchHit.getSource().get('matchedDateTime');
-		workflow.matchedDateTime = BASIC_DATE_FORMAT.parseDateTime(matchedDateTimeStr).toDate()
+		workflow.matchedDateTime = convertElasticSearchDateToDateTime(matchedDateTimeStr).toDate()
 
 		workflow.isRequesterDriving = searchHit.getSource().get('isRequesterDriving');
 		return workflow

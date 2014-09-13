@@ -7,15 +7,15 @@ import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
 import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.util.date.DateUtil;
 import com.racloop.workflow.JourneyWorkflow
+import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 
 class JourneyController {
 	
 	// Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
 	// This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
 	// This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
-	public static final String JAVA_DATE_FORMAT = "dd MMMM yyyy    hh:mm a";
-	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern(JAVA_DATE_FORMAT);
 	def grailsApplication
 	def journeyService
 	def journeyWorkflowService
@@ -128,10 +128,10 @@ class JourneyController {
 	
 	private setDates(JourneyRequestCommand currentJourney) {
 		if(currentJourney.dateOfJourneyString) {
-			currentJourney.dateOfJourney = UI_DATE_FORMAT.parseDateTime(currentJourney.dateOfJourneyString).toDate()
+			currentJourney.dateOfJourney = convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
 		}
 		if(currentJourney.validStartTimeString) {
-			currentJourney.validStartTime = UI_DATE_FORMAT.parseDateTime(currentJourney.validStartTimeString).toDate()
+			currentJourney.validStartTime = convertUIDateToElasticSearchDate(currentJourney.validStartTimeString).toDate()
 		}
 		if(!currentJourney.validStartTime) {
 			DateTime currentDate = new DateTime()
@@ -352,7 +352,6 @@ class JourneyController {
 		def journeyId = params.journeyId 
 		def indexName = ElasticSearchService.JOURNEY //params.indexName
 		boolean isDriver =params.boolean('isDriver')
-		//Date dateOfJourney = ISODateTimeFormat.dateOptionalTimeParser().parseDateTime(journeyDate)
 		def journey = journeyService.findJourneyById(journeyId, indexName)
 		chain(action: 'findMatching', model: [currentJourney: journey])
 	}

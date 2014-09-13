@@ -4,31 +4,24 @@ import grails.converters.JSON
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.ProfileBase
 
-
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.authc.AuthenticationException
 import org.apache.shiro.authc.DisabledAccountException
 import org.apache.shiro.authc.IncorrectCredentialsException
 import org.apache.shiro.authc.UsernamePasswordToken
 import org.apache.shiro.crypto.hash.Sha256Hash
-import org.elasticsearch.common.joda.time.format.DateTimeFormatter;
-
-
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator;
-
-import com.racloop.ElasticSearchService
-import com.racloop.JourneyRequestCommand
-import com.racloop.User
-import com.racloop.journey.workkflow.WorkflowState
-import com.racloop.mobile.data.response.MobileResponse;
-
-import grails.plugin.nimble.core.ProfileBase
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-
 import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
-import org.elasticsearch.common.joda.time.format.ISODateTimeFormat
+
+import com.racloop.JourneyRequestCommand
+import com.racloop.User
+import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.mobile.data.response.MobileResponse
+import com.racloop.util.date.DateUtil
+import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
+
 
 class MobileController {
 
@@ -39,8 +32,7 @@ class MobileController {
 	def journeyWorkflowService
 	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST' ]
-	public static final String JAVA_DATE_FORMAT = "dd MMMM yyyy    HH:mm a";
-	public static final DateTimeFormatter UI_DATE_FORMAT = DateTimeFormat.forPattern(JAVA_DATE_FORMAT);
+	
 	/**
 	 * curl -X POST -H "Content-Type: application/json" -d '{ "email": "sample.user@racloop.com", "password": "P@ssw0rd", "rememberMe": "true" }' http://localhost:8080/app/mlogin
 	 * @param user
@@ -431,7 +423,7 @@ class MobileController {
 		journeyRequestCommand.toLatitude =json.toLatitude
 		journeyRequestCommand.toLongitude = json.toLongitude
 		journeyRequestCommand.isDriver = json.isDriver
-		journeyRequestCommand.dateOfJourney = ElasticSearchService.BASIC_DATE_FORMAT.parseDateTime(json.dateOfJourney).toDate()
+		journeyRequestCommand.dateOfJourney = DateUtil.convertElasticSearchDateToDateTime(json.dateOfJourney).toDate()
 		if(!user) {
 			user = User.findByUsername(journeyRequestCommand.user);
 		}
@@ -732,10 +724,10 @@ class MobileController {
 	
 	private setDates(JourneyRequestCommand currentJourney) {
 		if(currentJourney.dateOfJourneyString) {
-			currentJourney.dateOfJourney = UI_DATE_FORMAT.parseDateTime(currentJourney.dateOfJourneyString).toDate()
+			currentJourney.dateOfJourney = convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
 		}
 		if(currentJourney.validStartTimeString) {
-			currentJourney.validStartTime = UI_DATE_FORMAT.parseDateTime(currentJourney.validStartTimeString).toDate()
+			currentJourney.validStartTime = convertUIDateToElasticSearchDate(currentJourney.validStartTimeString).toDate()
 		}
 		if(!currentJourney.validStartTime) {
 			DateTime currentDate = new DateTime()
