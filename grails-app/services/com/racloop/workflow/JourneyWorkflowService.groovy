@@ -1,5 +1,6 @@
 package com.racloop.workflow
 
+import com.racloop.Constant
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
@@ -8,6 +9,8 @@ import com.racloop.journey.workkflow.model.WorkflowDetails
 class JourneyWorkflowService {
 	
 	def elasticSearchService
+	
+	def jmsService
 	
     def initiateWorkflow(JourneyRequestCommand requestedJourney, JourneyRequestCommand matchedJourney) {
 		JourneyWorkflow workflow = createAndSaveWorkflow(requestedJourney, matchedJourney)
@@ -97,6 +100,7 @@ class JourneyWorkflowService {
 	}
 	
 	private sendConfirmationToBothUsers(JourneyWorkflow workflow) {
+		sendNotificationForWorkflowStateChange(workflow.id.toString(), WorkflowState.INITIATED.state)
 		sendConfirmationEmail(workflow)
 		sendConfirmationSMS(workflow)
 	}
@@ -192,8 +196,13 @@ class JourneyWorkflowService {
 	private void cancelWorkflowsAndSendNotification(List workflowList, boolean isIncoming) {
 		workflowList.each {workflow ->
 			elasticSearchService.updateWorkflowState(workflow.id.toString(), WorkflowState.CANCELLED.state)
-			//TODO - send notification
+			sendNotificationForWorkflowStateChange(workflow.id.toString(), WorkflowState.CANCELLED.state)
 		}
+	}
+	
+	private void sendNotificationForWorkflowStateChange (String workflowId, String state){
+		def  messageMap =[(Constant.WORKFLOW_ID_KEY):workflowId, (Constant.WORKFLOW_STATE_KEY):state] 
+		jmsService.send(queue: Constant.NOTIFICATION_WORKFLOW_STATE_CHANGE_QUEUE, messageMap)
 	}
 	
 	

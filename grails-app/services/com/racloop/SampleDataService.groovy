@@ -130,6 +130,7 @@ class SampleDataService {
 			}
 			catch(Exception e) {
 				
+				log.error "error while saving sample data for workflow", e
 			}
 		}
 	}
