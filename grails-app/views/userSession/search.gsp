@@ -108,7 +108,7 @@
 			
 			<div class="btn-group ">
 				<button type="button" class="btn btn-success">Car?</button>
-				<button class="btn btn-success dropdown-toggle"
+				<button id="car-toggle" class="btn btn-success dropdown-toggle"
 					data-toggle="dropdown">
 					<span class="caret"></span>
 				</button>
