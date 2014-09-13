@@ -129,7 +129,7 @@ class MobileController {
 			user.profile.email = json?.email
 			user.profile.mobile = json?.mobile
 			user.profile.isMale = isMale
-			user.enabled = true
+			user.enabled = nimbleConfig.localusers.provision.active
 			user.external = false
 			
 			
@@ -152,27 +152,26 @@ class MobileController {
 						sendMail {
 							to user.profile.email
 							from grailsApplication.config.grails.messaging.mail.from
-							subject nimbleConfig.messaging.passwordreset.external.subject
-							html g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
+							subject nimbleConfig.messaging.registration.subject
+							html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
 						}
-//						def authToken = new UsernamePasswordToken(user.username, user.pass)
-//						SecurityUtils.subject.login(authToken)
-//						userService.createLoginRecord(request)
-//						authenticatedUser.pass = json?.password //TODO need to remove storing of password. Potential security threat
-//						mobileResponse.data=authenticatedUser
 						mobileResponse.success=true
 						mobileResponse.message = "User sign up sucessfully. Please check your email and activate your account."
 					}
 				}
 				else {
 					errors = user.errors
-					mobileResponse.message = "Input Errors"
+					def message = ""
+					errors.allErrors.each {
+						message = message + it + "</br>"
+					}
+					mobileResponse.message = message
 				}	
 				
 			}	
 		}
 		else {
-			mobileResponse.message = "Invalid Json"
+			mobileResponse.message = "Invalid Input Json"
 		}
 		render mobileResponse as JSON
 		
@@ -183,9 +182,8 @@ class MobileController {
 	 * @return
 	 */
 	def changePassword() {
+		MobileResponse mobileResponse = new MobileResponse();
 		def json = request.JSON
-		String jsonMessage = null
-		String jsonResponse = "error"
 		def errors = null
 		String currentPassword = json.currentPassword
 		String pass = json.newPassword
@@ -193,39 +191,36 @@ class MobileController {
 		def user = authenticatedUser
 		if(user) {
 			if(!currentPassword) {
-				jsonMessage = "User attempting to change password but has not supplied current password"
+				mobileResponse.message = "User attempting to change password but has not supplied current password"
 			}
 			else {
 				def pwEnc = new Sha256Hash(currentPassword)
 				def crypt = pwEnc.toHex()
 				if(!crypt.equals(user.passwordHash)) {
-					jsonMessage = "User attempting to change password but has supplied wrong password"
+					mobileResponse.message = "User attempting to change password but has supplied wrong password"
 				}
 				else {
 					user.pass = pass
 					user.passConfirm = passConfirm		
 					if(user.validate() && userService.validatePass(user, true)) {
 						userService.changePassword(user)
-						jsonResponse = "ok"
-						jsonMessage = "Password changed sucessfully"
+						mobileResponse.message = "Password changed sucessfully"
+						mobileResponse.success = true;
 					}
 					else {
 						errors = user.errors
+						def message = ""
+						error.allErrors.each {
+							message = message + it + "</br>"
+						}
+						mobileResponse.message = message
 					}
 				}
 			}
 		}
 		else {
-			jsonMessage = "User is not logged in. Cannot change password"
+			mobileResponse.message = "User is not logged in. Cannot change password"
 		}
-		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"jsessionid" : session.id
-		]
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
 		render mobileResponse as JSON
 	}
 
