@@ -45,7 +45,19 @@ nimble {
 		registration { subject = "Your new account is ready!" }
 		passwordreset { subject = "Your password has been reset" }
 		changeemail { subject = "Your email address has been changed" }
+		
+		mail {
+			host = "smtp.live.com"
+			port = 587
+			from = "raC looP <help@racloop.com>"
+			username = "help@racloop.com"
+			password = "R@cloop1"
+			props = ["mail.smtp.starttls.enable":"true", 
+                  "mail.smtp.port":"587"]
+		}
 	}
+	
+	
 
 	implementation {
 		user = "com.racloop.User"

@@ -146,7 +146,7 @@ class UserSessionController {
 		log.info("Created new account identified as $user.username with internal id $savedUser.id")
 
 		flash.type = "message"
-		flash.message = "<h4>Account Register Successfully</h4><p>Please check your email and activate your account.</p>"
+		flash.message = "Account Register Successfully. Please check your email and activate your account."
 		redirect (action: "search")
 	}
 
