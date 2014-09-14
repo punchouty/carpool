@@ -230,7 +230,7 @@ class MobileController {
 		String email = json.email
 		if(email) {
 			def profile = ProfileBase.findByEmail(email)
-			if (!profile) {
+			if (profile) {
 				def user = profile.owner
 				if (user.external || user.federated) {
 					log.info("User identified by [$user.id]$user.username is external or federated")					
