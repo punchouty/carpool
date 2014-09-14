@@ -197,7 +197,7 @@ class MobileController {
 				def pwEnc = new Sha256Hash(currentPassword)
 				def crypt = pwEnc.toHex()
 				if(!crypt.equals(user.passwordHash)) {
-					mobileResponse.message = "User attempting to change password but has supplied wrong password"
+					mobileResponse.message = "Wrong supplied password"
 				}
 				else {
 					user.pass = pass
@@ -208,12 +208,7 @@ class MobileController {
 						mobileResponse.success = true;
 					}
 					else {
-						errors = user.errors
-						def message = ""
-						error.allErrors.each {
-							message = message + it + "</br>"
-						}
-						mobileResponse.message = message
+						mobileResponse.message = "Unable to change password"
 					}
 				}
 			}
@@ -229,9 +224,8 @@ class MobileController {
 	 * @return
 	 */
 	def forgotPassword() {
+		MobileResponse mobileResponse = new MobileResponse();
 		def json = request.JSON
-		String jsonMessage = null
-		String jsonResponse = "error"
 		def errors = null
 		String email = json.email
 		if(email) {
@@ -248,8 +242,8 @@ class MobileController {
 							subject nimbleConfig.messaging.passwordreset.external.subject
 							html g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
 						}
-						jsonResponse = "ok"
-						jsonMessage = "Password retrieve successfully. Please check your email"
+						mobileResponse.success = true
+						mobileResponse.message = "Password retrieve successfully. Please check your email"
 					}
 					else {
 						log.error "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user]).toString()}"
@@ -257,20 +251,12 @@ class MobileController {
 				}
 			}
 			else {
-				jsonMessage = "User account for supplied email address $email was not found when attempting to process forgotten password"
+				mobileResponse.message = "Invalid email id"
 			}
 		}
 		else {
-			jsonMessage = "Invalid Json"
+			mobileResponse.message = "Invalid Input Json"
 		}
-		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"jsessionid" : session.id
-		]
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
 		render mobileResponse as JSON
 	}
 	
@@ -288,7 +274,6 @@ class MobileController {
 		}
 		else {
 			mobileResponse.message = "Session Expired. Please login again"
-			mobileResponse.success = false
 		}
 		render mobileResponse as JSON
 	}

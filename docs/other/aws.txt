@@ -97,9 +97,9 @@ Create Database
 9. Review Page - Click on "Launch a DB instance"
 
 #on bash
-HOST=ec2-54-255-149-198.ap-southeast-1.compute.amazonaws.com
+HOST=ec2-54-255-130-67.ap-southeast-1.compute.amazonaws.com
 SSH_OPTIONS="-o User=ec2-user -o IdentityFile=tmp/aws.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
-
+chmod 600 tmp/aws.pem
 ssh $SSH_OPTIONS $HOST
 
 
