@@ -68,7 +68,7 @@
         
         
         <g:if test="${SecurityUtils.subject.principal != null}">
-         <div class="navbar-collapse collapse">      
+         <div id="navbar-right" class="navbar-collapse collapse">      
           <ul class="nav navbar-nav navbar-right">
            
            <li	<g:if test="${isSearch == 'true'}">class="active"</g:if>>

@@ -23,7 +23,7 @@
 				<g:renderErrors bean="${user}" as="list" />
 			</div>
 		</g:hasErrors>
-    <div class="col-md-5 ">
+    <div class="col-md-6"><span class="pull-left">
       <g:form controller="userSession" action="editProfile" method="POST"  class="form-horizontal">
         <fieldset>
 
@@ -33,27 +33,24 @@
          
 
           <!-- Text input-->
-          <div class="form-group">
-            <label class="col-sm-5 control-label" for="textinput">Username</label>
-            <div class="col-sm-7">
-              ${fieldValue(bean: user, field: 'username')}
-            </div>
-          </div>
           
-          
-         
+         <div class="form-group">
+			<label class="col-sm-5 control-label" for="email">Email</label>
+			<div class="col-sm-7">
+				<input disabled size="50" id="email" class="form-control" name="email" type="email" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" required/>
+				<p id="email-help-block" class="help-block"></p> 
+			</div>
+		</div>
 
           <!-- Text input-->
           <div class="form-group">
             <label class="col-sm-5 control-label" for="fullName">Name</label>
             <div class="col-sm-7">
-              <input type="text"id="fullName" class="form-control" name="fullName" value="${user.profile?.fullName?.encodeAsHTML()}" placeholder="Full Name" maxlength="100" minlength="3" required>
+              <input type="text"id="fullName" size="30" class="form-control" name="fullName" value="${user.profile?.fullName?.encodeAsHTML()}" placeholder="Full Name" maxlength="100" minlength="3" required>
               <p id="name-help-block" class="help-block"></p>
+               
             </div>
           </div>
-          
-        
-        
         
          <div class="form-group">
 					<label class="col-sm-5 control-label" for="sex">Sex</label>
@@ -69,20 +66,6 @@
 				</div>
  
  
- 
- 
-          
-          
-          
-          
-          <!-- Text input-->
-          <div class="form-group">
-            <label class="col-sm-5 control-label" for="email">Email</label>
-            <div class="col-sm-7">
-              <input type="text" id="email" class="form-control" name="email" type="email" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" required/>
-              <p id="email-help-block" class="help-block"></p> 
-            </div>
-          </div>
 
          
           <!-- Text input-->
@@ -110,7 +93,11 @@
 
         --%></fieldset>
       </g:form>
+      </span>
     </div><!-- /.col-lg-12 -->
+    
+   <g:render template="/templates/shared/racloop" />
+  
 </div><!-- /.row -->
 
 
