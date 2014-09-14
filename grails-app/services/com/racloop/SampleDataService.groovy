@@ -126,7 +126,7 @@ class SampleDataService {
 				outgoingRequest.remove(x)
 				JourneyRequestCommand responseObj = incomingRequest.get(x)
 				incomingRequest.remove(x)
-				journeyManagerService.saveJourneyAndInitiateWorkflow(requestObj, responseObj)
+				//journeyManagerService.saveJourneyAndInitiateWorkflow(requestObj, responseObj)
 			}
 			catch(Exception e) {
 				

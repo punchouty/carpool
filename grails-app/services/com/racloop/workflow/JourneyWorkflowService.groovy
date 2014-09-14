@@ -170,7 +170,8 @@ class JourneyWorkflowService {
 	}
 	
 	public updateWorkflowState (String workflowId, String newState) {
-		return elasticSearchService.updateWorkflowState(workflowId, newState)
+		elasticSearchService.updateWorkflowState(workflowId, newState)
+		sendNotificationForWorkflowStateChange(workflowId, newState)
 	}
 	
 	public getWorkFlowByJounreyTuple (String requestJourneyId, String matchedJourneyId) {
