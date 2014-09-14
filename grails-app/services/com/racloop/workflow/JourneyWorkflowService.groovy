@@ -196,8 +196,15 @@ class JourneyWorkflowService {
 	
 	private void cancelWorkflowsAndSendNotification(List workflowList, boolean isIncoming) {
 		workflowList.each {workflow ->
-			elasticSearchService.updateWorkflowState(workflow.id.toString(), WorkflowState.CANCELLED.state)
-			sendNotificationForWorkflowStateChange(workflow.id.toString(), WorkflowState.CANCELLED.state)
+			String newState
+			if(isIncoming) {
+				newState = WorkflowState.CANCELLED.state
+			}
+			else {
+				newState = WorkflowState.CANCELLED_BY_REQUESTER.state
+			}
+			elasticSearchService.updateWorkflowState(workflow.id.toString(), newState)
+			sendNotificationForWorkflowStateChange(workflow.id.toString(), newState)
 		}
 	}
 	

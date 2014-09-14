@@ -104,7 +104,7 @@
 											</button>
 										</div>
 									</g:elseif>
-									<g:elseif test="${WorkflowState.CANCELLED.state.equals(workflow.state)}">
+									<g:elseif test="${WorkflowState.CANCELLED.state.equals(workflow.state) || WorkflowState.CANCELLED_BY_REQUESTER.state.equals(workflow.state)}">
 										<div class="btn-group">
 											<button class="btn btn-primary">Cancelled</button>
 											<button class="btn btn-primary dropdown-toggle"

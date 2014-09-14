@@ -34,6 +34,9 @@ class NotificationService {
 			case WorkflowState.CANCELLED.state :
 				sendNotificationForCancelRequest(workflow)
 				break
+			case WorkflowState.CANCELLED_BY_REQUESTER.state :
+				sendNotificationForCancelRequestByRequester(workflow)
+				break
 			default :
 				log.error "No state worklfow detected $workflowId"
 
@@ -85,7 +88,20 @@ class NotificationService {
 		User requestTo = getUserDeatils(workflow.matchingUser)
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
 			String mailMessage = "Your journey request has been cancelled"
-			emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessage)
+			emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessage + " by ${requestTo?.profile?.fullName}")
+			emailService.sendMail(requestTo.profile.email, "Your request has been cancelled", mailMessage)
+			
+		}
+
+	}
+	
+	private sendNotificationForCancelRequestByRequester(JourneyWorkflow workflow) {
+		User requestIntiator = getUserDeatils(workflow.requestUser)
+		User requestTo = getUserDeatils(workflow.matchingUser)
+		if(validateUser(requestIntiator) && validateUser(requestTo)){
+			String mailMessageForRequester = "Your journey request has been cancelled"
+			String mailMessage = mailMessageForRequester + " by ${requestIntiator?.profile?.fullName}"
+			emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessageForRequester)
 			emailService.sendMail(requestTo.profile.email, "Your request has been cancelled", mailMessage)
 			
 		}

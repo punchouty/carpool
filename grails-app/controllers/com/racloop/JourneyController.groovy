@@ -334,17 +334,19 @@ class JourneyController {
 		List requestWorkflows = journeyWorkflowService.getWorkFlowByJounreyTuple(requestedJourneyId, matchedJourneyId)
 		if (requestWorkflows) {
 			workflowId = requestWorkflows.get(0).id
+			journeyWorkflowService.updateWorkflowState(workflowId.toString(), WorkflowState.CANCELLED_BY_REQUESTER.state)
 		}
 		if(!workflowId) {
 			List matchedWorkflows = journeyWorkflowService.getWorkFlowByJounreyTuple(matchedJourneyId, requestedJourneyId)
 			if (matchedWorkflows) {
 				workflowId = matchedWorkflows.get(0).id
+				journeyWorkflowService.updateWorkflowState(workflowId.toString(), WorkflowState.CANCELLED.state)
 			}
 		}
 		if(!workflowId){
 			log.error 'Something is wrong. Trying to cancel a request which does not exists' + params
 		}
-		journeyWorkflowService.updateWorkflowState(workflowId.toString(), WorkflowState.CANCELLED.state)
+		
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	}
 	
@@ -358,7 +360,7 @@ class JourneyController {
 	
 	def cancelOutgoingRequest() {
 		def workflowId = params.workflowId
-		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.CANCELLED.state)
+		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.CANCELLED_BY_REQUESTER.state)
 		redirect(action: "activeJourneys")
 	}
 	
