@@ -25,7 +25,7 @@
 		</g:hasErrors>	
 	
 		
-		<div class="col-md-5">
+		<div class="col-md-6"><span class="pull-left">
 		
 		 <g:form action="saveuser" name="signup-form" method="post"  class="form-horizontal">
 			<fieldset>
@@ -104,7 +104,9 @@
             	
 	        </fieldset>
 	        </g:form>
+	        </span>
 		</div>
+		 <g:render template="/templates/shared/racloop" />
 	</div>
 	
 </body>

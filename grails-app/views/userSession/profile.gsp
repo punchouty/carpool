@@ -23,7 +23,7 @@
 				<g:renderErrors bean="${user}" as="list" />
 			</div>
 		</g:hasErrors>
-    <div class="col-md-5 ">
+    <div class="col-md-6"><span class="pull-left">
       <g:form controller="userSession" action="editProfile" method="POST"  class="form-horizontal">
         <fieldset>
 
@@ -93,7 +93,11 @@
 
         --%></fieldset>
       </g:form>
+      </span>
     </div><!-- /.col-lg-12 -->
+    
+   <g:render template="/templates/shared/racloop" />
+  
 </div><!-- /.row -->
 
 
