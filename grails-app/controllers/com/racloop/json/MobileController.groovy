@@ -20,6 +20,7 @@ import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.mobile.data.response.MobileResponse
 import com.racloop.util.date.DateUtil
+
 import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 
 
@@ -339,13 +340,13 @@ class MobileController {
 		String dateOfJourneyString = json?.dateOfJourneyString
 		String validStartTimeString = json?.validStartTimeString
 		String fromPlace = json?.fromPlace
-		Double fromLatitude = json?.fromLatitude;
-		Double fromLongitude = json?.fromLongitude;
+		Double fromLatitude = convertToDouble(json?.fromLatitude);
+		Double fromLongitude = convertToDouble(json?.fromLongitude);
 		String toPlace = json?.toPlace
-		Double toLatitude = json?.toLatitude;
-		Double toLongitude = json?.toLongitude;
+		Double toLatitude = convertToDouble(json?.toLatitude);
+		Double toLongitude = convertToDouble(json?.toLongitude);
 		Boolean isDriver = json?.isDriver;
-		Double tripDistance = json?.tripDistance;
+		Double tripDistance = convertToDouble(json?.tripDistance)
 		String tripUnit = json?.tripUnit;
 		String ip = request.remoteAddr;
 		String user=json?.user
@@ -714,5 +715,12 @@ class MobileController {
 			currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
 			currentJourney.validStartTime = currentDate.toDate()
 		}
+	}
+	
+	private Double convertToDouble(Object input) {
+		if(input){
+			 return Double.valueOf(input)
+		}
+		return null
 	}
 }
