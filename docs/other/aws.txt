@@ -1,3 +1,8 @@
+HOST=ec2-54-169-28-177.ap-southeast-1.compute.amazonaws.com
+HOST=ec2-54-169-55-10.ap-southeast-1.compute.amazonaws.com
+SSH_OPTIONS="-o User=ec2-user -o IdentityFile=./main.pem -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null"
+ssh $SSH_OPTIONS $HOST
+
 TODO : 
 1. MFA
 2. IAM

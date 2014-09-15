@@ -11,7 +11,7 @@ beans = {
 
 	amq.broker(xmlns:"http://activemq.apache.org/schema/core",
 	brokerName:"localhost",
-	dataDirectory:"/Users/rpunch/tmp/data/activemq" ){
+	dataDirectory:"~/data/activemq" ){
 
 
 		amq.transportConnectors{

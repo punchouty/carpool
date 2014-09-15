@@ -1,7 +1,7 @@
 cluster.name: racloop-cluster
-path.data: /Users/rpunch/tmp/data/es/data
-path.work: /Users/rpunch/tmp/data/es/work
-path.logs: /Users/rpunch/tmp/data/es/logs
-path.plugins: /Users/rpunch/tmp/data/plugins
+path.data: ~/data/es/data
+path.work: ~/data/es/work
+path.logs: ~/data/es/logs
+path.plugins: ~/data/plugins
 
 bootstrap.mlockall: true
