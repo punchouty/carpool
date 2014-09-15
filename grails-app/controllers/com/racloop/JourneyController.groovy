@@ -21,6 +21,11 @@ class JourneyController {
 	def journeyWorkflowService
 	def journeyManagerService
 
+	/**
+	 * Main Search from web front end
+	 * @param currentJourney
+	 * @return
+	 */
     def findMatching(JourneyRequestCommand currentJourney) {
 		println params.inspect()
 		
@@ -213,6 +218,10 @@ class JourneyController {
 //		}
 //	}
 	
+	/**
+	 * Save Journey - if no result found
+	 * @return
+	 */
 	def newJourney() {
 		def currentUser = getAuthenticatedUser();
 		def currentJourney = session.currentJourney
@@ -226,6 +235,11 @@ class JourneyController {
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	}
 	
+	/**
+	 * Confirm Journey - search result -> confirm screen -> confirm journey
+	 * @param myJourney
+	 * @return
+	 */
 	def requestService(JourneyRequestCommand myJourney) {
 		def currentJourney = session.currentJourney
 		def currentUser = getAuthenticatedUser()
@@ -267,6 +281,10 @@ class JourneyController {
 		render workflows as JSON
 	}
 	
+	/**
+	 * Request Journey - from search results of main search screen
+	 * @return
+	 */
 	def selectedJourney(){
 		def currentJourney = session.currentJourney
 		def matchedJourneyId = params.matchedJourneyId
@@ -276,6 +294,10 @@ class JourneyController {
 		[matchedJourney: matchedJourney, matchedUser:matchedUser, isDummy: isDummy]
 	}
 	
+	/**
+	 * Active journey for user
+	 * @return
+	 */
 	def activeJourneys() {
 		def workflows =[]
 		def journeys =[]
@@ -289,6 +311,10 @@ class JourneyController {
 		render(view: "activeJourneys", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords, workflows:workflows])
 	}
 	
+	/**
+	 * TODO - might be deprecated
+	 * @return
+	 */
 	def myMatchedJourneys() {
 		def workflows =[]
 		int numberOfRecords = 0
@@ -300,12 +326,20 @@ class JourneyController {
 		render(view: "myMatchedJourneys", model: [currentUser: currentUser, numberOfRecords : numberOfRecords, workflows:workflows])
 	}
 	
+	/**
+	 * TODO - need to find where it is used
+	 * @return
+	 */
 	def backToSearchResult() {
 		def currentJourney = session.currentJourney
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	
 	}
 	
+	/**
+	 * Accept action from user - Work flow
+	 * @return
+	 */
 	def acceptIncomingRequest() {
 		def workflowId = params.workflowId
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
@@ -317,6 +351,10 @@ class JourneyController {
 		}
 	}
 	
+	/**
+	 * Reject action from user - Work flow
+	 * @return
+	 */
 	def rejectIncomingRequest() {
 		def workflowId = params.workflowId
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
@@ -328,6 +366,10 @@ class JourneyController {
 		}
 	}
 	
+	/**
+	 * Cancel from other user - Work flow
+	 * @return
+	 */
 	def cancelJourneyRequest() {
 		def workflowId
 		def currentJourney = session.currentJourney
@@ -352,6 +394,10 @@ class JourneyController {
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	}
 	
+	/**
+	 * TODO Where it is used?
+	 * @return
+	 */
 	def searchAgain() {
 		def journeyId = params.journeyId 
 		def indexName = ElasticSearchService.JOURNEY //params.indexName
@@ -360,16 +406,29 @@ class JourneyController {
 		chain(action: 'findMatching', model: [currentJourney: journey])
 	}
 	
+	/**
+	 * Cancel by owner - Work flow
+	 * @return
+	 */
 	def cancelOutgoingRequest() {
 		def workflowId = params.workflowId
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.CANCELLED_BY_REQUESTER.state)
 		redirect(action: "activeJourneys")
 	}
 	
+	/**
+	 * TODO Where it is used?
+	 * @return
+	 */
 	def redoSearch() {
 		def currentJourney = session.currentJourney
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	}
+	
+	/**
+	 * All request cancel
+	 * @return
+	 */
 	def deleteJourney() {
 		def journeyId = params.journeyId
 		journeyManagerService.deleteJourney(journeyId)
