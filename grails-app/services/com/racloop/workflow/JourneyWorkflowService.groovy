@@ -59,21 +59,21 @@ class JourneyWorkflowService {
 		return populateMatchededWorkflowDetails(matchedWorkflowList)
 	}
 	
-	def getAlreadySelectedJourneyIdsForCurrentJourney(JourneyRequestCommand currentJourney){
-		Map selectedJourneyIds = [:]
+	def getAlreadySelectedJourneyMapForCurrentJourney(JourneyRequestCommand currentJourney){
+		Map selectedJourneyMap = [:]
 		if(currentJourney.id && currentJourney.isSaved) {
 			def selectedWorkflows = elasticSearchService.searchWorkflowByRequestedJourney(currentJourney)
 			selectedWorkflows.each {it->
-				selectedJourneyIds.put(it.matchedJourneyId, it)
+				selectedJourneyMap.put(it.matchedJourneyId, it)
 			}
 			
 			def incomingWorkflow = elasticSearchService.searchWorkflowByMatchedJourney(currentJourney)
 			incomingWorkflow.each {it->
-				selectedJourneyIds.put(it.requestJourneyId, it)
+				selectedJourneyMap.put(it.requestJourneyId, it)
 			}
 		}
 		
-		return selectedJourneyIds
+		return selectedJourneyMap
 
 	}
 	

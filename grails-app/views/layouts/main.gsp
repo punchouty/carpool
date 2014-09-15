@@ -73,7 +73,7 @@
 				var timeLimitInDays = 7;//in days
 				var validStartTime = new Date(now.getTime() + reserveTime * 60000);
 				$('#dateOfJourneyString').val("${session?.currentJourney?.dateOfJourneyString}");
-				$('#validStartTimeString').val(validStartTime.toString('dd MMMM yyyy    HH:mm tt'));	
+				$('#validStartTimeString').val(validStartTime.toString('dd MMMM yyyy    hh:mm tt'));	
 
 				var from = new google.maps.LatLng(${session?.currentJourney?.fromLatitude}, ${session?.currentJourney?.fromLongitude});//delhi
 				var to = new google.maps.LatLng(${session?.currentJourney?.toLatitude}, ${session?.currentJourney?.toLongitude});//chandigarh

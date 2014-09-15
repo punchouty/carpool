@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta name="layout" content="static" />
-<title>Search Results -  ${numberOfRecords} records returned</title>
+<title>Search Results -  ${searchResults.numberOfRecords} records returned</title>
 <script type="text/javascript">
         $(document).ready(function () {
             $("#results").dataTable({
@@ -14,8 +14,9 @@
 </head>
 <body>
 	<g:set var="isHome" value="true" scope="request" />
+	<g:set var="currentJourney" value="${searchResults.currentJourney}"/>
 	<g:if test="${flash.message}">
-	<div class="message" role="status">${flash.message}</div>
+		<div class="message" role="status">${flash.message}</div>
 	</g:if>
 	<div class="row para well well-large">
 		<div class="col-md-9">
@@ -33,7 +34,7 @@
 		</div>
 	</div>
 	
-		<g:if test="${numberOfRecords != 0}">
+		<g:if test="${searchResults.numberOfRecords != 0}">
 		<div class="row">
 			<table id="results" class="table table-striped" >
 				<thead>
@@ -46,14 +47,15 @@
 					</tr>
 				</thead>
 				<tbody>
-				<g:each in="${journeys}" status="i" var="journeyInstance">
+				<g:each in="${searchResults.matchedJourneys}" status="i" var="matchedResult">
+				<g:set var="journeyInstance" value="${matchedResult.matchedJourney}"/>
 					<tr>
 						<td>${journeyInstance.name}</td>	
 						<td id="${i}_from">${journeyInstance.fromPlace}</td>
 						<td id="${i}_to">${journeyInstance.toPlace}</td>		
 						<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
-						<g:if test = "${session?.selectedJourneysMap?.get(currentJourney.id)?.keySet()?.contains(journeyInstance.id)}">
-							<g:set var="workflow" value="${session?.selectedJourneysMap?.get(currentJourney.id)?.get(journeyInstance.id)}"/>
+						<g:if test = "${matchedResult.workflow}">
+							<g:set var="workflow" value="${matchedResult.workflow}"/>
 							<g:if test = "${workflow}">
 								<td>
 									<g:if test="${WorkflowState.INITIATED.state.equals(workflow.state)}">
@@ -118,10 +120,10 @@
 						</g:if> 
 						<g:else>
 							<g:if test="${currentJourney.isDriver}">
-								<td><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:isDummyData]" class="btn btn-success">Ask for Drive</g:link></td>		
+								<td><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success">Ask for Drive</g:link></td>		
 							</g:if>
 							<g:else>
-								<td><g:link action="selectedJourney" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:isDummyData]" class="btn btn-success">Request a Ride</g:link></td>
+								<td><g:link action="selectedJourney" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success">Request a Ride</g:link></td>
 							</g:else>
 						</g:else>
 						<input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">
@@ -139,7 +141,7 @@
 				<p class="text-error">Sorry your search did not match any results</p>
 			</div>
 		</g:else>
-	<g:hiddenField name="dummy" value="${isDummyData}" />
+	<g:hiddenField name="dummy" value="${searchResults.isDummyData}" />
 	<g:hiddenField name="user_mobile" value="${currentUser?.profile?.mobile}" />
 	<g:hiddenField name="user_email" value="${currentUser?.profile?.email}" />
 	<g:hiddenField name="numberOfRecords" value="${numberOfRecords}" />

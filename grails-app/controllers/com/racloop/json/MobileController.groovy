@@ -302,7 +302,7 @@ class MobileController {
 		def user = getAuthenticatedUser()
 		if(user) {
 			user.profile.fullName = fullName
-			user.profile.email = email
+			//user.profile.email = email
 			user.profile.mobile = mobile
 			user.profile.isMale = isMale
 			if (user.validate()) {
@@ -375,7 +375,7 @@ class MobileController {
 			setDates(currentJourney)
 			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				if(currentJourney.validate()) {
-					searchResultMap = getSearchResultMap(currentUser, currentJourney)
+					searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
 					jsonMessage = "Successfully executed search"
 					jsonResponse = "ok"
 				}
@@ -700,14 +700,6 @@ class MobileController {
 		}
 	}
 	
-	private getSearchResultMap(User currentUser, JourneyRequestCommand currentJourney) {
-		currentJourney = getExisitngJourneyForUser(currentUser, currentJourney)
-		def selectedJourneyIds = getAlreadySelectedJourneyIdsForCurrentJourney(currentJourney)
-		updateHttpSession(currentJourney,selectedJourneyIds)
-		def matchedJourney = searchJourneys(currentUser, currentJourney)
-		def matchResult =[currentUser: currentUser, currentJourney: currentJourney, journeys : matchedJourney.matchedJourneys, numberOfRecords : matchedJourney.numberOfRecords, isDummyData: matchedJourney.isDummyData]
-		return matchResult
-	}
 	
 	private setDates(JourneyRequestCommand currentJourney) {
 		if(currentJourney.dateOfJourneyString) {

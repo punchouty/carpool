@@ -33,8 +33,10 @@ class JourneyController {
 		setDates(currentJourney)
 		if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 			if(currentJourney.validate()) {
-				def searchResultMap = getSearchResultMap(currentUser, currentJourney)
-				render(view: "results", model: searchResultMap)
+				def searchResultMap = journeyService.getSearchResults(currentUser, currentJourney) //getSearchResultMap(currentUser, currentJourney)
+				session.currentJourney = currentJourney
+				render(view: "results", model: ['searchResults': searchResultMap])
+
 			}
 			else {
 				log.warn 'Error in command : ' + params
@@ -186,7 +188,7 @@ class JourneyController {
 		}
 	}
 	private getAlreadySelectedJourneyIdsForCurrentJourney(JourneyRequestCommand currentJourney) {
-		def selectedJourneyIds = journeyWorkflowService.getAlreadySelectedJourneyIdsForCurrentJourney(currentJourney)
+		def selectedJourneyIds = journeyWorkflowService.getAlreadySelectedJourneyMapForCurrentJourney(currentJourney)
 		return selectedJourneyIds
 	}
 	
@@ -237,7 +239,7 @@ class JourneyController {
 		}
 		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
 		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
-		setSelectedJounreyInSession(currentJourney,matchedJourneyId, workflow)
+		//setSelectedJounreyInSession(currentJourney,matchedJourneyId, workflow)
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	}
