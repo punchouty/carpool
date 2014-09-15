@@ -142,7 +142,7 @@ environments {
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = "http://www.racloop.com"
+		grails.serverURL = "http://awseb-e-h-AWSEBLoa-8BZWUF9MEDLC-1293817264.ap-southeast-1.elb.amazonaws.com"
 	}
 }
 
@@ -167,6 +167,7 @@ log4j = {
 
 	appenders {
 		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
+		file name: 'file', file: '/var/racloop/log/tomcat-racloop.log'
 	}
 
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers

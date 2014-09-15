@@ -1,7 +1,7 @@
 cluster.name: racloop-cluster
-path.data: ~/data/es/data
-path.work: ~/data/es/work
-path.logs: ~/data/es/logs
-path.plugins: ~/data/plugins
+path.data: /var/racloop/es/data
+path.work: /var/racloop/es/work
+path.logs: /var/racloop/es/logs
+path.plugins: /var/racloop/es/plugins
 
 bootstrap.mlockall: true
