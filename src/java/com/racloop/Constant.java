@@ -9,5 +9,7 @@ public interface Constant {
 	
 	public static final String WORKFLOW_ID_KEY = "workflowIdKey";
 	public static final String WORKFLOW_STATE_KEY = "workflowStateKey";
+	
+	public static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 
 }

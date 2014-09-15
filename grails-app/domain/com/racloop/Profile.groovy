@@ -1,11 +1,12 @@
 
 package com.racloop
 
+
 class Profile extends grails.plugin.nimble.core.ProfileBase {
 	
 	String mobile;
 	Boolean isMale = true;
-	String getGravatarUri() { "http://www.gravatar.com/avatar/" + emailHash}
+	String getGravatarUri() { Constant.GRAVATAR_URL + emailHash}
 	Integer ratingAsDriverTotalVotes = 0
 	Integer ratingAsDriverOverAllExperienceGood = 0
 	Integer ratingAsDriverOverAllExperienceOk = 0

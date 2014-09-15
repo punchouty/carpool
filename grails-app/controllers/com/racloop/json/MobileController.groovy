@@ -20,6 +20,7 @@ import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.mobile.data.response.MobileResponse
 import com.racloop.util.date.DateUtil
+
 import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 
 
@@ -333,18 +334,19 @@ class MobileController {
 		def json = request.JSON
 		String jsonMessage = null
 		String jsonResponse = "error"
+		def mobileResponse = new MobileResponse()
 		def errors = null
 		def searchResultMap = null
 		String dateOfJourneyString = json?.dateOfJourneyString
 		String validStartTimeString = json?.validStartTimeString
 		String fromPlace = json?.fromPlace
-		Double fromLatitude = json?.fromLatitude;
-		Double fromLongitude = json?.fromLongitude;
+		Double fromLatitude = convertToDouble(json?.fromLatitude);
+		Double fromLongitude = convertToDouble(json?.fromLongitude);
 		String toPlace = json?.toPlace
-		Double toLatitude = json?.toLatitude;
-		Double toLongitude = json?.toLongitude;
+		Double toLatitude = convertToDouble(json?.toLatitude);
+		Double toLongitude = convertToDouble(json?.toLongitude);
 		Boolean isDriver = json?.isDriver;
-		Double tripDistance = json?.tripDistance;
+		Double tripDistance = convertToDouble(json?.tripDistance)
 		String tripUnit = json?.tripUnit;
 		String ip = request.remoteAddr;
 		String user=json?.user
@@ -376,25 +378,24 @@ class MobileController {
 			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				if(currentJourney.validate()) {
 					searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
-					jsonMessage = "Successfully executed search"
-					jsonResponse = "ok"
+					mobileResponse.data = searchResultMap
+					mobileResponse.success = true
+					mobileResponse.total = searchResultMap.numberOfRecords
 				}
 			}
 			else {
-				jsonMessage = "Invalid travel date and time"
+				mobileResponse.message = "Invalid travel date and time"
+				mobileResponse.success = false
+				mobileResponse.total =0
 			}
 		}
 		else {
-			jsonMessage = "User is not logged in. Cannot fetch search results"
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
 		}
 		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"searchResults" : searchResultMap
-		]
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		
 		render mobileResponse as JSON
     }
 	
@@ -714,5 +715,12 @@ class MobileController {
 			currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
 			currentJourney.validStartTime = currentDate.toDate()
 		}
+	}
+	
+	private Double convertToDouble(Object input) {
+		if(input){
+			 return Double.valueOf(input)
+		}
+		return null
 	}
 }
