@@ -157,6 +157,7 @@ class ElasticSearchService {
 			startObject().
 				field("user", user.username).
 				field("name", user.profile.fullName).
+				field("photoUrl", user.profile.getGravatarUri()).
 				field("isMale", user.profile.isMale).
 				field("dateOfJourney", dateOfJourney).
 				field("fromPlace", journey.fromPlace).
@@ -390,6 +391,7 @@ class ElasticSearchService {
 		journeyTemp.isDriver = searchHit.type==TYPE_DRIVER?true:false
 		journeyTemp.user = searchHit.getSource().get('user');
 		journeyTemp.name = searchHit.getSource().get('name');
+		journeyTemp.photoUrl = searchHit.getSource().get('photoUrl')
 		String dateStr = searchHit.getSource().get('dateOfJourney');
 		DateTime dateTime = convertElasticSearchDateToDateTime(dateStr)
 		journeyTemp.dateOfJourney = dateTime.toDate();
@@ -411,6 +413,7 @@ class ElasticSearchService {
 		journeyTemp.isDriver = getResponse.type==TYPE_DRIVER?true:false
 		journeyTemp.user = getResponse.getSource().get('user');
 		journeyTemp.name = getResponse.getSource().get('name');
+		journeyTemp.photoUrl = getResponse.getSource().get('photoUrl');
 		String dateStr = getResponse.getSource().get('dateOfJourney');
 		DateTime dateTime = convertElasticSearchDateToDateTime(dateStr)
 		journeyTemp.dateOfJourney = dateTime.toDate();

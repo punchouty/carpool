@@ -11,7 +11,7 @@ class UserMarshaller {
 				fullName : user.profile.fullName,
 				email : user.profile.email,
 				password : user.pass,
-				photoUrl : 'http://www.gravatar.com/avatar/' + user.profile.emailHash,
+				photoUrl : user.profile.getGravatarUri(),
 				mobile : user.profile.mobile,
 				isMale : user.profile.isMale
 			]

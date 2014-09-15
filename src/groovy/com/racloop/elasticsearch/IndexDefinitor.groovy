@@ -173,6 +173,9 @@ class IndexDefinitor {
 					startObject("isDeleted").
 					field("type", "boolean").field("null_value", false).
 					endObject().
+					startObject("photoUrl").
+					field("type", "string").
+					endObject().
 				endObject().
 			endObject().
 		endObject();

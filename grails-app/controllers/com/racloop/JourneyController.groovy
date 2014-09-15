@@ -400,6 +400,7 @@ public class JourneyRequestCommand {
 	String ip; //should get from request
 	Date createdDate = new Date();
 	Boolean isSaved = false
+	String photoUrl
 	
 	static constraints = {
 		id nullable : true

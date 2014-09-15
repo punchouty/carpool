@@ -333,6 +333,7 @@ class MobileController {
 		def json = request.JSON
 		String jsonMessage = null
 		String jsonResponse = "error"
+		def mobileResponse = new MobileResponse()
 		def errors = null
 		def searchResultMap = null
 		String dateOfJourneyString = json?.dateOfJourneyString
@@ -376,25 +377,24 @@ class MobileController {
 			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				if(currentJourney.validate()) {
 					searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
-					jsonMessage = "Successfully executed search"
-					jsonResponse = "ok"
+					mobileResponse.data = searchResultMap
+					mobileResponse.success = true
+					mobileResponse.total = searchResultMap.numberOfRecords
 				}
 			}
 			else {
-				jsonMessage = "Invalid travel date and time"
+				mobileResponse.message = "Invalid travel date and time"
+				mobileResponse.success = false
+				mobileResponse.total =0
 			}
 		}
 		else {
-			jsonMessage = "User is not logged in. Cannot fetch search results"
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
 		}
 		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"searchResults" : searchResultMap
-		]
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+		
 		render mobileResponse as JSON
     }
 	
