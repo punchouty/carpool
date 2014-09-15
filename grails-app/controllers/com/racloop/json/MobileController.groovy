@@ -230,24 +230,31 @@ class MobileController {
 		String email = json.email
 		if(email) {
 			def profile = ProfileBase.findByEmail(email)
-			if (!profile) {
+			if (profile) {
 				def user = profile.owner
 				if (user.external || user.federated) {
 					log.info("User identified by [$user.id]$user.username is external or federated")					
-					log.info("Sending account password reset email to $user.profile.email with subject $nimbleConfig.messaging.passwordreset.external.subject")
+					
+				}
+				else{
+					userService.setRandomPassword(user)
+		
+					log.info("Sending account password reset email to $user.profile.email with subject $nimbleConfig.messaging.passwordreset.subject")
 					if(nimbleConfig.messaging.enabled) {
 						sendMail {
 							to user.profile.email
 							from grailsApplication.config.grails.messaging.mail.from
-							subject nimbleConfig.messaging.passwordreset.external.subject
-							html g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
+							subject nimbleConfig.messaging.passwordreset.subject
+							html g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
 						}
 						mobileResponse.success = true
 						mobileResponse.message = "Password retrieve successfully. Please check your email"
+						
 					}
 					else {
-						log.error "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user]).toString()}"
+						log.info "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user]).toString()}"
 					}
+		
 				}
 			}
 			else {
@@ -295,7 +302,7 @@ class MobileController {
 		def user = getAuthenticatedUser()
 		if(user) {
 			user.profile.fullName = fullName
-			user.profile.email = email
+			//user.profile.email = email
 			user.profile.mobile = mobile
 			user.profile.isMale = isMale
 			if (user.validate()) {
@@ -368,7 +375,7 @@ class MobileController {
 			setDates(currentJourney)
 			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				if(currentJourney.validate()) {
-					searchResultMap = getSearchResultMap(currentUser, currentJourney)
+					searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
 					jsonMessage = "Successfully executed search"
 					jsonResponse = "ok"
 				}
@@ -693,14 +700,6 @@ class MobileController {
 		}
 	}
 	
-	private getSearchResultMap(User currentUser, JourneyRequestCommand currentJourney) {
-		currentJourney = getExisitngJourneyForUser(currentUser, currentJourney)
-		def selectedJourneyIds = getAlreadySelectedJourneyIdsForCurrentJourney(currentJourney)
-		updateHttpSession(currentJourney,selectedJourneyIds)
-		def matchedJourney = searchJourneys(currentUser, currentJourney)
-		def matchResult =[currentUser: currentUser, currentJourney: currentJourney, journeys : matchedJourney.matchedJourneys, numberOfRecords : matchedJourney.numberOfRecords, isDummyData: matchedJourney.isDummyData]
-		return matchResult
-	}
 	
 	private setDates(JourneyRequestCommand currentJourney) {
 		if(currentJourney.dateOfJourneyString) {

@@ -1,10 +1,14 @@
 package com.racloop
 
+import java.util.Map;
+
 import grails.util.Environment
 
 import org.elasticsearch.common.joda.time.DateTime
 
 import com.racloop.journey.model.JourneyRequestDetails
+import com.racloop.journey.model.MatchedJourneyResult;
+import com.racloop.journey.model.SearchResult;
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.journey.workkflow.model.WorkflowDetails
 
@@ -211,6 +215,58 @@ class JourneyService {
 		String indexName = ElasticSearchService.JOURNEY.toLowerCase()
 		JourneyRequestCommand currentJourney = elasticSearchService.findJounreyById(journeyId, indexName)
 		elasticSearchService.markJourneyAsDeleted(currentJourney)
+	}
+	
+	private SearchResult getSearchResults(User currentUser, JourneyRequestCommand currentJourney) {
+		currentJourney = getExisitngJourneyForUser(currentUser, currentJourney)
+		def alreadySelectedJourneyMap = getAlreadySelectedJourneysForCurrentJourney(currentJourney)
+		def matchedJourney = searchJourneys(currentUser, currentJourney)
+		List<MatchedJourneyResult> matchedJourneyResult = enrichMatchedJourneyResult(matchedJourney.matchedJourneys, alreadySelectedJourneyMap) 
+		SearchResult searchResult = new SearchResult(currentUser:currentUser, currentJourney:currentJourney,matchedJourneys:matchedJourneyResult, isDummyData:matchedJourney.isDummyData, numberOfRecords:matchedJourney.numberOfRecords)
+		return searchResult
+	}
+	
+	List<MatchedJourneyResult> enrichMatchedJourneyResult(matchedJourneyList, alreadySelectedJourneyMap) {
+		List<MatchedJourneyResult> matchedJourneyResultList = []
+		matchedJourneyList.each{it ->
+			matchedJourneyResultList.add(new MatchedJourneyResult(matchedJourney:it, workflow:alreadySelectedJourneyMap?.get(it.id)))
+		}
+		return matchedJourneyResultList
+		
+	}
+	
+	private getExisitngJourneyForUser(User currentUser, JourneyRequestCommand currentJourneyFromWeb) {
+		if(currentUser && !currentJourneyFromWeb.id && !currentJourneyFromWeb.isSaved) {
+			def possibleExisitingJourney = searchPossibleExistingJourneyForUser(currentUser, currentJourneyFromWeb)
+			if(possibleExisitingJourney) {
+				currentJourneyFromWeb = possibleExisitingJourney
+			}
+		}
+		return currentJourneyFromWeb
+	}
+	
+	private getAlreadySelectedJourneysForCurrentJourney(JourneyRequestCommand currentJourney) {
+		def selectedJourneyMap = journeyWorkflowService.getAlreadySelectedJourneyMapForCurrentJourney(currentJourney)
+		return selectedJourneyMap
+	}
+	
+	private Map searchJourneys(User currentUser, JourneyRequestCommand currentJourney) {
+		def matchedJourney =[:]
+		boolean isDummyData =false
+		def journeys = search(currentUser, currentJourney)
+		int numberOfRecords = 0;
+		if(journeys.size > 0) {
+			numberOfRecords = journeys.size
+		}
+		else {
+			journeys = getDummyData(currentUser, currentJourney)
+			numberOfRecords = journeys.size
+			isDummyData = true;
+		}
+		matchedJourney.matchedJourneys = journeys
+		matchedJourney.numberOfRecords = numberOfRecords
+		matchedJourney.isDummyData = isDummyData
+		return matchedJourney
 	}
 	
 }

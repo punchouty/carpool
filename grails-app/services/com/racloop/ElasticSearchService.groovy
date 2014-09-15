@@ -456,7 +456,7 @@ class ElasticSearchService {
 	def indexWorkflow(JourneyWorkflow workflow) {
 		log.info "Adding record to elastic search ${workflow}"
 		def sourceBuilder = createWorkflowJson(workflow)
-		IndexRequest indexRequest = new IndexRequest('workflow', WORKFLOW).id(workflow.id.toString()).source(sourceBuilder);
+		IndexRequest indexRequest = new IndexRequest(WORKFLOW, WORKFLOW).id(workflow.id.toString()).refresh(true).source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
 		log.info "Successfully indexed ${workflow}"
 	}

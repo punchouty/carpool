@@ -5,7 +5,8 @@ enum WorkflowState {
 	INITIATED("New"),
 	ACCEPTED("Accepted"),
 	CANCELLED("Cancelled"),
-	REJECTED("Rejected")
+	REJECTED("Rejected"),
+	CANCELLED_BY_REQUESTER("Cancelled By Requester")
 
 	WorkflowState(String state) {
 		this.state = state
@@ -39,6 +40,9 @@ enum WorkflowState {
 				break
 			case REJECTED: action=[]
 				break
+			case CANCELLED_BY_REQUESTER: action=[]
+				break
+			default : action=[]	
 		}
 		return action
 	}
