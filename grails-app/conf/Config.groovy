@@ -135,6 +135,7 @@ grails.messaging.mail.from="help@racloop.com"
 
 grails.approx.distance.to.match = 3.0
 grails.approx.time.to.match = 30
+grails.max.active.requests = 5
 
 environments {
 	development {

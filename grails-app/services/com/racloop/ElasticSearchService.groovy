@@ -634,11 +634,11 @@ class ElasticSearchService {
 		return workflows
 	}
 	
-	def searchActiveWorkflowByMatchedJourney(String searchParam ,String searchRequest) {
+	def searchActiveWorkflowByMatchedJourney(String indexField ,String value) {
 		String indexName = WORKFLOW.toLowerCase()
 		
 		FilterBuilder incomingRequestFilter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter(searchParam, searchRequest),
+			FilterBuilders.termFilter(indexField, value),
 			FilterBuilders.termsFilter(STATE, WorkflowState.INITIATED.state, WorkflowState.ACCEPTED.state)
 		)
 		
@@ -679,6 +679,14 @@ class ElasticSearchService {
 		
 		return journeys
 	}
+	
+	def int countOfActiveOutgoingRequestsForAJourney(String jounrenyId) {
+		
+	}
+	
+	def int countOfActiveIncomingRequestsForAJourney(String jounrenyId) {
+	
+}
 	
 	private List searchWorkflow(String indexName, String type, FilterBuilder filter, FieldSortBuilder  sorter ) {
 		def workflows = []

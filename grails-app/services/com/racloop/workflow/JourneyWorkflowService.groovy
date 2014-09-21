@@ -3,6 +3,7 @@ package com.racloop.workflow
 import com.racloop.Constant
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
+import com.racloop.elasticsearch.WorkflowIndexFields;
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.journey.workkflow.model.WorkflowDetails
 
@@ -192,13 +193,13 @@ class JourneyWorkflowService {
 	}
 	
 	private cancelOutgoingRequestForAJourney (String requestJourneyId) {
-		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney("requestJourneyId", requestJourneyId)
+		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.REQUEST_JOURNEY_ID, requestJourneyId)
 		cancelWorkflowsAndSendNotification(workflowList, false)
 		
 	}
 	
 	private cancelIncomingRequestForAJourney (String matchedJourneyId) {
-		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney("matchedJourneyId", matchedJourneyId)
+		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.MATCHED_JOURNEY_ID, matchedJourneyId)
 		cancelWorkflowsAndSendNotification(workflowList, true)
 	}
 	

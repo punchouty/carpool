@@ -175,12 +175,21 @@ class JourneyController {
 	 * @return
 	 */
 	def selectedJourney(){
+		def requestCountMap = [:]
 		def currentJourney = session.currentJourney
 		def matchedJourneyId = params.matchedJourneyId
-		boolean isDummy =params.boolean('dummy') 
+		boolean isDummy =params.boolean('dummy')
+		int threshHold = Integer.valueOf(grailsApplication.config.grails.max.active.requests)
+		if(currentJourney?.id) {
+			requestCountMap = journeyService.findCountOfAllWorkflowRequestForAJourney(currentJourney.id)
+		}
 		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
 		def matchedUser = User.findByUsername(matchedJourney.user)
-		[matchedJourney: matchedJourney, matchedUser:matchedUser, isDummy: isDummy]
+		boolean isThresholdReached = requestCountMap.totalCount >= threshHold
+		if(isThresholdReached) {
+			flash.error = "Sorry, you cannot send the request as you have reached the threshold limit. You already have ${requestCountMap.outgoingCount} active outgoing requests and ${requestCountMap.incomingCount} active incoming requests for this journey."
+		}
+		[matchedJourney: matchedJourney, matchedUser:matchedUser, isDummy: isDummy, showRequestButton:!isThresholdReached]
 	}
 	
 	/**
