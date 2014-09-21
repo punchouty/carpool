@@ -6,12 +6,14 @@ import com.racloop.workflow.JourneyWorkflow
 class JourneyRequestDetails {
 	
 	JourneyRequestCommand journey
-	List requestedJourneys
-	List matchedJourneys
+	List outgoingRequests
+	List incomingRequests
+	int numberOfIncomingRequests = 0
+	int numberOfOutgoingRequests = 0
 	
 	public JourneyRequestDetails() {
-		this.matchedJourneys= []
-		this.requestedJourneys =[]
+		this.incomingRequests= []
+		this.outgoingRequests =[]
 	}
 
 }
