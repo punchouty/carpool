@@ -4,6 +4,7 @@ import org.springframework.jms.connection.SingleConnectionFactory
 
 import com.racloop.marshaller.CustomObjectMarshallers
 import com.racloop.marshaller.UserMarshaller
+import com.racloop.marshaller.WorkflowMarshaller
 
 beans = {
 
@@ -27,7 +28,8 @@ beans = {
 	
 	customObjectMarshallers( CustomObjectMarshallers ) {
 		marshallers = [
-				new UserMarshaller()
+				new UserMarshaller(),
+				new WorkflowMarshaller()
 		]
 	}
 }

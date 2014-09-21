@@ -3,6 +3,7 @@ package com.racloop.workflow
 import com.racloop.Constant
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
+import com.racloop.elasticsearch.WorkflowIndexFields;
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.journey.workkflow.model.WorkflowDetails
 
@@ -118,11 +119,14 @@ class JourneyWorkflowService {
 		requestedWorkflowList.each {workflow ->
 			WorkflowDetails workflowDetails = new WorkflowDetails()
 			workflowDetails.workflow = workflow
-			workflowDetails.workflowId = workflow.id.toString()
-			workflowDetails.otherUser = User.findByUsername(workflow.matchingUser)
+			workflowDetails.otherUser = User.findByUsername(workflow.matchingUser, [readOnly:true])
 			workflowDetails.state = workflow.state//(workflow.state ==WorkflowState.INITIATED.getState()?'Sent':workflow.state)
 			workflowDetails.actionButtons.addAll(getAvailableActionForRequestSent(workflow.state))
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForSentRequest(workflow.state)
+			if(!workflowDetails.showContactInfo) {
+				workflowDetails?.otherUser?.profile?.mobile=""
+				workflowDetails?.otherUser?.profile?.email=""
+			}
 			requestWorkflowDetails << workflowDetails
 		}
 		return requestWorkflowDetails
@@ -149,11 +153,14 @@ class JourneyWorkflowService {
 		matchedWorkflowList.each {workflow ->
 			WorkflowDetails workflowDetails = new WorkflowDetails()
 			workflowDetails.workflow = workflow
-			workflowDetails.workflowId = workflow.id.toString() //Explicitly set the id as String to ease JSON marshalling
-			workflowDetails.otherUser = User.findByUsername(workflow.requestUser)
+			workflowDetails.otherUser = User.findByUsername(workflow.requestUser, [readOnly:true])
 			workflowDetails.state = workflow.state
 			workflowDetails.actionButtons.addAll(getAvailableActionForResponse(workflow.state))
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForResponse(workflow.state)
+			if(!workflowDetails.showContactInfo) {
+				workflowDetails?.otherUser?.profile?.mobile=""
+				workflowDetails?.otherUser?.profile?.email=""
+			}
 			matchedWorkflowDetails << workflowDetails
 		}
 		return matchedWorkflowDetails
@@ -186,13 +193,13 @@ class JourneyWorkflowService {
 	}
 	
 	private cancelOutgoingRequestForAJourney (String requestJourneyId) {
-		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney("requestJourneyId", requestJourneyId)
+		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.REQUEST_JOURNEY_ID, requestJourneyId)
 		cancelWorkflowsAndSendNotification(workflowList, false)
 		
 	}
 	
 	private cancelIncomingRequestForAJourney (String matchedJourneyId) {
-		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney("matchedJourneyId", matchedJourneyId)
+		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.MATCHED_JOURNEY_ID, matchedJourneyId)
 		cancelWorkflowsAndSendNotification(workflowList, true)
 	}
 	

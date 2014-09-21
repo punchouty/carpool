@@ -10,7 +10,7 @@ class WorkflowDetails {
 	List actionButtons
 	String state
 	boolean showContactInfo
-	String workflowId
+	
 	
 	public WorkflowDetails () {
 		this.actionButtons=[]

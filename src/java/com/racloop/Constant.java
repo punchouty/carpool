@@ -11,5 +11,6 @@ public interface Constant {
 	public static final String WORKFLOW_STATE_KEY = "workflowStateKey";
 	
 	public static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
+	public static final String GRAVATAR_URL_SUFFIX = "?s=200&d=mm";
 
 }

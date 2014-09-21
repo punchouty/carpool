@@ -6,6 +6,8 @@ import org.elasticsearch.node.Node
 
 import com.racloop.ElasticSearchService
 
+import static com.racloop.elasticsearch.WorkflowIndexFields.*
+
 
 
 class IndexDefinitor {
@@ -90,40 +92,40 @@ class IndexDefinitor {
 				startObject().
 					startObject(indexType).
 						startObject("properties").
-							startObject("requestJourneyId").
+							startObject(REQUEST_JOURNEY_ID).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("requestedFromPlace").
+							startObject(REQUEST_FROM_PLACE).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("requestedToPlace").
+							startObject(REQUEST_TO_PLACE).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("requestUser").
+							startObject(REQUEST_USER).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("requestedDateTime").
+							startObject(REQUEST_DATE_TIME).
 								field("type", "date").
 							endObject().
-							startObject("state").
+							startObject(STATE).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("matchedJourneyId").
+							startObject(MATCHED_JOURNEY_ID).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("matchedFromPlace").
+							startObject(MATCHED_FROM_PLACE).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("matchedToPlace").
+							startObject(MATCHED_TO_PLACE).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("matchingUser").
+							startObject(MACTHING_USER).
 								field("type", "string").field("index", "not_analyzed").
 							endObject().
-							startObject("matchedDateTime").
+							startObject(MATCHED_DATE_TIME).
 								field("type", "date").
 							endObject().
-							startObject("isRequesterDriving").
+							startObject(IS_REQUESTER_DRIVING).
 								field("type", "boolean").
 							endObject().
 						endObject().

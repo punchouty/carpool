@@ -6,7 +6,7 @@ class Profile extends grails.plugin.nimble.core.ProfileBase {
 	
 	String mobile;
 	Boolean isMale = true;
-	String getGravatarUri() { Constant.GRAVATAR_URL + emailHash}
+	String getGravatarUri() { Constant.GRAVATAR_URL + emailHash + Constant.GRAVATAR_URL_SUFFIX}
 	Integer ratingAsDriverTotalVotes = 0
 	Integer ratingAsDriverOverAllExperienceGood = 0
 	Integer ratingAsDriverOverAllExperienceOk = 0

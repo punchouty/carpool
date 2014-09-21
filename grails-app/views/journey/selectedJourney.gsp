@@ -95,8 +95,10 @@
 </style>
 </head>
 <body>
-	<g:if test="${flash.message}">
-	<div class="message" role="status">${flash.message}</div>
+	<g:if test="${flash.error}">
+	<div class="alert alert-danger">	
+		${flash.error}
+	</div>
 	</g:if>
 	<div class="row user-infos cyruxx">
             <div class="col-md-10 offset1">
@@ -159,14 +161,21 @@
                         </div>
                     </div>
                     <div class="panel-footer">
-                    	<g:link action="requestService" id="requestService"  params="[matchedJourneyId: matchedJourney.id, dummy:isDummy]">
-	                        <button class="btn  btn-primary" type="button"
-	                                data-toggle="tooltip"
-	                                data-original-title="Send message to user">Send Request <i class="icon-envelope icon-white"></i></button>
-						</g:link>                                
+                    	<g:if test = "${showRequestButton}">
+	                    	<g:link action="requestService" id="requestService"  params="[matchedJourneyId: matchedJourney.id, dummy:isDummy]">
+		                        <button id ="sendRequest"class="btn  btn-primary" type="button"
+		                                data-toggle="tooltip"
+		                                data-original-title="Send message to user">Send Request <i class="icon-envelope icon-white"></i></button>
+							</g:link> 
+						 </g:if>  
+						 <g:else>
+						 	<button disabled="disabled" id ="sendRequestDisabled"class="btn" type="button"
+		                                data-toggle="tooltip"
+		                                data-original-title="Send message to user">Send Request <i class="icon-envelope icon-white"></i></button>
+						 </g:else>                             
                         <span class="pull-right">
 			<g:link action="backToSearchResult" id="backToSearchResult">                        	
-                            <button class="btn btn-warning" type="button"
+                            <button id ="back" class="btn btn-warning" type="button"
                                     data-toggle="tooltip"
                                     data-original-title="Edit this user">Back to Results <i class="icon-share-alt icon-white"></i></button>
                             </g:link>        

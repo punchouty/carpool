@@ -1,16 +1,13 @@
 package com.racloop
 
-import java.util.Map;
-
 import grails.util.Environment
 
 import org.elasticsearch.common.joda.time.DateTime
 
+import com.racloop.elasticsearch.WorkflowIndexFields
 import com.racloop.journey.model.JourneyRequestDetails
-import com.racloop.journey.model.MatchedJourneyResult;
-import com.racloop.journey.model.SearchResult;
-import com.racloop.journey.workkflow.WorkflowState
-import com.racloop.journey.workkflow.model.WorkflowDetails
+import com.racloop.journey.model.MatchedJourneyResult
+import com.racloop.journey.model.SearchResult
 
 class JourneyService {
 
@@ -176,6 +173,13 @@ class JourneyService {
 	def JourneyRequestCommand findMatchedJourneyById (String matchedJourneyId, JourneyRequestCommand currentJourney, boolean isDummy = false) {
 		def journey = elasticSearchService.findJourneyById(matchedJourneyId, currentJourney, isDummy)
 		return journey
+	}
+	
+	def Map findCountOfAllWorkflowRequestForAJourney(String journeyId) {
+		List outgoing = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.REQUEST_JOURNEY_ID, journeyId)
+		List incoming = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.MATCHED_JOURNEY_ID, journeyId)
+		return [outgoingCount : outgoing?.size(), incomingCount:incoming?.size(), totalCount: outgoing?.size()+ incoming?.size()]
+		
 	}
 	
 	def List findAllFutureJourneyForTheUser (User user, DateTime currentDate) {
