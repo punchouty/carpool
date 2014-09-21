@@ -33,7 +33,7 @@ import com.racloop.elasticsearch.IndexDefinitor
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.util.date.DateUtil;
 import com.racloop.workflow.JourneyWorkflow
-
+import static com.racloop.elasticsearch.WorkflowIndexFields.*
 import static com.racloop.util.date.DateUtil.convertElasticSearchDateToDateTime
 
 
@@ -469,18 +469,18 @@ class ElasticSearchService {
 		DateTime matchedDateTime = new DateTime(workflow.matchedDateTime)
 		XContentBuilder builder = XContentFactory.jsonBuilder().
 			startObject().
-				field("requestJourneyId", workflow.requestJourneyId).
-				field("requestedFromPlace", workflow.requestedFromPlace).
-				field("requestedToPlace", workflow.requestedToPlace).
-				field("requestUser", workflow.requestUser).
-				field("requestedDateTime", requestedDateTime).
-				field("state", workflow.state).
-				field("matchingUser", workflow.matchingUser).
-				field("matchedJourneyId", workflow.matchedJourneyId).
-				field("matchedFromPlace", workflow.matchedFromPlace).
-				field("matchedToPlace", workflow.matchedToPlace).
-				field("matchedDateTime", matchedDateTime).
-				field("isRequesterDriving", workflow.isRequesterDriving).
+				field(REQUEST_JOURNEY_ID, workflow.requestJourneyId).
+				field(REQUEST_FROM_PLACE, workflow.requestedFromPlace).
+				field(REQUEST_TO_PLACE, workflow.requestedToPlace).
+				field(REQUEST_USER, workflow.requestUser).
+				field(REQUEST_DATE_TIME, requestedDateTime).
+				field(STATE, workflow.state).
+				field(MACTHING_USER, workflow.matchingUser).
+				field(MATCHED_JOURNEY_ID, workflow.matchedJourneyId).
+				field(MATCHED_FROM_PLACE, workflow.matchedFromPlace).
+				field(MATCHED_TO_PLACE, workflow.matchedToPlace).
+				field(MATCHED_DATE_TIME, matchedDateTime).
+				field(IS_REQUESTER_DRIVING, workflow.isRequesterDriving).
 			endObject();
 		return builder;
 	}
@@ -550,12 +550,12 @@ class ElasticSearchService {
 	def searchWorkflowRequestedByUser(User user) {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter('requestUser', user.username),
+			FilterBuilders.termFilter(REQUEST_USER, user.username),
 			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username))
 			
 		)
 		
-		FieldSortBuilder  sorter = SortBuilders.fieldSort("requestedDateTime")
+		FieldSortBuilder  sorter = SortBuilders.fieldSort(REQUEST_DATE_TIME)
 		sorter.order(SortOrder.DESC);
 		
 		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
@@ -565,11 +565,11 @@ class ElasticSearchService {
 	def searchWorkflowRequestedByUserForAJourney(String journeyId, User user) {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter('requestUser', user.username),
-			FilterBuilders.termFilter('requestJourneyId', journeyId)
+			FilterBuilders.termFilter(REQUEST_USER, user.username),
+			FilterBuilders.termFilter(REQUEST_JOURNEY_ID, journeyId)
 		)
 		
-		FieldSortBuilder  sorter = SortBuilders.fieldSort("requestedDateTime")
+		FieldSortBuilder  sorter = SortBuilders.fieldSort(REQUEST_DATE_TIME)
 		sorter.order(SortOrder.DESC);
 		
 		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
@@ -579,12 +579,12 @@ class ElasticSearchService {
 	def searchWorkflowMatchedForUser(User user) {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter('matchingUser', user.username),
+			FilterBuilders.termFilter(MACTHING_USER, user.username),
 			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
 			
 		)
 		
-		FieldSortBuilder  sorter = SortBuilders.fieldSort("matchedDateTime")
+		FieldSortBuilder  sorter = SortBuilders.fieldSort(MATCHED_DATE_TIME)
 		sorter.order(SortOrder.DESC);
 		
 		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
@@ -594,8 +594,8 @@ class ElasticSearchService {
 	def searchWorkflowMatchedForUserForAJourney(String journeyId, User user) {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter('matchingUser', user.username),
-			FilterBuilders.termFilter('matchedJourneyId', journeyId)
+			FilterBuilders.termFilter(MACTHING_USER, user.username),
+			FilterBuilders.termFilter(MATCHED_JOURNEY_ID, journeyId)
 			
 		)
 		
@@ -609,8 +609,8 @@ class ElasticSearchService {
 	def searchWorkflowByRequestedJourney(JourneyRequestCommand command) {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter('requestUser', command.user),
-			FilterBuilders.termFilter('requestJourneyId', command.id)
+			FilterBuilders.termFilter(REQUEST_USER, command.user),
+			FilterBuilders.termFilter(REQUEST_JOURNEY_ID, command.id)
 			//FilterBuilders.termFilter('state', "")
 		)
 		
@@ -623,8 +623,8 @@ class ElasticSearchService {
 		String indexName = WORKFLOW.toLowerCase()
 		
 		FilterBuilder incomingRequestFilter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter('matchingUser', command.user),
-			FilterBuilders.termFilter('matchedJourneyId', command.id)
+			FilterBuilders.termFilter(MACTHING_USER, command.user),
+			FilterBuilders.termFilter(MATCHED_JOURNEY_ID, command.id)
 			//FilterBuilders.termFilter('state', "")
 		)
 		
@@ -639,7 +639,7 @@ class ElasticSearchService {
 		
 		FilterBuilder incomingRequestFilter = FilterBuilders.andFilter(
 			FilterBuilders.termFilter(searchParam, searchRequest),
-			FilterBuilders.termsFilter('state', WorkflowState.INITIATED.state, WorkflowState.ACCEPTED.state)
+			FilterBuilders.termsFilter(STATE, WorkflowState.INITIATED.state, WorkflowState.ACCEPTED.state)
 		)
 		
 		
@@ -651,8 +651,8 @@ class ElasticSearchService {
 	def searchWorkflowByJourneyTuple(String requestJourneyId, String matchedJourneyId) {
 		String indexName = WORKFLOW.toLowerCase()
 		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter('requestJourneyId', requestJourneyId),
-			FilterBuilders.termFilter('matchedJourneyId', matchedJourneyId)
+			FilterBuilders.termFilter(REQUEST_JOURNEY_ID, requestJourneyId),
+			FilterBuilders.termFilter(MATCHED_JOURNEY_ID, matchedJourneyId)
 			
 		)
 		
@@ -696,21 +696,21 @@ class ElasticSearchService {
 		JourneyWorkflow workflow = new JourneyWorkflow();
 		String workflowId = searchHit.id
 		workflow.id = UUID.fromString(workflowId)
-		workflow.requestJourneyId = searchHit.getSource().get('requestJourneyId');
-		String requestedDateTimeStr = searchHit.getSource().get('requestedDateTime');
+		workflow.requestJourneyId = searchHit.getSource().get(REQUEST_JOURNEY_ID);
+		String requestedDateTimeStr = searchHit.getSource().get(REQUEST_DATE_TIME);
 		workflow.requestedDateTime = convertElasticSearchDateToDateTime(requestedDateTimeStr).toDate()
-		workflow.requestedFromPlace = searchHit.getSource().get('requestedFromPlace');
-		workflow.requestedToPlace = searchHit.getSource().get('requestedToPlace');
-		workflow.requestUser = searchHit.getSource().get('requestUser');
-		workflow.state = searchHit.getSource().get('state')
-		workflow.matchingUser = searchHit.getSource().get('matchingUser');
-		workflow.matchedJourneyId= searchHit.getSource().get('matchedJourneyId');
-		workflow.matchedFromPlace = searchHit.getSource().get('matchedFromPlace');
-		workflow.matchedToPlace = searchHit.getSource().get('matchedToPlace');
-		String matchedDateTimeStr = searchHit.getSource().get('matchedDateTime');
+		workflow.requestedFromPlace = searchHit.getSource().get(REQUEST_FROM_PLACE);
+		workflow.requestedToPlace = searchHit.getSource().get(REQUEST_TO_PLACE);
+		workflow.requestUser = searchHit.getSource().get(REQUEST_USER);
+		workflow.state = searchHit.getSource().get(STATE)
+		workflow.matchingUser = searchHit.getSource().get(MACTHING_USER);
+		workflow.matchedJourneyId= searchHit.getSource().get(MATCHED_JOURNEY_ID);
+		workflow.matchedFromPlace = searchHit.getSource().get(MATCHED_FROM_PLACE);
+		workflow.matchedToPlace = searchHit.getSource().get(MATCHED_TO_PLACE);
+		String matchedDateTimeStr = searchHit.getSource().get(MATCHED_DATE_TIME);
 		workflow.matchedDateTime = convertElasticSearchDateToDateTime(matchedDateTimeStr).toDate()
 
-		workflow.isRequesterDriving = searchHit.getSource().get('isRequesterDriving');
+		workflow.isRequesterDriving = searchHit.getSource().get(IS_REQUESTER_DRIVING);
 		return workflow
 	}
 	
@@ -718,21 +718,21 @@ class ElasticSearchService {
 		JourneyWorkflow workflow = new JourneyWorkflow();
 		String workflowId = getResponse.id
 		workflow.id = UUID.fromString(workflowId)
-		workflow.requestJourneyId = getResponse.getSource().get('requestJourneyId');
-		String requestedDateTimeStr = getResponse.getSource().get('requestedDateTime');
+		workflow.requestJourneyId = getResponse.getSource().get(REQUEST_JOURNEY_ID);
+		String requestedDateTimeStr = getResponse.getSource().get(REQUEST_DATE_TIME);
 		workflow.requestedDateTime = convertElasticSearchDateToDateTime(requestedDateTimeStr).toDate()
-		workflow.requestedFromPlace = getResponse.getSource().get('requestedFromPlace');
-		workflow.requestedToPlace = getResponse.getSource().get('requestedToPlace');
-		workflow.requestUser = getResponse.getSource().get('requestUser');
-		workflow.state = getResponse.getSource().get('state')
-		workflow.matchingUser = getResponse.getSource().get('matchingUser');
-		workflow.matchedJourneyId= getResponse.getSource().get('matchedJourneyId');
-		workflow.matchedFromPlace = getResponse.getSource().get('matchedFromPlace');
-		workflow.matchedToPlace = getResponse.getSource().get('matchedToPlace');
-		String matchedDateTimeStr = getResponse.getSource().get('matchedDateTime');
+		workflow.requestedFromPlace = getResponse.getSource().get(REQUEST_FROM_PLACE);
+		workflow.requestedToPlace = getResponse.getSource().get(REQUEST_TO_PLACE);
+		workflow.requestUser = getResponse.getSource().get(REQUEST_USER);
+		workflow.state = getResponse.getSource().get(STATE)
+		workflow.matchingUser = getResponse.getSource().get(MACTHING_USER);
+		workflow.matchedJourneyId= getResponse.getSource().get(MATCHED_JOURNEY_ID);
+		workflow.matchedFromPlace = getResponse.getSource().get(MATCHED_FROM_PLACE);
+		workflow.matchedToPlace = getResponse.getSource().get(MATCHED_TO_PLACE);
+		String matchedDateTimeStr = getResponse.getSource().get(MATCHED_DATE_TIME);
 		workflow.matchedDateTime = convertElasticSearchDateToDateTime(matchedDateTimeStr).toDate()
 
-		workflow.isRequesterDriving = getResponse.getSource().get('isRequesterDriving');
+		workflow.isRequesterDriving = getResponse.getSource().get(IS_REQUESTER_DRIVING);
 		return workflow
 	}
 	
