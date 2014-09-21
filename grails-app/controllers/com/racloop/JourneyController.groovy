@@ -57,73 +57,6 @@ class JourneyController {
 		}
 	}
 	
-	def mobileFindMatching() {
-		def json = request.JSON
-		String jsonMessage = null
-		String jsonResponse = "error"
-		def errors = null
-		def searchResultMap = null
-		String dateOfJourneyString = json?.dateOfJourneyString
-		String validStartTimeString = json?.validStartTimeString
-		String fromPlace = json?.fromPlace
-		Double fromLatitude = json?.fromLatitude;
-		Double fromLongitude = json?.fromLongitude;
-		String toPlace = json?.toPlace
-		Double toLatitude = json?.toLatitude;
-		Double toLongitude = json?.toLongitude;
-		Boolean isDriver = json?.isDriver;
-		Double tripDistance = json?.tripDistance;
-		String tripUnit = json?.tripUnit;
-		String ip = request.remoteAddr;
-		String user=json?.user
-		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
-		currentJourney.dateOfJourneyString = dateOfJourneyString
-		currentJourney.validStartTimeString = validStartTimeString
-		currentJourney.fromPlace = fromPlace
-		currentJourney.fromLatitude = fromLatitude
-		currentJourney.fromLongitude = fromLongitude
-		currentJourney.toPlace = toPlace
-		currentJourney.toLatitude = toLatitude
-		currentJourney.toLongitude = toLongitude
-		currentJourney.isDriver = isDriver
-		currentJourney.tripDistance = tripDistance
-		currentJourney.tripUnit = tripUnit
-		currentJourney.ip = ip
-		currentJourney.user = user
-		if(chainModel && chainModel.currentJourney) {
-			currentJourney = chainModel.currentJourney
-		}
-		def currentUser = getAuthenticatedUser();
-		if(!currentUser) {
-			currentUser = User.findByUsername(currentJourney.user);
-		}
-		if(currentUser) {
-			setUserInformation(currentUser,currentJourney)
-			currentJourney.ip = request.remoteAddr
-			setDates(currentJourney)
-			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
-				if(currentJourney.validate()) {
-					searchResultMap = getSearchResultMap(currentUser, currentJourney)
-					jsonMessage = "Successfully executed search"
-					jsonResponse = "ok"
-				}
-			}
-			else {
-				jsonMessage = "Invalid travel date and time"
-			}
-		}
-		else {
-			jsonMessage = "User is not logged in. Cannot fetch search results"
-		}
-		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"searchResults" : searchResultMap
-		]
-		render jsonResponseBody as JSON
-	}
 	
 	private setUserInformation(User currentUser, JourneyRequestCommand currentJourney) {
 		if(currentUser) {
@@ -148,14 +81,6 @@ class JourneyController {
 		}
 	}
 	
-	private getSearchResultMap(User currentUser, JourneyRequestCommand currentJourney) {
-		currentJourney = getExisitngJourneyForUser(currentUser, currentJourney)
-		def selectedJourneyIds = getAlreadySelectedJourneyIdsForCurrentJourney(currentJourney)
-		updateHttpSession(currentJourney,selectedJourneyIds)
-		def matchedJourney = searchJourneys(currentUser, currentJourney)
-		def matchResult =[currentUser: currentUser, currentJourney: currentJourney, journeys : matchedJourney.matchedJourneys, numberOfRecords : matchedJourney.numberOfRecords, isDummyData: matchedJourney.isDummyData]
-		return matchResult
-	}
 	
 	private Map searchJourneys(User currentUser, JourneyRequestCommand currentJourney) {
 		def matchedJourney =[:]
@@ -176,26 +101,7 @@ class JourneyController {
 		return matchedJourney
 	}
 	
-	private getExisitngJourneyForUser(User currentUser, JourneyRequestCommand currentJourneyFromWeb) {
-		if(currentUser && !currentJourneyFromWeb.id && !currentJourneyFromWeb.isSaved) {
-			def possibleExisitingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourneyFromWeb)
-			if(possibleExisitingJourney) {
-				currentJourneyFromWeb = possibleExisitingJourney
-			}
-		}
-		return currentJourneyFromWeb
-	}
 	
-	private updateHttpSession(JourneyRequestCommand currentJourney, Map selectedJourneyMapForCurrentJourney) {
-		session.currentJourney = currentJourney
-		selectedJourneyMapForCurrentJourney.each {selectedJourneyId, selectedWorkflow ->
-			setSelectedJounreyInSession(currentJourney, selectedJourneyId, selectedWorkflow)
-		}
-	}
-	private getAlreadySelectedJourneyIdsForCurrentJourney(JourneyRequestCommand currentJourney) {
-		def selectedJourneyIds = journeyWorkflowService.getAlreadySelectedJourneyMapForCurrentJourney(currentJourney)
-		return selectedJourneyIds
-	}
 	
 	def history() {
 		
@@ -253,27 +159,10 @@ class JourneyController {
 		}
 		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
 		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
-		//setSelectedJounreyInSession(currentJourney,matchedJourneyId, workflow)
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
 		chain(action: 'findMatching', model: [currentJourney: currentJourney])
 	}
 
-	private setSelectedJounreyInSession(def currentJourney, String matchedJourneyId, JourneyWorkflow matchedWorkflow) {
-		def currentJourneyId = currentJourney.id
-		def selectedJourneysMap = session.selectedJourneysMap
-		def  selectedJourneyForCurrentJourneyMap=[:]
-		if(!selectedJourneysMap) {
-			selectedJourneysMap =[:]
-			session.selectedJourneysMap = selectedJourneysMap
-		}
-		else {
-			if(session.selectedJourneysMap.get(currentJourneyId)) {
-				selectedJourneyForCurrentJourneyMap =session.selectedJourneysMap.get(currentJourneyId)
-			}
-		}
-		selectedJourneyForCurrentJourneyMap .put(matchedJourneyId,matchedWorkflow)
-		session.selectedJourneysMap.put(currentJourneyId,selectedJourneyForCurrentJourneyMap)
-	}
 	
 	def getWorkflow(){
 		def currentUser = getAuthenticatedUser()

@@ -123,8 +123,8 @@ class JourneyWorkflowService {
 			workflowDetails.actionButtons.addAll(getAvailableActionForRequestSent(workflow.state))
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForSentRequest(workflow.state)
 			if(!workflowDetails.showContactInfo) {
-				workflowDetails.otherUser.profile.mobile=""
-				workflowDetails.otherUser.profile.email=""
+				workflowDetails?.otherUser?.profile?.mobile=""
+				workflowDetails?.otherUser?.profile?.email=""
 			}
 			requestWorkflowDetails << workflowDetails
 		}
@@ -157,8 +157,8 @@ class JourneyWorkflowService {
 			workflowDetails.actionButtons.addAll(getAvailableActionForResponse(workflow.state))
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForResponse(workflow.state)
 			if(!workflowDetails.showContactInfo) {
-				workflowDetails.otherUser.profile.mobile=""
-				workflowDetails.otherUser.profile.email=""
+				workflowDetails?.otherUser?.profile?.mobile=""
+				workflowDetails?.otherUser?.profile?.email=""
 			}
 			matchedWorkflowDetails << workflowDetails
 		}

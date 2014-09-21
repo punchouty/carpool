@@ -378,6 +378,7 @@ class MobileController {
 			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				if(currentJourney.validate()) {
 					searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
+					session.currentJourney = currentJourney
 					mobileResponse.data = searchResultMap
 					mobileResponse.success = true
 					mobileResponse.total = searchResultMap.numberOfRecords
@@ -458,35 +459,30 @@ class MobileController {
 	def requestService() {
 		def json = request.JSON
 		String jsonMessage = null
+		def currentJourney = null
 		String jsonResponse = "error"
 		def errors = null
 		String myJourneyId=json?.myJourneyId
 		String user=json?.user
-		boolean isDummy =json?.isDummy
+		boolean isDummy =json?.isDummy?.toBoolean()
 		
 		def matchedJourneyId = json?.matchedJourneyId		
 		def currentUser = getAuthenticatedUser()
 		if(!currentUser) {
 			currentUser = User.findByUsername(user);
 		}
-	
-		def currentJourney= journeyService.findJourneyById(myJourneyId, false)
+		
+		if(!myJourneyId) {
+			currentJourney = session.currentJourney
+		} 
+		else {
+			currentJourney= journeyService.findJourneyById(myJourneyId, false)
+		}
 		def matchedJourney = journeyService.findJourneyById(matchedJourneyId, isDummy)
 		
 		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
 		
-		jsonMessage = "Successfully executed requestService"
-			jsonResponse = "ok"
-		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"workflow" : workflow
-		]
-		
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
-		render mobileResponse as JSON
+		chain(action: 'search', model: [currentJourney: currentJourney])
 	}
 	
 //	curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"89","matchedJourneyId":"91","isDummy":false}' http://localhost:8080/app/mobile/sendResponse
