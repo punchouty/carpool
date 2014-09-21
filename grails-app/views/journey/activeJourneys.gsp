@@ -15,8 +15,8 @@
 	   			<div class="panel-heading ">
 	                 	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href= "#journey${i}">
 	                 		<i class="glyphicon glyphicon-calendar"></i> <g:formatDate format="dd MMM HH:mm" date="${journeyInstance.journey.dateOfJourney}"/>
-						| <i class="glyphicon glyphicon-bell"></i> Incoming Requests <strong>(${journeyInstance.matchedJourneys.size()})</strong>
-					  	| <i class="glyphicon glyphicon-comment"></i> Outgoing Responses <strong>(${journeyInstance.requestedJourneys.size()})</strong>
+						| <i class="glyphicon glyphicon-bell"></i> Incoming Requests <strong>(${journeyInstance.incomingRequests.size()})</strong>
+					  	| <i class="glyphicon glyphicon-comment"></i> Outgoing Responses <strong>(${journeyInstance.outgoingRequests.size()})</strong>
 					  	| Show Details
 	                 	</a>        				
 	   			</div> <!-- accordion-heading ENDS  -->
@@ -38,8 +38,8 @@
 					   </div>
 			   		<div>
 				    <ul class="nav nav-tabs">
-					  <li class="active"><a href="#journey${i}_notification"  data-toggle="tab"><i class="icon-bell"></i> Incoming Requests <span class="badge badge-info">${journeyInstance.matchedJourneys.size()}</span></a></li>
-					  <li><a href="#journey${i}_responses"  data-toggle="tab"><i class="icon-comment"></i> Outgoing Responses <span class="badge badge-info">${journeyInstance.requestedJourneys.size()}</span></a></li>
+					  <li class="active"><a href="#journey${i}_notification"  data-toggle="tab"><i class="icon-bell"></i> Incoming Requests <span class="badge badge-info">${journeyInstance.incomingRequests.size()}</span></a></li>
+					  <li><a href="#journey${i}_responses"  data-toggle="tab"><i class="icon-comment"></i> Outgoing Responses <span class="badge badge-info">${journeyInstance.outgoingRequests.size()}</span></a></li>
 					</ul>
 					<div class="tab-content">
 						<div class="tab-pane active in" id="journey${i}_notification">
@@ -54,7 +54,7 @@
 	       							</tr>
 	       						</thead>
 	       						<tbody>
-	       							<g:each in="${journeyInstance.matchedJourneys}" status="k" var="matchedWorkflowInstance">
+	       							<g:each in="${journeyInstance.incomingRequests}" status="k" var="matchedWorkflowInstance">
 		       							<tr>
 		       								<td>${matchedWorkflowInstance?.otherUser?.profile?.fullName}</td>
 		       								<td>
@@ -106,7 +106,7 @@
 	       							</tr>
 	       						</thead>
 	       						<tbody>
-			       					<g:each in="${journeyInstance.requestedJourneys}" status="j" var="requestWorkflowInstance">
+			       					<g:each in="${journeyInstance.outgoingRequests}" status="j" var="requestWorkflowInstance">
 		       							<tr>
 		       								<td>${requestWorkflowInstance.otherUser?.profile?.fullName}</td>
 		       								<td>

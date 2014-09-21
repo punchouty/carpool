@@ -5,20 +5,16 @@ import grails.converters.JSON
 class ErrorController {
 
 	def grailsApplication
-	def mailService
+	def emailService
 
 	def internalError() {
 		String fromEmail = grailsApplication.config.grails.mail.username;
 		Exception exception = request.exception
 		try {
-			mailService.sendMail {
-				multipart true
-				to grailsApplication.config.grails.email.exception.one,grailsApplication.config.grails.email.exception.two
-				subject "500 Error"
-				from fromEmail
-				//body (view: "error")
-				html g.render(template: "/templates/email/error_email", model: [exception: exception]).toString()
-			}
+			List toList = [grailsApplication.config.grails.email.exception.one,grailsApplication.config.grails.email.exception.two]
+			
+			emailService.sendMailToMultipleRecipients(toList, "500 Error", g.render(template: "/templates/email/error_email", model: [exception: exception]).toString())
+			
 		}
 		catch (Exception e) {
 			log.info e

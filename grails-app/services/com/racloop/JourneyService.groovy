@@ -193,9 +193,11 @@ class JourneyService {
 				JourneyRequestDetails journeyRequestDetails = new JourneyRequestDetails()
 				journeyRequestDetails.journey = journey
 				def requestWorkflowDetails = journeyWorkflowService.getWorkflowRequestedByUserForAJourney(journey.id, user)
-				journeyRequestDetails.requestedJourneys.addAll(requestWorkflowDetails)
+				journeyRequestDetails.outgoingRequests.addAll(requestWorkflowDetails)
 				def matchedWorkflowDetails = journeyWorkflowService.getWorkflowMatchedForUserForAJourney(journey.id, user)
-				journeyRequestDetails.matchedJourneys.addAll(matchedWorkflowDetails)
+				journeyRequestDetails.incomingRequests.addAll(matchedWorkflowDetails)
+				journeyRequestDetails.numberOfIncomingRequests = journeyRequestDetails.incomingRequests.size()
+				journeyRequestDetails.numberOfOutgoingRequests = journeyRequestDetails.outgoingRequests.size()
 				journeyDetails<<journeyRequestDetails
 			}
 		}

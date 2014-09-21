@@ -423,34 +423,33 @@ class MobileController {
 	
 //	curl -X POST -H "Content-Type: application/json" -d '{"user":"admin","name":"Administrator"}' http://localhost:8080/app/mobile/myJourneys
 	
-	def myJourneys() {
-		def currentUser = getAuthenticatedUser()	
+	def myJourneys() {			
+		def mobileResponse = new MobileResponse()
 		def json = request.JSON
 		String jsonMessage = null
 		String jsonResponse = "error"
 		JourneyRequestCommand journeyRequestCommand = new JourneyRequestCommand()
-		journeyRequestCommand.user = json.user
+		journeyRequestCommand.user = json?.user
 
 		def workflows =[]
 		def journeys =[]
-		int numberOfRecords = 0				
+		int numberOfRecords = 0		
+		def currentUser = getAuthenticatedUser();
 		if(!currentUser) {
 			currentUser = User.findByUsername(journeyRequestCommand.user);
-		}
-				
+		}		
+		if(currentUser) {
 			journeys = journeyService.findAllActiveJourneyDetailsForUser(currentUser)
-			numberOfRecords = journeys?.size()
-			jsonMessage = "Successfully executed myJourneys"
-			jsonResponse = "ok"
-		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"journeys" : journeys
-		]
-		
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
+			mobileResponse.data = journeys
+			mobileResponse.success = true
+			mobileResponse.total = journeys?.size()
+		}
+		else {
+			jsonMessage = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}		
+		println journeys.dump();
 		render mobileResponse as JSON
 	}
 	
