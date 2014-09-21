@@ -584,36 +584,11 @@ class MobileController {
 	
 	def acceptResponse() { 
 		def json = request.JSON
-		String jsonMessage = null
-		String jsonResponse = "error"
-		def errors = null
-		String mobile = null
-		String user=json?.user
-		def currentUser = null
-		if(!currentUser) {
-			currentUser = User.findByUsername(user);
-		}
-		String myJourneyId=json?.myJourneyId
-		def journeyInstance = journeyService.findJourneyById(myJourneyId, false)
+		def currentUser = getAuthenticatedUser()
 		def workflowId = json?.workflowId
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
-		def matchedWorkflowDetails = journeyWorkflowService.getWorkflowMatchedForUserForAJourney(journeyInstance.id, currentUser)
-		if(matchedWorkflowDetails.showContactInfo){
-			mobile=matchedWorkflowDetails.otherUser?.profile?.mobile
-		}
-		
-		jsonMessage = "Successfully executed acceptResponse"
-		jsonResponse = "ok"
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-//			"journeyWorkflowService" : journeyWorkflowService,
-			"mobile":mobile
-		]
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
-		render mobileResponse as JSON
-		
+		redirect(action: "myJourneys")
+				
 	}
 
 	// curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"89","workflowId":"43d27623-45cb-4201-aba3-cac07ea03f41","user":"sample.rider"}' http://localhost:8080/app/mobile/rejectResponse
@@ -621,20 +596,11 @@ class MobileController {
 	
 	def rejectResponse() {
 		def json = request.JSON
-		String jsonMessage = null
-		String jsonResponse = "error"
-		def errors = null
+		def currentUser = getAuthenticatedUser()
 		def workflowId = json?.workflowId
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
-		jsonMessage = "Successfully executed rejectResponse"
-		jsonResponse = "ok"		
-			def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors
-		]			
-	  MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
-		render mobileResponse as JSON
+		redirect(action: "myJourneys")
+
 	}
 	
 	private MobileResponse getMobileResoponse(Object data){
