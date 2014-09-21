@@ -142,19 +142,19 @@ environments {
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = "http://awseb-e-h-AWSEBLoa-8BZWUF9MEDLC-1293817264.ap-southeast-1.elb.amazonaws.com"
+		grails.serverURL = "http://www.racloop.com"
 	}
 }
 
 grails {
 	mail {
 		from = "raC looP <help@racloop.com>"
-		host = "smtp.live.com"
-		port = 587
+		host = "smtp.racloop.com"
+		port = 25
 		username = "help@racloop.com"
-		password = "R@cloop1"
-		props = ["mail.smtp.starttls.enable":"true", 
-                  "mail.smtp.port":"587"]
+		password = "P@ssw0rd"
+//		props = ["mail.smtp.starttls.enable":"true", 
+//                  "mail.smtp.port":"587"]
 	}
 }
 
