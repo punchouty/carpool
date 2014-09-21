@@ -118,11 +118,14 @@ class JourneyWorkflowService {
 		requestedWorkflowList.each {workflow ->
 			WorkflowDetails workflowDetails = new WorkflowDetails()
 			workflowDetails.workflow = workflow
-			workflowDetails.workflowId = workflow.id.toString()
-			workflowDetails.otherUser = User.findByUsername(workflow.matchingUser)
+			workflowDetails.otherUser = User.findByUsername(workflow.matchingUser, [readOnly:true])
 			workflowDetails.state = workflow.state//(workflow.state ==WorkflowState.INITIATED.getState()?'Sent':workflow.state)
 			workflowDetails.actionButtons.addAll(getAvailableActionForRequestSent(workflow.state))
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForSentRequest(workflow.state)
+			if(!workflowDetails.showContactInfo) {
+				workflowDetails.otherUser.profile.mobile=""
+				workflowDetails.otherUser.profile.email=""
+			}
 			requestWorkflowDetails << workflowDetails
 		}
 		return requestWorkflowDetails
@@ -149,11 +152,14 @@ class JourneyWorkflowService {
 		matchedWorkflowList.each {workflow ->
 			WorkflowDetails workflowDetails = new WorkflowDetails()
 			workflowDetails.workflow = workflow
-			workflowDetails.workflowId = workflow.id.toString() //Explicitly set the id as String to ease JSON marshalling
-			workflowDetails.otherUser = User.findByUsername(workflow.requestUser)
+			workflowDetails.otherUser = User.findByUsername(workflow.requestUser, [readOnly:true])
 			workflowDetails.state = workflow.state
 			workflowDetails.actionButtons.addAll(getAvailableActionForResponse(workflow.state))
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForResponse(workflow.state)
+			if(!workflowDetails.showContactInfo) {
+				workflowDetails.otherUser.profile.mobile=""
+				workflowDetails.otherUser.profile.email=""
+			}
 			matchedWorkflowDetails << workflowDetails
 		}
 		return matchedWorkflowDetails
