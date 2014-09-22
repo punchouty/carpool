@@ -13,7 +13,7 @@ class ErrorController {
 		try {
 			List toList = [grailsApplication.config.grails.email.exception.one,grailsApplication.config.grails.email.exception.two]
 			
-			emailService.sendMailToMultipleRecipients(toList, "500 Error", g.render(template: "/templates/email/error_email", model: [exception: exception]).toString())
+			emailService.sendMailToMultipleRecipients(toList, "Exception from ${java.net.InetAddress.getLocalHost().getHostName()}", g.render(template: "/templates/email/error_email", model: [exception: exception]).toString())
 			
 		}
 		catch (Exception e) {
