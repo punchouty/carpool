@@ -14,7 +14,7 @@
 			<div class="panel panel-default"> <!-- panel panel-default -->
 	   			<div class="panel-heading ">
 	                 	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href= "#journey${i}">
-	                 		<i class="glyphicon glyphicon-calendar"></i> <g:formatDate format="dd MMM HH:mm" date="${journeyInstance.journey.dateOfJourney}"/>
+	                 		<i class="glyphicon glyphicon-calendar"></i> <g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/>
 						| <i class="glyphicon glyphicon-bell"></i> Incoming Requests <strong>(${journeyInstance.incomingRequests.size()})</strong>
 					  	| <i class="glyphicon glyphicon-comment"></i> Outgoing Responses <strong>(${journeyInstance.outgoingRequests.size()})</strong>
 					  	| Show Details
@@ -24,13 +24,13 @@
 	   				<div class="panel-body">
 					   <div>
 					     <blockquote>
-					       <p>${journeyInstance.journey.isDriver?'Driving ':'Riding '}<span class="label label-info">Active</span></p>
-					       <small><i class="icon-home"></i> From : <cite title="Source Title">${journeyInstance.journey.fromPlace}</cite></small>
-					       <small><i class="icon-map-marker"></i> To : <cite title="Source Title">${journeyInstance.journey.toPlace}</cite></small>
-					       <g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journey.id, indexName:journeyInstance.journey.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.journey.isDriver?true:false]">
+					       <p>${journeyInstance.isDriver?'Driving ':'Riding '}<span class="label label-info">Active</span></p>
+					       <small><i class="icon-home"></i> From : <cite title="Source Title">${journeyInstance.fromPlace}</cite></small>
+					       <small><i class="icon-map-marker"></i> To : <cite title="Source Title">${journeyInstance.toPlace}</cite></small>
+					       <g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
 					       		<button class="btn btn-success"><i class="icon-refresh icon-white"></i> Search Again</button>
 					       </g:link>
-					       <g:link action="deleteJourney"id="deleteJourney"  params="[journeyId: journeyInstance.journey.id]">
+					       <g:link action="deleteJourney"id="deleteJourney"  params="[journeyId: journeyInstance.journeyId]">
 					       		<button class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</button>
 					       </g:link>
 				       	   

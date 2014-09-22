@@ -195,7 +195,7 @@ class JourneyService {
 		journeys.each {journey ->
 			if(journey.id) {
 				JourneyRequestDetails journeyRequestDetails = new JourneyRequestDetails()
-				journeyRequestDetails.journey = journey
+				journeyRequestDetails.setJourneyDetails(journey)
 				def requestWorkflowDetails = journeyWorkflowService.getWorkflowRequestedByUserForAJourney(journey.id, user)
 				journeyRequestDetails.outgoingRequests.addAll(requestWorkflowDetails)
 				def matchedWorkflowDetails = journeyWorkflowService.getWorkflowMatchedForUserForAJourney(journey.id, user)
