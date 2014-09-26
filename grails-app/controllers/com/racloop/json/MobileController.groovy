@@ -446,11 +446,10 @@ class MobileController {
 			mobileResponse.total = journeys?.size()
 		}
 		else {
-			jsonMessage = "User is not logged in. Cannot fetch search results"
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
 			mobileResponse.success = false
 			mobileResponse.total =0
 		}		
-		println journeys.dump();
 		render mobileResponse as JSON
 	}
 	
@@ -584,11 +583,24 @@ class MobileController {
 	
 	def acceptResponse() { 
 		def json = request.JSON
+		def mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser()
 		def workflowId = json?.workflowId
-		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
-		redirect(action: "myJourneys")
-				
+		
+		if(currentUser) {
+			journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
+			mobileResponse.message = "Request is Successfully Accepted"
+			mobileResponse.success = true
+			mobileResponse.total =0	
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+		
+	   render mobileResponse as JSON
+		
 	}
 
 	// curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"89","workflowId":"43d27623-45cb-4201-aba3-cac07ea03f41","user":"sample.rider"}' http://localhost:8080/app/mobile/rejectResponse
@@ -596,12 +608,45 @@ class MobileController {
 	
 	def rejectResponse() {
 		def json = request.JSON
+		def mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser()
 		def workflowId = json?.workflowId
-		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
-		redirect(action: "myJourneys")
+		if(currentUser) {
+			journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
+			mobileResponse.message = "Request is Successfully Rejected"
+			mobileResponse.success = true
+			mobileResponse.total =0	
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+	   render mobileResponse as JSON
 
 	}
+	
+	def cancelResponse() { 
+		def json = request.JSON
+		def mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser()
+		def workflowId = json?.workflowId
+		if(currentUser) {
+		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.CANCELLED_BY_REQUESTER.state)
+		mobileResponse.message = "Request is Successfully Cancelled"
+		mobileResponse.success = true
+		mobileResponse.total =0
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+	   render mobileResponse as JSON
+		
+		
+	}
+	
 	
 	private MobileResponse getMobileResoponse(Object data){
 		MobileResponse mobileResponse = new MobileResponse(data:data, message:'Success',total:1,success:true)
