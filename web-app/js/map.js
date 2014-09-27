@@ -213,12 +213,13 @@ $(function() {
 	$('#travelDateDiv').datetimepicker({
         //language:  'fr',
         weekStart: 1,
-        todayBtn:  1,
+        todayBtn:  0,
 		autoclose: 1,
 		todayHighlight: 1,
 		startView: 2,
 		forceParse: 0,
-        showMeridian: 1
+        showMeridian: 1,
+        startDate: new Date()
     });
 });
 
