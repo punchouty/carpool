@@ -37,7 +37,7 @@
          <div class="form-group">
 			<label class="col-sm-5 control-label" for="email">Email</label>
 			<div class="col-sm-7">
-				<input disabled size="50" id="email" class="form-control" name="email" type="email" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" required/>
+				<input disabled size="50" id="email" class="form-control" name="email" type="email" value="${user.username.encodeAsHTML()}" placeholder="Email" required/>
 				<p id="email-help-block" class="help-block"></p> 
 			</div>
 		</div>

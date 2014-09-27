@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta name="layout" content="static" />
-<title>Forget Password</title>
+<title>Forgot Password</title>
 <style>
   .center {text-align: center; margin-left: auto; margin-right: auto; margin-bottom: auto; margin-top: auto;}
 </style>
@@ -19,7 +19,7 @@
 		<div class="jumbotron center">
                 <h1>Forgot Password</h1>
                 <br/>
-                <p>Email address register with us.</p>
+                <p>Email address registered with us.</p>
                 
                 <g:form controller="userSession" action="forgotPasswordProcess" method="POST">
 	                <div class="form-group">

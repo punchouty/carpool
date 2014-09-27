@@ -42,14 +42,14 @@
 					 <div class="form-group">
 	                	<label class="col-sm-5 control-label" for="pass">New Password</label>
 	                    <div class="col-sm-7">
-	                        <input id="pass" class="form-control" name="pass" placeholder="New Password" type="password" data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character"></input>
+	                        <input id="pass" class="form-control" name="pass" placeholder="New Password" type="password" required data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character"></input>
 							<p id="password-help-block" class="help-block"></p>
 	                    </div>
 					</div>
 					 <div class="form-group">
-	                	<label class="col-sm-5 control-label" for="passConfirm">Repeat Password</label>
+	                	<label class="col-sm-5 control-label" for="passConfirm">Confirm New Password</label>
 	                    <div class="col-sm-7">
-	                        <input id="passConfirm" class="form-control" name="passConfirm" placeholder="Repeat Password" type="password" required data-validation-match-match="pass" data-validation-match-message="Two passwords don't match"></input>
+	                        <input id="passConfirm" class="form-control" name="passConfirm" placeholder="Confirm New Password" type="password" required data-validation-match-match="pass" data-validation-match-message="Two passwords don't match"></input>
 							<p id="confirm-help-block" class="help-block"></p>
 	                    </div> 
 					</div>

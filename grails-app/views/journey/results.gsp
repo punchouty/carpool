@@ -28,7 +28,7 @@
 				<g:link controller="journey" action="redoSearch" class="btn btn-info">Search again</g:link>
 			</g:if>
 			<g:else>
-				<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<a href="${request.contextPath}/" class="btn">Cancel</a>
+				<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<a href="${request.contextPath}/search" class="btn">Cancel</a>
 			</g:else>
 			
 		</div>

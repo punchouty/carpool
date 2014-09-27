@@ -146,7 +146,7 @@ class UserSessionController {
 		log.info("Created new account identified as $user.username with internal id $savedUser.id")
 
 		flash.type = "message"
-		flash.message = "Account Register Successfully. Please check your email and activate your account."
+		flash.message = "Account registered successfully. Please check your email and activate the account."
 		redirect (action: "search")
 	}
 
@@ -293,14 +293,13 @@ class UserSessionController {
 		[user: user]
 	}
 	
-	def editProfile(String fullName, String sex, String email, String mobile) {
+	def editProfile(String fullName, String sex, String mobile) {
 		def user = authenticatedUser
 		boolean isMale = true
 		if(sex != 'male') {
 			isMale = false
 		}
 		user.profile.fullName = fullName
-		user.profile.email = email
 		user.profile.mobile = mobile
 		user.profile.isMale = isMale
 		
