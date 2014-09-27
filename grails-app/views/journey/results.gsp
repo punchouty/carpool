@@ -60,10 +60,9 @@
 								<td>
 									<g:if test="${WorkflowState.INITIATED.state.equals(workflow.state)}">
 										<g:if test = "${workflow && workflow.requestJourneyId == currentJourney.id }">
-											<div class="btn-group">
-												<button class="btn btn-primary">Requested</button>
-												<button class="btn btn-primary dropdown-toggle"
-													data-toggle="dropdown">
+											<div class="btn-group" style="width: 100%">
+												<button class="btn btn-primary dropdown-toggle btn-block"
+													data-toggle="dropdown">Requested
 													<span class="caret"></span>
 												</button>
 												<ul class="dropdown-menu">
@@ -72,10 +71,9 @@
 											</div>
 										</g:if>
 										<g:else>
-											<div class="btn-group">
-												<button class="btn btn-primary">New</button>
-												<button class="btn btn-primary dropdown-toggle"
-													data-toggle="dropdown">
+											<div class="btn-group" style="width: 100%">
+												<button class="btn btn-primary dropdown-toggle btn-block"
+													data-toggle="dropdown">New
 													<span class="caret"></span>
 												</button>
 												<ul class="dropdown-menu">
@@ -86,10 +84,9 @@
 										</g:else>
 									</g:if>
 									<g:elseif test="${WorkflowState.ACCEPTED.state.equals(workflow.state)}">
-										<div class="btn-group">
-											<button class="btn btn-primary">Accepted</button>
-											<button class="btn btn-primary dropdown-toggle"
-												data-toggle="dropdown">
+										<div class="btn-group" style="width: 100%">
+											<button class="btn btn-primary dropdown-toggle btn-block"
+												data-toggle="dropdown">Accepted
 												<span class="caret"></span>
 											</button>
 											<ul class="dropdown-menu">
@@ -98,32 +95,20 @@
 										</div>
 									</g:elseif>
 									<g:elseif test="${WorkflowState.REJECTED.state.equals(workflow.state)}">
-										<div class="btn-group">
-											<button class="btn btn-primary">Rejected</button>
-											<button class="btn btn-primary dropdown-toggle"
-												data-toggle="dropdown">
-												<span class="caret"></span>
-											</button>
-										</div>
+										<button class="btn btn-primary btn-block">Rejected</button>
 									</g:elseif>
 									<g:elseif test="${WorkflowState.CANCELLED.state.equals(workflow.state) || WorkflowState.CANCELLED_BY_REQUESTER.state.equals(workflow.state)}">
-										<div class="btn-group">
-											<button class="btn btn-primary">Cancelled</button>
-											<button class="btn btn-primary dropdown-toggle"
-												data-toggle="dropdown">
-												<span class="caret"></span>
-											</button>
-										</div>
+										<button class="btn btn-primary btn-block">Cancelled</button>
 									</g:elseif>
 								</td>
 							</g:if> 
 						</g:if> 
 						<g:else>
 							<g:if test="${currentJourney.isDriver}">
-								<td><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success">Ask for Drive</g:link></td>		
+								<td><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success btn-block">Ask for Drive</g:link></td>		
 							</g:if>
 							<g:else>
-								<td><g:link action="selectedJourney" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success">Request a Ride</g:link></td>
+								<td><g:link action="selectedJourney" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success btn-block">Request a Ride</g:link></td>
 							</g:else>
 						</g:else>
 						<input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">
