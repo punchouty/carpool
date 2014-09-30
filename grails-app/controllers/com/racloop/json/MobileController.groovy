@@ -457,6 +457,7 @@ class MobileController {
 	
 	def requestService() {
 		def json = request.JSON
+		def mobileResponse = new MobileResponse()
 		String jsonMessage = null
 		def currentJourney = null
 		String jsonResponse = "error"
@@ -470,18 +471,28 @@ class MobileController {
 		if(!currentUser) {
 			currentUser = User.findByUsername(user);
 		}
-		
-		if(!myJourneyId) {
-			currentJourney = session.currentJourney
-		} 
-		else {
-			currentJourney= journeyService.findJourneyById(myJourneyId, false)
+		if(currentUser) {
+			if(!myJourneyId) {
+				currentJourney = session.currentJourney
+			} 
+			else {
+				currentJourney= journeyService.findJourneyById(myJourneyId, false)
+			}
+			def matchedJourney = journeyService.findJourneyById(matchedJourneyId, isDummy)
+			
+			def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
+			mobileResponse.data = currentJourney
+			mobileResponse.message="Request is successful"
+			mobileResponse.success = true
+			mobileResponse.total = 0
 		}
-		def matchedJourney = journeyService.findJourneyById(matchedJourneyId, isDummy)
-		
-		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
-		
-		chain(action: 'search', model: [currentJourney: currentJourney])
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+		render mobileResponse as JSON
+//		chain(action: 'search', model: [currentJourney: currentJourney])
 	}
 	
 //	curl -X POST -H "Content-Type: application/json" -d '{"myJourneyId":"89","matchedJourneyId":"91","isDummy":false}' http://localhost:8080/app/mobile/sendResponse
