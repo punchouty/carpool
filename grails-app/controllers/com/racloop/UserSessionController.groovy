@@ -12,6 +12,7 @@ class UserSessionController {
 	def userService
 	def recaptchaService
 	LinkGenerator grailsLinkGenerator
+	def emailService
 
 	def search() {
 		def user = getAuthenticatedUser();//dynamic method added by nimble
@@ -103,6 +104,14 @@ class UserSessionController {
 		if (user.hasErrors()) {
 			log.debug("Submitted values for new user are invalid")
 			user.errors.each { log.debug it }
+			//Yuck code but seems to be a only way to get rid of username related error. Better way would involve changing the Nimble plugin
+			def allErrors = user.errors.allErrors.findAll{ true }
+			def userNameError = allErrors.findAll{ it.field == "username"}
+			allErrors.removeAll(userNameError)
+			user.clearErrors()
+			allErrors.each {
+					user.errors.addError(it)
+			}
 
 			resetNewUser(user)
 			render(view: 'signup', model: [user: user])
@@ -132,12 +141,7 @@ class UserSessionController {
 		log.info("Sending account registration confirmation email to $user.profile.email with subject $nimbleConfig.messaging.registration.subject")
 
 		if(nimbleConfig.messaging.enabled) {
-			sendMail {
-				to user.profile.email
-				from grailsApplication.config.grails.messaging.mail.from
-				subject nimbleConfig.messaging.registration.subject
-				html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
-			}
+			emailService.sendMail(user.profile.email, nimbleConfig.messaging.registration.subject, g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString(),grailsApplication.config.grails.messaging.mail.from )
 		}
 		else {
 			log.debug "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: user]).toString()}"

@@ -16,7 +16,16 @@
 	<g:set var="isHome" value="true" scope="request" />
 	<g:set var="currentJourney" value="${searchResults.currentJourney}"/>
 	<g:if test="${flash.message}">
-		<div class="message" role="status">${flash.message}</div>
+		<div class="alert alert-success">			
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  ${flash.message}
+		</div>
+	</g:if>
+	<g:if test="${flash.error}">
+		<div class="alert alert-danger">			
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  ${flash.error}
+		</div>
 	</g:if>
 	<div class="row para well well-large">
 		<div class="col-md-9">
