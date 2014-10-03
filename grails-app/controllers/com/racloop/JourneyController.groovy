@@ -334,7 +334,7 @@ class JourneyController {
 	 * @return
 	 */
 	def deleteJourney() {
-		def journeyId = params.journeyId
+		def journeyId = params.journeyIdToBeDeleted
 		journeyManagerService.deleteJourney(journeyId)
 		redirect(action: "activeJourneys")
 	}

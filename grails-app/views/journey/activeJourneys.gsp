@@ -3,6 +3,23 @@
 <head>
 <meta name="layout" content="static" />
 <title>My Active Journeys</title>
+<script type="text/javascript">
+$(document).ready(function($){
+	$('a[name=delete]').click(function(){
+        var jourenyId = $(this).data('id');
+        $("#journeyIdToBeDeleted").val(jourenyId);
+    	$('#myModal').modal({show:true});
+    });
+   $('#Confirmed').click(function(){
+    	$('#deleteJourneyForm').submit();
+    });    	
+});
+</script>
+<style>
+.modal-header {
+    background-color: #f2dede;
+ }
+</style>
 </head>
 <body>
 	<g:set var="isActiveJourneys" value="true" scope="request" />
@@ -30,9 +47,9 @@
 					       <g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
 					       		<button class="btn btn-success"><i class="icon-refresh icon-white"></i> Search Again</button>
 					       </g:link>
-					       <g:link action="deleteJourney"id="deleteJourney"  params="[journeyId: journeyInstance.journeyId]">
+					       <a name ="delete" id="delete${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.journeyId}">
 					       		<button class="btn btn-danger"><i class="icon-trash icon-white"></i> Delete</button>
-					       </g:link>
+					       </a>
 				       	   
 					     </blockquote>
 					   </div>
@@ -160,5 +177,28 @@
 				<h4>No Records Found</h4>
 			</div>
 		</g:else>
+		
+	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+	        <h4 class="modal-title modal-primary" id="myModalLabel">Warning</h4>
+	      </div>
+	      <div class="modal-body">
+	      <g:form name="deleteJourneyForm" controller="journey" action="deleteJourney" class="form-inline">
+	        <p id="errorMessage">This action will cancel your existing journey and all of its associated notifications.
+	        </p>
+	        <g:hiddenField id="journeyIdToBeDeleted" name ="journeyIdToBeDeleted" value=""/>
+	       </g:form>
+	       
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-default" id ="cancel" data-dismiss="modal">Cancel</button> 
+ 	        <button class="btn btn-primary" data-dismiss="modal" id="Confirmed">Continue</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
 </body>
 </html>
