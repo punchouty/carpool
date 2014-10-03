@@ -7,7 +7,6 @@
 <body>
 	<g:set var="isFaq" value="true" scope="request"/>
 	<h2>FAQ</h2>
-
-	${faq}
+	${raw(faq)}
 </body>
 </html>

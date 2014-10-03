@@ -7,7 +7,6 @@
 <body>
 	<g:set var="isEtiquettes" value="true" scope="request"/>
 	<h2>Etiquettes for car pool users</h2>
-
-	${etiquettes}
+	${raw(etiquettes)}
 </body>
 </html>

@@ -7,7 +7,6 @@
 <body>
 	<g:set var="isPrivacy" value="true" scope="request"/>
 	<h2>Privacy Policy</h2>
-
-	${privacy}
+	${raw(privacy)}
 </body>
 </html>

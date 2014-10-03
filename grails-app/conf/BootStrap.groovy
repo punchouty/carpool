@@ -216,7 +216,7 @@ class BootStrap {
 	private void intializeStaticData() {
 		StaticData staticData  = StaticData.find {staticDataKey == 'safety'}
 		if(!staticData){
-			StaticData terms = [staticDataKey:'safety', pageData :'<p>Safty</p>']
+			StaticData terms = [staticDataKey:'safety', pageData :'<p>Safety</p>']
 			terms.save()
 		}
 		staticData  = StaticData.find {staticDataKey == 'faq'}

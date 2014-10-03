@@ -7,7 +7,6 @@
 <body>
 	<g:set var="isAbout" value="true" scope="request"/>
 	<h2>About Us</h2>
-
-	${about}
+	${raw(about)}
 </body>
 </html>
