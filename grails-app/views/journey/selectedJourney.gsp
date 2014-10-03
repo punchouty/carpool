@@ -175,7 +175,7 @@
 						 </g:else>                             
                         <span class="pull-right">
 			<g:link action="backToSearchResult" id="backToSearchResult">                        	
-                            <button id ="back" class="btn btn-warning" type="button"
+                            <button id ="back" class="btn btn-default" type="button"
                                     data-toggle="tooltip"
                                     data-original-title="Edit this user">Back to Results <i class="icon-share-alt icon-white"></i></button>
                             </g:link>        

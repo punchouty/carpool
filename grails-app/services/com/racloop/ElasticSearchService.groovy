@@ -262,7 +262,7 @@ class ElasticSearchService {
 		}
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey);
 		FieldSortBuilder startTimeSorter = getJourneyStartTimeSorter()
-		return searchJourney(indexName, searchTypeOpposite, filter , sorter, startTimeSorter)
+		return searchJourney(indexName, [searchTypeOpposite] as String[], filter , sorter, startTimeSorter)
 	}
 
 	private GeoDistanceSortBuilder getJourneyFromGeoDistanceSorter(JourneyRequestCommand journey) {
@@ -281,13 +281,7 @@ class ElasticSearchService {
 	
 	def searchPossibleExistingJourneyForUser(User user, JourneyRequestCommand journey) {
 		String indexName = JOURNEY.toLowerCase()//getIndexName(journey.dateOfJourney);
-		String searchType = null;
-		if(journey.isDriver) {
-			searchType = TYPE_DRIVER;
-		}
-		else {
-			searchType = TYPE_RIDER;
-		}
+		
 		double filterDistance = Double.valueOf(grailsApplication.config.grails.approx.distance.to.match)
 		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
 		DateTime start = dateOfJourney.minusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
@@ -303,7 +297,7 @@ class ElasticSearchService {
 			
 		)
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey)
-		return searchJourney(indexName, searchType, filter, sorter)
+		return searchJourney(indexName, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, sorter)
 	}
 	/**
 	 * 
@@ -336,7 +330,7 @@ class ElasticSearchService {
 			getFilterOnJourneyToPositon(journey, filterDistance)			
 		);
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey)
-		return searchJourney(indexName, searchTypeOpposite, filter, sorter)
+		return searchJourney(indexName, [searchTypeOpposite] as String[], filter, sorter)
 		
 	}
 	
@@ -774,10 +768,10 @@ class ElasticSearchService {
 	
 	
 	
-	private searchJourney(String indexName, String type, FilterBuilder filter, int size=100, SortBuilder...sorters) {
+	private searchJourney(String indexName, String[] type, FilterBuilder filter, int size=100, SortBuilder...sorters) {
 		def journeys = []
 
-		SearchHit[] hits = queryDocument(indexName, [type] as String[], filter, size, sorters)
+		SearchHit[] hits = queryDocument(indexName, type, filter, size, sorters)
 		for (SearchHit searchHit : hits) {
 			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
 			journeys << journeyTemp

@@ -223,7 +223,7 @@ class JourneyService {
 		elasticSearchService.markJourneyAsDeleted(currentJourney)
 	}
 	
-	private SearchResult getSearchResults(User currentUser, JourneyRequestCommand currentJourney) {
+	public SearchResult getSearchResults(User currentUser, JourneyRequestCommand currentJourney) {
 		currentJourney = getExisitngJourneyForUser(currentUser, currentJourney)
 		def alreadySelectedJourneyMap = getAlreadySelectedJourneysForCurrentJourney(currentJourney)
 		def matchedJourney = searchJourneys(currentUser, currentJourney)
@@ -242,7 +242,7 @@ class JourneyService {
 	}
 	
 	private getExisitngJourneyForUser(User currentUser, JourneyRequestCommand currentJourneyFromWeb) {
-		if(currentUser && !currentJourneyFromWeb.id && !currentJourneyFromWeb.isSaved) {
+		if(currentUser && currentJourneyFromWeb.isNewJourney()) {
 			def possibleExisitingJourney = searchPossibleExistingJourneyForUser(currentUser, currentJourneyFromWeb)
 			if(possibleExisitingJourney) {
 				currentJourneyFromWeb = possibleExisitingJourney

@@ -1,15 +1,12 @@
 package com.racloop
 
+import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 import grails.converters.JSON
 
 import org.elasticsearch.common.joda.time.DateTime
-import org.elasticsearch.common.joda.time.format.DateTimeFormat
-import org.elasticsearch.common.joda.time.format.DateTimeFormatter
+import org.springframework.web.servlet.ModelAndView
 
 import com.racloop.journey.workkflow.WorkflowState
-import com.racloop.util.date.DateUtil;
-import com.racloop.workflow.JourneyWorkflow
-import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 
 class JourneyController {
 	
@@ -38,9 +35,18 @@ class JourneyController {
 		setDates(currentJourney)
 		if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 			if(currentJourney.validate()) {
-				def searchResultMap = journeyService.getSearchResults(currentUser, currentJourney) //getSearchResultMap(currentUser, currentJourney)
 				session.currentJourney = currentJourney
+				if(currentUser && currentJourney.isNewJourney()) {
+					JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
+					if(existingJourney) {
+						return new ModelAndView("existingJourney", ['currentJourney': currentJourney, 'existingJourney':existingJourney])
+					}
+				
+				}
+				
+				def searchResultMap = journeyService.getSearchResults(currentUser, currentJourney) //getSearchResultMap(currentUser, currentJourney)
 				render(view: "results", model: ['searchResults': searchResultMap])
+				
 
 			}
 			else {
@@ -333,6 +339,22 @@ class JourneyController {
 		redirect(action: "activeJourneys")
 	}
 	
+	def searchWithExistingJourney() {
+		def existingJourneyId = params.existingJourneyId
+		def newJourney = params.optionsRadios
+		def currentJourney
+		if("newJourney".equals(newJourney)) {
+			journeyManagerService.deleteJourney(existingJourneyId)
+			currentJourney = new JourneyRequestCommand()
+			bindData(currentJourney, params, [exclude: ['existingJourneyId']])
+		}
+		else {
+			currentJourney = journeyService.findJourneyById(existingJourneyId, false)
+		}
+		chain(action: 'findMatching', model: [currentJourney: currentJourney])
+		
+	}
+	
 }
 
 public class JourneyRequestCommand {
@@ -368,5 +390,10 @@ public class JourneyRequestCommand {
 	String toString(){
 		return "JourneyRequestCommand -> id : ${id} | name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
 	}
+	
+	boolean isNewJourney() {
+		boolean isNew = (!id && !isSaved)?true:false
+		return isNew
+	} 
 	
 }
