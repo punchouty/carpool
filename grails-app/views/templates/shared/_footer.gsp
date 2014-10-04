@@ -1,3 +1,4 @@
+<!--App version is:- <g:meta name="app.version"/>-->
 		<div class="site-footer">
             <ul class="site-footer-links">
             	<li>
