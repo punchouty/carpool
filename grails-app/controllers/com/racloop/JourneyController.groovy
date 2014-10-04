@@ -33,6 +33,9 @@ class JourneyController {
 		setUserInformation(currentUser,currentJourney)
 		currentJourney.ip = request.remoteAddr
 		setDates(currentJourney)
+		if(currentJourney.isFromPageReload()) {
+			currentJourney = session.currentJourney
+		}
 		if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 			if(currentJourney.validate()) {
 				session.currentJourney = currentJourney
@@ -81,7 +84,6 @@ class JourneyController {
 		}
 		if(!currentJourney.validStartTime) {
 			DateTime currentDate = new DateTime()
-			//TODO - get this Info from config
 			currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
 			currentJourney.validStartTime = currentDate.toDate()
 		}
@@ -395,5 +397,13 @@ public class JourneyRequestCommand {
 		boolean isNew = (!id && !isSaved)?true:false
 		return isNew
 	} 
+	
+	boolean isFromPageReload(){
+		boolean isFromPageReload = false
+		if(!dateOfJourney){
+			isFromPageReload = true
+		}
+		return isFromPageReload
+	}
 	
 }
