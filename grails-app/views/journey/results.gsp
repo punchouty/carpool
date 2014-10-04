@@ -37,8 +37,9 @@
 				<g:link controller="journey" action="redoSearch" class="btn btn-info">Search again</g:link>
 			</g:if>
 			<g:else>
-				<g:link controller="journey" action="newJourney" class="btn btn-info">Save Request</g:link>&nbsp;<a href="${request.contextPath}/search" class="btn">Cancel</a>
+				<g:link controller="journey" action="newJourney" class="btn btn-info">Save request</g:link>
 			</g:else>
+			<g:link controller="userSession" action="search" class="btn btn-default">Back to search</g:link>
 			
 		</div>
 	</div>
@@ -114,7 +115,7 @@
 						</g:if> 
 						<g:else>
 							<g:if test="${currentJourney.isDriver}">
-								<td><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success btn-block">Ask for Drive</g:link></td>		
+								<td><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success btn-block">Offer a Ride</g:link></td>		
 							</g:if>
 							<g:else>
 								<td><g:link action="selectedJourney" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success btn-block">Request a Ride</g:link></td>
