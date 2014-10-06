@@ -33,7 +33,7 @@
 		     		
 	                
 	                    <div class="form-group">
-	                	<label class="col-sm-5 control-label" for="textinput">Old Password</label>
+	                	<label class="col-sm-5 control-label" for="textinput">Current Password</label>
 	                    <div class="col-sm-7">
 	                        <input id="currentPassword" class="form-control" name="currentPassword" placeholder="Current Password" type="password" required></input>
 							<p id="current-help-block" class="help-block"></p>
