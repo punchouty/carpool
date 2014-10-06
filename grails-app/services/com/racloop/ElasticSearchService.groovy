@@ -94,6 +94,7 @@ class ElasticSearchService {
 		log.debug "Successfully indexed place : ${place}"
 	}
 
+	@Deprecated
 	def createMainIndex() {
 		Date date = new Date().previous();//get yesterday date
 		//Create indexes for past week and future week
@@ -110,6 +111,7 @@ class ElasticSearchService {
 		indexDefinitor.createMainIndex(node, JOURNEY)
 	}
 	
+	@Deprecated
 	def closeMainIndexForPreviousWeek() {
 		Calendar time = Calendar.getInstance();
 		time.add(Calendar.WEEK_OF_MONTH, -3);
