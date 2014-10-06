@@ -33,7 +33,7 @@ class JourneyController {
 		setUserInformation(currentUser,currentJourney)
 		currentJourney.ip = request.remoteAddr
 		setDates(currentJourney)
-		if(currentJourney.isFromPageReload()) {
+		if(currentJourney.isFromPageReload() && session.currentJourney) {
 			currentJourney = session.currentJourney
 		}
 		if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
@@ -58,10 +58,13 @@ class JourneyController {
 			}
 		}
 		else {
-			currentJourney.errors.rejectValue("dateOfJourneyString", "invalid.travel.date", [message(code: 'travel.date', default: 'Travel Date')] as Object[],
-                          "Invalid travel date")
-			log.warn 'Error in command travel dates : ' + params
-			flash.error = "Invalid Input Data"
+			if(!currentJourney.isFromPageReload()) {
+				currentJourney.errors.rejectValue("dateOfJourneyString", "invalid.travel.date", [message(code: 'travel.date', default: 'Travel Date')] as Object[],
+					"Invalid travel date")
+				  log.warn 'Error in command travel dates : ' + params
+				  flash.error = "Invalid Input Data"
+			}
+			
 			redirect(controller: 'userSession', action: "search")
 		}
 	}
