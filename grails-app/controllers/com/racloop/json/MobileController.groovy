@@ -337,33 +337,7 @@ class MobileController {
 		def mobileResponse = new MobileResponse()
 		def errors = null
 		def searchResultMap = null
-		String dateOfJourneyString = json?.dateOfJourneyString
-		String validStartTimeString = json?.validStartTimeString
-		String fromPlace = json?.fromPlace
-		Double fromLatitude = convertToDouble(json?.fromLatitude);
-		Double fromLongitude = convertToDouble(json?.fromLongitude);
-		String toPlace = json?.toPlace
-		Double toLatitude = convertToDouble(json?.toLatitude);
-		Double toLongitude = convertToDouble(json?.toLongitude);
-		Boolean isDriver = json?.isDriver;
-		Double tripDistance = convertToDouble(json?.tripDistance)
-		String tripUnit = json?.tripUnit;
-		String ip = request.remoteAddr;
-		String user=json?.user
-		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
-		currentJourney.dateOfJourneyString = dateOfJourneyString
-		currentJourney.validStartTimeString = validStartTimeString
-		currentJourney.fromPlace = fromPlace
-		currentJourney.fromLatitude = fromLatitude
-		currentJourney.fromLongitude = fromLongitude
-		currentJourney.toPlace = toPlace
-		currentJourney.toLatitude = toLatitude
-		currentJourney.toLongitude = toLongitude
-		currentJourney.isDriver = isDriver
-		currentJourney.tripDistance = tripDistance
-		currentJourney.tripUnit = tripUnit
-		currentJourney.ip = ip
-		currentJourney.user = user
+		JourneyRequestCommand currentJourney = convertJsonToJourneyObject(json)
 		if(chainModel && chainModel.currentJourney) {
 			currentJourney = chainModel.currentJourney
 		}
@@ -377,11 +351,26 @@ class MobileController {
 			setDates(currentJourney)
 			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				if(currentJourney.validate()) {
-					searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
 					session.currentJourney = currentJourney
-					mobileResponse.data = searchResultMap
-					mobileResponse.success = true
-					mobileResponse.total = searchResultMap.numberOfRecords
+					boolean shouldSearchJourneys = true
+					if(currentUser && currentJourney.isNewJourney()) {//Usually it will be the case for Mobile search
+						JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
+						if(existingJourney) {
+							mobileResponse.data = ['existingJourney':existingJourney,'currentJourney':currentJourney] 
+							mobileResponse.success = true
+							mobileResponse.total = 0
+							mobileResponse.message = "Existing journey found!"
+							
+							shouldSearchJourneys = false
+						}
+					}
+					if(shouldSearchJourneys){
+						searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
+						session.currentJourney = currentJourney
+						mobileResponse.data = searchResultMap
+						mobileResponse.success = true
+						mobileResponse.total = searchResultMap.numberOfRecords
+					}
 				}
 			}
 			else {
@@ -399,6 +388,8 @@ class MobileController {
 		
 		render mobileResponse as JSON
     }
+
+	
 	
 	def addJourney() {
 		def user = getAuthenticatedUser()
@@ -739,5 +730,43 @@ class MobileController {
 			 return Double.valueOf(input)
 		}
 		return null
+	}
+	
+	def searchWithExistingJourney() {
+		def json = request.JSON
+		def mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser()
+		def existingJourneyId = json.existingJourneyId
+		def newJourney = json?.serachWithNewJourney
+		def currentJourney
+		if("newJourney".equals(newJourney)) {
+			journeyManagerService.deleteJourney(existingJourneyId)
+			currentJourney = convertJsonToJourneyObject(json)
+		}
+		else {
+			currentJourney = journeyService.findJourneyById(existingJourneyId, false)
+		}
+		chain(action: 'search', model: [currentJourney: currentJourney])
+		
+	}
+	
+	
+	private String convertJsonToJourneyObject(String json) {
+		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
+		currentJourney.dateOfJourneyString = json?.dateOfJourneyString
+		currentJourney.validStartTimeString = json?.validStartTimeString
+		currentJourney.fromPlace = json?.fromPlace
+		currentJourney.fromLatitude = convertToDouble(json?.fromLatitude)
+		currentJourney.fromLongitude = convertToDouble(json?.fromLongitude)
+		currentJourney.toPlace = json?.toPlace
+		currentJourney.toLatitude = convertToDouble(json?.toLatitude)
+		currentJourney.toLongitude = convertToDouble(json?.toLongitude)
+		currentJourney.isDriver = json?.isDriver
+		currentJourney.tripDistance = convertToDouble(json?.tripDistance)
+		currentJourney.tripUnit = json?.tripUnit;
+		currentJourney.ip = request.remoteAddr;
+		currentJourney.user = json?.user
+		currentJourney.id = json?.id
+		return currentJourney
 	}
 }
