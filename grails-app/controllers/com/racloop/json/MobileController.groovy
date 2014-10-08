@@ -751,7 +751,7 @@ class MobileController {
 	}
 	
 	
-	private String convertJsonToJourneyObject(String json) {
+	private def convertJsonToJourneyObject(def json) {
 		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
 		currentJourney.dateOfJourneyString = json?.dateOfJourneyString
 		currentJourney.validStartTimeString = json?.validStartTimeString
