@@ -237,31 +237,22 @@ class ElasticSearchService {
 		if(start.isBefore(validStartTime)) {
 			start = validStartTime;
 		}
-		FilterBuilder filter = null;
 		FilterBuilder deletedFilter = getFilterOnDeletedJourney()
 		FilterBuilder dateRanageFilter=getFilterOnJourneyStart(start, end)
 		FilterBuilder geoDistanceFilterFrom = getFilterOnJourneyFromPositon(journey, filterDistance)
 		FilterBuilder geoDistanceFilterTo = getFilterOnJourneyToPositon(journey, filterDistance)
 		
+		FilterBuilder filter = FilterBuilders.andFilter(
+			//FilterBuilders.limitFilter(10),
+			dateRanageFilter,
+			geoDistanceFilterFrom,
+			geoDistanceFilterTo,
+			deletedFilter)
+		
 		if(user) {
-			filter = FilterBuilders.andFilter(
-				//FilterBuilders.limitFilter(10),
-				dateRanageFilter,
-				geoDistanceFilterFrom,
-				geoDistanceFilterTo,
-				deletedFilter,
-				FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
-				
-			);
+			filter = FilterBuilders.andFilter(filter, FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username)));
 		}
-		else {
-			filter = FilterBuilders.andFilter(
-				dateRanageFilter,
-				geoDistanceFilterFrom,
-				geoDistanceFilterTo,
-				deletedFilter
-			);
-		}
+		
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey);
 		FieldSortBuilder startTimeSorter = getJourneyStartTimeSorter()
 		return searchJourney(indexName, [searchTypeOpposite] as String[], filter , sorter, startTimeSorter)
