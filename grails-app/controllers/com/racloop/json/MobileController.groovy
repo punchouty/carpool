@@ -357,7 +357,7 @@ class MobileController {
 						JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
 						if(existingJourney) {
 							mobileResponse.data = ['existingJourney':existingJourney,'currentJourney':currentJourney] 
-							mobileResponse.success = true
+							mobileResponse.success = 'true&false'
 							mobileResponse.total = 0
 							mobileResponse.message = "Existing journey found!"
 							
@@ -448,6 +448,7 @@ class MobileController {
 	
 	def requestService() {
 		def json = request.JSON
+		println json.inspect()
 		def mobileResponse = new MobileResponse()
 		String jsonMessage = null
 		def currentJourney = null
