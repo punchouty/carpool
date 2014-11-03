@@ -152,7 +152,7 @@
                                     <tr>
                                         <td>Reviews:</td>
                                         <td>
-                                        	3 <a href="#reviews" role="button" data-toggle="modal">Reviews</a> Available
+                                        	3 <a href ="#" data-target="#reviews" role="button" data-toggle="modal">Reviews</a> Available
                                         </td>
                                     </tr>
                                     </tbody>
@@ -186,61 +186,65 @@
             </div>
         </div>
         
-        <div id="reviews" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-		  <div class="modal-header">
-		    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-		    <h3 id="myModalLabel">Last 3 Reviews</h3>
-		  </div>
-		  <div class="modal-body">
-		  	<div>
-		        <p>
-		          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
-		        </p>
-		        <p>
-                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
-		          | <i class="icon-user"></i> by <a href="#">John</a> 
-		          | <i class="icon-calendar"></i> Sept 16th, 2012
-		        </p>
-		    </div>
-		    <hr/>
-		  	<div>
-		        <p>
-		          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
-		        </p>
-		        <p>
-                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-half.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
-		          | <i class="icon-user"></i> by <a href="#">John</a> 
-		          | <i class="icon-calendar"></i> Sept 16th, 2012
-		        </p>
-		    </div>
-		    <hr/>
-		    
-		  	<div>
-		        <p>
-		          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
-		        </p>
-		        <p>
-                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
-                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
-		          | <i class="icon-user"></i> by <a href="#">John</a> 
-		          | <i class="icon-calendar"></i> Sept 16th, 2012
-		        </p>
-		    </div>
-		  </div>
-		  <div class="modal-footer">
-		    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-		  </div>
+        <div id="reviews" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+   			 <div class="modal-content">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel">Last 3 Reviews</h3>
+				  </div>
+				  <div class="modal-body">
+				  	<div>
+				        <p>
+				          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
+				        </p>
+				        <p>
+		                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
+				          | <i class="icon-user"></i> by <a href="#">John</a> 
+				          | <i class="icon-calendar"></i> Sept 16th, 2012
+				        </p>
+				    </div>
+				    <hr/>
+				  	<div>
+				        <p>
+				          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
+				        </p>
+				        <p>
+		                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-half.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
+				          | <i class="icon-user"></i> by <a href="#">John</a> 
+				          | <i class="icon-calendar"></i> Sept 16th, 2012
+				        </p>
+				    </div>
+				    <hr/>
+				    
+				  	<div>
+				        <p>
+				          Lorem ipsum dolor sit amet, id nec conceptam conclusionemque. Et eam tation option. Utinam salutatus ex eum. Ne mea dicit tibique facilisi, ea mei omittam explicari conclusionemque, ad nobis propriae quaerendum sea.
+				        </p>
+				        <p>
+		                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-full.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
+		                  	<g:img dir="images" file="star-empty.png" width="25" height="25"/>
+				          | <i class="icon-user"></i> by <a href="#">John</a> 
+				          | <i class="icon-calendar"></i> Sept 16th, 2012
+				        </p>
+				    </div>
+				  </div>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				  </div>
+				</div>
+			</div>
 		</div>
 </body>
 
