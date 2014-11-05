@@ -357,9 +357,10 @@ class MobileController {
 						JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
 						if(existingJourney) {
 							mobileResponse.data = ['existingJourney':existingJourney,'currentJourney':currentJourney] 
-							mobileResponse.success = 'true&false'
+							mobileResponse.success = true
 							mobileResponse.total = 0
 							mobileResponse.message = "Existing journey found!"
+							mobileResponse.existingJourney=true
 							
 							shouldSearchJourneys = false
 						}
@@ -370,6 +371,7 @@ class MobileController {
 						mobileResponse.data = searchResultMap
 						mobileResponse.success = true
 						mobileResponse.total = searchResultMap.numberOfRecords
+						mobileResponse.existingJourney=false
 					}
 				}
 			}
@@ -448,7 +450,6 @@ class MobileController {
 	
 	def requestService() {
 		def json = request.JSON
-		println json.inspect()
 		def mobileResponse = new MobileResponse()
 		String jsonMessage = null
 		def currentJourney = null
@@ -738,7 +739,7 @@ class MobileController {
 		def mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser()
 		def existingJourneyId = json.existingJourneyId
-		def newJourney = json?.serachWithNewJourney
+		def newJourney = json?.searchWithNewJourney
 		def currentJourney
 		if("newJourney".equals(newJourney)) {
 			journeyManagerService.deleteJourney(existingJourneyId)
