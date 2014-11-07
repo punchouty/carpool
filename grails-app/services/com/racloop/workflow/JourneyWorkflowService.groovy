@@ -62,7 +62,7 @@ class JourneyWorkflowService {
 	
 	def getAlreadySelectedJourneyMapForCurrentJourney(JourneyRequestCommand currentJourney){
 		Map selectedJourneyMap = [:]
-		if(currentJourney.id && currentJourney.isSaved) {
+		if(currentJourney.id ) {
 			def selectedWorkflows = elasticSearchService.searchWorkflowByRequestedJourney(currentJourney)
 			selectedWorkflows.each {it->
 				selectedJourneyMap.put(it.matchedJourneyId, it)
