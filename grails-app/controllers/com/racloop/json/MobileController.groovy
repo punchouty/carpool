@@ -338,8 +338,12 @@ class MobileController {
 		def errors = null
 		def searchResultMap = null
 		JourneyRequestCommand currentJourney = convertJsonToJourneyObject(json)
-		if(chainModel && chainModel.currentJourney) {
-			currentJourney = chainModel.currentJourney
+//		if(chainModel && chainModel.currentJourney) {
+//			currentJourney = chainModel.currentJourney
+//		}
+		JourneyRequestCommand currentJourneyFromRequest = request.getAttribute('currentJourney')
+		if(currentJourneyFromRequest) {
+			currentJourney = currentJourneyFromRequest
 		}
 		def currentUser = getAuthenticatedUser();
 		if(!currentUser) {
@@ -394,7 +398,7 @@ class MobileController {
 	
 	
 	def addJourney() {
-		def user = getAuthenticatedUser()
+		def user = getAuthenticatedUser()currentJourney
 		def json = request.JSON
 		JourneyRequestCommand journeyRequestCommand = new JourneyRequestCommand()
 		journeyRequestCommand.user = json.user
@@ -713,7 +717,7 @@ class MobileController {
 	
 	
 	private setDates(JourneyRequestCommand currentJourney) {
-		if(currentJourney.dateOfJourneyString) {
+		if(currentJourney.dateOfJourneyString && currentJourney.dateOfJourneyString != 'null') {
 			currentJourney.dateOfJourney = convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
 		}
 		if(currentJourney.validStartTimeString) {
@@ -724,7 +728,7 @@ class MobileController {
 			//TODO - get this Info from config
 			currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
 			currentJourney.validStartTime = currentDate.toDate()
-		}
+		}		
 	}
 	
 	private Double convertToDouble(Object input) {
@@ -736,6 +740,7 @@ class MobileController {
 	
 	def searchWithExistingJourney() {
 		def json = request.JSON
+		println json.inspect()
 		def mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser()
 		def existingJourneyId = json.existingJourneyId
@@ -748,8 +753,8 @@ class MobileController {
 		else {
 			currentJourney = journeyService.findJourneyById(existingJourneyId, false)
 		}
-		chain(action: 'search', model: [currentJourney: currentJourney])
-		
+//		chain(action: 'search', model: [currentJourney: currentJourney])
+		forward action: 'search', model: [currentJourney: currentJourney]
 	}
 	
 	
@@ -763,12 +768,12 @@ class MobileController {
 		currentJourney.toPlace = json?.toPlace
 		currentJourney.toLatitude = convertToDouble(json?.toLatitude)
 		currentJourney.toLongitude = convertToDouble(json?.toLongitude)
-		currentJourney.isDriver = json?.isDriver.toBoolean()
+		currentJourney.isDriver = json?.isDriver?.toBoolean()
 		currentJourney.tripDistance = convertToDouble(json?.tripDistance)
 		currentJourney.tripUnit = json?.tripUnit;
 		currentJourney.ip = request.remoteAddr;
 		currentJourney.user = json?.user
-		currentJourney.id = json?.id
+		currentJourney.id = json?.id		
 		return currentJourney
 	}
 }
