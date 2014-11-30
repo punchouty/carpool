@@ -1,0 +1,58 @@
+.header {
+    background: url(../images/background-images/2.jpg) no-repeat center top fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+.header-racloop {
+    background: url(../images/background-images/2.jpg) no-repeat center top fixed;
+    -webkit-background-size: cover;
+    background-size: cover;
+}
+.header-racloop .overlay-layer-racloop {
+    padding-top: 65px;
+    padding-bottom: 5px;
+    height: auto;
+}
+.intro-section {
+    margin-top: 40px;
+}
+.intro-section-from {
+    margin-top: 110px;
+}
+.section-header-racloop {
+    margin-top: 25px;
+    margin-bottom: 60px;
+}
+.horizontal-subscribe-form .input-box {
+    font-size: inherit;
+}
+.standard-button {
+    padding: 12px 12px 12px 12px;
+}
+.intro-section h5 {
+    margin-top: 15px;
+    margin-bottom: 30px;
+}
+.navbar-header .logo-racloop {
+    font-size: 150%;
+    color: #008ed6;
+}
+.green-text {
+    color: #75a932;
+}
+.section-stats {
+    margin-top: 45px;
+    margin-bottom: 30px;
+}
+.intro-section-search {
+    margin-top: 5px;
+}
+.racloop-search-fonts {
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 300;
+}
+.racloop-controls {
+    margin-top: 4px;
+    margin-bottom: 4px;
+}

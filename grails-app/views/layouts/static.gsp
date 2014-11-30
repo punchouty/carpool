@@ -28,7 +28,12 @@
 <body>
 	<g:set var="currentUser"
 		value="${UserBase.get(SecurityUtils.subject.principal)}" />
-	<g:render template="/templates/shared/navigation" />
+	<header class="header-racloop" data-stellar-background-ratio="0.5" id="home">
+        <!-- COLOR OVER IMAGE -->
+        <div class="overlay-layer-racloop">
+			<g:render template="/templates/shared/navigation" />
+		</div>
+	</header>
 	<div class="container">
 		
 	<g:layoutBody />

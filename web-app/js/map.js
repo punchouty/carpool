@@ -210,7 +210,7 @@ $(function() {
 //	});
 //	picker = $('#travelDateDiv').data('datetimepicker');
 //	picker.setLocalDate(initialTime);
-	$('#travelDateDiv').datetimepicker({
+	$('#dateOfJourneyString').datetimepicker({
         //language:  'fr',
         weekStart: 1,
         todayBtn:  0,
@@ -219,12 +219,13 @@ $(function() {
 		startView: 2,
 		forceParse: 0,
         showMeridian: 1,
-        startDate: new Date()
+        startDate: new Date(),
+        format: 'dd MM yyyy    HH:ii P'
     });
 });
 
 $(function() {
-	$('#driver').click(function() {	
+	$('#offer').click(function() {	
 		var errorMessage = getErrorMessage();		
 		if(errorMessage){				
 			$('#errorMessage').text(errorMessage);					
@@ -235,7 +236,7 @@ $(function() {
 			$('#search-form').submit();
 		}
 	});
-	$('#rider').click(function() {
+	$('#ask').click(function() {
 		var errorMessage = getErrorMessage();
 		if(errorMessage){
 			$('#errorMessage').text(errorMessage);			
@@ -258,6 +259,7 @@ function getErrorMessage() {
 	if(travelDateText) {
 		var selectedDate = new Date(travelDateText);
 		if(selectedDate < now) {
+			alert(selectedDate.toString('dd MMMM yyyy    hh:mm tt'));
 			$('#dateOfJourneyString').addClass("control-group").addClass("error");
 			errorMessage = "You have selected past date/time";
 			return errorMessage;

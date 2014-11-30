@@ -28,104 +28,62 @@
 			</ul>
 		</div>
 	</g:hasErrors>
-	<br>
-	<div class="jumbobox" id="jumbobox">
-		<h1>Car Pool Finder</h1>
-		<%-- 
-		<p class="lead">Share your Car, Taxi and Auto rides. Make new friends and Contribute to Greener Environment.
-		</p>
-		--%>
-	</div>
+	
+	<!-- ONLY LOGO ON HEADER -->
+      <div class="only-logo">
+          <div class="navbar">
+              <div class="navbar-header">
+                  <h2 class="white-text racloop-heading-big">Racloop</h2>
+              </div>
+          </div>
+      </div>
+      
+      <div class="row">
+          <div class="col-md-12">
 
-	<div id="main-controls">
-		<g:form name="search-form" controller="journey" action="findMatching" class="form-inline">
-		<div class="row">
-		  
-       <div class="form-group col-md-4">                
-                <div id="travelDateDiv" class="input-group date form_datetime "  data-date-format="dd MM yyyy    HH:ii P" data-link-field="dtp_input1">
-                    <input id="dateOfJourneyString" class="form-control" name="dateOfJourneyString" size="16" type="text" value="" placeholder="Date and Time"  autocomplete="off" readonly>
-                    <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
-					<span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
-                </div>
-				<input type="hidden" id="dtp_input1" value="" />
-            </div>
-    
-        
-        
-        					 
-			 
-			
-			 <div class="form-group col-md-4">
-			<div id="fromDiv" class="input-group dropdown">
-				<g:textField name="fromPlace" class="form-control" value="${commandInstance?.fromPlace}" placeholder="From - Landmark or Locality"  autocomplete="off"/>
-				<a href="#" class="input-group-addon add-on dropdown-toggle"  data-toggle="dropdown"> 
-					<span class="glyphicon glyphicon-map-marker"></span>
-				</a>
-				<g:if test="${history?.size() > 0}">
-				<ul class="dropdown-menu">
-					<g:each in="${history}" status="i" var="historyInstance">
-						<li><a href="#"  id="from_${historyInstance.id}" class="history_dropdown">${historyInstance.place}</a></li>
-					</g:each>
-				</ul>
-				</g:if>
-			</div>	
-					
-			<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
-			<g:hiddenField name="fromLongitude" value="${commandInstance?.fromLongitude}" />
-			</div>
-			
-			 
-			 
-			 
-			
-			
-			
-			 <div class="form-group col-md-4">
-			<div id="toDiv" class="input-group dropdown"> 
-				<g:textField name="toPlace" class="form-control" value="${commandInstance?.toPlace}" placeholder="To - Landmark or Locality"  autocomplete="off" />
-				<a href="#" class="input-group-addon add-on dropdown-toggle"  data-toggle="dropdown"> 
-					<span class="glyphicon glyphicon-map-marker"></span>
-				</a>
-				<g:if test="${history?.size() > 0}">
-				<ul class="dropdown-menu">
-					<g:each in="${history}" status="i" var="historyInstance">
-						<li><a href="#" id="to_${historyInstance.id}" class="history_dropdown">${historyInstance.place}</a></li>
-					</g:each>
-				</ul>
-				</g:if>
-			</div>
-			</div>
-			
-			
-			<g:each in="${history}" status="i" var="historyInstance">
-				<input type="hidden" id="history_place_${historyInstance.id}" value="${historyInstance.place}" />
-				<input type="hidden" id="history_geoHash_${historyInstance.id}" value="${historyInstance.geoHash}" />
-				<input type="hidden" id="history_latitude_${historyInstance.id}" value="${historyInstance.latitude}" />
-				<input type="hidden" id="history_longitude_${historyInstance.id}" value="${historyInstance.longitude}" />
-			</g:each>
-			<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
-			<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
-			
-			<div class="btn-group ">
-				<button type="button" class="btn btn-success">Car?</button>
-				<button id="car-toggle" class="btn btn-success dropdown-toggle"
-					data-toggle="dropdown">
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li><a id="driver" href="#"  data-target="#myModal">Yes, I am driving</a></li>
-					<li><a id="rider" href="#"  data-target="#myModal">No, I need a ride</a></li>
-				</ul>
-			</div>
-			<g:hiddenField name="validStartTimeString" value="${commandInstance?.validStartTimeString}" />
-			<g:hiddenField name="tripDistance" value="${commandInstance?.tripDistance}" />
-			<g:hiddenField name="tripUnit" value="${commandInstance?.tripUnit}" />
-			<g:hiddenField name="isDriver" value="${commandInstance?.isDriver}" />	
-			</div>
-				
-		</g:form>
-		<br>
-	</div>
+              <!-- HEADING AND BUTTONS -->
+              <div class="intro-section">
+
+                  <!-- WELCOM MESSAGE -->
+                  <h1 class="intro white-text">Share Your Car and Auto Rides</h1>
+                  <h5 class="white-text">Offer a ride or Ask people for lift. Save money, Make friends and Contribute to Greener Environment. </h5>
+
+                  <!-- MAILCHIMP SUBSCRIBE FORM -->
+                  <div class="row">
+                      <div class="col-sm-12">
+                          <div class="horizontal-subscribe-form">
+                          	<g:form class="form-inline" name="search-form" controller="journey" action="findMatching">
+                          		<input type="text" id="dateOfJourneyString" name="dateOfJourneyString" size="16" autocomplete="off" class="form-control input-box form_datetime" placeholder="Date and Time">
+                          		<input type="text" id="fromPlace" name="fromPlace" size="25" autocomplete="off" value="${commandInstance?.fromPlace}" class="form-control input-box" placeholder="From : Landmark">
+                          		<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
+								<g:hiddenField name="fromLongitude" value="${commandInstance?.fromLongitude}" />
+								<input type="text" id="toPlace" name="toPlace" size="25" autocomplete="off" value="${commandInstance?.toPlace}" class="form-control input-box" placeholder="To : Landmark">
+								<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
+								<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
+								
+								<button type="button" id ="offer" value="offer" class="btn btn-primary standard-button">Offer</button>
+							    <button type="button" id ="ask" value="ask"class="btn btn-warning standard-button">Ask</button>
+								<g:hiddenField name="validStartTimeString" value="${commandInstance?.validStartTimeString}" />
+								<g:hiddenField name="tripDistance" value="${commandInstance?.tripDistance}" />
+								<g:hiddenField name="tripUnit" value="${commandInstance?.tripUnit}" />
+								<g:hiddenField name="isDriver" value="${commandInstance?.isDriver}" />	
+							</g:form>
+							 <!-- MAILCHIMP SUCCESS AND ERROR MESSAGE -->
+                              <p class="mailchimp-success white-text"><span class="icon-check-alt2 colored-text"></span>Thanks! Please confirm your subscription from your email inbox</p>
+                              <p class="mailchimp-error white-text"><span class="icon-close-alt2"></span>Error! Please enter correct email</p>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>                    
+											
+                                    	
+                                    		
+                                    
+      
+
+
 	<div id="map_info">
 	  <!--  <small>Distance : <span id="distance_in_km">20</span> KM</small>  -->
 	</div>

@@ -14,6 +14,14 @@
 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
+	<meta charset="UTF-8">
+    <meta name="description" content="A car pool finder application">
+    <meta name="keywords" content="carpool, car pool, carpool finder, carpool share">
+    <meta name="author" content="Rajan Punchouty">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+
+
 <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 <!--[if lt IE 9]>
@@ -29,10 +37,25 @@
 	<g:set var="currentUser"
 		value="${UserBase.get(SecurityUtils.subject.principal)}" />
 	
-		<g:render template="/templates/shared/navigation" />	
+		<!-- =========================
+	     PRE LOADER       
+	    ============================== -->
+	    
+	
+	    <!-- =========================
+	     SECTION: HOME / HEADER  
+	    ============================== -->
+    	<header class="header" data-stellar-background-ratio="0.5" id="home">
+       		 <!-- COLOR OVER IMAGE -->
+        	<div class="overlay-layer">
 		
-		<div class="container">
-		<g:layoutBody />
+				<g:render template="/templates/shared/navigation" />	
+				
+				<div class="container">
+					<g:layoutBody />
+				</div>
+			</div>
+		</header>
 		
 
 	    <div class="row marketing">
@@ -54,7 +77,7 @@
 	        <g:render template="/templates/shared/footer" />
 	   	</nav>
 		
-	</div>
+	
 	<g:if env="development">
 		<div class="well">
 			${params }

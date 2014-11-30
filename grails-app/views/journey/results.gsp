@@ -27,119 +27,98 @@
 		  ${flash.error}
 		</div>
 	</g:if>
-	<div class="row para well well-large">
-		<div class="col-md-9">
-			You want to travel from <em>${currentJourney.fromPlace}</em> to <em>${currentJourney.toPlace}</em> 
-			on <strong><g:formatDate format="dd MMM HH:mm" date="${currentJourney.dateOfJourney}"/></strong> 
-		</div>
-		<div class="col-md-3">
-			<g:if test ="${session?.currentJourney?.id }">
-				<g:link controller="journey" action="redoSearch" class="btn btn-info">Search again</g:link>
-			</g:if>
-			<g:else>
-				<g:link controller="journey" action="newJourney" class="btn btn-info">Save request</g:link>
-			</g:else>
-			<g:link controller="userSession" action="search" class="btn btn-default">Back to search</g:link>
-			
-		</div>
-	</div>
-	
-		<g:if test="${searchResults.numberOfRecords != 0}">
-		<div class="row">
-			<table id="results" class="table table-striped" >
-				<thead>
-					<tr>
-						<th>Name</th>
-						<th>From</th>
-						<th>To</th>
-						<th>Time</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-				<g:each in="${searchResults.matchedJourneys}" status="i" var="matchedResult">
-				<g:set var="journeyInstance" value="${matchedResult.matchedJourney}"/>
-					<tr>
-						<td>${journeyInstance.name}</td>	
-						<td id="${i}_from">${journeyInstance.fromPlace}</td>
-						<td id="${i}_to">${journeyInstance.toPlace}</td>		
-						<td><g:formatDate format="dd MMM HH:mm" date="${journeyInstance.dateOfJourney}"/></td>
-						<g:if test = "${matchedResult.workflow}">
-							<g:set var="workflow" value="${matchedResult.workflow}"/>
-							<g:if test = "${workflow}">
-								<td>
-									<g:if test="${WorkflowState.INITIATED.state.equals(workflow.state)}">
-										<g:if test = "${workflow && workflow.requestJourneyId == currentJourney.id }">
-											<div class="btn-group" style="width: 100%">
-												<button class="btn btn-primary dropdown-toggle btn-block"
-													data-toggle="dropdown">Requested
-													<span class="caret"></span>
-												</button>
-												<ul class="dropdown-menu">
-													<li><g:link action="cancelJourneyRequest" id="cancelled" params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]">Cancel</g:link></li>
-												</ul>
-											</div>
-										</g:if>
-										<g:else>
-											<div class="btn-group" style="width: 100%">
-												<button class="btn btn-primary dropdown-toggle btn-block"
-													data-toggle="dropdown">New
-													<span class="caret"></span>
-												</button>
-												<ul class="dropdown-menu">
-													<li><g:link action="acceptIncomingRequest" id="accept" params="[workflowId: workflow.id, redirectToSearch: true]">Accept</g:link></li>
-													<li><g:link action="rejectIncomingRequest" id="reject" params="[workflowId: workflow.id, redirectToSearch: true]">Reject</g:link></li>
-												</ul>
-											</div>
-										</g:else>
-									</g:if>
-									<g:elseif test="${WorkflowState.ACCEPTED.state.equals(workflow.state)}">
-										<div class="btn-group" style="width: 100%">
-											<button class="btn btn-primary dropdown-toggle btn-block"
-												data-toggle="dropdown">Accepted
-												<span class="caret"></span>
-											</button>
-											<ul class="dropdown-menu">
-												<li><g:link action="cancelJourneyRequest" id="cancelled" params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]">Cancel</g:link></li>
-											</ul>
-										</div>
-									</g:elseif>
-									<g:elseif test="${WorkflowState.REJECTED.state.equals(workflow.state)}">
-										<button class="btn btn-primary btn-block">Rejected</button>
-									</g:elseif>
-									<g:elseif test="${WorkflowState.CANCELLED.state.equals(workflow.state) || WorkflowState.CANCELLED_BY_REQUESTER.state.equals(workflow.state)}">
-										<button class="btn btn-primary btn-block">Cancelled</button>
-									</g:elseif>
-								</td>
-							</g:if> 
-						</g:if> 
+	 <section class="white-bg" id="section10">
+        <div class="container">
+        <!-- SECTION HEADER -->
+            <div class="section-header-racloop">
+                <div class="small-text-medium uppercase colored-text">
+                    ${searchResults.numberOfRecords} matching results found.
+                </div>
+                <h2 class="dark-text"><strong>Search</strong> Results</h2>
+                <div class="colored-line">
+                </div>
+                <div class="sub-heading text-left">
+                    <span class="label label-primary">Car Owner</span>
+                    <div>
+                        <strong>From :</strong> ${currentJourney.fromPlace}
+                    </div>
+                    <div>
+                        <strong>To :</strong> ${currentJourney.toPlace}
+                    </div>
+                    <div>
+                        <strong>On :</strong> <g:formatDate format="dd MMMM yyyy hh:mm a" date="${currentJourney.dateOfJourney}"/>
+                    </div>
+                    <div>
+                        <g:if test ="${session?.currentJourney?.id }">
+							<g:link controller="journey" action="redoSearch" class="btn btn-info"><i class="icon-check"></i> Search again</g:link>
+						</g:if>
 						<g:else>
-							<g:if test="${currentJourney.isDriver}">
-								<td><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success btn-block">Offer a Ride</g:link></td>		
-							</g:if>
-							<g:else>
-								<td><g:link action="selectedJourney" id="requestService_${i}" params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-success btn-block">Request a Ride</g:link></td>
-							</g:else>
+							<g:link controller="journey" action="newJourney" class="btn btn-info"><i class="icon-check"></i> Save request</g:link>
 						</g:else>
-						<input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">
-						<input type="hidden" id="${i}_from_longitude" value="${journeyInstance.fromLongitude}">
-						<input type="hidden" id="${i}_to_lattitude" value="${journeyInstance.toLatitude}">
-						<input type="hidden" id="${i}_to_longitude" value="${journeyInstance.toLongitude}">
-					</tr>
-				</g:each>
-				</tbody>
-			</table>
+						<g:link controller="userSession" action="search" class="btn btn-warning"><i class="icon-arrows-remove"></i> Back to search</g:link>
+		             </div>
+                </div>
+            </div>
+        </div>
+    </section>
+        
+	
+	<g:if test="${searchResults.numberOfRecords != 0}">
+	 <div class="container">
+	 	<g:each in="${searchResults.matchedJourneys}" status="i" var="matchedResult">
+			<g:set var="journeyInstance" value="${matchedResult.matchedJourney}"/>
+	        <article class="row white-bg-border racloop-search-fonts">
+	            <div class="col-md-2 col-md-offset-1">
+	                <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                    <g:img dir="images" file="racloop/driver.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
+	                </span>
+	            </div>
+	            <div class="col-md-2">
+	                <ul class="feature-list text-left">
+	                    <li>
+	                        <span class="hidden-lg hidden-md visible-sm visible-xs">
+	                            <span class="label label-primary">Car Owner</span>
+	                            <g:img dir="images" file="racloop/driver.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
+	                        </span>
+	                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                            <span class="label label-primary">Car Owner</span>
+	                        </span>
+	                    </li>
+	                    <li><i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span></li>
+	                    <li><i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span></li>
+	                </ul>
+	            </div>
+	            <div class="col-md-5 text-left">
+	                <h5>${journeyInstance.name}</h5>
+	                <ul class="text-left">
+	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
+	                    <li><i class="icon-basic-geolocalize-05"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
+	                    <li><button class="btn btn-info"><i class="icon-aim"></i> Request</button> </li>
+	                </ul>
+	            </div>
+	            <input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">
+				<input type="hidden" id="${i}_from_longitude" value="${journeyInstance.fromLongitude}">
+				<input type="hidden" id="${i}_to_lattitude" value="${journeyInstance.toLatitude}">
+				<input type="hidden" id="${i}_to_longitude" value="${journeyInstance.toLongitude}">
+	            <div class="col-md-2 text-left">
+	                <div>
+	                    <img src="http://www.gravatar.com/avatar/53fd5asasa5a449e3f758b891843ac4?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                </div>
+	            </div>
+	            <span class="clearfix"></span>
+	        </article>
+        </g:each>
+     </div>
+     </g:if>
+     <g:else>
+		<div class="row">
+			<p class="text-error">Sorry your search did not match any results</p>
 		</div>
-		</g:if>
-		<g:else>
-			<div class="row">
-				<p class="text-error">Sorry your search did not match any results</p>
-			</div>
-		</g:else>
-	<g:hiddenField name="dummy" value="${searchResults.isDummyData}" />
+	  </g:else> 
+  	<g:hiddenField name="dummy" value="${searchResults.isDummyData}" />
 	<g:hiddenField name="user_mobile" value="${currentUser?.profile?.mobile}" />
 	<g:hiddenField name="user_email" value="${currentUser?.profile?.email}" />
 	<g:hiddenField name="numberOfRecords" value="${numberOfRecords}" />
 </body>
-
-</html>
+</html>  
+      

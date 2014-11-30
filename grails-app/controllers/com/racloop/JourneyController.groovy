@@ -91,7 +91,7 @@ class JourneyController {
 			currentJourney.dateOfJourney = convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
 		}
 		if(currentJourney.validStartTimeString) {
-			currentJourney.validStartTime = convertUIDateToElasticSearchDate(currentJourney.validStartTimeString).toDate()
+			currentJourney.validStartTime = new DateTime().toDate()//convertUIDateToElasticSearchDate(currentJourney.validStartTimeString).toDate()
 		}
 		if(!currentJourney.validStartTime) {
 			DateTime currentDate = new DateTime()

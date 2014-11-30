@@ -3,7 +3,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Car pool site">
 <meta name="author" content="racloop">
-<title><g:layoutTitle default="raC looP - The Car Pool App" /></title>
+<title><g:layoutTitle default="raC looP - A carpool finder" /></title>
 <link rel="shortcut icon"
 	href="${resource(dir: 'img', file: 'favicon.ico')}" type="image/x-icon">
 <link rel="apple-touch-icon"

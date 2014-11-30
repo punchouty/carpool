@@ -1,118 +1,79 @@
 		<%@ page import="grails.plugin.nimble.core.AdminsService"%>	
-		<%@ page import="org.apache.shiro.SecurityUtils"%>		
-		
-	<div class="navbar  navbar-static-top navbar-bold " role="navigation">
-      <div class="container">
-        <div class="navbar-header">
-          <a class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-        <span class="glyphicon glyphicon-chevron-down"></span>
-      </a>
-          <a class="navbar-brand" href="${request.contextPath}/"><b>raC looP</b></a>
-        </div>
-        
-       
-        <n:notUser>
-        <div class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">        
-        
-          <g:form controller="auth" action="signin" name="login-form" method="post"
-				class="navbar-form pull-left" role="form">				
-				<g:if test="${isSignup == null || isSignup == false }">	
-				
-            <div class="form-group ">
-              <input type="text" placeholder="email" name="username" class="form-control" required  autofocus>
+		<%@ page import="org.apache.shiro.SecurityUtils"%>	
+		<link href='http://fonts.googleapis.com/css?family=Cabin:400,600|Open+Sans:300,600,400' rel='stylesheet'>
+			
+		<!-- STICKY NAVIGATION -->
+            <div class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation" role="navigation">
+                <div class="container">
+                    <div class="navbar-header">
+
+                        <!-- LOGO ON STICKY NAV BAR -->
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#stamp-navigation">
+                            <span class="sr-only">Toggle navigation</span>
+                            <span class="icon-grid-2x2"></span>
+                        </button>
+
+                        <!-- LOGO -->
+                        <a class="navbar-brand logo-racloop" href="#">
+                            RACLOOP
+                            <!-- <img src="images/logo-nav.png" alt=""> -->
+                        </a>
+
+                    </div>
+
+                    <!-- TOP BAR -->
+                    <div class="navbar-collapse collapse" id="stamp-navigation">
+
+                        <!-- NAVIGATION LINK -->
+                        <ul class="nav navbar-nav navbar-left main-navigation small-text">
+                            <li><a href="#section5">Etiquettes</a>
+                            </li>
+                            <li><a href="#section6">FAQ</a>
+                            </li>
+                            <li><a href="#section7">About</a>
+                            </li>
+                        </ul>
+
+                        <!-- LOGIN REGISTER -->
+                        <ul class="nav navbar-nav navbar-right login-register small-text">
+                            <li class="login">
+                                <a href="${request.contextPath}/main"><i class="icon-basic-magnifier"></i> Search</a>
+                            </li>
+                            <li class="login">
+                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Requests</a>
+                            </li>
+                            <li class="login dropdown">
+                                <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
+                                    <i class="icon-man-people-streamline-user"></i> Rajan Punchouty
+                                    <b class="caret"></b>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <a href="#">Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Change Password</a>
+                                    </li>
+                                    <li>
+                                        <a href="#">Logout</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            
+                            <li class="login js-login">
+                                <a href="#">Login</a>
+                            </li>
+                            <li class="register-button js-register inpage-scroll">
+                                <a href="#section11" class="navbar-register-button">Sign Up</a>
+                            </li>
+                            
+
+                        </ul>
+                    </div>
+                </div>
+                <!-- /END CONTAINER -->
             </div>
-            <div class="form-group">
-              <input placeholder="Password" class="form-control" type="password" name="password">
-            </div>
-            <label class="checkbox"> 
-                        <input type="hidden" name="_rememberme" /><input type="checkbox" name="rememberme" id="rememberme"  /> Remember Me
-            </label>
-            <button type="submit"  id ="signin" class="btn btn-success">Sign in</button>
-            </g:if>
-		<g:else>
-		<%-- <li><a class="btn" href="${request.contextPath}/">Home</a></li>--%>
-		</g:else>
-		<input type="hidden" name="targetUri" value="${targetUri}" />				
-        </g:form>
-		<li class="dropdown pull-right">
-              
-					<a class=" dropdown-toggle" data-toggle="dropdown" href="#">
-						Help <span class="caret"></span>
-					</a>
-				  <ul class="dropdown-menu">
-						<li>
-							<a href="${request.contextPath}/faq">FAQ</a>
-						</li>
-						<li	<g:if test="${isSafety == 'true'}">class="active"</g:if>>
-							<a href="${request.contextPath}/safety">Safety</a>
-						</li>
-						<li <g:if test="${isEtiquettes == 'true'}">class="active"</g:if>>
-							<a href="${request.contextPath}/etiquettes">Etiquettes</a>
-						</li>
-						<li>
-							<a href="${request.contextPath}/password/forgot">Forgot Password</a>
-						</li>
-						<li <g:if test="${isTerms == 'true'}">class="active"</g:if>><g:link
-								controller="staticPage" action="terms">Terms</g:link>
-						</li>
-					</ul>						
-					</li>	
-				<g:if test="${ (isSignup == null || isSignup == false) && (isHome == null || isHome == false) }">					
-					<li class="pull-right button_space"><a class="" href="${request.contextPath}/signup">Sign Up</a></li>
-				</g:if>
-				
-          </ul>
-        </div><!--/.navbar-collapse -->
-        </n:notUser>        
-        
-        
-        <g:if test="${SecurityUtils.subject.principal != null}">
-         <div id="navbar-right" class="navbar-collapse collapse">      
-          <ul class="nav navbar-nav navbar-right">
-           
-           <li	<g:if test="${isSearch == 'true'}">class="active"</g:if>>
-					<a href="${request.contextPath}/main">Search</a>
-				</li>
-				<li	<g:if test="${isSafety == 'true'}">class="active"</g:if>>
-					<a href="${request.contextPath}/safety">Safety</a>
-				</li>
-				<li <g:if test="${isActiveJourneys == 'true'}">class="active"</g:if>>
-					<a href="${request.contextPath}/journeys">Active Requests</a>
-				</li>
-				<li <g:if test="${isHistory == 'true'}">class="active"</g:if>>
-					<a href="${request.contextPath}/history">History</a>
-				</li>
-				<!-- <li <g:if test="${isHistory == 'true'}">class="active"</g:if>>
-					<img src="${currentUser.profile.gravatarUri}" width="42" height="48">
-				</li> -->
-				<li class="dropdown">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">${currentUser.profile.fullName}&nbsp;<i class="glyphicon glyphicon-user"></i>&nbsp; 
-					<b class="caret"></b></a>		
-						  <ul class="dropdown-menu">
-						    <n:hasRole name="${AdminsService.ADMIN_ROLE}">
-							<li>
-								<g:link controller="admins" action="index" target="_blank">User Administration</g:link>
-							</li>
-							<li>
-								<g:link controller="staticData" action="list">Static Pages</g:link>
-							</li>
-							</n:hasRole>
-							<li>
-								<a href="${request.contextPath}/profile">Profile</a>
-							</li>
-							<li>
-								<a href="${request.contextPath}/password/change">Change Password</a>
-							</li>
-							<li>
-								<a href="${request.contextPath}/signout">Sign Out</a>
-							</li>
-						  </ul>
-				</li>		
-           
-          </ul>
-        </div><!--/.nav-collapse -->
-        </g:if>
-        
-      </div>
-    </div>
+            <!-- /END STICKY NAVIGATION -->
+    	
+
+   
