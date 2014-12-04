@@ -26,19 +26,39 @@
 <r:layoutResources />
 </head>
 <body>
+
+	
+	<div class="preloader">
+        <div class="status">
+            racloop
+        </div>
+    </div>
+		
 	<g:set var="currentUser"
 		value="${UserBase.get(SecurityUtils.subject.principal)}" />
 	
-		
+		<header class="header" data-stellar-background-ratio="0.5" id="home">
+
+        <!-- COLOR OVER IMAGE -->
+        <div class="overlay-layer">
 		<g:render template="/templates/shared/login" />
-		<div class="container">
-		<hr>
+		
 		<g:layoutBody />
+           </div>
+    </header>
       
 		<nav class="container" role="navigation">
 	        <g:render template="/templates/shared/footer" />
 	   	</nav>
-	</div>
+	   	
+       <script>
+        /* PRE LOADER */
+        jQuery(window).load(function () {
+            "use strict";
+            jQuery(".status").fadeOut();
+            jQuery(".preloader").delay(1000).fadeOut("slow");
+        })
+    </script>
 	
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places"></script>

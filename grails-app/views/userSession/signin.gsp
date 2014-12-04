@@ -5,7 +5,7 @@
 </head>
 <body>
 	<g:set var="isSignin" value="true" scope="request"/>	
-	<div class="row">
+	<%--<div class="row">
 		<div class="col-md-8 jumbobox">
 	        <h1 id="logo">Car Pool</h1>
 	        <p class="lead">Share your Car, Taxi and Auto rides. Save money, Make friends and Contribute to Greener Environment.</p>
@@ -58,5 +58,97 @@
             <a href="${request.contextPath}/password/forgot">Forgot Password</a></br>
 		</div>
 	</div>
+--%>
+
+
+
+<!-- CONTAINER -->
+            <div class="container">
+                <div class="col-md-7 text-left">
+
+                    <!-- HEADING AND BUTTONS -->
+                    <div class="intro-section intro-section-from">
+
+                        <!-- WELCOM MESSAGE -->
+                        <h1 class="intro white-text">Search, Connect and Carpool</h1>
+
+                        <p class="transparent-text">Make new friends and transform a dull ride into an unforgettable journey. Better way to Get Social. If you are not member of racloop community, click below to Sign Up.</p>
+
+                        <!-- BUTTON -->
+                        <div class="button hidden-xs">
+                            <a href="${request.contextPath}/signup" class="btn btn-primary secondary-button">Register</a>
+                        </div>
+                        <!-- /END BUTTON -->
+
+                    </div>
+
+                </div>
+                <div class="col-md-5 pull-right">
+
+                    <!-- VERTICAL REGISTRATION FORM -->
+                    <div class="vertical-registration-form">
+
+                        <form class="registration-form" id="contact-form">
+
+                            <input type="email" id="cf-email" name="email" class="form-control input-box" placeholder="Email">
+
+                            <input type="password" id="cf-password" name="name" class="form-control input-box" placeholder="Password">
+
+                            <div class="checkbox  text-left">
+                                <label>
+                                    <input type="checkbox" value="">
+                                    Remember me
+                                </label>
+                            </div>
+                            <button class="btn btn-primary standard-button">Login</button>
+
+                        </form>
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+             <g:form action="signin"  controller="auth" name="login-form" method="post" class="registration-form" id="contact-form">
+				<input type="hidden" name="targetUri" value="${targetUri}" />
+	           
+	            <input type="email" id="username" name="username"  class="form-control input-box" placeholder="Email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Username is required field" required>
+	      			<p class="help-block"></p>            		
+				
+					<input type="password" name="password" id="password" class="form-control input-box" placeholder="Password" data-validation-required-message="Password is required field"  required />
+	      			<p class="help-block"></p>
+	      		
+	            <label class="checkbox">
+	            	<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
+	            </label>
+				<button type="submit" name="submit" class="btn btn-large btn-primary">Sign In</button>
+			</g:form>    
+                        
+                        
+                        
+                        
+                        
+
+                        <!-- FORM SUBMIT SUCCESS / ERROR MESSAGES -->
+                        <p class="email-success dark-text small-text"><span class="icon-check-alt2 colored-text"></span>Email sent seuccessfully</p>
+                        <p class="email-error dark-text small-text"><span class="icon-close-alt2"></span>Error! Please check all fields filled correctly</p>
+                        <!-- MAILCHIMP ALERTS
+                <p class="mailchimp-success dark-text"><span class="icon-check-alt2 colored-text"></span>We sent the confirmation to your email</p>
+                <p class="mailchimp-error dark-text"><span class="icon-close-alt2"></span>Error! Please check all fields filled correctly</p>
+                -->
+                    </div>
+                </div>
+            </div>
+       
+		
+
+
+
+
+
+
+
+
 </body>
 </html>
