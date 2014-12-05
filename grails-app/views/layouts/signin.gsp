@@ -44,8 +44,7 @@
 		<g:render template="/templates/shared/login" />
 		
 		<g:layoutBody />
-           </div>
-    </header>
+           
       
 		<nav class="container" role="navigation">
 	        <g:render template="/templates/shared/footer" />

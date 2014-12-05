@@ -84,8 +84,8 @@
 
                 </div>
                 <div class="col-md-5 pull-right">
-
-                    <!-- VERTICAL REGISTRATION FORM -->
+					<div class="vertical-registration-form">
+                    <!-- VERTICAL REGISTRATION FORM 
                     <div class="vertical-registration-form">
 
                         <form class="registration-form" id="contact-form">
@@ -102,15 +102,11 @@
                             </div>
                             <button class="btn btn-primary standard-button">Login</button>
 
-                        </form>
+                        </form>-->
                         
                         
                         
-                        
-                        
-                        
-                        
-             <g:form action="signin"  controller="auth" name="login-form" method="post" class="registration-form" id="contact-form">
+               <g:form action="signin"  controller="auth" name="login-form" method="post" class="registration-form" id="contact-form">
 				<input type="hidden" name="targetUri" value="${targetUri}" />
 	           
 	            <input type="email" id="username" name="username"  class="form-control input-box" placeholder="Email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Username is required field" required>
@@ -119,10 +115,13 @@
 					<input type="password" name="password" id="password" class="form-control input-box" placeholder="Password" data-validation-required-message="Password is required field"  required />
 	      			<p class="help-block"></p>
 	      		
-	            <label class="checkbox">
-	            	<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
-	            </label>
-				<button type="submit" name="submit" class="btn btn-large btn-primary">Sign In</button>
+	      		
+	      		<div class="checkbox  text-left">
+                                <label>
+                                    <g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
+                                </label>
+                            </div>	          
+				<button type="submit" name="submit" class="btn standard-button btn-primary">Sign In</button>
 			</g:form>    
                         
                         
@@ -140,8 +139,39 @@
                     </div>
                 </div>
             </div>
-       
+       </div>
+    </header>
 		
+		 <div class="contact-info white-bg">
+        <div class="container">
+
+            <!-- CONTACT INFO -->
+            <div class="row contact-links">
+
+                <div class="col-sm-4">
+                    <div class="icon-container">
+                        <span class="icon-basic-mail colored-text"></span>
+                    </div>
+                    <a href="mailto:hey@designlab.co" class="strong">help@racloop.com</a>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="icon-container">
+                        <span class="icon-basic-geolocalize-01 colored-text"></span>
+                    </div>
+                    <a href="" class="strong">New Delhi, India</a>
+                </div>
+
+                <div class="col-sm-4">
+                    <div class="icon-container">
+                        <span class="icon-basic-tablet colored-text"></span>
+                    </div>
+                    <a href="tel:44-12-3456-7890" class="strong">+91 9780242630</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 
 
 

@@ -120,36 +120,12 @@
 
                         <!-- LOGIN REGISTER -->
                         <ul class="nav navbar-nav navbar-right login-register small-text">
-                            <li class="login">
-                                <a href="${request.contextPath}/main"><i class="icon-basic-magnifier"></i> Search</a>
-                            </li>
-                            <li class="login">
-                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Requests</a>
-                            </li>
-                            <li class="login dropdown">
-                                <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="icon-man-people-streamline-user"></i> Rajan Punchouty
-                                    <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="#">Profile</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Change Password</a>
-                                    </li>
-                                    <li>
-                                        <a href="#">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>
+                            
                             
                             <li class="login js-login">
                                 <a href="#">Login</a>
                             </li>
-                            <li class="register-button js-register inpage-scroll">
-                                <a href="#section11" class="navbar-register-button">Sign Up</a>
-                            </li>
+                          
                             
 
                         </ul>
