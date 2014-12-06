@@ -36,11 +36,11 @@
 
         <!-- OPTIONAL FOOTER LINKS -->
         <ul class="footer-links small-text">
-            <li><a href="" class="dark-text">About</a>
+            <li><a href="${request.contextPath}/about" class="dark-text">About</a>
             </li>
-            <li><a href="" class="dark-text">Terms</a>
+            <li><a href="${request.contextPath}/terms" class="dark-text">Terms</a>
             </li>
-            <li><a href="" class="dark-text">Privacy</a>
+            <li><a href="${request.contextPath}/privacy" class="dark-text">Privacy</a>
             </li>
         </ul>
 
