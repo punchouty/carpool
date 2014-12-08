@@ -130,7 +130,7 @@
 				<input type="hidden" id="${i}_to_longitude" value="${journeyInstance.toLongitude}">
 	            <div class="col-md-2 text-left">
 	                <div>
-	                    <img src="http://www.gravatar.com/avatar/53fd5asasa5a449e3f758b891843ac4?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                    <img src="${currentUser?.profile?.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
 	                </div>
 	            </div>
 	            <span class="clearfix"></span>

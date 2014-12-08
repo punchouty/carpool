@@ -59,8 +59,8 @@ class UrlMappings {
 		}
 
 		"/"{
-			controller = "staticPage"
-			action = "index"
+			controller = "userSession"
+			action = "search"
 		}
 
 		"/main"{

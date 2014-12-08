@@ -36,39 +36,39 @@
 
                         <!-- LOGIN REGISTER -->
                         <ul class="nav navbar-nav navbar-right login-register small-text">
-                        <n:isLoggedIn>
-                            <li class="login">
-                                <a href="${request.contextPath}/search"><i class="icon-basic-magnifier"></i> Search</a>
-                            </li>
-                            <li class="login">
-                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Requests</a>
-                            </li>
-                            <li class="login dropdown">
-                                <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="icon-man-people-streamline-user"></i> ${currentUser.profile.fullName}
-                                    <b class="caret"></b>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li>
-                                        <a href="${request.contextPath}/profile">Profile</a>
-                                    </li>
-                                    <li>
-                                        <a href="${request.contextPath}/password/change">Change Password</a>
-                                    </li>
-                                    <li>
-                                        <a href="${request.contextPath}/signout">Logout</a>
-                                    </li>
-                                </ul>
-                            </li>
-                            </n:isLoggedIn>
-                            <n:isNotLoggedIn>
-                            <li class="login js-login">
-                                <a href="${request.contextPath}/signin">Login</a>
-                            </li>
-                            <li class="register-button js-register inpage-scroll">
-                                <a href="${request.contextPath}/signup" class="navbar-register-button">Sign Up</a>
-                            </li>
-                            </n:isNotLoggedIn>
+	                        <g:if test="${SecurityUtils.subject.principal != null}">
+	                            <li class="login">
+	                                <a href="${request.contextPath}/search"><i class="icon-basic-magnifier"></i> Search</a>
+	                            </li>
+	                            <li class="login">
+	                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Requests</a>
+	                            </li>
+	                            <li class="login dropdown">
+	                                <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
+	                                    <i class="icon-man-people-streamline-user"></i> ${currentUser.profile.fullName}
+	                                    <b class="caret"></b>
+	                                </a>
+	                                <ul class="dropdown-menu">
+	                                    <li>
+	                                        <a href="${request.contextPath}/profile">Profile</a>
+	                                    </li>
+	                                    <li>
+	                                        <a href="${request.contextPath}/password/change">Change Password</a>
+	                                    </li>
+	                                    <li>
+	                                        <a href="${request.contextPath}/signout">Logout</a>
+	                                    </li>
+	                                </ul>
+	                            </li>
+	                        </g:if>
+                            <n:notUser>
+	                            <li class="login js-login">
+	                                <a href="${request.contextPath}/signin">Login</a>
+	                            </li>
+	                            <li class="register-button js-register inpage-scroll">
+	                                <a href="${request.contextPath}/signup" class="navbar-register-button">Sign Up</a>
+	                            </li>
+                            </n:notUser>
 
                         </ul>
                     </div>

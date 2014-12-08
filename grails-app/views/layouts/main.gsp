@@ -48,7 +48,7 @@
        		 <!-- COLOR OVER IMAGE -->
         	<div class="overlay-layer">
 		
-				<g:render template="/templates/shared/navigation" />	
+				<g:render template="/templates/shared/homeNavigation" />	
 				
 				<div class="container">
 					<g:layoutBody />
@@ -57,21 +57,9 @@
 		</header>
 		
 
-	    <div class="row marketing">
-			<div class="col-md-4">
-			    <h2>Save Money</h2>
-			    <p>It is pocket friendly. Nothing better than some one sharing your commute cost. </p>
-			</div>
-			<div class="col-md-4">
-			    <h2>Environment Friendly</h2>
-			    <p>Having fewer cars on the road means reduced air pollution and improved air quality. Benefits for generations to come. It also mean reduced traffic congestion that will save time for all of us.</p>
-			</div>
-			<div class="col-md-4">
-			    <h2>Make New Friends</h2>
-			    <p>Car pool provide you new avenue of friendships and company for your commute. Drive Together.</p>
-			</div>
-	    </div>
-	      
+	    
+	    <g:render template="/templates/shared/homeServices" />  
+	    
 		<nav class="container-narrow" role="navigation">
 	        <g:render template="/templates/shared/footer" />
 	   	</nav>
