@@ -47,13 +47,13 @@ nimble {
 		changeemail { subject = "Your email address has been changed" }
 		
 		mail {
-			host = "smtp.live.com"
-			port = 587
+			host = "smtp.racloop.com"
+			port = 25
 			from = "raC looP <help@racloop.com>"
 			username = "help@racloop.com"
-			password = "R@cloop1"
-			props = ["mail.smtp.starttls.enable":"true", 
-                  "mail.smtp.port":"587"]
+			password = "P@ssw0rd"
+			/*props = ["mail.smtp.starttls.enable":"true", 
+                  "mail.smtp.port":"587"]*/
 		}
 	}
 	

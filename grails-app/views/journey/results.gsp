@@ -93,7 +93,35 @@
 	                <ul class="text-left">
 	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
 	                    <li><i class="icon-basic-geolocalize-05"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
-	                    <li><button class="btn btn-info"><i class="icon-aim"></i> Request</button> </li>
+	                    <g:if test = "${matchedResult.workflow}">
+							<g:set var="workflow" value="${matchedResult.workflow}"/>
+							<g:if test = "${workflow}">
+								<g:if test="${WorkflowState.INITIATED.state.equals(workflow.state)}">
+									<g:if test = "${workflow && workflow.requestJourneyId == currentJourney.id }">
+										<li><g:link action="cancelJourneyRequest" id="cancelled_${i}"  params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]" class="btn btn-warning">Cancel Request</g:link></li>
+									</g:if>
+									<g:else>
+										<li><g:link action="acceptIncomingRequest" id="accept_${i}"  params="[workflowId: workflow.id, redirectToSearch: true]" class="btn btn-info">Accept</g:link></li>
+										<li><g:link action="rejectIncomingRequest" id="reject_${i}"  params="[workflowId: workflow.id, redirectToSearch: true]" class="btn btn-warning">Reject</g:link></li>
+										
+									</g:else>
+								</g:if>
+								<g:elseif test="${WorkflowState.ACCEPTED.state.equals(workflow.state)}">
+									<li><g:link action="cancelJourneyRequest" id="cancelled_${i}"  params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]" class="btn btn-warning">Cancel Request</g:link></li>
+								</g:elseif>
+								<g:elseif test="${WorkflowState.REJECTED.state.equals(workflow.state)}">
+									<li><button class="btn btn-warning disabled"><i class="icon-arrows-remove"></i>Rejected</button> </li>
+								</g:elseif>
+								<g:elseif test="${WorkflowState.CANCELLED.state.equals(workflow.state) || WorkflowState.CANCELLED_BY_REQUESTER.state.equals(workflow.state)}">
+									<li><button class="btn btn-warning disabled"><i class="icon-arrows-remove"></i>Cancelled</button> </li>
+								</g:elseif>
+							</g:if>
+								
+						</g:if>
+						<g:else>
+							<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-info">Request</g:link></li>
+						</g:else>	
+	                    
 	                </ul>
 	            </div>
 	            <input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">

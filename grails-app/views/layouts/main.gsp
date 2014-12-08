@@ -12,7 +12,6 @@
 <!--<![endif]-->
 <head>
 
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
 	<meta charset="UTF-8">
     <meta name="description" content="A car pool finder application">
@@ -83,10 +82,10 @@
 			${params }
 		</div>
 	</g:if>
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script> 
-	<r:layoutResources />
+	
 	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places"></script>
-	<script src="${resource(dir: 'js', file: 'map.js')}" ></script>
+	<r:layoutResources />
+ 	
 	<g:if env="development"  test = "${session?.currentJourney && session?.currentJourney?.dateOfJourneyString}">
 		<script>
 			$(function() {

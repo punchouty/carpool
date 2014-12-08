@@ -45,7 +45,7 @@
                             </li>
                             <li class="login dropdown">
                                 <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
-                                    <i class="icon-man-people-streamline-user"></i> Rajan Punchouty
+                                    <i class="icon-man-people-streamline-user"></i> ${currentUser.profile.fullName}
                                     <b class="caret"></b>
                                 </a>
                                 <ul class="dropdown-menu">
