@@ -38,7 +38,12 @@
                 <div class="colored-line">
                 </div>
                 <div class="sub-heading text-left">
-                    <span class="label label-primary">Car Owner</span>
+                	<g:if test = "${currentJourney.isDriver == true}">
+                		<span class="label label-primary">Car Owner</span>
+                	</g:if>
+                	<g:else>
+                		<span class="label label-primary">Ride Seeker</span>
+                	</g:else>
                     <div>
                         <strong>From :</strong> ${currentJourney.fromPlace}
                     </div>
@@ -76,13 +81,25 @@
 	            <div class="col-md-2">
 	                <ul class="feature-list text-left">
 	                    <li>
-	                        <span class="hidden-lg hidden-md visible-sm visible-xs">
-	                            <span class="label label-primary">Car Owner</span>
-	                            <g:img dir="images" file="racloop/driver.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
-	                        </span>
-	                        <span class="hidden-sm hidden-xs visible-lg visible-md">
-	                            <span class="label label-primary">Car Owner</span>
-	                        </span>
+	                        <g:if test = "${journeyInstance.isDriver == true}">
+	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
+	                            	<span class="label label-primary">Car Owner</span>
+	                            <g:img dir="images" file="racloop/driver.png" width="100" alt="Car owner" class="img-thumbnail"/>
+	                        	</span>
+		                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+		                            <span class="label label-primary">Car Owner</span>
+		                        </span>
+	                        </g:if>
+	                        <g:else>
+	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
+	                            	<span class="label label-primary">Ride Seeker</span>
+	                            <g:img dir="images" file="racloop/rider.png" width="100" alt="Ride Seeker" class="img-thumbnail"/>
+	                        	</span>
+		                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+		                            <span class="label label-primary">Ride Seeker</span>
+		                        </span>
+	                        </g:else>
+	                        
 	                    </li>
 	                    <li><i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span></li>
 	                    <li><i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span></li>

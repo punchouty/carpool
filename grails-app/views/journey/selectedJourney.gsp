@@ -30,13 +30,25 @@
             <div class="col-md-2 col-md-offset-2">
                 <ul class="feature-list text-left">
                     <li>
-                        <span class="hidden-lg hidden-md visible-sm visible-xs">
-                            <span class="label label-primary">Car Owner</span>
-                            <img src="/images/racloop/driver-sm.png" alt="Car" class="img-thumbnail"/>
-                        </span>
-                        <span class="hidden-sm hidden-xs visible-lg visible-md">
-                            <span class="label label-primary">Car Owner</span>
-                        </span>
+                        <g:if test = "${matchedJourney.isDriver == true}">
+                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
+                            	<span class="label label-primary">Car Owner</span>
+                            	<g:img dir="images" file="racloop/driver.png"  alt="Ride Seeker" class="img-thumbnail"/>
+                        	</span>
+	                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                            <span class="label label-primary">Car Owner</span>
+	                        </span>
+                        </g:if>
+                        <g:else>
+                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
+                            	<span class="label label-primary">Ride Seeker</span>
+                            	<g:img dir="images" file="racloop/rider.png"  alt="Ride Seeker" class="img-thumbnail"/>
+                        	</span>
+	                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                            <span class="label label-primary">Ride Seeker</span>
+	                        </span>
+                        </g:else>
+                        
                     </li>
                     <li><i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedJourney.dateOfJourney}"/></span></li>
                     <li><i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedJourney.dateOfJourney}"/></span></li>
