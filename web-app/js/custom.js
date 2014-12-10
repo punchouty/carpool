@@ -50,8 +50,7 @@ $(window).resize(function() {
 (function($) {
 
     "use strict";
-
-
+ 
     /*---------------------------------------*/
     /*	MAILCHIMP
 	/*---------------------------------------*/
@@ -99,7 +98,7 @@ $(window).resize(function() {
                 }
             });
         } else {
-            $('.email-error').fadeIn(1000);
+        	$('.email-error').fadeIn(1000);
             $('.email-success').fadeOut(500);
         }
         return false;
@@ -362,3 +361,142 @@ jQuery(window).load(function() {
     });
 
 });
+
+
+(function($) {
+	  /*---------------------------------------*/
+    /*	LOGIN FORM
+	/*---------------------------------------*/
+	
+
+    
+    function isValidEmail(emailAddress) {
+        var pattern = new RegExp(/^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/i);
+        return pattern.test(emailAddress);
+    };
+   
+    function isPhonenumber(inputtxt) {
+      var phoneno = new RegExp(/^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/);
+      if (inputtxt.value.match(phoneno)) {
+          return true;
+      } else {
+            return false;
+      }
+    };     
+    
+    function checkPassword(str)
+    {
+      // at least one number, one lowercase and one uppercase letter
+      // at least six characters
+      var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+      return re.test(str);
+    }
+     
+    $("#login-form").submit(function(e) {
+        var email = $("#cf-email").val();
+        var password = $("#cf-password").val();        
+        
+        
+        if (!isValidEmail(email) || (email.length < 1) ) {
+        	  e.preventDefault();
+        	  $('.email-error').fadeIn(1000);
+              $('.email-success').fadeOut(500);
+        } else if (!password || !checkPassword(password)) {
+        	 e.preventDefault();
+       	     $('.email-error').fadeIn(1000);
+             $('.email-success').fadeOut(500);
+        }
+    });
+    
+    /*---------------------------------------*/
+    /*	SIGNUP FORM
+	/*---------------------------------------*/
+    
+   $("#signup-form").submit(function(e) {
+        var email = $("#cf-email").val();
+        var password = $("#cf-password").val();
+        var confirm = $("#cf-passConfirm").val();
+        var userName = $("#cf-name").val();
+        var mobile =  $("#cf-mobile").val();
+       
+       
+        if ((!isValidEmail(email)) || !email) {
+        	  e.preventDefault();        	  
+        	  $('.email-error').fadeIn(1000);
+              $('.email-success').fadeOut(500);
+        } else if ((!password) || (!isValidPassword(password))){
+        	 e.preventDefault();        	  
+        	 $('.email-error').fadeIn(1000);
+             $('.email-success').fadeOut(500);
+        }  else if ((confirm.length < 1) || (confirm !=password)){
+        	e.preventDefault();        	  
+       	    $('.email-error').fadeIn(1000);
+            $('.email-success').fadeOut(500);
+        } else if ((userName.length < 3) || (userName.length > 100)){
+        	e.preventDefault();        	  
+       	    $('.email-error').fadeIn(1000);
+            $('.email-success').fadeOut(500);
+        } else if ((mobile.length !=10) || !isPhonenumber(mobile)) {
+        	e.preventDefault();        	  
+       	    $('.email-error').fadeIn(1000);
+            $('.email-success').fadeOut(500);
+        } else if(!this.form.checkbox.checked){
+        	e.preventDefault();        	  
+       	    $('.email-error').fadeIn(1000);
+            $('.email-success').fadeOut(500);
+        }
+    });
+    
+   
+   /*---------------------------------------*/
+   /*	CHANGEPASSWORD FORM
+	/*---------------------------------------*/
+   
+  $("#change-password-form").submit(function(e) {
+	  var currentPassword = $("#currentPassword").val();
+	  var newPassword = $("#pass").val();
+	  var passConfirm = $("#passConfirm").val();
+	  
+	  if (!currentPassword || !checkPassword(currentPassword)){
+		  e.preventDefault();        	  
+     	  $('.email-error').fadeIn(1000);
+          $('.email-success').fadeOut(500);
+	  } else if (!newPassword || !checkPassword(newPassword)){
+		 e.preventDefault();        	  
+   	     $('.email-error').fadeIn(1000);
+         $('.email-success').fadeOut(500);
+	  } else if (newPassword != passConfirm) {
+		  e.preventDefault();        	  
+	   	  $('.email-error').fadeIn(1000);
+	      $('.email-success').fadeOut(500);
+	  }
+  });
+  
+  /*---------------------------------------*/
+  /*	EDIT FORM
+	/*---------------------------------------*/
+  
+  $("#edit-form").submit(function(e) {
+	  var email = $("#cf-email").val();
+      var userName = $("#cf-name").val();   
+      var mobile = $("#cf-mobile").val();
+      
+      if(!email || !isValidEmail(email)){
+    	  e.preventDefault();        	  
+	   	  $('.email-error').fadeIn(1000);
+	      $('.email-success').fadeOut(500);
+      } else if(userName.length < 3 ||  userName.length > 100) {
+    	  e.preventDefault();        	  
+	   	  $('.email-error').fadeIn(1000);
+	      $('.email-success').fadeOut(500);
+      } else if(!mobile || !isPhonenumber(mobile)) {
+    	  e.preventDefault();        	  
+	   	  $('.email-error').fadeIn(1000);
+	      $('.email-success').fadeOut(500);
+      }
+  
+  });
+  
+	
+})(jQuery);
+
