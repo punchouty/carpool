@@ -85,9 +85,11 @@
                 </ul>
             </div>
             <div class="col-md-2 text-left">
-                <div>
-                    <img src="${currentUser?.profile?.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
-                </div>
+            	<g:if test = "${currentUser?.profile?.gravatarUri}">
+	                <div>
+	                    <img src="${currentUser?.profile?.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                </div>
+                </g:if>
             </div>
             <span class="clearfix"></span>
         </article>

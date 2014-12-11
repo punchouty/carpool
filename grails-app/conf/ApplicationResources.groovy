@@ -14,7 +14,7 @@ modules = {
 		resource url:'css/colors/blue.css'
 		resource url:'css/racloop.css'
 
-		resource url: 'js/jquery.min.js'
+		resource url: 'js/jquery.min.js', disposition: 'head'
 		resource url: 'js/smoothscroll.js'
 		resource url: 'js/bootstrap.js'
 		resource url: 'js/jquery.nav.js'

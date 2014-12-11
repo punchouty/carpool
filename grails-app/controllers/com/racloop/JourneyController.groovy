@@ -158,7 +158,7 @@ class JourneyController {
 		//redirect(controller: 'staticPage', action: "search")
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney])
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
-		forward action: 'findMatching', params: [currentJourney: currentJourney]
+		forward action: 'findMatching', model: [currentJourney: currentJourney]
 	}
 	
 	/**
@@ -181,7 +181,7 @@ class JourneyController {
 		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
-		forward action: 'findMatching', params: [currentJourney: currentJourney]
+		forward action: 'findMatching', model: [currentJourney: currentJourney]
 	}
 
 	
@@ -252,7 +252,7 @@ class JourneyController {
 	def backToSearchResult() {
 		def currentJourney = session.currentJourney
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
-		forward action: 'findMatching', params: [currentJourney: currentJourney]
+		forward action: 'findMatching', model: [currentJourney: currentJourney]
 	
 	}
 	
@@ -265,7 +265,7 @@ class JourneyController {
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
 		if(params.redirectToSearch) {
 			//chain(action: 'findMatching', model: [currentJourney: session.currentJourney])
-			forward action: 'findMatching', params: [currentJourney: session.currentJourney]
+			forward action: 'findMatching', model: [currentJourney: session.currentJourney]
 		}
 		else {
 			redirect(action: "activeJourneys")
@@ -281,7 +281,7 @@ class JourneyController {
 		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
 		if(params.redirectToSearch) {
 			//chain(action: 'findMatching', model: [currentJourney: session.currentJourney])
-			forward action: 'findMatching', params: [currentJourney: session.currentJourney]
+			forward action: 'findMatching', model: [currentJourney: session.currentJourney]
 		}
 		else {
 			redirect(action: "activeJourneys")
@@ -314,7 +314,7 @@ class JourneyController {
 		}
 		
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
-		forward action: 'findMatching', params: [currentJourney: currentJourney]
+		forward action: 'findMatching', model: [currentJourney: currentJourney]
 	}
 	
 	/**
@@ -347,7 +347,7 @@ class JourneyController {
 	def redoSearch() {
 		def currentJourney = session.currentJourney
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
-		forward action: 'findMatching', params: [currentJourney: currentJourney]
+		forward action: 'findMatching', model: [currentJourney: currentJourney]
 	}
 	
 	/**
@@ -373,7 +373,7 @@ class JourneyController {
 			currentJourney = journeyService.findJourneyById(existingJourneyId, false)
 		}
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
-		forward action: 'findMatching', params: [currentJourney: currentJourney]
+		forward action: 'findMatching', model: [currentJourney: currentJourney]
 		
 	}
 	

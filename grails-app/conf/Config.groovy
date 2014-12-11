@@ -61,6 +61,8 @@ grails.resources.adhoc.patterns = [
 // Legacy setting for codec used to encode data with ${}
 grails.views.default.codec = "html"
 
+grails.resources.debug = true
+
 // The default scope for controllers. May be prototype, session or singleton.
 // If unspecified, controllers are prototype scoped.
 grails.controllers.defaultScope = 'singleton'

@@ -147,7 +147,9 @@
 				<input type="hidden" id="${i}_to_longitude" value="${journeyInstance.toLongitude}">
 	            <div class="col-md-2 text-left">
 	                <div>
-	                    <img src="${currentUser?.profile?.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                	<g:if test = "${currentUser?.profile?.gravatarUri}">
+	                		<img src="${currentUser?.profile?.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                	</g:if>
 	                </div>
 	            </div>
 	            <span class="clearfix"></span>
