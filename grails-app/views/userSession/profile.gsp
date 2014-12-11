@@ -121,16 +121,13 @@
             <!-- VERTICAL REGISTRATION FORM -->
             <div class="row">
                   
-             <g:form controller="userSession" action="editProfile" method="POST"  class="registration-form" id="contact-form">
+             <g:form controller="userSession" action="editProfile" method="POST"  class="registration-form" name="edit-form">
 
-                    <input type="email" id="email" name="email" class="form-control input-box" placeholder="Email" type="email" value="${user.username.encodeAsHTML()}" placeholder="Email" required />
-				    <p id="email-help-block" class="help-block"></p> 
+                    <input type="email" id="cf-email" name="email" class="form-control input-box" placeholder="Email" type="email" value="${user.username.encodeAsHTML()}" placeholder="Email" required />
 
-                    <input type="text" id="fullName" name="fullName" class="form-control input-box" placeholder="Name" value="${user.profile?.fullName?.encodeAsHTML()}"  maxlength="100" minlength="3" required />
-                    <p id="name-help-block" class="help-block"></p>                            
+                    <input type="text" id="cf-name" name="fullName" class="form-control input-box" placeholder="Name" value="${user.profile?.fullName?.encodeAsHTML()}"  maxlength="100" minlength="3" required />
 
-                    <input type="text" id="mobile" name="mobile" class="form-control input-box" placeholder="Mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
-                    <p id="mobile-help-block" class="help-block"></p> 
+                    <input type="text" id="cf-mobile" name="mobile" class="form-control input-box" placeholder="Mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
               
                     
                     

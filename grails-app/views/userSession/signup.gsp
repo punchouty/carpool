@@ -139,25 +139,32 @@
 
                 </div>
                 <div class="col-md-5 pull-right">
-
+					<div class="row">
+		<g:if test="${flash.message != null && flash.message.length() > 0}">			
+		     <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <strong>Success!</strong> <n:flashembed/>
+                </div>		
+		</g:if>
+		<g:hasErrors bean="${user}">			
+				 <div class="alert alert-danger alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <strong>Warning!</strong> <g:renderErrors bean="${user}" as="list" />
+                </div>	
+		</g:hasErrors>	
                     <!-- VERTICAL REGISTRATION FORM -->
                     <div class="vertical-registration-form">                    
-                      <g:form action="saveuser" name="signup-form" method="post"  class="registration-form" id="contact-form">
+                      <g:form action="saveuser" name="signup-form" method="post"  class="registration-form" id="signup-form">
 
-                            <input type="email" id="email" name="email" class="form-control input-box" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" required/>
-							<p id="email-help-block" class="help-block"></p>
+                            <input type="email" id="cf-email" name="email" class="form-control input-box" value="${user.profile?.email?.encodeAsHTML()}" placeholder="Email" required/>
 							
-                            <input type="password" id="pass" name="pass" class="form-control input-box" placeholder="Password" value="${user.pass?.encodeAsHTML()}" data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character" required />
-							<p id="pass-help-block" class="help-block"></p> 
+                            <input type="password" id="cf-password" name="pass" class="form-control input-box" placeholder="Password" value="${user.pass?.encodeAsHTML()}"  required />
 							
-							 <input type="password" id="passConfirm" name="passConfirm" class="form-control input-box" placeholder="Confirm Password" value="${user.pass?.encodeAsHTML()}" data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character" required />
-							<p id="pass-help-block" class="help-block"></p> 
-								
-                            <input type="text" id="fullName" name="fullName" class="form-control input-box" placeholder="Name" value="${user.profile?.fullName?.encodeAsHTML()}" placeholder="Full Name" maxlength="100" minlength="3" required />
-                            <p id="fullName-help-block" class="help-block"></p> 
+							<input type="password" id="cf-passConfirm" name="passConfirm" class="form-control input-box" placeholder="Confirm Password" value="${user.pass?.encodeAsHTML()}"  required />
+						<%--data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character" --%>
+                            <input type="text" id="cf-name" name="fullName" class="form-control input-box" placeholder="Name" value="${user.profile?.fullName?.encodeAsHTML()}" placeholder="Full Name" maxlength="100" minlength="3" required />
                             
-						    <input type="text" id="mobile" name="mobile" class="form-control input-box" placeholder="Mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number" placeholder="Mobile Number">
-                            <p id="mobile-help-block" class="help-block"></p> 
+						    <input type="text" id="cf-mobile" name="mobile" class="form-control input-box" placeholder="Mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number" placeholder="Mobile Number">
                             
                                                         
                             <div class=" text-left">

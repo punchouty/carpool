@@ -5,62 +5,6 @@
 </head>
 <body>
 	<g:set var="isSignin" value="true" scope="request"/>	
-	<%--<div class="row">
-		<div class="col-md-8 jumbobox">
-	        <h1 id="logo">Car Pool</h1>
-	        <p class="lead">Share your Car, Taxi and Auto rides. Save money, Make friends and Contribute to Greener Environment.</p>
-	         <a class="btn btn-large btn-primary" href="${request.contextPath}/signup">Sign up today</a>
-             <div class="row">
-				<div class="col-md-4">
-				<br>
-				    <h4><b>Save Money</b></h4>
-				    <p>It is pocket friendly. Nothing better than some one sharing your commute cost. </p>
-				</div>
-				<div class="col-md-4">
-				<br>
-				    <h4><b>Environment Friendly</b></h4>
-				    <p>Having fewer cars on the road means reduced air pollution and improved air quality. Benefits for generations to come. It also mean reduced traffic congestion that will save time for all of us.</p>
-				</div>
-				<div class="col-md-4">
-				    <br>
-				    <h4><b>Make New Friends</b></h4>
-				    <p>Car pool provide you new avenue of friendships and company for your commute. Drive Together.</p>
-				</div></br>
-		      </div>
-		</div>
-		<div class="col-md-4 well">
-			<h2>Sign In</h2>
-			<g:if test="${flash.message != null && flash.message.length() > 0}">
-			<div id="flash-message" class="alert alert-danger">
-                <a class="close" data-dismiss="alert" href="#">×</a>
-                <n:flashembed/>
-            </div>
-            </g:if>
-			<g:form action="signin"  controller="auth" name="login-form" method="post">
-				<input type="hidden" name="targetUri" value="${targetUri}" />
-	            <div class="control-group">
-					<label class="control-label">Email</label>
-					<input type="text" name="username" id="username" placeholder="email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Username is required field" class="form-control" required />
-	      			<p class="help-block"></p>
-	      		</div>
-	      		
-				<div class="control-group">
-					<label class="control-label">Password</label>
-					<input type="password" name="password" id="password" placeholder="Password" data-validation-required-message="Password is required field" class="form-control" required />
-	      			<p class="help-block"></p>
-	      		</div>
-	            <label class="checkbox">
-	            	<g:checkBox name="rememberme" value="${rememberme}" /> Remember Me
-	            </label>
-				<button type="submit" name="submit" class="btn btn-large btn-primary">Sign In</button>
-			</g:form>    
-			<br>       
-            <a href="${request.contextPath}/password/forgot">Forgot Password</a></br>
-		</div>
-	</div>
---%>
-
-
 
 <!-- CONTAINER -->
             <div class="container">
@@ -84,36 +28,25 @@
 
                 </div>
                 <div class="col-md-5 pull-right">
-					<div class="vertical-registration-form">
-                    <!-- VERTICAL REGISTRATION FORM 
-                    <div class="vertical-registration-form">
-
-                        <form class="registration-form" id="contact-form">
-
-                            <input type="email" id="cf-email" name="email" class="form-control input-box" placeholder="Email">
-
-                            <input type="password" id="cf-password" name="name" class="form-control input-box" placeholder="Password">
-
-                            <div class="checkbox  text-left">
-                                <label>
-                                    <input type="checkbox" value="">
-                                    Remember me
-                                </label>
-                            </div>
-                            <button class="btn btn-primary standard-button">Login</button>
-
-                        </form>-->
+                <div class="row">
+                 <g:if test="${flash.message != null && flash.message.length() > 0}">
+         		   <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                    <strong>Warning!</strong> <n:flashembed/>
+                  </div>		
+        		    </g:if>
+                </div>
+					<div class="vertical-registration-form">                   
                         
                         
                         
                <g:form action="signin"  controller="auth" name="login-form" method="post" class="registration-form" id="contact-form">
+				
 				<input type="hidden" name="targetUri" value="${targetUri}" />
 	           
-	            <input type="email" id="username" name="username"  class="form-control input-box" placeholder="Email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Username is required field" required>
-	      			<p class="help-block"></p>            		
+	            <input type="email" id="cf-email" name="username"  class="form-control input-box" placeholder="Email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Username is required field" required>
 				
-					<input type="password" name="password" id="password" class="form-control input-box" placeholder="Password" data-validation-required-message="Password is required field"  required />
-	      			<p class="help-block"></p>
+				<input type="password" name="password" id="cf-password" class="form-control input-box" placeholder="Password" data-validation-required-message="Password is required field"  required />
 	      		
 	      		
 	      		<div class="checkbox  text-left">
@@ -124,13 +57,10 @@
 				<button type="submit" name="submit" class="btn standard-button btn-primary">Sign In</button>
 			</g:form>    
                         
-                        
-                        
-                        
-                        
 
                         <!-- FORM SUBMIT SUCCESS / ERROR MESSAGES -->
-                        <p class="email-success dark-text small-text"><span class="icon-check-alt2 colored-text"></span>Email sent seuccessfully</p>
+                   
+                        <p class="email-success dark-text small-text"><span class="icon-check-alt2 colored-text"></span>Email sent successfully</p>
                         <p class="email-error dark-text small-text"><span class="icon-close-alt2"></span>Error! Please check all fields filled correctly</p>
                         <!-- MAILCHIMP ALERTS
                 <p class="mailchimp-success dark-text"><span class="icon-check-alt2 colored-text"></span>We sent the confirmation to your email</p>
