@@ -34,24 +34,24 @@
                                     </thead>
                                     <tbody>
 	                                    <tr>
-	                                        <td>From : </td>
-	                                        <td>${currentJourney.fromPlace}</td>
-	                                        <td>${existingJourney.fromPlace}</td>
+	                                        <td class="text-left">From : </td>
+	                                        <td class="text-left">${currentJourney.fromPlace}</td>
+	                                        <td class="text-left">${existingJourney.fromPlace}</td>
 	                                    </tr>
 	                                    <tr>
-	                                        <td>To : </td>
-	                                        <td>${currentJourney.toPlace}</td>
-	                                        <td>${existingJourney.toPlace}</td>
+	                                        <td class="text-left">To : </td>
+	                                        <td class="text-left">${currentJourney.toPlace}</td>
+	                                        <td class="text-left">${existingJourney.toPlace}</td>
 	                                    </tr>
 	                                    <tr>
-	                                        <td>Date : </td>
-	                                        <td>${currentJourney.dateOfJourney}</td>
-	                                        <td>${existingJourney.dateOfJourney}</td>
+	                                        <td class="text-left">Date : </td>
+	                                        <td class="text-left">${currentJourney.dateOfJourney}</td>
+	                                        <td class="text-left">${existingJourney.dateOfJourney}</td>
 	                                    </tr>
 	                                    <tr>
-	                                        <td>Driving : </td>
-	                                        <td>${currentJourney.isDriver?'Yes ':'No '}</td>
-	                                        <td>${existingJourney.isDriver?'Yes ':'No '}</td>
+	                                        <td class="text-left">Driving : </td>
+	                                        <td class="text-left">${currentJourney.isDriver?'Yes ':'No '}</td>
+	                                        <td class="text-left">${existingJourney.isDriver?'Yes ':'No '}</td>
 	                                    </tr>
                                     
                                     </tbody>
@@ -81,24 +81,26 @@
 							</div>
 						</div>
 					</div>
+					
+					<div class="col-md-5 text-left">
+						<ul class="text-left">
+		                    <li>
+		                    	<a id="sendRequest" href="#"  data-target="#myModal">
+			                        <button id ="sendRequest"class="btn  btn-primary" type="button"
+			                                data-toggle="tooltip"
+			                                data-original-title="Send message to user"><i class="icon-aim"></i> Send Request</button>
+								</a> 
+		                    	 <g:link action="search" id="backToSearchResult" controller="userSession">                        	
+	                            	<button id ="back" class="btn btn-danger" type="button"
+	                                    data-toggle="tooltip"
+	                                    data-original-title="Edit this user"><i class="icon-arrows-remove"></i>Back to Search</button>
+	                            </g:link> 
+		                    	
+		                    </li>
+	                	</ul>
+					</div>
                     
-                    <div class="panel-footer">
-                    	
-                    	<a id="sendRequest" href="#"  data-target="#myModal">
-	                        <button id ="sendRequest"class="btn  btn-primary" type="button"
-	                                data-toggle="tooltip"
-	                                data-original-title="Send message to user">Send Request <i class="icon-envelope icon-white"></i></button>
-						</a> 
-						                            
-                        <span class="pull-right">
-							<g:link action="search" id="backToSearchResult" controller="userSession">                        	
-                            <button id ="back" class="btn btn-default" type="button"
-                                    data-toggle="tooltip"
-                                    data-original-title="Edit this user">Back to Search <i class="icon-share-alt icon-white"></i></button>
-                            </g:link>        
-                            
-                        </span>
-                    </div>
+                    
                 </div>
             </div>
           
