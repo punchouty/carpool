@@ -122,7 +122,10 @@
                    <div class="long-transparent-line">
                    </div>
                    <p class="white-text">
-                       Help us to make a difference - <a href="${request.contextPath}/signup" class="strong inpage-scroll">Sign Up Now »</a>
+                       Help us to make a difference 
+                       <n:isNotLoggedIn>
+                       - <a href="${request.contextPath}/signup" class="strong inpage-scroll">Sign Up Now »</a>
+                       </n:isNotLoggedIn>
                    </p>
                </div>
 

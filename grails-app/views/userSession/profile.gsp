@@ -139,7 +139,7 @@
                             <input type="radio" name="sex" id="inlineRadio2" value="female" <g:if test="${!user?.profile?.isMale}">checked</g:if> /> Female
                         </label>
                     </div>
-                    <button id="edit-profile-button" type="submit" value="Update Profile"  class="btn btn-primary standard-button">Register</button>
+                    <button id="edit-profile-button" type="submit" value="Update Profile"  class="btn btn-primary standard-button">UPDATE</button>
                 </g:form>
 
                 <!-- FORM SUBMIT SUCCESS / ERROR MESSAGES -->
