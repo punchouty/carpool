@@ -56,7 +56,7 @@
                             </div>	          
 				<button type="submit" name="submit" class="btn standard-button btn-primary">Sign In</button>
 			</g:form>    
-                        
+                <a href="${request.contextPath}/password/forgot" >Forgot Password</a>     
 
                         <!-- FORM SUBMIT SUCCESS / ERROR MESSAGES -->
                    
