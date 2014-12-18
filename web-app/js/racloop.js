@@ -1,3 +1,4 @@
+/*
 $(function() {
     $(".form_datetime").datetimepicker({
         format: "dd M yy HH:ii P",
@@ -17,3 +18,4 @@ $(function() {
         }
     });
 });
+*/

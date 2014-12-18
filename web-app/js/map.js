@@ -199,28 +199,19 @@ var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);
 //This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
 $('#validStartTimeString').val(validStartTime.toString('dd MMMM yyyy    hh:mm tt'));
 
-var picker;
 $(function() {
-//	$('#travelDateDiv').datetimepicker({
-//		language : 'pt-BR',
-//	    pick12HourFormat: false,
-//		pickSeconds : false,
-//		startDate : initialTime,
-//		format : 'dd/MM/yyyy hh:mm'
-//	});
-//	picker = $('#travelDateDiv').data('datetimepicker');
-//	picker.setLocalDate(initialTime);
 	$('#dateOfJourneyString').datetimepicker({
-        //language:  'fr',
         weekStart: 1,
         todayBtn:  0,
-		autoclose: 1,
-		todayHighlight: 1,
-		startView: 2,
-		forceParse: 0,
-        showMeridian: 1,
+		autoclose: true,
+        minuteStep: 15,
+        showMeridian: true,
+        pickerPosition: "top-left",
         startDate: new Date(),
-        format: 'dd MM yyyy    HH:ii P'
+        format: 'dd M yy HH:ii P'
+        //format: 'dd MM yyyy    HH:ii P'
+    }).on('changeDate', function(ev){
+    	alert(ev.date);
     });
 });
 
