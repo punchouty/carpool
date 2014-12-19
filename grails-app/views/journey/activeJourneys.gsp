@@ -127,7 +127,7 @@ $(document).ready(function($){
                 	<g:each in="${journeyInstance.outgoingRequests}" status="j" var="requestWorkflowInstance">
                 		<div class="row">
                    			<div class="col-md-7 col-md-offset-2 text-left">
-	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${matchedWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
+	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${requestWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
 	                            <ul class="text-left">
 	                                <li>
 		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isRequesterDriving == true}">
