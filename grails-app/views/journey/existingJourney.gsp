@@ -12,100 +12,63 @@
 	</div>
 	</g:if>
 	<g:form name="existingJourneyFound" controller="journey" action="searchWithExistingJourney" class="form-inline">
-	<div class="row user-infos cyruxx">
+		<section class="white-bg" id="section10">
+	        <div class="container">
 	
-            <div class="col-md-10 offset1">
-                <div class="panel panel-primary">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Existing Journey Found!</h3>
+	            <!-- SECTION HEADER -->
+	            <div class="section-header-racloop">
+	                <div class="small-text-medium uppercase colored-text">
+	                    Search Results
+	                </div>
+	                <h2 class="dark-text"><strong>Similar</strong> Request Found</h2>
+	                <div class="colored-line">
+	                </div>
+	            </div>
+	        </div>
+    	</section>
+    	<div class="container">
+            <div class="row">
+                 <div class="col-md-5 col-md-offset-1 text-left">
+                    <h4>Previous</h4>
+                    <div>
+                        <ul class="text-left">
+                            <li>
+	                            <span class="label label-primary">Car Owner</span> 
+	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${existingJourney.dateOfJourney}"/></span>
+	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${existingJourney.dateOfJourney}"/></span>
+                            </li>
+                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${existingJourney.fromPlace}</li>
+                            <li><i class="icon-basic-map"></i> <strong>To :</strong>${existingJourney.toPlace}</li>
+                        </ul>
                     </div>
-                    <div class="panel-body">
-                        <div class="row-fluid">
-                            
-                            <div class="col-md-12">
-                            	
-                                <table class="table table-condensed table-responsive table-user-information">
-                                    <thead>
-	                                    <tr>
-	                                        <th class="col-md-1"></th>
-	                                        <th class="col-md-4">New Journey</th>
-	                                        <th class="col-md-4">Existing Journey</th>
-	                                    </tr>
-                                    </thead>
-                                    <tbody>
-	                                    <tr>
-	                                        <td class="text-left">From : </td>
-	                                        <td class="text-left">${currentJourney.fromPlace}</td>
-	                                        <td class="text-left">${existingJourney.fromPlace}</td>
-	                                    </tr>
-	                                    <tr>
-	                                        <td class="text-left">To : </td>
-	                                        <td class="text-left">${currentJourney.toPlace}</td>
-	                                        <td class="text-left">${existingJourney.toPlace}</td>
-	                                    </tr>
-	                                    <tr>
-	                                        <td class="text-left">Date : </td>
-	                                        <td class="text-left">${currentJourney.dateOfJourney}</td>
-	                                        <td class="text-left">${existingJourney.dateOfJourney}</td>
-	                                    </tr>
-	                                    <tr>
-	                                        <td class="text-left">Driving : </td>
-	                                        <td class="text-left">${currentJourney.isDriver?'Yes ':'No '}</td>
-	                                        <td class="text-left">${existingJourney.isDriver?'Yes ':'No '}</td>
-	                                    </tr>
-                                    
-                                    </tbody>
-                                </table>
-                            </div>
-                            
-                        </div>
-                        
-                        
+                </div>
+                <div class="col-md-5 text-left">
+                    <h4>New</h4>
+                    <div>
+                        <ul class="text-left">
+                            <li>
+	                            <span class="label label-primary">Car Owner</span> 
+	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${currentJourney.dateOfJourney}"/></span>
+	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${currentJourney.dateOfJourney}"/></span>
+                            </li>
+                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${currentJourney.fromPlace}</li>
+                            <li><i class="icon-basic-map"></i> <strong>To :</strong>${currentJourney.toPlace}</li>
+                        </ul>
                     </div>
-                    <div class="row-fluid">
-                    	 <div class="col-md-12">
-                    	 	<div class="panel-body">
-                    	 	<strong>Please select your options</strong><br><br>
-                    		
-							  <label  class="radio-inline">
-							    <input type="radio" name="optionsRadios" id="optionsRadios1" value="existingJourney" checked >
-							    Please use existing journey
-							  </label>
-							
-							
-							  <label  class="radio-inline">
-							    <input type="radio" name="optionsRadios" id="optionsRadios2" value="newJourney">
-							    No, I want to put in a new journey request.
-							  </label>
-							
-							</div>
-						</div>
-					</div>
-					
-					<div class="col-md-5 text-left">
-						<ul class="text-left">
-		                    <li>
-		                    	<a id="sendRequest" href="#"  data-target="#myModal">
-			                        <button id ="sendRequest"class="btn  btn-primary" type="button"
-			                                data-toggle="tooltip"
-			                                data-original-title="Send message to user"><i class="icon-aim"></i> Send Request</button>
-								</a> 
-		                    	 <g:link action="search" id="backToSearchResult" controller="userSession">                        	
-	                            	<button id ="back" class="btn btn-danger" type="button"
-	                                    data-toggle="tooltip"
-	                                    data-original-title="Edit this user"><i class="icon-arrows-remove"></i>Back to Search</button>
-	                            </g:link> 
-		                    	
-		                    </li>
-	                	</ul>
-					</div>
-                    
-                    
                 </div>
             </div>
-          
-	</div>
-	<g:hiddenField name="existingJourneyId" value="${existingJourney.id}"/>
+            <div class="row">
+            	<button id ="useExisting" class="btn btn-primary">Use Existing</button> &nbsp;
+            	<a id="useNew" href="#"  data-target="#myModal">
+	                <button id ="useNew"class="btn  btn-primary" type="button" data-toggle="tooltip" data-original-title="Confirm Cancellation">Use New</button>&nbsp; 
+				</a> 
+            	<g:link action="search" id="backToSearchResult" controller="userSession">                        	
+	               	<button id ="back" class="btn btn-warning" type="button">Back to Search</button>
+                </g:link> 
+            </div>
+    	</div>
+    
+    <g:hiddenField name="existingJourneyId" value="${existingJourney.id}"/>
 	
 	<g:hiddenField name="toPlace" value="${currentJourney.toPlace}"/>
 	<g:hiddenField name="fromPlace" value="${currentJourney.fromPlace}"/>
@@ -121,6 +84,7 @@
 	<g:hiddenField name="isDriver" value="${currentJourney.isDriver}"/>
 	<g:hiddenField name="tripDistance" value="${currentJourney.tripDistance}"/>
 	<g:hiddenField name="tripUnit" value="${currentJourney.tripUnit}"/>
+	<g:hiddenField name="newJourney"/>
 	
 	</g:form>
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -163,18 +127,19 @@
 $(document).ready(function($){
     //var val = $(':radio[name=rdo_1]:checked').val();
     
-    $('#sendRequest').click(function(){
-    	var val = $("input[name=optionsRadios]:checked").val();
-    	if(val=='newJourney'){	
-    		$('#myModal').modal('show');
-			
-		}
-		else {
-			$('#existingJourneyFound').submit();
-		}
+    $('#useExisting').click(function(){
+        alert("Existing");
+    	$('#existingJourneyFound').submit();	
+
+    });
+    $('#useNew').click(function(){
+    	alert("New");
+    	$('#myModal').modal('show');
 
     });
     $('#Confirmed').click(function(){
+    	alert("Confirms");
+   		$('#newJourney').val("newJourney");  
       $('#existingJourneyFound').submit();
     });
       

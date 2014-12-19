@@ -3,18 +3,6 @@
 <head>
 <meta name="layout" content="static" />
 <title>My Active Journeys</title>
-<script type="text/javascript">
-$(document).ready(function($){
-	$('a[name=delete]').click(function(){
-        var jourenyId = $(this).data('id');
-        $("#journeyIdToBeDeleted").val(jourenyId);
-    	$('#myModal').modal({show:true});
-    });
-   $('#Confirmed').click(function(){
-    	$('#deleteJourneyForm').submit();
-    });    	
-});
-</script>
 <style>
 .modal-header {
     background-color: #f2dede;
@@ -199,5 +187,17 @@ $(document).ready(function($){
 	    </div>
 	  </div>
 	</div>
+	<script type="text/javascript">
+		$(document).ready(function($){
+			$('a[name=delete]').click(function(){
+		        var jourenyId = $(this).data('id');
+		        $("#journeyIdToBeDeleted").val(jourenyId);
+		    	$('#myModal').modal({show:true});
+		    });
+		   $('#Confirmed').click(function(){
+		    	$('#deleteJourneyForm').submit();
+		    });    	
+		});
+	</script>
 </body>
 </html>

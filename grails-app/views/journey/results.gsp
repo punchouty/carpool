@@ -4,13 +4,6 @@
 <head>
 <meta name="layout" content="static" />
 <title>Search Results -  ${searchResults.numberOfRecords} records returned</title>
-<script type="text/javascript">
-        $(document).ready(function () {
-            $("#results").dataTable({
-            	"aaSorting": []
-            });
-        });
-        </script>
 </head>
 <body>
 	<g:set var="isHome" value="true" scope="request" />
@@ -166,6 +159,13 @@
 	<g:hiddenField name="user_mobile" value="${currentUser?.profile?.mobile}" />
 	<g:hiddenField name="user_email" value="${currentUser?.profile?.email}" />
 	<g:hiddenField name="numberOfRecords" value="${numberOfRecords}" />
+	<script type="text/javascript">
+        $(document).ready(function () {
+            $("#results").dataTable({
+            	"aaSorting": []
+            });
+        });
+     </script>
 </body>
 </html>  
       

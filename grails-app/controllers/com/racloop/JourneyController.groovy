@@ -362,12 +362,12 @@ class JourneyController {
 	
 	def searchWithExistingJourney() {
 		def existingJourneyId = params.existingJourneyId
-		def newJourney = params.optionsRadios
+		def newJourney = params.newJourney
 		def currentJourney
 		if("newJourney".equals(newJourney)) {
 			journeyManagerService.deleteJourney(existingJourneyId)
 			currentJourney = new JourneyRequestCommand()
-			bindData(currentJourney, params, [exclude: ['existingJourneyId']])
+			bindData(currentJourney, params, [exclude: ['existingJourneyId', 'newJourney']])
 		}
 		else {
 			currentJourney = journeyService.findJourneyById(existingJourneyId, false)
