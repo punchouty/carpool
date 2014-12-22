@@ -255,7 +255,7 @@ class ElasticSearchService {
 		
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey);
 		FieldSortBuilder startTimeSorter = getJourneyStartTimeSorter()
-		return searchJourney(indexName, [searchTypeOpposite] as String[], filter , sorter, startTimeSorter)
+		return searchJourney(indexName, [TYPE_DRIVER,TYPE_RIDER] as String[], filter , sorter, startTimeSorter)
 	}
 
 	private GeoDistanceSortBuilder getJourneyFromGeoDistanceSorter(JourneyRequestCommand journey) {
@@ -323,7 +323,7 @@ class ElasticSearchService {
 			getFilterOnJourneyToPositon(journey, filterDistance)			
 		);
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey)
-		return searchJourney(indexName, [searchTypeOpposite] as String[], filter, sorter)
+		return searchJourney(indexName, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, sorter)
 		
 	}
 	
