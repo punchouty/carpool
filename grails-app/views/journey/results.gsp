@@ -30,7 +30,7 @@
                 <h2 class="dark-text"><strong>Search</strong> Results</h2>
                 <div class="colored-line">
                 </div>
-                <div class="sub-heading text-left">
+                <div class="sub-heading ">
                 	<g:if test = "${currentJourney.isDriver == true}">
                 		<span class="label label-primary">Car Owner</span>
                 	</g:if>
@@ -141,8 +141,11 @@
 	            <div class="col-md-2 text-left">
 	                <div>
 	                	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                		<img src="${currentUser?.profile?.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                		<img src="${currentUser?.profile?.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
 	                	</g:if>
+	                	<g:else>
+	                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
+	                	</g:else>
 	                </div>
 	            </div>
 	            <span class="clearfix"></span>
