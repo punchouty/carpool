@@ -504,7 +504,7 @@ class MobileController {
 		boolean isDummy =json?.isDummy
 		def currentJourney = journeyService.findJourneyById(myJourneyId, false)
 		def matchedJourneyId = json?.matchedJourneyId	
-		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
+		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, isDummy)
 		def matchedUser = User.findByUsername(matchedJourney.user)
 		
 		jsonMessage = "Successfully executed requestService"

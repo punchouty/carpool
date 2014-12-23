@@ -472,33 +472,16 @@ class ElasticSearchService {
 		return builder;
 	}
 	
-	
-	
-	def findJourneyById(String matchedJourneyId , JourneyRequestCommand currentJourney, boolean isDummyData) {
-		String indexName = resolveIndexName(isDummyData) 
-		
-		String searchTypeOpposite = null;
-		if(currentJourney.isDriver) {
-			searchTypeOpposite = TYPE_RIDER;
-		}
-		else {
-			searchTypeOpposite = TYPE_DRIVER;
-		}
-		GetResponse response = node.client.prepareGet(indexName, searchTypeOpposite, matchedJourneyId).execute().actionGet();
-		JourneyRequestCommand journeyTemp = parseJourneyFromGetResponse(response)
-		return journeyTemp
-	}
-	
-	def findJounreyById(String journeyId, String indexName) {
+	def findJourneyById(String journeyId, String indexName) {
 		GetResponse response =node.client().prepareGet().setId(journeyId).setIndex(indexName).execute().actionGet();
 		//GetResponse response = node.client.prepareGet(indexName, indexType, journeyId).execute().actionGet();
 		JourneyRequestCommand journeyTemp = parseJourneyFromGetResponse(response)
 		return journeyTemp
 	}
 	
-	def findJounreyById(String journeyId, boolean isDummyData) {
+	def findJourneyById(String journeyId, boolean isDummyData) {
 		String indexName = resolveIndexName(isDummyData)
-		return findJounreyById(journeyId, indexName)
+		return findJourneyById(journeyId, indexName)
 	}
 	
 	public void markJourneyAsDeleted(JourneyRequestCommand journey) {
@@ -799,5 +782,24 @@ class ElasticSearchService {
 			log.error "Index name ${indexName} does not exists"
 		}
 		return hits
+	}
+	
+	def findAllJourneysForUserBeforeADate(User user, DateTime inputDate) {
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.rangeFilter("dateOfJourney").lte(inputDate),
+			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username),
+				getFilterOnDeletedJourney())
+			
+		)
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
+		sorter.order(SortOrder.DESC);
+		def journeys = []
+		SearchHit[] hits = queryDocument(JOURNEY, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 100, sorter)
+		for (SearchHit searchHit : hits) {
+			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
+			journeys << journeyTemp
+		}
+		
+		return journeys
 	}
 }

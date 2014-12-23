@@ -41,8 +41,11 @@
                                 <a href="${request.contextPath}/search"><i class="icon-basic-magnifier"></i> Search</a>
                             </li>
                             <li class="login">
-                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Requests</a>
-                            </li>
+	                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Active Requests</a>
+	                        </li>
+	                        <li class="login">
+	                                <a href="${request.contextPath}/history"><i class="icon-basic-calendar"></i> My Past Requests</a>
+	                        </li>
                             <li class="login dropdown">
                                 <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
                                     <i class="icon-man-people-streamline-user"></i> ${currentUser.profile.fullName}

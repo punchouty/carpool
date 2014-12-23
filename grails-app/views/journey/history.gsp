@@ -1,302 +1,130 @@
+<%@ page import="com.racloop.journey.workkflow.WorkflowState" %>
 <html>
 <head>
 <meta name="layout" content="static" />
-<title>My Active Journeys</title>
+<title>My Past Journeys</title>
 </head>
-<body>
-	<g:set var="isHistory" value="true" scope="request" />
-	<h2>History</h2>
-	<g:if test="${journeys?.size > 0}">
-	<div class="row">
-		<div class="accordion" id="accordion1">
-		
-		<div class="accordion-group"> <!-- Repete Element -->
-   			<div class="accordion-heading ">
-                 	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#journey1">
-                 		<i class="icon-calendar"></i> Feb 16th, 4:20 pm
-					| <i class="icon-bell"></i> Incoming Requests <strong>(3)</strong>
-				  	| <i class="icon-comment"></i> Outgoing Responses <strong>(2)</strong>
-				  	| Show Details
-                 	</a>        				
-   			</div> <!-- accordion-heading ENDS  -->
-   			<div id="journey1" class="accordion-body collapse">
-   				<div class="accordion-inner">
-				   <div>
-				     <blockquote>
-				       <p>Driving <span class="label label-inverse">Expired</span></p>
-				       <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India </cite></small>
-				       <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India </cite></small>
-				       <button class="btn btn-success"><i class="icon-refresh icon-white"></i> Search Again </button>
-				     </blockquote>
-				   </div>
-		   		<div>
-			    <ul class="nav nav-tabs">
-				  <li class="active"><a href="#journey1_notfications"  data-toggle="tab"><i class="icon-bell"></i> Incoming Requests <span class="badge badge-info">4</span></a></li>
-				  <li><a href="#journey1_responses"  data-toggle="tab"><i class="icon-comment"></i> Outgoing Responses <span class="badge badge-info">4</span></a></li>
-				</ul>
-				<div class="tab-content">
-  					<div class="tab-pane active in" id="journey1_notfications">
-  						<table class="table table-striped table-condensed">
-       						<thead>
-       							<tr>
-       								<th>Name <i class="icon-user"></i></th>
-       								<th>Route <i class="icon-road"></i></th>
-       								<th>Time <i class="icon-calendar"></i></th>
-       								<th>Status <i class=" icon-info-sign"></i></th>
-       								<th></th>
-       							</tr>
-       						</thead>
-	       						<tbody>
-	       							<tr>
-	       								<td>Sample User 1</td>
-	       								<td>
-	       									<div>
-										      <blockquote>
-										        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-										        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-										      </blockquote>
-										    </div>
-	       								</td>
-	       								<td>Sept 16th, 4:30 pm</td>
-	       								<td><span class="label label-inverse">Expired</span></td>
-	       								<td>
-	       								</td>
-	       							</tr>
-	       							<tr>
-	       								<td>Sample User 2</td>
-	       								<td>
-	       									<div>
-										      <blockquote>
-										        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-										        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-										      </blockquote>
-										    </div>
-										</td>
-	       								<td>Sept 16th, 4:30 pm</td>
-	       								<td><span class="label label-inverse">Expired</span></td>
-	       								<td>
-	       								</td>
-	       							</tr>
-		       							<tr>
-		       								<td>Sample User 3</td>
-		       								<td>
-		       									<div>
-											      <blockquote>
-											        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-											        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-											      </blockquote>
-											    </div>
-		       								</td>
-		       								<td>Sept 16th, 4:30 pm</td>
-		       								<td><span class="label label-inverse">Expired</span></td>
-		       								<td>			            									
-		       									
-		       								</td>
-		       							</tr>
-		       						</tbody>
-		       					</table>
-           					</div>
-           					<div class="tab-pane in" id="journey1_responses">
-           						<table class="table table-striped table-condensed">
-		       						<thead>
-		       							<tr>
-		       								<th>Name <i class="icon-user"></i></th>
-		       								<th>Route <i class="icon-road"></i></th>
-		       								<th>Time <i class="icon-calendar"></i></th>
-		       								<th>Status <i class=" icon-info-sign"></i></th>
-		       								<th></th>
-		       							</tr>
-		       						</thead>
-		       						<tbody>
-		       							<tr>
-		       								<td>Sample User 5</td>
-		       								<td>
-		       									<div>
-											      <blockquote>
-											        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-											        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-											      </blockquote>
-											    </div>
-		       								</td>
-		       								<td>Sept 16th, 4:30 pm</td>
-		       								<td><span class="label label-inverse">Expired</span></td>
-		       								<td>
-		       								</td>
-		       							</tr>
-		       							<tr>
-		       								<td>Sample User 6</td>
-		       								<td>
-		       									<div>
-											      <blockquote>
-											        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-											        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-											      </blockquote>
-											    </div>
-											</td>
-		       								<td>Sept 16th, 4:30 pm</td>
-		       								<td><span class="label label-inverse">Expired</span></td>
-		       								<td>
-		       								</td>
-		       							</tr>
-		       						</tbody>
-		       					</table>
-           					</div>
-           				</div>
-					</div>
-   				</div>
-   			</div> <!-- accordion-body ENDS  -->
-   		</div><!-- accordian-group ENDS -->
-   		
-   		<div class="accordion-group"> <!-- Repete Element -->
-   			<div class="accordion-heading ">
-                 	<a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion1" href="#journey2">
-                 		<i class="icon-calendar"></i> Feb 26th, 4:20 pm
-					| <i class="icon-bell"></i> Incoming Requests <strong>(3)</strong>
-				  	| <i class="icon-comment"></i> Outgoing Responses <strong>(2)</strong>
-				  	| Show Details
-                 	</a>        				
-   			</div> <!-- accordion-heading ENDS  -->
-   			<div id="journey2" class="accordion-body collapse">
-   				<div class="accordion-inner">
-				   <div>
-				     <blockquote>
-				       <p>Driving <span class="label label-inverse">Expired</span></p>
-				       <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India </cite></small>
-				       <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India </cite></small>
-				       <button class="btn btn-success"><i class="icon-refresh icon-white"></i> Search Again </button>
-				     </blockquote>
-				   </div>
-		   		<div>
-			    <ul class="nav nav-tabs">
-				  <li class="active"><a href="#journey2_notfications"  data-toggle="tab"><i class="icon-bell"></i> Incoming Requests <span class="badge badge-info">4</span></a></li>
-				  <li><a href="#journey2_responses"  data-toggle="tab"><i class="icon-comment"></i> Outgoing Responses <span class="badge badge-info">4</span></a></li>
-				</ul>
-				<div class="tab-content">
-  					<div class="tab-pane active in" id="journey2_notfications">
-  						<table class="table table-striped table-condensed">
-       						<thead>
-       							<tr>
-       								<th>Name <i class="icon-user"></i></th>
-       								<th>Route <i class="icon-road"></i></th>
-       								<th>Time <i class="icon-calendar"></i></th>
-       								<th>Status <i class=" icon-info-sign"></i></th>
-       								<th></th>
-       							</tr>
-       						</thead>
-	       						<tbody>
-	       							<tr>
-	       								<td>Sample User 1</td>
-	       								<td>
-	       									<div>
-										      <blockquote>
-										        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-										        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-										      </blockquote>
-										    </div>
-	       								</td>
-	       								<td>Sept 16th, 4:30 pm</td>
-	       								<td><span class="label label-inverse">Expired</span></td>
-	       								<td>
-	       								</td>
-	       							</tr>
-	       							<tr>
-	       								<td>Sample User 2</td>
-	       								<td>
-	       									<div>
-										      <blockquote>
-										        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-										        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-										      </blockquote>
-										    </div>
-										</td>
-	       								<td>Sept 16th, 4:30 pm</td>
-	       								<td><span class="label label-inverse">Expired</span></td>
-	       								<td>
-	       								</td>
-	       							</tr>
-		       							<tr>
-		       								<td>Sample User 3</td>
-		       								<td>
-		       									<div>
-											      <blockquote>
-											        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-											        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-											      </blockquote>
-											    </div>
-		       								</td>
-		       								<td>Sept 16th, 4:30 pm</td>
-		       								<td><span class="label label-inverse">Expired</span></td>
-		       								<td>			            									
-		       									
-		       								</td>
-		       							</tr>
-		       						</tbody>
-		       					</table>
-           					</div>
-           					<div class="tab-pane in" id="journey2_responses">
-           						<table class="table table-striped table-condensed">
-		       						<thead>
-		       							<tr>
-		       								<th>Name <i class="icon-user"></i></th>
-		       								<th>Route <i class="icon-road"></i></th>
-		       								<th>Time <i class="icon-calendar"></i></th>
-		       								<th>Status <i class=" icon-info-sign"></i></th>
-		       								<th></th>
-		       							</tr>
-		       						</thead>
-		       						<tbody>
-		       							<tr>
-		       								<td>Sample User 5</td>
-		       								<td>
-		       									<div>
-											      <blockquote>
-											        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-											        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-											      </blockquote>
-											    </div>
-		       								</td>
-		       								<td>Sept 16th, 4:30 pm</td>
-		       								<td><span class="label label-inverse">Expired</span></td>
-		       								<td>
-		       								</td>
-		       							</tr>
-		       							<tr>
-		       								<td>Sample User 6</td>
-		       								<td>
-		       									<div>
-											      <blockquote>
-											        <small><i class="icon-home"></i> From : <cite title="Source Title">Rajiv Chownk, New Delhi, India  </cite></small>
-											        <small><i class="icon-map-marker"></i> To : <cite title="Source Title">Sector 47, Chandigarh India  </cite></small>
-											      </blockquote>
-											    </div>
-											</td>
-		       								<td>Sept 16th, 4:30 pm</td>
-		       								<td><span class="label label-inverse">Expired</span></td>
-		       								<td>
-		       								</td>
-		       							</tr>
-		       						</tbody>
-		       					</table>
-           					</div>
-           				</div>
-					</div>
-   				</div>
-   			</div> <!-- accordion-body ENDS  -->
-   		</div><!-- accordian-group ENDS -->
-   		
-   		</div><!-- accordian ENDS -->
-	</div><!-- row ENDS  -->
-	</g:if>
-	<g:else>
-		<div class="well">
-			<h4>No Records Found</h4>
-		</div>
-		<g:if env="development">
-			<div class="alert">
-			  <button type="button" class="close" data-dismiss="alert">&times;</button>
-			  <strong>Important Note!</strong> Look at history.gsp for sample html code and then remove this html snippet
-			</div>
-		</g:if>
-	</g:else>
+<section class="white-bg" id="section10">
+    <div class="container">
+
+        <!-- SECTION HEADER -->
+        <div class="section-header-racloop">
+            <div class="small-text-medium uppercase colored-text">
+                My Journeys
+            </div>
+            <h2 class="dark-text"><strong>Past</strong> Requests</h2>
+            <div class="colored-line">
+            </div>
+        </div>
+    </div>
+</section>
+ <div class="container">
+ 	<g:if test="${journeys?.size > 0}">
+ 		<g:each in="${journeys}" status="i" var="journeyInstance">
+ 			<article id="request-${i}" class="row grey-bg">
+ 				<div class="row">
+ 				
+		             <div class="col-md-5 col-md-offset-1 text-left">
+		                <div>
+		                    <ul class="text-left">
+		                        <li>
+		                        	<g:if test = "${journeyInstance.isDriver == true}">
+		                        		<span class="label label-primary">Car Owner</span> 
+		                        	</g:if>
+		                        	<g:else>
+		                        		<span class="label label-primary">Ride Seeker</span> 
+		                        	</g:else>
+		                        	<i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
+		                        </li>
+		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
+		                        <li><i class="icon-basic-map"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
+		                        <li>
+		                        	<g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
+					       				<button class="btn btn-primary">Search Again</button>
+					       			</g:link>&nbsp; 
+		                        	<button id="incoming-btn-1" data-requestId="1" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
+		                        	<button id="outgoing-btn-1" data-requestId="1" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp;
+				       				<button id ="review "class="btn btn-primary">Review</button>
+		                        </li>
+		                        
+		                    </ul>
+		                </div>
+		            </div>
+	            </div>
+	            <div id="incoming-requests-${i}" class="incoming-requests">
+                    <div class="well  well-sm">
+                   		<h4>Incoming Requests</h4>
+               		</div>
+	                   
+                    <g:each in="${journeyInstance.incomingRequests}" status="k" var="matchedWorkflowInstance">
+	                    <div class="row">
+	                    	<div class="col-md-7 col-md-offset-2 text-left">
+	                    		<h5>${matchedWorkflowInstance?.otherUser?.profile?.fullName}<g:if test = "${matchedWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${matchedWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
+	                    		<ul class="text-left">
+	                                <li>
+	                                	<g:if test = "${matchedWorkflowInstance?.workflow?.isRequesterDriving == true}">
+	                                		<span class="label label-primary">Car Owner</span> 
+	                                	</g:if>
+	                                	<g:else>
+	                                		<span class="label label-primary">Ride Seeker</span> 
+	                                	</g:else>
+	                                	<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-info':'label-info'))}">${matchedWorkflowInstance.state}</span>
+	                                </li>
+	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.workflow.matchedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.workflow.matchedDateTime}"/></span></li>
+	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.workflow.matchedFromPlace}</li>
+	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.workflow.matchedToPlace}</li>
+	                            </ul>
+	                         </div> 
+	                         <div class="col-md-1">
+	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
+	                            	<img src="${currentUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                            </g:if>
+	                        </div>  
+	                   	</div>     
+                    </g:each>
+	             </div>
+	             
+	             <div id="outgoing-requests-${i}" class="outgoing-requests">
+	             	<div class="well well-sm">
+	             		<h4>Outgoing Requests</h4>
+	                </div>
+                	<g:each in="${journeyInstance.outgoingRequests}" status="j" var="requestWorkflowInstance">
+                		<div class="row">
+                   			<div class="col-md-7 col-md-offset-2 text-left">
+	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${requestWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
+	                            <ul class="text-left">
+	                                <li>
+		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isRequesterDriving == true}">
+	                                		<span class="label label-primary">Ride Seeker</span> 
+	                                	</g:if>
+	                                	<g:else>
+	                                		<span class="label label-primary">Car Owner</span> 
+	                                	</g:else>
+		                                <span class="label label-info">${requestWorkflowInstance.state}</span>
+	                                </li>
+	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span></li>
+	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${requestWorkflowInstance.workflow.matchedFromPlace}</li>
+	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${requestWorkflowInstance.workflow.matchedToPlace}</li>
+	                            </ul>
+                        	</div>
+	                        <div class="col-md-1">
+	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
+	                            	<img src="${currentUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                            </g:if>
+	                        </div>
+	                   </div>     
+                	</g:each>
+	             </div>
+    		</article>
+    	</g:each>
+       
+   </g:if>
+     <g:else>
+	  <div class="well">
+		<h4>No Records Found</h4>
+	 </div>
+    </g:else>
+ </div>
+	
 </body>
 </html>
