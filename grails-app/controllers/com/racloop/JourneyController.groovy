@@ -122,7 +122,20 @@ class JourneyController {
 	
 	
 	
+	/**
+	 * History of user's Journeys
+	 *  
+	 */
 	def history() {
+		def journeys =[]
+		int numberOfRecords = 0
+		def currentUser = getAuthenticatedUser()
+		if(currentUser) {
+			journeys = journeyService.findHistoricJourneyDetailsForUser(currentUser)
+			numberOfRecords = journeys?.size()
+			
+		}
+		render(view: "history", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords])
 		
 	}
 	
@@ -177,7 +190,7 @@ class JourneyController {
 			currentJourney.isMale = currentUser.profile.isMale
 			session.currentJourney = currentJourney
 		}
-		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
+		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, isDummy)
 		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
@@ -204,7 +217,7 @@ class JourneyController {
 		if(currentJourney?.id) {
 			requestCountMap = journeyService.findCountOfAllWorkflowRequestForAJourney(currentJourney.id)
 		}
-		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, currentJourney, isDummy)
+		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, isDummy)
 		def matchedUser = User.findByUsername(matchedJourney.user)
 		boolean isThresholdReached = requestCountMap.totalCount >= threshHold
 		if(isThresholdReached) {

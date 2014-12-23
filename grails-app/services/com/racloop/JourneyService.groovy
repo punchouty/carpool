@@ -170,8 +170,8 @@ class JourneyService {
 		return journeys;
 	}
 	
-	def JourneyRequestCommand findMatchedJourneyById (String matchedJourneyId, JourneyRequestCommand currentJourney, boolean isDummy = false) {
-		def journey = elasticSearchService.findJourneyById(matchedJourneyId, currentJourney, isDummy)
+	def JourneyRequestCommand findMatchedJourneyById (String matchedJourneyId,  boolean isDummy = false) {
+		def journey = elasticSearchService.findJourneyById(matchedJourneyId, isDummy)
 		return journey
 	}
 	
@@ -188,10 +188,20 @@ class JourneyService {
 	}
 	
 	def List findAllActiveJourneyDetailsForUser(User user) {
-		def journeyDetails =[]
 		DateTime currentDate = new DateTime()
 		currentDate.minusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
 		def journeys = elasticSearchService.findAllJourneysForUserAfterADate(user, currentDate)
+		return populateJourneysWithWorkflowDetails(journeys, user)
+	}
+	
+	def List findHistoricJourneyDetailsForUser(User user) {
+		DateTime currentDate = new DateTime()
+		def journeys = elasticSearchService.findAllJourneysForUserBeforeADate(user, currentDate)
+		return populateJourneysWithWorkflowDetails(journeys, user)
+	}
+	
+	private List populateJourneysWithWorkflowDetails(List journeys, User user) {
+		def journeyDetails =[]
 		journeys.each {journey ->
 			if(journey.id) {
 				JourneyRequestDetails journeyRequestDetails = new JourneyRequestDetails()
@@ -210,16 +220,16 @@ class JourneyService {
 	}
 	
 	def findJourneyById(String journeyId, String indexName) {
-		return elasticSearchService.findJounreyById(journeyId, indexName)
+		return elasticSearchService.findJourneyById(journeyId, indexName)
 	}
 	
 	def findJourneyById(String journeyId, boolean isDummy) {
-		return elasticSearchService.findJounreyById(journeyId, isDummy)
+		return elasticSearchService.findJourneyById(journeyId, isDummy)
 	}
 	
 	public void markJourneyAsDeleted(String journeyId) {
 		String indexName = ElasticSearchService.JOURNEY.toLowerCase()
-		JourneyRequestCommand currentJourney = elasticSearchService.findJounreyById(journeyId, indexName)
+		JourneyRequestCommand currentJourney = elasticSearchService.findJourneyById(journeyId, indexName)
 		elasticSearchService.markJourneyAsDeleted(currentJourney)
 	}
 	
