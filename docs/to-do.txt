@@ -1,0 +1,24 @@
+Web
+1. Facebook login - low priority
+2. Star rating 
+3. Reviews
+4. Safety web service - server (distance between segments and point), traveling away from route, 
+	traveling in reverse direction, note down vehicle registration number - http://stackoverflow.com/questions/14560999/using-the-haversine-formula-in-javascript
+5. text on main pages - services
+6. vehicle details
+7. Male vs Female
+8. Fare calculator
+9. History - use Journey domain
+10. Archiving
+11. Amazon deployment Infrastructure
+12. Active Journey - outgoing incoming buttons not working - Rajan
+13. Modal boxes UI - Parminder
+
+Mobile
+1. Safety app - where i am, ringer for alert if vehicle is diverting
+2. Push notification
+3. SMS integration
+4. UI theme according to web
+
+Questions
+1. Can i use Journey domain to use as history?

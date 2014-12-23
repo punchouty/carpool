@@ -24,8 +24,8 @@
                <div class="col-md-4 wow fadeInLeft" data-wow-offset="10" data-wow-duration="1.75s">
                    <div class="single-service border-bottom-hover">
                        <div class="service-icon colored-text">
-                           <span class="icon-ecommerce-dollar"></span>
-                           <!-- <span class="icon-basic-lightbulb"></span> -->
+                           <span class="fa fa-inr"></span>
+                           <!-- <span class="fa fa-inr"></span> -->
                        </div>
                        <h3 class="colored-text">Save Money</h3>
                        <p>
@@ -38,11 +38,11 @@
                <div class="col-md-4 wow flipInY" data-wow-offset="10" data-wow-duration="1s">
                    <div class="single-service border-bottom-hover">
                        <div class="service-icon colored-text">
-                           <span class="icon-basic-picture-multiple"></span>
+                           <span class="fa fa-leaf"></span>
                        </div>
                        <h3 class="colored-text">Save Environment</h3>
                        <p>
-                           Having fewer cars on the road means less air pollution. Benefits for generations to come.
+                           Having fewer cars on the road means <span class="green-text">less</span> air pollution. Benefits for generations to come.
                        </p>
                    </div>
                </div>
@@ -51,7 +51,7 @@
                <div class="col-md-4 wow fadeInRight" data-wow-offset="10" data-wow-duration="1.75s">
                    <div class="single-service border-bottom-hover">
                        <div class="service-icon colored-text">
-                           <span class="icon-basic-world"></span>
+                           <span class="fa fa-group"></span>
                        </div>
                        <h3 class="colored-text">Get Social</h3>
                        <p>

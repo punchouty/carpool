@@ -7,6 +7,8 @@ class Journey implements Serializable {
 	Boolean isDriver;
 	Date dateOfJourney;
 	Date createdDate = new Date();
+	String from
+	String to
 	
 	static belongsTo = [user : User]
 		

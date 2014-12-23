@@ -33,7 +33,7 @@
       <div class="only-logo">
           <div class="navbar">
               <div class="navbar-header">
-                  <h2 class="white-text racloop-heading-big">Racloop</h2>
+                  <h2 class="white-text racloop-heading-big">Racloop <span class="fa fa-leaf green-text"></span></h2>
               </div>
           </div>
       </div>
@@ -46,7 +46,7 @@
 
                   <!-- WELCOM MESSAGE -->
                   <h1 class="intro white-text">Share Your Car and Auto Rides</h1>
-                  <h5 class="white-text">Offer a ride or Ask people for lift. Save money, Make friends and Contribute to Greener Environment. </h5>
+                  <h5 class="white-text">Offer a ride or Ask people for lift. Save money, Make friends and Contribute to <span class="green-text">Greener</span> Environment. </h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">

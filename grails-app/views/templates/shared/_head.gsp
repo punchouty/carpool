@@ -15,3 +15,4 @@
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
 <script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script> 
+<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">

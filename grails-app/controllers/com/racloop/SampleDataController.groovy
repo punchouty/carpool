@@ -6,6 +6,7 @@ import liquibase.util.csv.opencsv.CSVReader
 class SampleDataController {
 	
 	def sampleDataService
+	def smsService
 
     def index() { 
 		render "Empty Implementation"
@@ -39,5 +40,17 @@ class SampleDataController {
 				render "Empty Implementation"
 			}
 		}	
+	}
+	
+	def sendSms() {
+		def mobile = params.mobile
+		def message = params.message
+		boolean success = smsService.sendSms(mobile, message)
+		if(success) {
+			render "Success"
+		}
+		else {
+			render "Fail"
+		}
 	}
 }
