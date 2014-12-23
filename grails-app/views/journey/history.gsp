@@ -42,8 +42,8 @@
 		                        	<g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
 					       				<button class="btn btn-primary">Search Again</button>
 					       			</g:link>&nbsp; 
-		                        	<button id="incoming-btn-1" data-requestId="1" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
-		                        	<button id="outgoing-btn-1" data-requestId="1" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp;
+		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
+		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp;
 				       				<button id ="review "class="btn btn-primary">Review</button>
 		                        </li>
 		                        
@@ -76,9 +76,12 @@
 	                            </ul>
 	                         </div> 
 	                         <div class="col-md-1">
-	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                            	<img src="${currentUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                        	<g:if test = "${matchedWorkflowInstance.otherUser?.profile?.gravatarUri}">
+	                            	<img src="${matchedWorkflowInstance.otherUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
+	                            <g:else>
+			                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
+			                	</g:else>
 	                        </div>  
 	                   	</div>     
                     </g:each>
@@ -108,9 +111,13 @@
 	                            </ul>
                         	</div>
 	                        <div class="col-md-1">
-	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                            	<img src="${currentUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                        	<g:if test = "${requestWorkflowInstance.otherUser?.profile?.gravatarUri}">
+	                            	<img src="${requestWorkflowInstance.otherUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
+	                            <g:else>
+			                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
+			                	</g:else>
+	                            
 	                        </div>
 	                   </div>     
                 	</g:each>

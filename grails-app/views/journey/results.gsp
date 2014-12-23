@@ -140,8 +140,8 @@
 				<input type="hidden" id="${i}_to_longitude" value="${journeyInstance.toLongitude}">
 	            <div class="col-md-2 text-left">
 	                <div>
-	                	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                		<img src="${currentUser?.profile?.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
+	                	<g:if test = "${journeyInstance?.photoUrl}">
+	                		<img src="${journeyInstance?.photoUrl}" alt="profile image" class="img-thumbnail"> </img>
 	                	</g:if>
 	                	<g:else>
 	                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
@@ -171,4 +171,3 @@
      </script>
 </body>
 </html>  
-      

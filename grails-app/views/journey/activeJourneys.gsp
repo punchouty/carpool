@@ -102,9 +102,12 @@
 	                            </ul>
 	                         </div> 
 	                         <div class="col-md-1">
-	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                            	<img src="${currentUser.profile.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
+	                        	<g:if test = "${matchedWorkflowInstance.otherUser?.profile?.gravatarUri}">
+	                            	<img src="${matchedWorkflowInstance.otherUser?.profile?.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
+	                            <g:else>
+	                				<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
+	                			</g:else>
 	                        </div>  
 	                   	</div>     
                     </g:each>
@@ -150,9 +153,13 @@
 	                            </ul>
                         	</div>
 	                        <div class="col-md-1">
-	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                            	<img src="${currentUser.profile.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
+	                        	<g:if test = "${requestWorkflowInstance.otherUser?.profile?.gravatarUri}">
+	                            	<img src="${requestWorkflowInstance.otherUser?.profile.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
+	                            <g:else>
+			                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
+			                	</g:else>
+	                            
 	                        </div>
 	                   </div>     
                 	</g:each>
