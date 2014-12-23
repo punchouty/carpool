@@ -18,4 +18,7 @@ class User extends grails.plugin.nimble.core.UserBase {
 		incomingReviews : Review
 	]
 	
+	static mappedBy = [outgoingReviews: 'reviewer',
+		incomingReviews: 'reviewee']
+	
 }
