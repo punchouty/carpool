@@ -43,6 +43,10 @@
    	</nav>
 		
 	</div>
+	<!-- TODO to be removed. Not used any where. Else following java script error -->
+	<!-- Uncaught TypeError: Cannot read property 'offsetWidth' of null -->
+	<div id="map-canvas" class="map_canvas"></div>
+	
 	<g:if env="development">
 	<div>
 		${params }

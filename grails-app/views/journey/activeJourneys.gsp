@@ -26,10 +26,10 @@
  <div class="container">
  	<g:if test="${journeys?.size > 0}">
  		<g:each in="${journeys}" status="i" var="journeyInstance">
- 			<article id="request-${i}" class="row grey-bg">
+ 			<article id="request-${i}" class="row <g:if test="${i%2 == 0}">grey-bg</g:if><g:else>white-bg</g:else>">
  				<div class="row">
  				
-		             <div class="col-md-5 col-md-offset-1 text-left">
+		             <div class="col-md-8 col-md-offset-2 text-left">
 		                <div>
 		                    <ul class="text-left">
 		                        <li>
@@ -47,8 +47,8 @@
 		                        	<g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
 					       				<button class="btn btn-primary">Search Again</button>
 					       			</g:link>&nbsp; 
-		                        	<button id="incoming-btn-1" data-requestId="1" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
-		                        	<button id="outgoing-btn-1" data-requestId="1" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp; 
+		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
+		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp; 
 		                        	<a name ="delete" id="delete${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.journeyId}">
 					       				<button class="btn btn-danger">Delete</button>
 					       			</a>
@@ -58,6 +58,8 @@
 		                </div>
 		            </div>
 	            </div>
+	            
+	            <g:if test="${journeyInstance.incomingRequests?.size() > 0}">
 	            <div id="incoming-requests-${i}" class="incoming-requests">
                     <div class="well  well-sm">
                    		<h4>Incoming Requests</h4>
@@ -101,13 +103,14 @@
 	                         </div> 
 	                         <div class="col-md-1">
 	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                            	<img src="${currentUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                            	<img src="${currentUser.profile.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
 	                        </div>  
 	                   	</div>     
                     </g:each>
 	             </div>
-	             
+	             </g:if>
+	             <g:if test="${journeyInstance.outgoingRequests?.size() > 0}">
 	             <div id="outgoing-requests-${i}" class="outgoing-requests">
 	             	<div class="well well-sm">
 	             		<h4>Outgoing Requests</h4>
@@ -148,12 +151,13 @@
                         	</div>
 	                        <div class="col-md-1">
 	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                            	<img src="${currentUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                            	<img src="${currentUser.profile.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
 	                        </div>
 	                   </div>     
                 	</g:each>
 	             </div>
+	             </g:if>
     		</article>
     	</g:each>
        

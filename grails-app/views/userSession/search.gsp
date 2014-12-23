@@ -87,6 +87,8 @@
 	<div id="map_info">
 	  <!--  <small>Distance : <span id="distance_in_km">20</span> KM</small>  -->
 	</div>
+	<!-- TODO to be removed. Not used any where. Else following java script error -->
+	<!-- Uncaught TypeError: Cannot read property 'offsetWidth' of null -->
 	<div id="map-canvas" class="map_canvas"></div>
 	<small id="map-help"></small>
 	

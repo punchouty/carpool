@@ -247,52 +247,52 @@ $(window).resize(function() {
 /*	GOOGLE MAP
 /*---------------------------------------*/
 jQuery(document).ready(function($) {
-
-    "use strict";
-    //set your google maps parameters
-    var $latitude = 51.522532, //If you unable to find latitude and longitude of your address. Please visit http://www.latlong.net/convert-address-to-lat-long.html you can easily generate.
-        $longitude = 0.031639,
-        $map_zoom = 16; /* ZOOM SETTING */
-
-    //google map custom marker icon - .png fallback for IE11
-    var is_internetExplorer11 = navigator.userAgent.toLowerCase().indexOf('trident') > -1;
-    var $marker_url = (is_internetExplorer11) ? 'images/map-marker.png' : 'images/map-marker.svg';
-
-    //we define here the style of the map
-    var style = [{
-        "stylers": [{
-            "hue": "#00aaff"
-        }, {
-            "saturation": -100
-        }, {
-            "gamma": 2.15
-        }, {
-            "lightness": 12
-        }]
-    }];
-
-    //set google map options
-    var map_options = {
-        center: new google.maps.LatLng($latitude, $longitude),
-        zoom: $map_zoom,
-        panControl: true,
-        zoomControl: true,
-        mapTypeControl: false,
-        streetViewControl: true,
-        mapTypeId: google.maps.MapTypeId.ROADMAP,
-        scrollwheel: false,
-        styles: style,
-    }
-    //inizialize the map
-    var map = new google.maps.Map(document.getElementById('google-container'), map_options);
-    //add a custom marker to the map				
-    var marker = new google.maps.Marker({
-        position: new google.maps.LatLng($latitude, $longitude),
-        map: map,
-        visible: true,
-        icon: $marker_url,
-    });
-
+//
+//    "use strict";
+//    //set your google maps parameters
+//    var $latitude = 51.522532, //If you unable to find latitude and longitude of your address. Please visit http://www.latlong.net/convert-address-to-lat-long.html you can easily generate.
+//        $longitude = 0.031639,
+//        $map_zoom = 16; /* ZOOM SETTING */
+//
+//    //google map custom marker icon - .png fallback for IE11
+//    var is_internetExplorer11 = navigator.userAgent.toLowerCase().indexOf('trident') > -1;
+//    var $marker_url = (is_internetExplorer11) ? 'images/map-marker.png' : 'images/map-marker.svg';
+//
+//    //we define here the style of the map
+//    var style = [{
+//        "stylers": [{
+//            "hue": "#00aaff"
+//        }, {
+//            "saturation": -100
+//        }, {
+//            "gamma": 2.15
+//        }, {
+//            "lightness": 12
+//        }]
+//    }];
+//
+//    //set google map options
+//    var map_options = {
+//        center: new google.maps.LatLng($latitude, $longitude),
+//        zoom: $map_zoom,
+//        panControl: true,
+//        zoomControl: true,
+//        mapTypeControl: false,
+//        streetViewControl: true,
+//        mapTypeId: google.maps.MapTypeId.ROADMAP,
+//        scrollwheel: false,
+//        styles: style,
+//    }
+//    //inizialize the map
+//    var map = new google.maps.Map(document.getElementById('google-container'), map_options);
+//    //add a custom marker to the map				
+//    var marker = new google.maps.Marker({
+//        position: new google.maps.LatLng($latitude, $longitude),
+//        map: map,
+//        visible: true,
+//        icon: $marker_url,
+//    });
+//
   
 });
 
