@@ -1,3 +1,5 @@
+
+
 <!-- =========================
     SECTION: SERVICES
    ============================== -->
@@ -72,13 +74,13 @@
            <div class="container">
                <div class="section-header section-stats">
                    <div class="small-text-medium uppercase colored-text">
-                       Some Statistics
+                       Safe Car pool from your Mobile 
                    </div>
-                   <h2 class="white-text">Changes in Last 15 Years</h2>
+                   <h2 class="white-text">Your <strong class="white-text">Safety</strong>, Our Priority</h2>
                    <div class="colored-line">
                    </div>
                    <div class="white-text sub-heading">
-                       Increase in Traffic Congestion, Pollution and Fuel Prices.
+                       Get a real time updates on your smart phone about your where about with respect to your destination. SOS feature to inform your dear ones about your location and possible danger.
                    </div>
                </div>
                <div class="row no-gutters">
@@ -88,9 +90,9 @@
                        <div class="icon-container">
                            <span class="colored-text fa fa-apple"></span>
                        </div>
-                       <h4 class="white-text">430%</h4>
+                       <h4 class="white-text">App Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           Decrease in Air Quality (AQI)
+                           iOS 7+
                        </p>
                    </div>
 
@@ -99,9 +101,9 @@
                        <div class="icon-container">
                            <span class="colored-text fa fa-android"></span>
                        </div>
-                       <h4 class="white-text">20+ million</h4>
+                       <h4 class="white-text">Play Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           More Cars
+                           Android 4+
                        </p>
                    </div>
 
@@ -110,9 +112,9 @@
                        <div class="icon-container">
                            <span class="colored-text  fa fa-windows"></span>
                        </div>
-                       <h4 class="white-text">250%</h4>
+                       <h4 class="white-text">Windows Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           Increase in Fuel Prices
+                           Windows 7+
                        </p>
                    </div>
                </div>
@@ -159,7 +161,7 @@
                    <!-- SINGLE FEATURE -->
                    <div class="feature">
                        <div class="icon-container">
-                           <span class="icon-ecommerce-dollar colored-text"></span>
+                           <span class="fa fa-inr colored-text"></span>
                        </div>
                        <div class="description text-left">
                            <h4 class="dark-text">Share Cost</h4>
@@ -189,7 +191,7 @@
                    <!-- SINGLE FEATURE -->
                    <div class="feature">
                        <div class="icon-container">
-                           <span class="icon-basic-cup colored-text"></span>
+                           <span class="fa fa-paint-brush colored-text"></span>
                        </div>
                        <div class="description text-left">
                            <h4 class="dark-text">Keep the Vehicle Clean</h4>
@@ -310,7 +312,7 @@
                            <div class="panel-heading" id="headingOne">
                                <h4 class="panel-title">
                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                       <span class="icon-container color-bg"><span class="icon-basic-exclamation white-text"></span></span><span class="title-text">Why Free?</span>
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">Why Free?</span>
                                    </a>
                                </h4>
                            </div>
@@ -330,7 +332,7 @@
                            <div class="panel-heading" id="headingTwo">
                                <h4 class="panel-title">
                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                       <span class="icon-container color-bg"><span class="icon-basic-exclamation white-text"></span></span><span class="title-text">How to use it?</span>
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">How to use it?</span>
                                    </a>
                                </h4>
                            </div>
@@ -350,7 +352,7 @@
                            <div class="panel-heading" id="headingThree">
                                <h4 class="panel-title">
                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                       <span class="icon-container color-bg"><span class="icon-basic-exclamation white-text"></span></span><span class="title-text">I chenged my mind. I dont want to go. What ahould i do?</span>
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">I chenged my mind. I dont want to go. What ahould i do?</span>
                                    </a>
                                </h4>
                            </div>
