@@ -211,7 +211,7 @@ $(function() {
         format: 'dd M yy HH:ii P'
         //format: 'dd MM yyyy    HH:ii P'
     }).on('changeDate', function(ev){
-    	alert(ev.date);
+    	//alert(ev.date);
     });
 });
 
@@ -250,7 +250,7 @@ function getErrorMessage() {
 	if(travelDateText) {
 		var selectedDate = new Date(travelDateText);
 		if(selectedDate < now) {
-			alert(selectedDate.toString('dd MMMM yyyy    hh:mm tt'));
+			//alert(selectedDate.toString('dd MMMM yyyy    hh:mm tt'));
 			$('#dateOfJourneyString').addClass("control-group").addClass("error");
 			errorMessage = "You have selected past date/time";
 			return errorMessage;
