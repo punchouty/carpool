@@ -23,5 +23,6 @@ class WorkflowIndexFields {
 	public static final String MATCHED_TO_PLACE ='matchedToPlace'
 	public static final String MATCHED_DATE_TIME ='matchedDateTime'
 	public static final String IS_REQUESTER_DRIVING ='isRequesterDriving'
+	public static final String IS_MATCHED_USER_DRIVING ='isMatchedUserDriving'
 
 }

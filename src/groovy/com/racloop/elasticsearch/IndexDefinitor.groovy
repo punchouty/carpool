@@ -128,6 +128,9 @@ class IndexDefinitor {
 							startObject(IS_REQUESTER_DRIVING).
 								field("type", "boolean").
 							endObject().
+							startObject(IS_MATCHED_USER_DRIVING).
+								field("type", "boolean").
+							endObject().
 						endObject().
 					endObject().
 				endObject();

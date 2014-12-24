@@ -71,7 +71,7 @@
 	                    		<h5>${matchedWorkflowInstance?.otherUser?.profile?.fullName}<g:if test = "${matchedWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${matchedWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
 	                    		<ul class="text-left">
 	                                <li>
-	                                	<g:if test = "${matchedWorkflowInstance?.workflow?.isRequesterDriving == true}">
+	                                	<g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
 	                                		<span class="label label-primary">Car Owner</span> 
 	                                	</g:if>
 	                                	<g:else>
@@ -124,11 +124,11 @@
 	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${requestWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
 	                            <ul class="text-left">
 	                                <li>
-		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isRequesterDriving == true}">
-	                                		<span class="label label-primary">Ride Seeker</span> 
+		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
+	                                		<span class="label label-primary">Car Owner</span> 
 	                                	</g:if>
 	                                	<g:else>
-	                                		<span class="label label-primary">Car Owner</span> 
+	                                		<span class="label label-primary">Ride Seeker</span> 
 	                                	</g:else>
 		                                <span class="label label-info">${requestWorkflowInstance.state}</span>
 	                                </li>
