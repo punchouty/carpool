@@ -46,8 +46,21 @@ function init() {
 			'directions_changed', function() {
 			changeDirections(directionsDisplay.directions);
 	});
-	$('#fromPlace').val("");
-	$('#toPlace').val("");
+	if($('#_hFromPlace').val()) {
+		$('#fromPlace').val($('#_hFromPlace').val());
+	}
+	else {
+		$('#fromPlace').val("");
+	}
+	
+	if($('#_hToPlace').val()) {
+		$('#toPlace').val($('#_hToPlace').val());
+	}
+	else {
+		$('#toPlace').val("");
+	}
+	
+	
 }
 
 function geocodePosition(position) {
