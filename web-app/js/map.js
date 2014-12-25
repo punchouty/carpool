@@ -3,64 +3,69 @@ var directionsDisplay;
 var directionsService;
 var centerOfIndia = new google.maps.LatLng(23.843138,79.44171);
 var defaultZoom = 13;
-var from = centerOfIndia;
+//var from = centerOfIndia;
+var from;
 var to;
 var mapOptions;
 var map;			
 var marker;
 var geocoder;
 function init() {
-	rendererOptions = {
-		draggable : true
-	};
-	mapOptions = {
-		center : from,
-	    mapTypeControl: true,
-	    mapTypeControlOptions: {
-	      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
-	    },
-	    zoomControl: true,
-	    zoomControlOptions: {
-	      style: google.maps.ZoomControlStyle.SMALL
-	    },
-		zoom : 4,
-		mapTypeId : google.maps.MapTypeId.ROADMAP
-	// ROADMAP | SATELLITE | HYBRID | TERRAIN
-	};
-	directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
+	clearFields();
+//	rendererOptions = {
+//		draggable : true
+//	};
+//	mapOptions = {
+//		center : from,
+//	    mapTypeControl: true,
+//	    mapTypeControlOptions: {
+//	      style: google.maps.MapTypeControlStyle.DROPDOWN_MENU
+//	    },
+//	    zoomControl: true,
+//	    zoomControlOptions: {
+//	      style: google.maps.ZoomControlStyle.SMALL
+//	    },
+//		zoom : 4,
+//		mapTypeId : google.maps.MapTypeId.ROADMAP
+//	// ROADMAP | SATELLITE | HYBRID | TERRAIN
+//	};
+//	directionsDisplay = new google.maps.DirectionsRenderer(rendererOptions);
 	directionsService = new google.maps.DirectionsService();
-	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+//	map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
 	geocoder = new google.maps.Geocoder();
-	marker = new google.maps.Marker({
-		draggable:true,
-		position: from,
-		map: map,
-		flat : true,
-		visible : false,
-		title: 'Current Location'
-	});
-	google.maps.event.addListener(marker, 'dragend', function(){
-	    geocodePosition(marker.getPosition());
-	});
-	google.maps.event.addListener(directionsDisplay,
-			'directions_changed', function() {
-			changeDirections(directionsDisplay.directions);
-	});
-	if($('#_hFromPlace').val()) {
-		$('#fromPlace').val($('#_hFromPlace').val());
-	}
-	else {
-		$('#fromPlace').val("");
-	}
-	
-	if($('#_hToPlace').val()) {
-		$('#toPlace').val($('#_hToPlace').val());
-	}
-	else {
-		$('#toPlace').val("");
-	}
-	
-	
+//	marker = new google.maps.Marker({
+//		draggable:true,
+//		position: from,
+//		map: map,
+//		flat : true,
+//		visible : false,
+//		title: 'Current Location'
+//	});
+//	google.maps.event.addListener(marker, 'dragend', function(){
+//	    geocodePosition(marker.getPosition());
+//	});
+//	google.maps.event.addListener(directionsDisplay,
+//			'directions_changed', function() {
+//			changeDirections(directionsDisplay.directions);
+//	});
+//	if($('#_hFromPlace').val()) {
+//		$('#fromPlace').val($('#_hFromPlace').val());
+//	}
+//	else {
+//		$('#fromPlace').val("");
+//	}
+//	
+//	if($('#_hToPlace').val()) {
+//		$('#toPlace').val($('#_hToPlace').val());
+//	}
+//	else {
+//		$('#toPlace').val("");
+//	}
+//	if($('#_hFromPlace').val() != null && $('#_hToPlace').val() != null) {
+//		from = new google.maps.LatLng($('#fromLatitude').val(), $('#fromLongitude').val());
+//		to = new google.maps.LatLng($('#toLatitude').val(), $('#toLongitude').val())
+//	}
+//	
 }
 
 function geocodePosition(position) {
@@ -87,7 +92,8 @@ $(function() {
 		geocodePosition(from);
 	});
 	*/
-	directionsDisplay.setMap(map);
+	
+//	directionsDisplay.setMap(map);
 });
 //*/		
 $(function() {	
@@ -96,14 +102,14 @@ $(function() {
 			from = result.geometry.location;
 			$('#fromLatitude').val(from.lat());
 			$('#fromLongitude').val(from.lng());
-			if(to) {
+			if(to != null && from != null) {
 				calcRoute(from, to);
 			}
 			else {
-				map.setZoom(defaultZoom);
-				map.panTo(from);
-				marker.setPosition(from);
-				marker.setVisible(true);
+//				map.setZoom(defaultZoom);
+//				map.panTo(from);
+//				marker.setPosition(from);
+//				marker.setVisible(true);
 			}	
 		}
 	});
@@ -112,30 +118,31 @@ $(function() {
 			to = result.geometry.location;
 			$('#toLatitude').val(to.lat());
 			$('#toLongitude').val(to.lng());
-			if(from) {
+			if(from != null && to != null) {
 				calcRoute(from, to);
 			}
 			else {
-				map.setZoom(defaultZoom);
-				map.panTo(to);
+//				map.setZoom(defaultZoom);
+//				map.panTo(to);
 			}
 		}
 	});
 });
 
 function calcRoute(from, to) {
-	marker.setVisible(false);
+//	marker.setVisible(false);
 	var request = {
 		origin : from,
 		destination : to,
 		travelMode : google.maps.DirectionsTravelMode.DRIVING
 	};
-	directionsService.route(request, function(response, status) {
+	directionsService.route(request, function(results, status) {
 		if (status == google.maps.DirectionsStatus.OK) {
-			directionsDisplay.setDirections(response);
+			computeTotalDistance(results);
+			//directionsDisplay.setDirections(response);
 		}
 	});
-	setMapHelp();
+//	setMapHelp();
 }
 
 function computeTotalDistance(result) {
@@ -195,7 +202,7 @@ function changeDirections(result) {
 }
 
 function setMapHelp() {
-	$('#map-help').text("Drag start and end point to set the exact address.");
+	//$('#map-help').text("Drag start and end point to set the exact address.");
 }
 
 var now = new Date();
@@ -226,14 +233,19 @@ $(function() {
     }).on('changeDate', function(ev){
     	//alert(ev.date);
     });
+
+	console.log('date picker init' + $('#dateOfJourneyString').val());
 });
 
 $(function() {
 	$('#offer').click(function() {	
 		var errorMessage = getErrorMessage();		
 		if(errorMessage){				
-			$('#errorMessage').text(errorMessage);					
-			$('#myModal').modal({show:true});
+//			$('#errorMessage').text(errorMessage);					
+//			$('#myModal').modal({show:true});
+			$("#error-message").text(errorMessage);
+			$('#form-error').fadeIn(1000);
+            $('#form-success').fadeOut(500);
 		}
 		else {
 			$('#isDriver').val('true');
@@ -243,15 +255,36 @@ $(function() {
 	$('#ask').click(function() {
 		var errorMessage = getErrorMessage();
 		if(errorMessage){
-			$('#errorMessage').text(errorMessage);			
-			$('#myModal').modal({show:true});
+			$("#error-message").text(errorMessage);
+			$('#form-error').fadeIn(1000);
+            $('#form-success').fadeOut(500);
+//			$('#errorMessage').text(errorMessage);			
+//			$('#myModal').modal({show:true});
 		}
 		else {
 			$('#isDriver').val('false');
 			$('#search-form').submit();
 		}
 	});
+	$('#clear').click(function() {
+		clearFields();
+	});
 });
+
+function clearFields() {
+	$('#dateOfJourneyString').val("");
+	$('#fromPlace').val("");
+	$('#toPlace').val("");
+	$('#fromLatitude').val("");
+	$('#fromLongitude').val("");
+	$('#toLatitude').val("");
+	$('#toLongitude').val("");
+	$('#tripDistance').val("");
+	$('#tripUnit').val("");
+	$('#tripDistance').val("");
+	$('#_hFromPlace').val("");
+	$('#_hToPlace').val("");
+}
 
 $( ".input-append" ).change(function() {
 	$(this).removeClass("control-group").removeClass("error");
@@ -261,25 +294,30 @@ function getErrorMessage() {
 	var errorMessage = '';
 	var travelDateText = $('#dateOfJourneyString').val();
 	if(travelDateText) {
-		var selectedDate = new Date(travelDateText);
-		if(selectedDate < now) {
-			//alert(selectedDate.toString('dd MMMM yyyy    hh:mm tt'));
-			$('#dateOfJourneyString').addClass("control-group").addClass("error");
-			errorMessage = "You have selected past date/time";
-			return errorMessage;
+		if(travelDateText != "Date and Time") {
+			var selectedDate = new Date(travelDateText);
+			if(selectedDate < now) {
+				//alert(selectedDate.toString('dd MMMM yyyy    hh:mm tt'));
+				//$('#dateOfJourneyString').addClass("control-group").addClass("error");
+				errorMessage = "You have selected past date/time";
+				return errorMessage;
+			}
+			else if(selectedDate < validStartTime) {
+				//$('#dateOfJourneyString').addClass("control-group").addClass("error");
+				errorMessage = "You can select time only after 30 minutes from now";
+			}
+			else if(selectedDate > validEndTime) {
+				//$('#dateOfJourneyString').addClass("control-group").addClass("error");
+				errorMessage = "You can not select time more than seven days in future";
+			}
 		}
-		else if(selectedDate < validStartTime) {
-			$('#dateOfJourneyString').addClass("control-group").addClass("error");
-			errorMessage = "You can select time only after 30 minutes from now";
-		}
-		else if(selectedDate > validEndTime) {
-			$('#dateOfJourneyString').addClass("control-group").addClass("error");
-			errorMessage = "You can not select time more than seven days in future";
+		else {
+			errorMessage = "Date and Time";
 		}
 	}
 	else {
-		$('#dateOfJourneyString').addClass("control-group").addClass("error");
-		errorMessage = "Travel Date/Time";
+		//$('#dateOfJourneyString').addClass("control-group").addClass("error");
+		errorMessage = "Date and Time";
 	}
 	var startLatitude = parseFloat($('#fromLatitude').val());
 	var startLongitude = parseFloat($('#fromLongitude').val());
@@ -287,7 +325,7 @@ function getErrorMessage() {
 	var endLongitude = parseFloat($('#toLongitude').val());
 	
 	if(startLatitude <= 0 || startLongitude <= 0) {
-		$('#fromPlace').addClass("control-group").addClass("error");
+		//$('#fromPlace').addClass("control-group").addClass("error");
 		if(errorMessage) {
 			errorMessage = errorMessage + ", From Location";
 		}
@@ -301,9 +339,9 @@ function getErrorMessage() {
 			
 		}
 		else {
-			$('#fromPlace').addClass("control-group").addClass("error");
+			//$('#fromPlace').addClass("control-group").addClass("error");
 			if(errorMessage) {
-				errorMessage = errorMessage + ", From Location";
+				errorMessage = errorMessage + ", From : Landmark";
 			}
 			else {
 				errorMessage = "From Location";
@@ -312,9 +350,9 @@ function getErrorMessage() {
 	}
 	
 	if(endLatitude <= 0 || endLongitude <= 0) {
-		$('#toPlace').addClass("control-group").addClass("error");
+		//$('#toPlace').addClass("control-group").addClass("error");
 		if(errorMessage) {
-			errorMessage = errorMessage + ", To Location"
+			errorMessage = errorMessage + ", To : Landmark"
 		}
 		else {
 			errorMessage = "To Location";
@@ -326,7 +364,7 @@ function getErrorMessage() {
 			
 		}
 		else {
-			$('#toPlace').addClass("control-group").addClass("error");
+			//$('#toPlace').addClass("control-group").addClass("error");
 			if(errorMessage) {
 				errorMessage = errorMessage + ", To Location"
 			}

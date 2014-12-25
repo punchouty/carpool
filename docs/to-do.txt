@@ -1,4 +1,11 @@
 Web
+
+- facebook app link
+- twitter link
+- layouts
+- static pages - tiny mce
+- static page display
+
 1. Facebook login - low priority
 2. Star rating 
 3. Reviews
@@ -19,6 +26,7 @@ Mobile
 2. Push notification
 3. SMS integration
 4. UI theme according to web
+5. Apple development
 
 Questions
 1. Can i use Journey domain to use as history?

@@ -1,6 +1,5 @@
 		<%@ page import="grails.plugin.nimble.core.AdminsService"%>	
 		<%@ page import="org.apache.shiro.SecurityUtils"%>	
-		<link href='http://fonts.googleapis.com/css?family=Cabin:400,600|Open+Sans:300,600,400' rel='stylesheet'>
 			
 		<!-- STICKY NAVIGATION -->
             <div class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation" role="navigation">
@@ -14,7 +13,7 @@
                         </button>
 
                         <!-- LOGO -->
-                        <a class="navbar-brand logo-racloop" href="${request.contextPath}">
+                        <a class="navbar-brand logo-racloop" href="${request.contextPath}/">
                             RACLOOP
                             <!-- <img src="images/logo-nav.png" alt=""> -->
                         </a>
@@ -26,11 +25,13 @@
 
                         <!-- NAVIGATION LINK -->
                         <ul class="nav navbar-nav navbar-left main-navigation small-text">
-                            <li><a href="${request.contextPath}/etiquettes">Etiquettes</a>
+                            <li><a href="${request.contextPath}/#etiquettes">Etiquettes</a>
                             </li>
-                            <li><a href="${request.contextPath}/faq">FAQ</a>
+                            <li><a href="${request.contextPath}/safety">Safety</a>
                             </li>
-                            <li><a href="${request.contextPath}/about">About</a>
+                            <li><a href="${request.contextPath}/#faq">FAQ</a>
+                            </li>
+                            <li><a href="${request.contextPath}/#about">About</a>
                             </li>
                         </ul>
 
@@ -41,10 +42,10 @@
 	                                <a href="${request.contextPath}/search"><i class="icon-basic-magnifier"></i> Search</a>
 	                            </li>
 	                            <li class="login">
-	                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Active Requests</a>
+	                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Requests</a>
 	                            </li>
 	                            <li class="login">
-	                                <a href="${request.contextPath}/history"><i class="icon-basic-calendar"></i> My Past Requests</a>
+	                                <a href="${request.contextPath}/history"><i class="icon-basic-calendar"></i> History</a>
 	                            </li>
 	                            <li class="login dropdown">
 	                                <a  class="dropdown-toggle" data-toggle="dropdown" href="#">
@@ -52,6 +53,14 @@
 	                                    <b class="caret"></b>
 	                                </a>
 	                                <ul class="dropdown-menu">
+	                                	<n:hasRole name="${AdminsService.ADMIN_ROLE}">
+	                                	<li>
+											<g:link controller="admins" action="index" target="_blank">User Administration</g:link>
+										</li>
+										<li>
+											<g:link controller="staticData" action="list">Static Pages</g:link>
+										</li>
+	                                	</n:hasRole>
 	                                    <li>
 	                                        <a href="${request.contextPath}/profile">Profile</a>
 	                                    </li>

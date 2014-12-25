@@ -149,6 +149,12 @@ environments {
 	}
 }
 
+auditLog {
+	actorClosure = { request, session ->
+	  org.apache.shiro.SecurityUtils.getSubject()?.getPrincipal()
+	}
+}
+
 grails {
 	mail {
 		from = "raC looP <help@racloop.com>"

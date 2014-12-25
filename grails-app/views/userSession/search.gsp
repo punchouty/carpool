@@ -4,6 +4,7 @@
 <head>
 <meta name="layout" content="main" />
 <title>Welcome to raC looP</title>
+<r:require module="map" />
 </head>
 <body>
 	<g:set var="isSearch" value="true" scope="request" />
@@ -54,6 +55,7 @@
                           <div class="horizontal-subscribe-form">
                           	<g:form class="form-inline" name="search-form" controller="journey" action="findMatching">
                           		<input type="text" id="dateOfJourneyString" name="dateOfJourneyString" size="16" autocomplete="off" class="form-control input-box form_datetime" placeholder="Date and Time">
+                          		<span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
                           		<input type="text" id="fromPlace" name="fromPlace" size="25" autocomplete="off" value="${commandInstance?.fromPlace}" class="form-control input-box" placeholder="From : Landmark">
                           		<g:hiddenField name="_hFromPlace" value="${commandInstance?.fromPlace}" />
                           		<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
@@ -63,29 +65,24 @@
 								<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
 								<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
 								
-								<button type="button" id ="offer" value="offer" class="btn btn-primary standard-button">Offer</button>
-							    <button type="button" id ="ask" value="ask"class="btn btn-warning standard-button">Ask</button>
+								<button type="button" id ="offer" value="offer" class="btn standard-button">Offer</button>
+							    <button type="button" id ="ask" value="ask"class="btn standard-button">Ask</button>
+							    <button type="button" id ="clear" value="clear"class="btn standard-button standard-red-button">Clear</button>
 								<g:hiddenField name="validStartTimeString" value="${commandInstance?.validStartTimeString}" />
 								<g:hiddenField name="tripDistance" value="${commandInstance?.tripDistance}" />
 								<g:hiddenField name="tripUnit" value="${commandInstance?.tripUnit}" />
 								<g:hiddenField name="isDriver" value="${commandInstance?.isDriver}" />	
 							</g:form>
-							 <!-- MAILCHIMP SUCCESS AND ERROR MESSAGE -->
-                              <p class="mailchimp-success white-text"><span class="icon-check-alt2 colored-text"></span>Thanks! Please confirm your subscription from your email inbox</p>
-                              <p class="mailchimp-error white-text"><span class="icon-close-alt2"></span>Error! Please enter correct email</p>
+							 <!-- SUCCESS AND ERROR MESSAGE -->
+                              <p id="form-success" class="white-text"><span class="icon-check-alt2 colored-text"></span> <span id="success-message">Thanks!</span></p>
+                              <p id="form-error" class="white-text"><span class="icon-close-alt2 red-text"></span> <span id="error-message" >Error!</span> </p>
                           </div>
                       </div>
                   </div>
               </div>
           </div>
-      </div>                    
-											
-                                    	
-                                    		
-                                    
-      
-
-
+      </div>    
+	<%-- 
 	<div id="map_info">
 	  <!--  <small>Distance : <span id="distance_in_km">20</span> KM</small>  -->
 	</div>
@@ -94,9 +91,9 @@
 	<div id="map-canvas" class="map_canvas"></div>
 	<small id="map-help"></small>
 	
+	--%>
 	
-	
-
+<%--
 <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
     <div class="modal-content">
@@ -113,7 +110,7 @@
     </div>
   </div>
 </div>
-
+ --%>
 
 
 </body>

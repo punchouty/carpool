@@ -183,18 +183,14 @@ li {
 	color: inherit;
 }
 
-.mailchimp-success,
-.mailchimp-error,
-.email-success,
-.email-error {
+#form-success,
+#form-error {
 	display: none;
 	margin-top: 15px;
 }
 
-.mailchimp-success span,
-.mailchimp-error span,
-.email-success span,
-.email-error span {
+#form-success,
+#form-error {
 	margin-right: 10px;
 }
 

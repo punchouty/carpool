@@ -88,5 +88,7 @@ grails.project.dependency.resolution = {
 		compile (":quartz:1.0-RC2") {
 			excludes 'commons-collections'
 		}
+		
+		compile ":audit-logging:1.0.3"
     }
 }
