@@ -55,9 +55,11 @@
                           	<g:form class="form-inline" name="search-form" controller="journey" action="findMatching">
                           		<input type="text" id="dateOfJourneyString" name="dateOfJourneyString" size="16" autocomplete="off" class="form-control input-box form_datetime" placeholder="Date and Time">
                           		<input type="text" id="fromPlace" name="fromPlace" size="25" autocomplete="off" value="${commandInstance?.fromPlace}" class="form-control input-box" placeholder="From : Landmark">
+                          		<g:hiddenField name="_hFromPlace" value="${commandInstance?.fromPlace}" />
                           		<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
 								<g:hiddenField name="fromLongitude" value="${commandInstance?.fromLongitude}" />
 								<input type="text" id="toPlace" name="toPlace" size="25" autocomplete="off" value="${commandInstance?.toPlace}" class="form-control input-box" placeholder="To : Landmark">
+								<g:hiddenField name="_hToPlace" value="${commandInstance?.toPlace}" />
 								<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
 								<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
 								

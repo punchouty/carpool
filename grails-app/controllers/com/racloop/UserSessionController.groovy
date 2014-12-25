@@ -17,6 +17,10 @@ class UserSessionController {
 	def search() {
 		def user = getAuthenticatedUser();//dynamic method added by nimble
 		JourneyRequestCommand commandInstance = new JourneyRequestCommand();
+		JourneyRequestCommand journeyFromRequest = request.getAttribute('journeyInstance')
+		if(journeyFromRequest) {
+			commandInstance = journeyFromRequest
+		}
 		if(user) {
 //			def criteria = TravelHistory.createCriteria();
 //			def historyResults = criteria {

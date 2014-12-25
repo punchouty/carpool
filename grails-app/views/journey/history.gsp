@@ -39,11 +39,11 @@
 		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
 		                        <li><i class="icon-basic-map"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
 		                        <li>
-		                        	<g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
+		                        	<g:link action="searchRouteAgain"id="searchRouteAgain"  params="[journeyId: journeyInstance.journeyId]">
 					       				<button class="btn btn-primary">Search Again</button>
 					       			</g:link>&nbsp; 
-		                        	<button id="incoming-btn-1" data-requestId="1" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
-		                        	<button id="outgoing-btn-1" data-requestId="1" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp;
+		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
+		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp;
 				       				<button id ="review "class="btn btn-primary">Review</button>
 		                        </li>
 		                        
@@ -62,7 +62,7 @@
 	                    		<h5>${matchedWorkflowInstance?.otherUser?.profile?.fullName}<g:if test = "${matchedWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${matchedWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
 	                    		<ul class="text-left">
 	                                <li>
-	                                	<g:if test = "${matchedWorkflowInstance?.workflow?.isRequesterDriving == true}">
+	                                	<g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
 	                                		<span class="label label-primary">Car Owner</span> 
 	                                	</g:if>
 	                                	<g:else>
@@ -76,9 +76,12 @@
 	                            </ul>
 	                         </div> 
 	                         <div class="col-md-1">
-	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                            	<img src="${currentUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                        	<g:if test = "${matchedWorkflowInstance.otherUser?.profile?.gravatarUri}">
+	                            	<img src="${matchedWorkflowInstance.otherUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
+	                            <g:else>
+			                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
+			                	</g:else>
 	                        </div>  
 	                   	</div>     
                     </g:each>
@@ -94,11 +97,11 @@
 	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${requestWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
 	                            <ul class="text-left">
 	                                <li>
-		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isRequesterDriving == true}">
-	                                		<span class="label label-primary">Ride Seeker</span> 
+		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
+	                                		<span class="label label-primary">Car Owner</span> 
 	                                	</g:if>
 	                                	<g:else>
-	                                		<span class="label label-primary">Car Owner</span> 
+	                                		<span class="label label-primary">Ride Seeker</span> 
 	                                	</g:else>
 		                                <span class="label label-info">${requestWorkflowInstance.state}</span>
 	                                </li>
@@ -108,9 +111,13 @@
 	                            </ul>
                         	</div>
 	                        <div class="col-md-1">
-	                        	<g:if test = "${currentUser?.profile?.gravatarUri}">
-	                            	<img src="${currentUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                        	<g:if test = "${requestWorkflowInstance.otherUser?.profile?.gravatarUri}">
+	                            	<img src="${requestWorkflowInstance.otherUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
+	                            <g:else>
+			                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
+			                	</g:else>
+	                            
 	                        </div>
 	                   </div>     
                 	</g:each>

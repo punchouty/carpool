@@ -390,6 +390,21 @@ class JourneyController {
 		
 	}
 	
+	def searchRouteAgain(){
+		String journeyId = params.journeyId
+		JourneyRequestCommand journey = journeyService.findJourneyById(journeyId, false)
+		if(journey){
+			resetJourney(journey)
+		}
+		forward controller: 'userSession', action: 'search', model: [journeyInstance: journey]
+	}
+	
+	private void resetJourney(JourneyRequestCommand journey) {
+		journey.id = null
+		journey.dateOfJourneyString = null
+		journey.dateOfJourney = null
+	}
+	
 }
 
 public class JourneyRequestCommand {

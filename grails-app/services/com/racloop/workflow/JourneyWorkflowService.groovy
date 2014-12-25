@@ -92,6 +92,7 @@ class JourneyWorkflowService {
 		workflow.matchedToPlace = matchedJourney.toPlace
 		workflow.matchedDateTime = matchedJourney.dateOfJourney
 		workflow.isRequesterDriving = requestedJourney.isDriver
+		workflow.isMatchedUserDriving = matchedJourney.isDriver
 		workflow.id = UUID.randomUUID()
 		return workflow
 		

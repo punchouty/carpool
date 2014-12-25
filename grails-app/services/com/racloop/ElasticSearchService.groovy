@@ -468,6 +468,7 @@ class ElasticSearchService {
 				field(MATCHED_TO_PLACE, workflow.matchedToPlace).
 				field(MATCHED_DATE_TIME, matchedDateTime).
 				field(IS_REQUESTER_DRIVING, workflow.isRequesterDriving).
+				field(IS_MATCHED_USER_DRIVING, workflow.isMatchedUserDriving).
 			endObject();
 		return builder;
 	}
@@ -689,6 +690,7 @@ class ElasticSearchService {
 		workflow.matchedDateTime = convertElasticSearchDateToDateTime(matchedDateTimeStr).toDate()
 
 		workflow.isRequesterDriving = searchHit.getSource().get(IS_REQUESTER_DRIVING);
+		workflow.isMatchedUserDriving = searchHit.getSource().get(IS_MATCHED_USER_DRIVING);
 		return workflow
 	}
 	
@@ -711,6 +713,7 @@ class ElasticSearchService {
 		workflow.matchedDateTime = convertElasticSearchDateToDateTime(matchedDateTimeStr).toDate()
 
 		workflow.isRequesterDriving = getResponse.getSource().get(IS_REQUESTER_DRIVING);
+		workflow.isMatchedUserDriving = getResponse.getSource().get(IS_MATCHED_USER_DRIVING);
 		return workflow
 	}
 	

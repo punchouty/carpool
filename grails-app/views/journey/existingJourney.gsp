@@ -128,17 +128,14 @@ $(document).ready(function($){
     //var val = $(':radio[name=rdo_1]:checked').val();
     
     $('#useExisting').click(function(){
-        alert("Existing");
     	$('#existingJourneyFound').submit();	
 
     });
     $('#useNew').click(function(){
-    	alert("New");
     	$('#myModal').modal('show');
 
     });
     $('#Confirmed').click(function(){
-    	alert("Confirms");
    		$('#newJourney').val("newJourney");  
       $('#existingJourneyFound').submit();
     });

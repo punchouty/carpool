@@ -18,6 +18,7 @@ class JourneyWorkflow {
 	String matchedToPlace
 	Date matchedDateTime
 	boolean isRequesterDriving
+	boolean isMatchedUserDriving
 
     static constraints = {
 		
