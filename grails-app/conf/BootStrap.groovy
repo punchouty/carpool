@@ -87,8 +87,8 @@ class BootStrap {
 			def admins = Role.findByName(AdminsService.ADMIN_ROLE)
 			def admin = InstanceGenerator.user(grailsApplication)
 			admin.username = adminUser
-			admin.pass = "admiN123!"
-			admin.passConfirm = "admiN123!"
+			admin.pass = "P@ssw0rd"
+			admin.passConfirm = "P@ssw0rd"
 			admin.enabled = true
 
 			def adminProfile = InstanceGenerator.profile(grailsApplication)

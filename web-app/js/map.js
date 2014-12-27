@@ -327,10 +327,10 @@ function getErrorMessage() {
 	if(startLatitude <= 0 || startLongitude <= 0) {
 		//$('#fromPlace').addClass("control-group").addClass("error");
 		if(errorMessage) {
-			errorMessage = errorMessage + ", From Location";
+			errorMessage = errorMessage + ", From : Landmark";
 		}
 		else {
-			errorMessage = "From Location";
+			errorMessage = "From : Landmark";
 		}		
 	}
 	else {		
@@ -344,7 +344,7 @@ function getErrorMessage() {
 				errorMessage = errorMessage + ", From : Landmark";
 			}
 			else {
-				errorMessage = "From Location";
+				errorMessage = "From : Landmark";
 			}			
 		}		
 	}
@@ -355,7 +355,7 @@ function getErrorMessage() {
 			errorMessage = errorMessage + ", To : Landmark"
 		}
 		else {
-			errorMessage = "To Location";
+			errorMessage = "To : Landmark";
 		}			
 	}
 	else {
@@ -366,10 +366,10 @@ function getErrorMessage() {
 		else {
 			//$('#toPlace').addClass("control-group").addClass("error");
 			if(errorMessage) {
-				errorMessage = errorMessage + ", To Location"
+				errorMessage = errorMessage + ", To : Landmark"
 			}
 			else {
-				errorMessage = "To Location";
+				errorMessage = "To : Landmark";
 			}				
 		}		
 	}

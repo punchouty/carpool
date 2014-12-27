@@ -4,7 +4,7 @@
 <head>
 <meta name="layout" content="main" />
 <title>Welcome to raC looP</title>
-<r:require module="map" />
+<r:require module="core" />
 </head>
 <body>
 	<g:set var="isSearch" value="true" scope="request" />

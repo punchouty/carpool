@@ -34,3 +34,6 @@ Questions
 http://stackoverflow.com/questions/14560999/using-the-haversine-formula-in-javascript
 http://stackoverflow.com/questions/1051723/distance-from-point-to-line-great-circle-function-not-working-right
 http://stackoverflow.com/questions/1299567/how-to-calculate-distance-from-a-point-to-a-line-segment-on-a-sphere
+
+Later Bugs
+1. Hower on racloop logo. It disappears.

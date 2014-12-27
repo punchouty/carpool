@@ -32,10 +32,10 @@
                 </div>
                 <div class="sub-heading ">
                 	<g:if test = "${currentJourney.isDriver == true}">
-                		<span class="label label-primary">Car Owner</span>
+                		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
                 	</g:if>
                 	<g:else>
-                		<span class="label label-primary">Ride Seeker</span>
+                		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
                 	</g:else>
                     <div>
                         <strong>From :</strong> ${currentJourney.fromPlace}
@@ -48,12 +48,12 @@
                     </div>
                     <div>
                         <g:if test ="${session?.currentJourney?.id }">
-							<g:link controller="journey" action="redoSearch" class="btn btn-info"><i class="icon-check"></i> Search again</g:link>
+							<g:link controller="journey" action="redoSearch" class="btn btn-info"><i class="fa fa-refresh"></i> Search Again</g:link>
 						</g:if>
 						<g:else>
-							<g:link controller="journey" action="newJourney" class="btn btn-info"><i class="icon-check"></i> Save request</g:link>
+							<g:link controller="journey" action="newJourney" class="btn btn-info"><i class="fa fa-save"></i> Save Request</g:link>
 						</g:else>
-						<g:link controller="userSession" action="search" class="btn btn-warning"><i class="icon-arrows-remove"></i> Back to search</g:link>
+						<g:link controller="userSession" action="search" class="btn btn-warning"><i class="fa fa-search"></i> Back to Search</g:link>
 		             </div>
                 </div>
             </div>
@@ -68,7 +68,12 @@
 	        <article class="row white-bg-border racloop-search-fonts">
 	            <div class="col-md-2 col-md-offset-1">
 	                <span class="hidden-sm hidden-xs visible-lg visible-md">
-	                    <g:img dir="images" file="racloop/driver.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
+	                	<g:if test = "${journeyInstance.isDriver == true}">
+	                    	<g:img dir="images" file="racloop/driver.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
+	                    </g:if>
+	                    <g:else>
+	                    	<g:img dir="images" file="racloop/rider.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
+	                    </g:else>
 	                </span>
 	            </div>
 	            <div class="col-md-2">
@@ -76,20 +81,20 @@
 	                    <li>
 	                        <g:if test = "${journeyInstance.isDriver == true}">
 	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
-	                            	<span class="label label-primary">Car Owner</span>
+	                            	<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
 	                            <g:img dir="images" file="racloop/driver.png" width="100" alt="Car owner" class="img-thumbnail"/>
 	                        	</span>
 		                        <span class="hidden-sm hidden-xs visible-lg visible-md">
-		                            <span class="label label-primary">Car Owner</span>
+		                            <span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
 		                        </span>
 	                        </g:if>
 	                        <g:else>
 	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
-	                            	<span class="label label-primary">Ride Seeker</span>
+	                            	<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
 	                            <g:img dir="images" file="racloop/rider.png" width="100" alt="Ride Seeker" class="img-thumbnail"/>
 	                        	</span>
 		                        <span class="hidden-sm hidden-xs visible-lg visible-md">
-		                            <span class="label label-primary">Ride Seeker</span>
+		                            <span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
 		                        </span>
 	                        </g:else>
 	                        
@@ -101,35 +106,35 @@
 	            <div class="col-md-5 text-left">
 	                <h5>${journeyInstance.name}</h5>
 	                <ul class="text-left">
-	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
-	                    <li><i class="icon-basic-geolocalize-05"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
+	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
+	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
 	                    <g:if test = "${matchedResult.workflow}">
 							<g:set var="workflow" value="${matchedResult.workflow}"/>
 							<g:if test = "${workflow}">
 								<g:if test="${WorkflowState.INITIATED.state.equals(workflow.state)}">
 									<g:if test = "${workflow && workflow.requestJourneyId == currentJourney.id }">
-										<li><g:link action="cancelJourneyRequest" id="cancelled_${i}"  params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]" class="btn btn-warning">Cancel Request</g:link></li>
+										<li><g:link action="cancelJourneyRequest" id="cancelled_${i}"  params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]" class="btn btn-warning"><i class="fa fa-trash"></i> Cancel Request</g:link></li>
 									</g:if>
 									<g:else>
-										<li><g:link action="acceptIncomingRequest" id="accept_${i}"  params="[workflowId: workflow.id, redirectToSearch: true]" class="btn btn-info">Accept</g:link></li>
-										<li><g:link action="rejectIncomingRequest" id="reject_${i}"  params="[workflowId: workflow.id, redirectToSearch: true]" class="btn btn-warning">Reject</g:link></li>
+										<li><g:link action="acceptIncomingRequest" id="accept_${i}"  params="[workflowId: workflow.id, redirectToSearch: true]" class="btn btn-info"><i class="fa fa-check-circle-o"></i> Accept</g:link></li>
+										<li><g:link action="rejectIncomingRequest" id="reject_${i}"  params="[workflowId: workflow.id, redirectToSearch: true]" class="btn btn-warning"><i class="fa fa-ban"></i> Reject</g:link></li>
 										
 									</g:else>
 								</g:if>
 								<g:elseif test="${WorkflowState.ACCEPTED.state.equals(workflow.state)}">
-									<li><g:link action="cancelJourneyRequest" id="cancelled_${i}"  params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]" class="btn btn-warning">Cancel Request</g:link></li>
+									<li><g:link action="cancelJourneyRequest" id="cancelled_${i}"  params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]" class="btn btn-warning"><i class="fa fa-trash"></i> Cancel Request</g:link></li>
 								</g:elseif>
 								<g:elseif test="${WorkflowState.REJECTED.state.equals(workflow.state)}">
-									<li><button class="btn btn-warning disabled"><i class="icon-arrows-remove"></i>Rejected</button> </li>
+									<li><button class="btn btn-warning disabled"><i class="fa fa-ban"></i> Rejected</button> </li>
 								</g:elseif>
 								<g:elseif test="${WorkflowState.CANCELLED.state.equals(workflow.state) || WorkflowState.CANCELLED_BY_REQUESTER.state.equals(workflow.state)}">
-									<li><button class="btn btn-warning disabled"><i class="icon-arrows-remove"></i>Cancelled</button> </li>
+									<li><button class="btn btn-warning disabled"><i class="fa fa-trash-o"></i> Cancelled</button> </li>
 								</g:elseif>
 							</g:if>
 								
 						</g:if>
 						<g:else>
-							<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-info">Request</g:link></li>
+							<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link></li>
 						</g:else>	
 	                    
 	                </ul>
@@ -162,6 +167,7 @@
 	<g:hiddenField name="user_mobile" value="${currentUser?.profile?.mobile}" />
 	<g:hiddenField name="user_email" value="${currentUser?.profile?.email}" />
 	<g:hiddenField name="numberOfRecords" value="${numberOfRecords}" />
+	<!-- 
 	<script type="text/javascript">
         $(document).ready(function () {
             $("#results").dataTable({
@@ -169,5 +175,6 @@
             });
         });
      </script>
+    -->
 </body>
 </html>  

@@ -24,8 +24,6 @@ class JourneyController {
 	 * @return
 	 */
     def findMatching(JourneyRequestCommand currentJourney) {
-		println params.inspect()
-		
 		
 		JourneyRequestCommand currentJourneyFromRequest = request.getAttribute('currentJourney')
 		if(currentJourneyFromRequest) {
@@ -51,8 +49,6 @@ class JourneyController {
 				
 				def searchResultMap = journeyService.getSearchResults(currentUser, currentJourney) //getSearchResultMap(currentUser, currentJourney)
 				render(view: "results", model: ['searchResults': searchResultMap])
-				
-
 			}
 			else {
 				log.warn 'Error in command : ' + params

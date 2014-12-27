@@ -150,6 +150,7 @@ environments {
 }
 
 auditLog {
+	largeValueColumnTypes = true
 	actorClosure = { request, session ->
 	  org.apache.shiro.SecurityUtils.getSubject()?.getPrincipal()
 	}

@@ -16,6 +16,10 @@ class JourneyService {
 	def journeyWorkflowService
 	def grailsApplication
 	
+	// for dummy data
+	def possibleMinutes = [0, 15, 30, 45]
+	def random = new Random();
+	
 	def saveJourney(Journey journey) {
 		if(journey.validate()) {
 			if(journey.save(flush: true)) {
@@ -117,10 +121,12 @@ class JourneyService {
 			int index = 0;
 			if(fromPlaces.size() <= toPlaces.size()) {
 				fromPlaces.each {
-					int fiveMinuteIntervalIndex = randomMinutesGenerator.nextInt(12);
-					int randomMinutes = 15;
-					if(fiveMinuteIntervalIndex > 3) randomMinutes = fiveMinuteIntervalIndex * 5;
-					tempDate = tempDate.plusMinutes(randomMinutes);
+//					int fiveMinuteIntervalIndex = randomMinutesGenerator.nextInt(12);
+//					int randomMinutes = 15;
+//					if(fiveMinuteIntervalIndex > 3) randomMinutes = fiveMinuteIntervalIndex * 5;
+//					tempDate = tempDate.plusMinutes(randomMinutes);
+					def i = random.nextInt(possibleMinutes.size())
+					tempDate = tempDate.plusMinutes(possibleMinutes[i]);
 					def name = names[index]
 					def fromPlace = it;
 					def toPlace = toPlaces[index]
@@ -143,10 +149,12 @@ class JourneyService {
 			}
 			else {
 				toPlaces.each {
-					int fiveMinuteIntervalIndex = randomMinutesGenerator.nextInt(12);
-					int randomMinutes = 15;
-					if(fiveMinuteIntervalIndex > 3) randomMinutes = fiveMinuteIntervalIndex * 5;
-					tempDate = tempDate.plusMinutes(randomMinutes);
+//					int fiveMinuteIntervalIndex = randomMinutesGenerator.nextInt(12);
+//					int randomMinutes = 15;
+//					if(fiveMinuteIntervalIndex > 3) randomMinutes = fiveMinuteIntervalIndex * 5;
+//					tempDate = tempDate.plusMinutes(randomMinutes);
+					def i = random.nextInt(possibleMinutes.size())
+					tempDate = tempDate.plusMinutes(possibleMinutes[i]);
 					def name = names[index]
 					def toPlace = it;
 					def fromPlace = fromPlaces[index]
