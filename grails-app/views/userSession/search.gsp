@@ -1,5 +1,4 @@
 <%@ page import="com.racloop.JourneyRequestCommand" %>
-<!DOCTYPE html>
 <html>
 <head>
 <meta name="layout" content="main" />
@@ -7,7 +6,7 @@
 <r:require module="core" />
 </head>
 <body>
-	<g:set var="isSearch" value="true" scope="request" />
+	<g:set var="isLandingPage" value="true" scope="request" />
 	<g:if test="${flash.message}">
 		<div class="alert alert-success">			
 		  <button type="button" class="close" data-dismiss="alert">&times;</button>
@@ -46,7 +45,7 @@
               <div class="intro-section">
 
                   <!-- WELCOM MESSAGE -->
-                  <h1 class="intro white-text">Share Your Car and Auto Rides</h1>
+                  <h1 class="intro white-text">Share Car and Auto Rides Safely</h1>
                   <h5 class="white-text">Offer a ride or Ask people for lift. Save money, Make friends and Contribute to <span class="green-text">Greener</span> Environment. </h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->

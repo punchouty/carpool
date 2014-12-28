@@ -5,6 +5,7 @@ Web
 - layouts
 - static pages - tiny mce
 - static page display
+- branding icons + favicon
 
 1. Facebook login - low priority
 2. Star rating 
@@ -35,5 +36,6 @@ http://stackoverflow.com/questions/14560999/using-the-haversine-formula-in-javas
 http://stackoverflow.com/questions/1051723/distance-from-point-to-line-great-circle-function-not-working-right
 http://stackoverflow.com/questions/1299567/how-to-calculate-distance-from-a-point-to-a-line-segment-on-a-sphere
 
-Later Bugs
+Low priority Bugs
 1. Hower on racloop logo. It disappears.
+2. Logs - resource.ResourceTagLib You seem to have too many r:layoutResources invocations with no disposition specified. It has already been called twice.

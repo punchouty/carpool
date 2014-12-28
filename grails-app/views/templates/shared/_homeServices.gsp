@@ -74,13 +74,13 @@
            <div class="container">
                <div class="section-header section-stats">
                    <div class="small-text-medium uppercase colored-text">
-                       Safe Car pool from your Mobile 
+                       Car pool on the move 
                    </div>
-                   <h2 class="white-text">Your <strong class="white-text">Safety</strong>, Our Priority</h2>
+                   <h2 class="white-text"><strong class="white-text">Racloop</strong> App on your Smart Phone</h2>
                    <div class="colored-line">
                    </div>
                    <div class="white-text sub-heading">
-                       Get a real time updates on your smart phone about your where about with respect to your destination. SOS feature to inform your dear ones about your location and possible danger.
+                       Share rides on the go.
                    </div>
                </div>
                <div class="row no-gutters">
@@ -124,10 +124,7 @@
                    <div class="long-transparent-line">
                    </div>
                    <p class="white-text">
-                       Help us to make a difference 
-                       <n:isNotLoggedIn>
-                       - <a href="${request.contextPath}/signup" class="strong inpage-scroll">Sign Up Now »</a>
-                       </n:isNotLoggedIn>
+                       Help us to make a difference - <a href="${request.contextPath}/signup" class="strong inpage-scroll">Sign up »</a>
                    </p>
                </div>
 
@@ -138,37 +135,53 @@
    <!-- =========================
     SECTION: BENEFITS
    ============================== -->
-   <section class="unique-features grey-bg" id="etiquettes">
+   <section class="white-bg" id="safety">
        <div class="container">
 
            <!-- SECTION HEADER -->
            <div class="section-header">
                <div class="small-text-medium uppercase colored-text">
-                   Do's and Dont's
+                   Safety and Security
                </div>
-               <h2 class="dark-text"><strong>Carpool</strong> Etiquettes</h2>
+               <h2 class="dark-text">Your <strong>Safety</strong> Our <strong>Priority</strong></h2>
                <div class="colored-line">
                </div>
                <div class="sub-heading">
-                   Ground rules for making ride sharing experience pleasant.
+                   You’re safety is extremely important to us. We are completely committed to your safe being. Our smart phone mobile application is equipped with below three safety features. Your smart phone should be equipped with GPS to use these features.
+                   We are building a community on the basis of mutual trust among the users of Racloop. Our mobile app safety features cannot protect you for some one wrong intention. Please use your judgment to accept any drive at first place. Any time you feel there is any suspicions either don’t accept the ride or in case you are on move get off the car immediately.
                </div>
            </div>
 
            <!-- FIRST ROW OF FEATURES -->
            <div class="row">
-               <div class="col-md-6 wow fadeInRight" data-wow-duration="1.75s" data-wow-offset="20">
+               <div class="col-md-10 col-md-offset-1 wow pulse" data-wow-duration="1.75s" data-wow-offset="20">
 
                    <!-- SINGLE FEATURE -->
                    <div class="feature">
                        <div class="icon-container">
-                           <span class="fa fa-inr colored-text"></span>
+                           <span class="icon-basic-bolt colored-text"></span>
                        </div>
                        <div class="description text-left">
-                           <h4 class="dark-text">Share Cost</h4>
+                           <h4 class="dark-text">SOS!</h4>
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               User engagement A/B testing shrink a market venture capital pitch deck.
+                               Clicking on <strong>SOS</strong> button will send SMS to two trusted contacts every one minute telling that you need <strong>emergency assistance</strong> along with your smart phone GPS coordinate. GPS coordinates can be used to identify your current location. During <strong>registration</strong> please provide us phone number of two trusted contacts (Your parents, friends or sibling) that Racloop should send SMS in case of emergency. 
+                           </p>
+                       </div>
+                   </div>
+                   
+                   <!-- SINGLE FEATURE -->
+                   <div class="feature">
+                       <div class="icon-container">
+                           <span class="icon-music-bell colored-text"></span>
+                       </div>
+                       <div class="description text-left">
+                           <h4 class="dark-text">Racloop Alert</h4>
+                           <div class="grey-line-short pull-left">
+                           </div>
+                           <p class="text-left">
+                               Along with your trusted contact <strong>Racloop</strong> will also start receiving your current location and information about possible threat. We will try to reach your trusted contact to make it sure that they understand you are in danger. In case they are unreachable we will contact <strong>police</strong> and let them know the situation.
                            </p>
                        </div>
                    </div>
@@ -176,107 +189,14 @@
                    <!-- SINGLE FEATURE -->
                    <div class="feature">
                        <div class="icon-container">
-                           <span class="icon-clock-alt colored-text"></span>
+                           <span class="icon-basic-compass colored-text"></span>
                        </div>
                        <div class="description text-left">
-                           <h4 class="dark-text">Be on Time</h4>
+                           <h4 class="dark-text">Ride Monitor</h4>
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               User engagement A/B testing shrink a market venture capital pitch deck.
-                           </p>
-                       </div>
-                   </div>
-
-                   <!-- SINGLE FEATURE -->
-                   <div class="feature">
-                       <div class="icon-container">
-                           <span class="fa fa-paint-brush colored-text"></span>
-                       </div>
-                       <div class="description text-left">
-                           <h4 class="dark-text">Keep the Vehicle Clean</h4>
-                           <div class="grey-line-short pull-left">
-                           </div>
-                           <p class="text-left">
-                               User engagement A/B testing shrink a market venture capital pitch deck.
-                           </p>
-                       </div>
-                   </div>
-
-                   <!-- SINGLE FEATURE -->
-                   <div class="feature">
-                       <div class="icon-container">
-                           <span class="icon-bag-alt colored-text"></span>
-                       </div>
-                       <div class="description text-left">
-                           <h4 class="dark-text">Carry Less Luggage</h4>
-                           <div class="grey-line-short pull-left">
-                           </div>
-                           <p class="text-left">
-                               User engagement A/B testing shrink a market venture capital pitch deck.
-                           </p>
-                       </div>
-                   </div>
-               </div>
-
-               <div class="col-md-6 wow fadeInLeft" data-wow-duration="1.75s" data-wow-offset="20">
-
-                   <!-- SINGLE FEATURE -->
-                   <div class="feature">
-                       <div class="icon-container">
-                           <span class="icon-icon-mobile colored-text"></span>
-                       </div>
-                       <div class="description text-left">
-                           <h4 class="dark-text">Avoid talking Loud on Mobile</h4>
-                           <div class="grey-line-short pull-left">
-                           </div>
-                           <p class="text-left">
-                               User engagement A/B testing shrink a market venture capital pitch deck.
-                           </p>
-                       </div>
-                   </div>
-
-                   <!-- SINGLE FEATURE -->
-                   <div class="feature">
-                       <div class="icon-container">
-                           <span class="icon-arrows-circle-remove colored-text"></span>
-                       </div>
-                       <div class="description text-left">
-                           <h4 class="dark-text">Cancel in Advance</h4>
-                           <div class="grey-line-short pull-left">
-                           </div>
-                           <p class="text-left">
-                               User engagement A/B testing shrink a market venture capital pitch deck.
-                           </p>
-                       </div>
-                   </div>
-
-                   <!-- SINGLE FEATURE -->
-                   <div class="feature">
-                       <div class="icon-container">
-                           <span class="icon-chat-alt colored-text"></span>
-                       </div>
-                       <div class="description text-left">
-                           <h4 class="dark-text">Always Respond to Requests</h4>
-                           <div class="grey-line-short pull-left">
-                           </div>
-                           <p class="text-left">
-                               User engagement A/B testing shrink a market venture capital pitch deck.
-                           </p>
-                       </div>
-                   </div>
-
-                   <!-- SINGLE FEATURE -->
-                   <div class="feature">
-                       <div class="icon-container">
-                           <span class="icon-ecommerce-money colored-text"></span>
-                       </div>
-                       <div class="description text-left">
-                           <h4 class="dark-text">Keep Change</h4>
-                           <div class="grey-line-short pull-left">
-                           </div>
-                           <p class="text-left">
-                               User engagement A/B testing shrink a market venture capital pitch deck.
+                               Activating this feature will start <strong>monitoring</strong> your journey. It will give real time status of route and possible <strong>deviation</strong> of standard route in term of red (danger), amber (use caution, there might be possible danger) or green (every thing is good). It will also tell how far is your destination and how much you already traveled. Any time driver will take any <strong>wrong</strong> route you will come to know immediately.
                            </p>
                        </div>
                    </div>
@@ -285,7 +205,7 @@
            </div>
        </div>
    </section>
-
+   
    <!-- =========================
     SECTION: TIMELINE
    ============================== -->
@@ -309,6 +229,32 @@
                        <div class="panel panel-default">
 
                            <!-- ACORDIION HEADING / TITLE -->
+                           <div class="panel-heading" id="headingZero">
+                               <h4 class="panel-title">
+                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="false" aria-controls="collapseZero">
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">How it works?</span>
+                                   </a>
+                               </h4>
+                           </div>
+
+                           <!-- ACORDIION DESCRIPTION / TEXT -->
+                           <div id="collapseZero" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingZero">
+                               <div class="panel-body">
+                                   <h5>3 simple steps for ride sharing</h5>
+                                   <ol class="simple-list">
+                                   	<li>Put in request when and where are you going and whether you are driving or need a ride. We’ll find other people who are going in same direction and around same time.</li>
+                                   	<li>Send you request to the person whom you think will make a good co-passenger. If the other person accepts your request then we’ll share the contact info with each other.</li>
+                                   	<li> Simply call him/her and plan your journey.</li>
+                                   </ol>
+                                   Hit the road 
+                               </div>
+                           </div>
+                       </div>
+
+                       <!-- SINGLE ACORDIION -->
+                       <div class="panel panel-default">
+
+                           <!-- ACORDIION HEADING / TITLE -->
                            <div class="panel-heading" id="headingOne">
                                <h4 class="panel-title">
                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
@@ -318,9 +264,29 @@
                            </div>
 
                            <!-- ACORDIION DESCRIPTION / TEXT -->
-                           <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+                           <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                <div class="panel-body">
-                                   Tablet publishing HTML5 mobile first really simple syndication meetups white board walls. User experience iterate algorithm gamification semantic web value add market research stealth.
+                                   It’s free because we are not actually providing the rides. We are simply connecting people who want to share their rides and help in contributing towards a greener environment. One less car on the road is worth millions for us.
+                               </div>
+                           </div>
+                       </div>
+
+                       <!-- SINGLE ACORDIION -->
+                       <div class="panel panel-default">
+
+                           <!-- ACORDIION HEADING / TITLE -->
+                           <div class="panel-heading" id="headingFour">
+                               <h4 class="panel-title">
+                                   <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">I don’t have a car and no one is driving on my route. How can I share the ride?</span>
+                                   </a>
+                               </h4>
+                           </div>
+
+                           <!-- ACORDIION DESCRIPTION / TEXT -->
+                           <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
+                               <div class="panel-body">
+                                   You can also serach for fellow passangers who are travelling in same directions as you. Connect with them, hire a cab, ride together and share the cab’s bill.
                                </div>
                            </div>
                        </div>
@@ -332,7 +298,7 @@
                            <div class="panel-heading" id="headingTwo">
                                <h4 class="panel-title">
                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">How to use it?</span>
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">My plans have changed. What should I do?</span>
                                    </a>
                                </h4>
                            </div>
@@ -340,7 +306,7 @@
                            <!-- ACORDIION DESCRIPTION / TEXT -->
                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                <div class="panel-body">
-                                   Rockstar developer internet of things bleeding edge browser extension social capital. Sandboxing UDID content manag system ruby on rails continuous deployment big data infographic.
+                                   Change in plan is quite normal and there is nothing wrong in a change of plan. The idea is to keep everyone informed. If you are cancelling your journey then simply look for you journey in My Requests and delete it. We’ll notify your fellow co-passengers about the cancellation. If you want to change the travel date or destination, simply delete the old request and put in a new one.
                                </div>
                            </div>
                        </div>
@@ -352,7 +318,7 @@
                            <div class="panel-heading" id="headingThree">
                                <h4 class="panel-title">
                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">I chenged my mind. I dont want to go. What ahould i do?</span>
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">Should I share the cost?</span>
                                    </a>
                                </h4>
                            </div>
@@ -360,7 +326,7 @@
                            <!-- ACORDIION DESCRIPTION / TEXT -->
                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                                <div class="panel-body">
-                                   Tablet publishing HTML5 mobile first really simple syndication meetups white board walls. User experience iterate algorithm gamification semantic web value add market research stealth.
+                                   Absolutely yes. It is highly recommended that all co-passengers should split the fuel/parking/toll charges. To avoid any unnecessary arguments it is recommended that you should decide on splitting the cost before the journey itself.
                                </div>
                            </div>
                        </div>
@@ -383,7 +349,7 @@
                <!-- BRIEF IMAGE -->
                <div class="col-md-6 pull-right wow fadeInLeft" data-wow-offset="20" data-wow-duration="1.75s">
                    <div class="brief-image-right">
-                       <img src="images/about-us.jpg" alt="">
+                       <img src="images/about.jpg" alt="">
                    </div>
                </div>
 
@@ -396,26 +362,11 @@
                    <div class="colored-line-left">
                    </div>
                    <p class="text-left">
-                       Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                       We are bunch of techies who drive to work daily and there are some empty seats in our car. We drive every weekend back to our hometown to meet our family. We realized that there are lots of people like us who drive alone. We also believe that we need to do something to save environment and reduce traffic congestion on Indian roads. So we founded Racloop. 
                    </p>
-
-                   <!-- FEATURE LIST -->
-                   <div class="row">
-                       <div class="col-md-6 col-sm-6">
-                           <ul class="feature-list text-left">
-                               <li><span class="icon-lock-alt colored-text"></span> We care your businnes</li>
-                               <li><span class="icon-check-alt2 colored-text"></span> Skilled professionals</li>
-                               <li><span class="icon-paperclip colored-text"></span> Lorem ipsum dolor</li>
-                           </ul>
-                       </div>
-                       <div class="col-md-6 col-sm-6">
-                           <ul class="feature-list text-left">
-                               <li><span class="icon-paperclip colored-text"></span> Startup ipsum does</li>
-                               <li><span class="icon-adjust-vert colored-text"></span> Flexible schedule</li>
-                               <li><span class="icon-ribbon-alt colored-text"></span> Certified company</li>
-                           </ul>
-                       </div>
-                   </div>
+					<p class="text-left">
+						It is a ride-sharing platform connecting regular people making similar trips so everyone benefits: the driver, the passenger, society and the environment. Racloop allows participants to reduce their travel costs, meet new friends and conveniently reach their destination, all in a super simple, cool, and environmentally friendly way. Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups.
+					</p>
                </div>
 
            </div>
@@ -435,24 +386,36 @@
                    <div class="icon-container">
                        <span class="icon-basic-mail colored-text"></span>
                    </div>
-                   <a href="mailto:hey@designlab.co" class="strong">help@racloop.com</a>
+                   <a href="mailto:help@racloop.com" class="strong">help@racloop.com</a>
                </div>
 
                <div class="col-sm-4">
                    <div class="icon-container">
                        <span class="icon-basic-geolocalize-01 colored-text"></span>
                    </div>
-                   <a href="" class="strong">New Delhi, India</a>
+                   <a href="" class="strong">#24, Gracia Floor, Shiva Enclave, Kharar, Punjab 140301</a>
+                   <!-- 30.758332, 76.633361 -->
                </div>
 
                <div class="col-sm-4">
                    <div class="icon-container">
                        <span class="icon-basic-tablet colored-text"></span>
                    </div>
-                   <a href="tel:44-12-3456-7890" class="strong">+91 9780242630</a>
+                   <a href="tel:44-12-3456-7890" class="strong">+91 7307392447</a>
                </div>
            </div>
 
        </div>
    </div>
+   
+    <!-- =========================
+     GOOGEL MAP 
+    ============================== -->
+    <div id="container-fluid">
+        <div id="cd-google-map">
+            <div id="google-container">
+            </div>
+            <address class="color-bg">#24, Gracia Floor, Shiva Enclave, Kharar, Punjab 140301</address>
+        </div>
+    </div>
 

@@ -20,13 +20,13 @@ class StaticPageController {
 //	}
 	
 	def safety() {
-		String value = staticdataService.getSaticValueBasedOnKey("safety")
-		[safety:value]
+//		String value = staticdataService.getSaticValueBasedOnKey("safety")
+//		[safety:value]
 	}
 	
 	def faq() {
-		String value = staticdataService.getSaticValueBasedOnKey("faq")
-		[faq:value]
+//		String value = staticdataService.getSaticValueBasedOnKey("faq")
+//		[faq:value]
 	}
 
 	def about() {
@@ -35,18 +35,18 @@ class StaticPageController {
 	}
 	
 	def terms() {
-		String value = staticdataService.getSaticValueBasedOnKey("terms")
-		[terms:value]
+//		String value = staticdataService.getSaticValueBasedOnKey("terms")
+//		[terms:value]
 	}
 
 	def privacy() {
-		String value = staticdataService.getSaticValueBasedOnKey("privacy")
-		[privacy:value]
+//		String value = staticdataService.getSaticValueBasedOnKey("privacy")
+//		[privacy:value]
 	}
 
 	def etiquettes() {
-		String value = staticdataService.getSaticValueBasedOnKey("etiquettes")
-		[etiquettes:value]
+		//String value = staticdataService.getSaticValueBasedOnKey("etiquettes")
+		//[etiquettes:value]
 	}
 	
 	def main() {

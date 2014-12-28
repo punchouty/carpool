@@ -15,19 +15,21 @@
 			<g:render template="/templates/shared/navigation" />
 		</div>
 	</header>
+	<div class="container">
 		
 	<g:layoutBody />
+		
+	</div>
       
-	<nav class="container" role="navigation">
+	<nav class="container-narrow" role="navigation">
         <g:render template="/templates/shared/footer" />
    	</nav>
-	<%--
+	
 	<g:if env="development">
 	<div>
 		${params }
 	</div>
 	</g:if>	
-	 --%>
 	<r:layoutResources />
 </body>
 </html>

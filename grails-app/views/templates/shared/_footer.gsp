@@ -31,24 +31,26 @@
         
         
         <!-- FOOTER -->
-    <footer class="footer white-bg-border">
+    <footer class="footer grey-bg">
         ©2015 RACLOOP All Rights Reserved
 
         <!-- OPTIONAL FOOTER LINKS -->
         <ul class="footer-links small-text">
-            <li><a href="${request.contextPath}/about" class="dark-text">About</a>
-            </li>
             <li><a href="${request.contextPath}/terms" class="dark-text">Terms</a>
             </li>
             <li><a href="${request.contextPath}/privacy" class="dark-text">Privacy</a>
+            </li>
+            <li><a href="${request.contextPath}/#about" class="dark-text">About</a>
+            </li>
+            <li><a href="${request.contextPath}/#safety" class="dark-text">Safety</a>
             </li>
         </ul>
 
         <!-- SOCIAL ICONS -->
         <ul class="social-icons">
-            <li><a href="https://www.facebook.com/games/racloop-india/"><span class="icon-social-facebook transparent-text-dark"></span></a>
+            <li><a href="https://www.facebook.com/games/racloop-india/" target="_blank"><span class="icon-social-facebook transparent-text-dark"></span></a>
             </li>
-            <li><a href="https://twitter.com/hashtag/racloopindia"><span class="icon-social-twitter transparent-text-dark"></span></a>
+            <li><a href="https://twitter.com/hashtag/racloopindia" target="_blank"><span class="icon-social-twitter transparent-text-dark"></span></a>
             </li>
         </ul>
 

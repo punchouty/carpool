@@ -2,11 +2,12 @@
 <%@ page import="com.racloop.journey.workkflow.WorkflowState" %>
 <html>
 <head>
-<meta name="layout" content="static" />
+<meta name="layout" content="dynamic" />
 <title>Search Results -  ${searchResults.numberOfRecords} records returned</title>
+<r:require module="core" />
 </head>
 <body>
-	<g:set var="isHome" value="true" scope="request" />
+	<g:set var="isSearch" value="true" scope="request" />
 	<g:set var="currentJourney" value="${searchResults.currentJourney}"/>
 	<g:if test="${flash.message}">
 		<div class="alert alert-success">			
@@ -38,13 +39,13 @@
                 		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
                 	</g:else>
                     <div>
-                        <strong>From :</strong> ${currentJourney.fromPlace}
+                        <i class="icon-icon-house-alt"></i> <strong>From :</strong> ${currentJourney.fromPlace}
                     </div>
                     <div>
-                        <strong>To :</strong> ${currentJourney.toPlace}
+                        <i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${currentJourney.toPlace}
                     </div>
                     <div>
-                        <strong>On :</strong> <g:formatDate format="dd MMMM yyyy hh:mm a" date="${currentJourney.dateOfJourney}"/>
+                        <i class="icon-basic-calendar"></i> <strong>On :</strong> <g:formatDate format="dd MMMM yyyy hh:mm a" date="${currentJourney.dateOfJourney}"/>
                     </div>
                     <div>
                         <g:if test ="${session?.currentJourney?.id }">

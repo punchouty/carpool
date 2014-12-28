@@ -1,4 +1,3 @@
-
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@page import="grails.plugin.nimble.core.UserBase"%>
 <%@ page import="grails.plugin.nimble.core.AdminsService"%>
@@ -10,14 +9,6 @@
 	<r:layoutResources />
 </head>
 <body>
-	<g:set var="currentUser"
-		value="${UserBase.get(SecurityUtils.subject?.principal)}" />
-	
-		<!-- =========================
-	     PRE LOADER       
-	    ============================== -->
-	    
-	
 	    <!-- =========================
 	     SECTION: HOME / HEADER  
 	    ============================== -->
@@ -25,7 +16,7 @@
        		 <!-- COLOR OVER IMAGE -->
         	<div class="overlay-layer">
 		
-				<g:render template="/templates/shared/homeNavigation" />	
+				<g:render template="/templates/shared/navigation" />	
 				
 				<div class="container">
 					<g:layoutBody />

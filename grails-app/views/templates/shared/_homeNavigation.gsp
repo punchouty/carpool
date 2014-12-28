@@ -1,3 +1,5 @@
+		<%-- DEPRECATED - Need to remove --%>
+		
 		<%@ page import="grails.plugin.nimble.core.AdminsService"%>	
 		<%@ page import="org.apache.shiro.SecurityUtils"%>	
 			

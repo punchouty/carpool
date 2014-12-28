@@ -1,8 +1,9 @@
 		<%@ page import="grails.plugin.nimble.core.AdminsService"%>	
+		<%@page import="grails.plugin.nimble.core.UserBase"%>
 		<%@ page import="org.apache.shiro.SecurityUtils"%>	
-			
+		<g:set var="currentUser" value="${UserBase.get(SecurityUtils.subject?.principal)}" />	
 		<!-- STICKY NAVIGATION -->
-            <div class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation" role="navigation">
+            <div <g:if test="${isLandingPage}">class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation appear-on-scroll"</g:if><g:else>class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation"</g:else> role="navigation">
                 <div class="container">
                     <div class="navbar-header">
 
@@ -25,9 +26,9 @@
 
                         <!-- NAVIGATION LINK -->
                         <ul class="nav navbar-nav navbar-left main-navigation small-text">
-                            <li><a href="${request.contextPath}/#etiquettes">Etiquettes</a>
+                            <li><a href="${request.contextPath}/etiquettes">Etiquettes</a>
                             </li>
-                            <li><a href="${request.contextPath}/safety">Safety</a>
+                            <li><a href="${request.contextPath}/#safety">Safety</a>
                             </li>
                             <li><a href="${request.contextPath}/#faq">FAQ</a>
                             </li>
