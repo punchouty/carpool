@@ -1,7 +1,7 @@
 
 package com.racloop
 
-import com.racloop.vechicle.Vehicle;
+import com.racloop.vechicle.Vehicle
 
 class User extends grails.plugin.nimble.core.UserBase {
 	
@@ -20,5 +20,20 @@ class User extends grails.plugin.nimble.core.UserBase {
 	
 	static mappedBy = [outgoingReviews: 'reviewer',
 		incomingReviews: 'reviewee']
+	
+	public double getUserRating() {
+		Double rating = 0.0d
+		def reviewList = getIncomingReviews()
+		reviewList.each {review->
+			rating = rating + review.getAverageRating()
+		}
+		int count = reviewList.size()
+		if(count>0){
+			return rating/count
+		}
+		else {
+			return 0.0d
+		}
+	}
 	
 }
