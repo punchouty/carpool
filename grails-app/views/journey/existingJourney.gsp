@@ -3,7 +3,7 @@
 <head>
 <meta name="layout" content="static" />
 <title>Existing Journey Found</title>
-
+<r:require module="core" />
 </head>
 <body>
 	<g:if test="${flash.error}">

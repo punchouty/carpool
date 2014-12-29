@@ -3,6 +3,7 @@
 <head>
 <meta name="layout" content="static" />
 <title>My Past Journeys</title>
+<r:require module="core" />
 </head>
 <section class="white-bg" id="section10">
     <div class="container">

@@ -16,7 +16,6 @@ import com.racloop.User
  *
  */
 class UserRatingTestSpec extends Specification {
-	def grailsApplication
     def setup() {
 		//Add Sample Driver and Sample Rider user here if they are not getting added from Bootstarp.groovy
     }

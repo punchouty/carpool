@@ -3,6 +3,7 @@
 <head>
 <meta name="layout" content="static" />
 <title>Search Results -  ${numberOfRecords} records returned</title>
+<r:require module="core" />
 </head>
 <body>
 	<g:if test="${flash.error}">

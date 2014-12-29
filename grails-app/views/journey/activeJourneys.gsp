@@ -3,6 +3,7 @@
 <head>
 <meta name="layout" content="static" />
 <title>My Active Journeys</title>
+<r:require module="core" />
 <style>
 .modal-header {
     background-color: #f2dede;

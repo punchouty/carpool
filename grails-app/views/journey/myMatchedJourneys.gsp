@@ -3,6 +3,7 @@
 <head>
 <meta name="layout" content="main" />
 <title>My Requested Journeys</title>
+<r:require module="core" />
 </head>
 <body>
 	<g:set var="isHome" value="true" scope="request" />
