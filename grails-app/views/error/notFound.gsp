@@ -2,13 +2,14 @@
 <head>
 <meta name="layout" content="static" />
 <title>Page Not Found</title>
+<r:require module="core" />
 <style>
   .center {text-align: center; margin-left: auto; margin-right: auto; margin-bottom: auto; margin-top: auto;}
 </style>
 </head>
 
 <body>
-	<div class="row">
+	<div class="container">
 		<div>
 			<div class="jumbotron center">
 				<h1>
@@ -23,8 +24,8 @@
 				<p>
 					<b>Or</b>
 				</p>
-				<a href="${request.contextPath}/" class="btn btn-large btn-info"><i
-					class="icon-home icon-white"></i> Take Me Home</a>
+				<a href="${request.contextPath}/" class="standard-button"><i
+					class="icon-home-house-streamline"></i> Take Me Home</a>
 			</div>				
 		</div>
 	</div>

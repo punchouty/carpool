@@ -29,6 +29,7 @@ class ErrorController {
 	def notFound() {
 		def errorMap = [ error: "true", code: "404" ]
 		withFormat {
+			html code: "404"
 			json  {render errorMap as JSON}
 		}
 	}
@@ -36,6 +37,7 @@ class ErrorController {
 	def forbidden() {
 		def errorMap = [ error: "true", code: "403" ]
 		withFormat {
+			html code: "403"
 			json  {render errorMap as JSON}
 		}
 	}
