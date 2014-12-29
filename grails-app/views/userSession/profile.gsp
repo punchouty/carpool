@@ -2,9 +2,7 @@
 <head>
 <meta name="layout" content="static" />
 <title>My Profile</title>
-<style>
-  .center {text-align: center; margin-left: auto; margin-right: auto; margin-bottom: auto; margin-top: auto;}
-</style>
+<r:require module="core" />
 </head>
 
 <body>  
@@ -104,34 +102,54 @@
     </section>
     <div class="container">
         <div class="col-md-6 col-md-offset-3">
-         <div class="row">
-        <g:if test="${flash.message != null && flash.message.length() > 0}">			
-		     <div class="alert alert-info alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <strong>Success!</strong> <n:flashembed/> 
-                </div>
-		</g:if>
-		<g:hasErrors bean="${user}">			
-			<div class="alert alert-danger alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <strong>Warning!</strong> <g:renderErrors bean="${user}" as="list" />
-                </div>
-		</g:hasErrors>
-        </div>
+	        <div class="row">
+	        <g:if test="${flash.message != null && flash.message.length() > 0}">	
+	        	<g:if test="${flash.type == 'error'}">			
+			     <div class="alert alert-danger alert-dismissible" role="alert">
+	                  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	                  <strong>Error!</strong> <n:flashembed/> 
+	             </div>
+	            </g:if>
+	            <g:else>
+	            <div class="alert alert-info alert-dismissible" role="alert">
+	                  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	                  <strong>Success!</strong> <n:flashembed/> 
+	             </div>
+	            </g:else>
+			</g:if>
+			<g:hasErrors bean="${user}">			
+				<div class="alert alert-danger alert-dismissible" role="alert">
+	                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+	                    <strong>Warning!</strong> <g:renderErrors bean="${user}" as="list" />
+	                </div>
+			</g:hasErrors>
+	       </div>
             <!-- VERTICAL REGISTRATION FORM -->
             <div class="row">
                   
              <g:form controller="userSession" action="editProfile" method="POST"  class="registration-form" name="edit-form">
 
-                    <input type="email" id="cf-email" name="email" class="form-control input-box" placeholder="Email" type="email" value="${user.username.encodeAsHTML()}" placeholder="Email" required />
-
-                    <input type="text" id="cf-name" name="fullName" class="form-control input-box" placeholder="Name" value="${user.profile?.fullName?.encodeAsHTML()}"  maxlength="100" minlength="3" required />
-
-                    <input type="text" id="cf-mobile" name="mobile" class="form-control input-box" placeholder="Mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
-              
-                    
-                    
-                    <div class=" text-left">
+                    <div class="text-left form-group">
+					    <label for="cf-email">Email :</label>
+						<input type="email" id="cf-email" name="email" class="form-control input-box zero-margin" placeholder="Email" type="email" value="${user.username.encodeAsHTML()}" placeholder="Email" readonly />
+  					</div>
+                   
+                    <div class="text-left form-group">
+					    <label for="cf-name">Name :</label>
+						<input type="text" id="cf-name" name="fullName" class="form-control input-box zero-margin" placeholder="Name" value="${user.profile?.fullName?.encodeAsHTML()}"  maxlength="100" minlength="3" required />
+					</div>
+                   
+                    <div class="text-left form-group">
+					    <label for="cf-mobile">Mobile :</label>
+						<input type="text" id="cf-mobile" name="mobile" class="form-control input-box zero-margin" placeholder="Mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
+              		</div>
+                   
+              		<div class="text-left form-group">
+					    <label for="cf-emergencyContact">Emergency Contact :</label>
+						<input type="text" id="cf-emergencyContact" name="emergencyContact" class="form-control input-box zero-margin" placeholder="Emergency Contact" value="${user.profile?.emergencyContact}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
+              		</div>
+                   
+              		<div class=" text-left">
                         <label class="radio-inline">
                             <input type="radio" name="sex" id="inlineRadio1" value="male" <g:if test="${user?.profile?.isMale}">checked</g:if>> Male
                         </label>
@@ -141,27 +159,9 @@
                     </div>
                     <button id="edit-profile-button" type="submit" value="Update Profile"  class="btn btn-primary standard-button">UPDATE</button>
                 </g:form>
-
-                <!-- FORM SUBMIT SUCCESS / ERROR MESSAGES -->
-                <p class="email-success dark-text small-text"><span class="icon-check-alt2 colored-text"></span>Email sent seuccessfully</p>
-                <p class="email-error dark-text small-text"><span class="icon-close-alt2"></span>Error! Please check all fields filled correctly</p>
-                <!-- MAILCHIMP ALERTS
-        <p class="mailchimp-success dark-text"><span class="icon-check-alt2 colored-text"></span>We sent the confirmation to your email</p>
-        <p class="mailchimp-error dark-text"><span class="icon-close-alt2"></span>Error! Please check all fields filled correctly</p>
-        -->
             </div>
         </div>
     </div>
-
-
-
-
-
-
-
-
-
-
-
+    <br>
 </body>
 </html>

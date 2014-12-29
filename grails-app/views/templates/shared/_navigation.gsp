@@ -58,9 +58,11 @@
 	                                	<li>
 											<g:link controller="admins" action="index" target="_blank">User Administration</g:link>
 										</li>
+										<%-- Need to change in future
 										<li>
 											<g:link controller="staticData" action="list">Static Pages</g:link>
 										</li>
+										 --%>
 	                                	</n:hasRole>
 	                                    <li>
 	                                        <a href="${request.contextPath}/profile">Profile</a>
@@ -75,12 +77,16 @@
 	                            </li>
 	                        </g:if>
                             <n:notUser>
+                            	<g:if test="${isSignin == null}">
 	                            <li class="login js-login">
 	                                <a href="${request.contextPath}/signin">Login</a>
 	                            </li>
+	                            </g:if>
+	                            <g:if test="${isSignup == null}">
 	                            <li class="register-button js-register inpage-scroll">
 	                                <a href="${request.contextPath}/signup" class="navbar-register-button">Sign Up</a>
 	                            </li>
+	                            </g:if>
                             </n:notUser>
 
                         </ul>

@@ -15,6 +15,7 @@ class EmailProcessorService {
 		try {
 			EmailMessage emailMessage = message
 			mailService.sendMail {
+				async true
 				multipart true
 				to emailMessage.toAddress
 				subject emailMessage.mailSubject

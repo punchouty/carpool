@@ -1,7 +1,7 @@
 <%@ page import="com.racloop.journey.workkflow.WorkflowState" %>
 <html>
 <head>
-<meta name="layout" content="static" />
+<meta name="layout" content="dynamic" />
 <title>My Active Journeys</title>
 <r:require module="core" />
 <style>
@@ -32,26 +32,27 @@
  				
 		             <div class="col-md-8 col-md-offset-2 text-left">
 		                <div>
-		                    <ul class="text-left">
+		                    <ul class="active-journey-list text-left">
 		                        <li>
 		                        	<g:if test = "${journeyInstance.isDriver == true}">
-		                        		<span class="label label-primary">Car Owner</span> 
+		                        		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span> 
 		                        	</g:if>
 		                        	<g:else>
-		                        		<span class="label label-primary">Ride Seeker</span> 
+		                        		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span> 
 		                        	</g:else>
-		                        	<i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
+		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span> 
+		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
 		                        </li>
 		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
 		                        <li><i class="icon-basic-map"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
 		                        <li>
 		                        	<g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
-					       				<button class="btn btn-primary">Search Again</button>
+					       				<button class="btn btn-warning "><i class="fa fa-search"></i> Search Again</button>
 					       			</g:link>&nbsp; 
-		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
-		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp; 
+		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Incoming (${journeyInstance.incomingRequests.size()}) <span class="caret"></span></button> &nbsp; 
+		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn"><i class="fa fa-upload"></i> Outgoing (${journeyInstance.outgoingRequests.size()}) <span class="caret"></span></button> &nbsp; 
 		                        	<a name ="delete" id="delete${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.journeyId}">
-					       				<button class="btn btn-danger">Delete</button>
+					       				<button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
 					       			</a>
 		                        </li>
 		                        
@@ -87,16 +88,16 @@
 		                                <g:each in ="${matchedWorkflowInstance.actionButtons}" var="action">
 											<g:if test = "${action=='Accept'}">
 												<g:link action="acceptIncomingRequest" id="acceptIncomingRequest"  params="[workflowId: matchedWorkflowInstance.workflow.id]">
-													<button class="btn btn-info">Accept</button>
+													<button class="btn btn-primary"><i class="fa fa-check-circle"></i>Accept</button>
 												</g:link>
 											</g:if>
 											<g:if test = "${action=='Reject'}">
 												<g:link action="rejectIncomingRequest" id="rejectIncomingRequest"  params="[workflowId: matchedWorkflowInstance.workflow.id]">
-													<button class="btn btn-warning">Reject</button>
+													<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
 												</g:link>
 											</g:if>
 											<g:if test = "${action=='Cancel'}">
-												<button class="btn btn-danger">Cancel</button>
+												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
 											</g:if>
 										</g:each>
 	                                </li>
@@ -139,14 +140,14 @@
 	                                <li>
 	                                	<g:each in ="${requestWorkflowInstance.actionButtons}" var="action">
 	   										<g:if test = "${action=='Accept'}">
-	   											<button class="btn btn-success">Accept</button>
+	   											<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept</button>
 	   										</g:if>
 	   										<g:if test = "${action=='Reject'}">
-	   											<button class="btn btn-warning">Reject</button>
+	   											<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
 	   										</g:if>
 	   										<g:if test = "${action=='Cancel'}">
 	   											<g:link action="cancelOutgoingRequest" id="cancelOutgoingRequest"  params="[workflowId: requestWorkflowInstance.workflow.id]">
-	   												<button class="btn btn-danger">Cancel</button>
+	   												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
 	   											</g:link>
 	   										</g:if>
 	   									</g:each>

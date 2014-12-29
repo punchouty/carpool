@@ -84,7 +84,7 @@ class UserSessionController {
 		user.profile = InstanceGenerator.profile(grailsApplication)
 		user.profile.owner = user
 		user.properties['username', 'pass', 'passConfirm'] = params
-		user.profile.properties['fullName', 'email', 'mobile'] = params
+		user.profile.properties['fullName', 'email', 'mobile', 'emergencyContact'] = params
 		user.username = user.profile.email
 		user.profile.isMale = isMale
 		user.enabled = nimbleConfig.localusers.provision.active
@@ -103,6 +103,13 @@ class UserSessionController {
 		// Enforce email address for account registrations
 		if (user.profile.email == null || user.profile.email.length() == 0) {
 			user.profile.email = 'invalid'
+		}
+		
+		if (user.profile.mobile == user.profile.emergencyContact) {
+			flash.type = "message"
+			flash.message = "Mobile Number and Emergency Contact cannot be same"
+			render(view: 'signup', model: [user: user])
+			return
 		}
 
 		if (user.hasErrors()) {
@@ -226,7 +233,10 @@ class UserSessionController {
 
 			log.info("Successful password reset for user identified as [$user.id]$user.username")
 
-			redirect(action: "forgotPasswordComplete", validFlow: true)
+			//redirect(action: "forgotPasswordComplete", validFlow: true)
+			flash.type = "message"
+			flash.message = "Email is sent to you with new password. Please check your inbox."
+			redirect(action: "search")
 			return
 		}
 
@@ -301,7 +311,7 @@ class UserSessionController {
 		[user: user]
 	}
 	
-	def editProfile(String fullName, String sex, String mobile) {
+	def editProfile(String fullName, String sex, String mobile, String emergencyContact) {
 		def user = authenticatedUser
 		boolean isMale = true
 		if(sex != 'male') {
@@ -310,6 +320,14 @@ class UserSessionController {
 		user.profile.fullName = fullName
 		user.profile.mobile = mobile
 		user.profile.isMale = isMale
+		user.profile.emergencyContact = emergencyContact
+		
+		if(mobile == emergencyContact) {
+			flash.type = "error"
+			flash.message = "Emergency contact cannot be same as your mobile number"
+			render view: 'profile', model: [user: user]
+			return
+		}
 		
 		if (!user.validate()) {
 			log.debug("Updated details for user [$user.id] $user.username are invalid")

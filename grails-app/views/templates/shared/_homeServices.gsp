@@ -166,7 +166,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Clicking on <strong>SOS</strong> button will send SMS to two trusted contacts every one minute telling that you need <strong>emergency assistance</strong> along with your smart phone GPS coordinate. GPS coordinates can be used to identify your current location. During <strong>registration</strong> please provide us phone number of two trusted contacts (Your parents, friends or sibling) that Racloop should send SMS in case of emergency. 
+                               Clicking on <strong>SOS</strong> button will send SMS to a emergency contact every one minute telling that you need <strong>emergency assistance</strong> along with your smart phone GPS coordinate. During mobile app <strong>setup</strong> please provide us phone number of an emergency contacts (Your parents, friends or sibling) that Racloop should contact in case of emergency. 
                            </p>
                        </div>
                    </div>
@@ -181,7 +181,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Along with your trusted contact <strong>Racloop</strong> will also start receiving your current location and information about possible threat. We will try to reach your trusted contact to make it sure that they understand you are in danger. In case they are unreachable we will contact <strong>police</strong> and let them know the situation.
+                               Along with your emergency contact <strong>Racloop</strong> will also start receiving your current location and information about possible threat. If needed, we will help your emergency contact in reaching out <strong>police</strong> explaining your location and giving them name and mobile number of all of your co-passangers.
                            </p>
                        </div>
                    </div>
