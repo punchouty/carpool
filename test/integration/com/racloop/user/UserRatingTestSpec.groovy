@@ -77,7 +77,7 @@ class UserRatingTestSpec extends Specification {
 		review.reviewer = User.findByUsername("sample.driver@racloop.com")
 		review.reviewee = User.findByUsername("sample.rider@racloop.com")
 		review.comment = "Test comment as Rider"
-		review.journeyId = "JId"
+		review.workflowId = "JId"
 		review.safety = 3.0d
 		review.comfort = 3.0d
 		review.punctualty = 3.0d
@@ -91,7 +91,7 @@ class UserRatingTestSpec extends Specification {
 		review.reviewer = User.findByUsername("sample.driver@racloop.com")
 		review.reviewee = User.findByUsername("sample.rider@racloop.com")
 		review.comment = "Test comment as Rider"
-		review.journeyId = "JId"
+		review.workflowId = "JId"
 		review.safety = 2.0d
 		review.comfort = 2.0d
 		review.punctualty = 2.0d
@@ -106,7 +106,7 @@ class UserRatingTestSpec extends Specification {
 		review.reviewee = User.findByUsername("sample.rider@racloop.com")
 		review.isReviewerADriver = true
 		review.comment = "Test Comment as Driver"
-		review.journeyId = "JId"
+		review.workflowId = "JId"
 		review.safety = 2.0d
 		review.comfort = 2.0d
 		review.punctualty = 2.5d

@@ -5,7 +5,7 @@ class Review {
 	User reviewer
 	User reviewee
 	String comment
-	String journeyId
+	String workflowId
 	boolean isReviewerADriver
 	
 	private transient final double  w_safety = 1d

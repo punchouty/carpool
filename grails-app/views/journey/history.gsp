@@ -1,7 +1,7 @@
 <%@ page import="com.racloop.journey.workkflow.WorkflowState" %>
 <html>
 <head>
-<meta name="layout" content="static" />
+<meta name="layout" content="dynamic" />
 <title>My Past Journeys</title>
 <r:require module="core" />
 </head>
@@ -27,25 +27,25 @@
  				
 		             <div class="col-md-5 col-md-offset-1 text-left">
 		                <div>
-		                    <ul class="text-left">
+		                    <ul class="active-journey-list text-left">
 		                        <li>
 		                        	<g:if test = "${journeyInstance.isDriver == true}">
-		                        		<span class="label label-primary">Car Owner</span> 
+		                        		<span class="label label-primary">Car Owner<i class="fa fa-car"></i></span>  
 		                        	</g:if>
 		                        	<g:else>
-		                        		<span class="label label-primary">Ride Seeker</span> 
+		                        		<span class="label label-primary">Ride Seeker<i class="fa fa-male"></i></span> 
 		                        	</g:else>
-		                        	<i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
+		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span> 
+		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
 		                        </li>
 		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
 		                        <li><i class="icon-basic-map"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
 		                        <li>
 		                        	<g:link action="searchRouteAgain"id="searchRouteAgain"  params="[journeyId: journeyInstance.journeyId]">
-					       				<button class="btn btn-primary">Search Again</button>
+					       				<button class="btn btn-warning"><i class="fa fa-search"></i> Search Again</button>
 					       			</g:link>&nbsp; 
-		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn">Incoming (${journeyInstance.incomingRequests.size()})</button> &nbsp; 
-		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn">Outgoing (${journeyInstance.outgoingRequests.size()})</button> &nbsp;
-				       				<button id ="review "class="btn btn-primary">Review</button>
+		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Incoming (${journeyInstance.incomingRequests.size()}) <span class="caret"></span></button> &nbsp; 
+		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn"><i class="fa fa-upload"></i> Outgoing (${journeyInstance.outgoingRequests.size()}) <span class="caret"></span></button> &nbsp;
 		                        </li>
 		                        
 		                    </ul>
@@ -74,11 +74,18 @@
 	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.workflow.matchedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.workflow.matchedDateTime}"/></span></li>
 	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.workflow.matchedFromPlace}</li>
 	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.workflow.matchedToPlace}</li>
+	                                <g:if test = "${matchedWorkflowInstance?.workflow?.state == 'Accepted'}">
+		                                <li>
+											<g:link action="loadReviewPage" controller ="review" params="[workflowId: matchedWorkflowInstance.workflow.id]">
+						       					<button class="btn btn-primary">Review</button>
+						       				</g:link>
+		                                </li>
+	                                </g:if>
 	                            </ul>
 	                         </div> 
 	                         <div class="col-md-1">
 	                        	<g:if test = "${matchedWorkflowInstance.otherUser?.profile?.gravatarUri}">
-	                            	<img src="${matchedWorkflowInstance.otherUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                            	<img src="${matchedWorkflowInstance.otherUser.profile.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
 	                            <g:else>
 			                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
@@ -109,11 +116,18 @@
 	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span></li>
 	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${requestWorkflowInstance.workflow.matchedFromPlace}</li>
 	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${requestWorkflowInstance.workflow.matchedToPlace}</li>
+	                                <g:if test = "${requestWorkflowInstance?.workflow?.state == 'Accepted'}">
+		                                <li>
+											<g:link action="loadReviewPage" controller ="review" params="[workflowId: requestWorkflowInstance.workflow.id]">
+						       					<button class="btn btn-primary">Review</button>
+						       				</g:link>
+		                                </li>
+	                                </g:if>
 	                            </ul>
                         	</div>
 	                        <div class="col-md-1">
 	                        	<g:if test = "${requestWorkflowInstance.otherUser?.profile?.gravatarUri}">
-	                            	<img src="${requestWorkflowInstance.otherUser.profile.gravatarUri}?s=64" alt="profile image" class="img-thumbnail"> </img>
+	                            	<img src="${requestWorkflowInstance.otherUser.profile.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
 	                            <g:else>
 			                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>

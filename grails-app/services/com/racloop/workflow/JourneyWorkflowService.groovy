@@ -206,6 +206,11 @@ class JourneyWorkflowService {
 		jmsService.send(queue: Constant.NOTIFICATION_WORKFLOW_STATE_CHANGE_QUEUE, messageMap)
 	}
 	
+	public JourneyWorkflow getWorkflowById(String workflowId){
+		JourneyWorkflow workflow = elasticSearchService.findWorkfowById(workflowId)
+		return workflow
+	}
+	
 	
 }
 	
