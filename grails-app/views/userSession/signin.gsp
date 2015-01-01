@@ -46,7 +46,7 @@
 				</g:form>   
 				<p>
 				<br>
-				<a href="${request.contextPath}/password/forgot" >Forgot Password</a> 
+				<a href="${request.contextPath}/password/forgot" >Forgot Password</a> <br><a href="${request.contextPath}/verifyMobile"  class="red-text">Verify Mobile</a> 
 				</p>
 				<p id="form-success" class="dark-text small-text"><span class="icon-check-alt2 colored-text"></span> <span id="success-message">Thanks!</span></p>
                 <p id="form-error" class="dark-text small-text"><span class="icon-close-alt2 red-text"></span> <span id="error-message" >Error!</span> </p> 

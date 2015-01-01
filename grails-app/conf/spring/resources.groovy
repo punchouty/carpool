@@ -13,8 +13,6 @@ beans = {
 	amq.broker(xmlns:"http://activemq.apache.org/schema/core",
 	brokerName:"localhost",
 	dataDirectory:"/var/racloop/activemq" ){
-
-
 		amq.transportConnectors{
 			amq.transportConnector(name:"vm", uri:"vm://localhost" )
 		}
@@ -32,4 +30,6 @@ beans = {
 				new WorkflowMarshaller()
 		]
 	}
+	
+	rest(grails.plugins.rest.client.RestBuilder)
 }

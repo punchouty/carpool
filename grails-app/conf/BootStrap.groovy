@@ -21,6 +21,7 @@ class BootStrap {
 	def userService
 	def adminsService
 	def sampleDataService
+	def smsService
 		
     def init = { servletContext ->
 		internalBootStap(servletContext)
@@ -38,6 +39,7 @@ class BootStrap {
 		}
 		//Initialising Elasticsearch
 		elasticSearchService.init()
+		smsService.init()
 		Boolean createIndex = grailsApplication.config.grails.startup.elasticsearch.index.create
 		if(createIndex) {
 			log.info("Start creating indexes in Elasticsearch")
@@ -96,7 +98,7 @@ class BootStrap {
 			adminProfile.email = adminUser
 			adminProfile.owner = admin
 			adminProfile.isMale = true
-			adminProfile.mobile = '9800000001'
+			adminProfile.mobile = '7307392447'
 			admin.profile = adminProfile
 
 			log.info("Creating default admin account with username:admin")

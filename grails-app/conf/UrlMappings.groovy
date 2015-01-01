@@ -62,6 +62,11 @@ class UrlMappings {
 			controller = "userSession"
 			action = "search"
 		}
+		
+		"/verifyMobile"{
+			controller = "userSession"
+			action = "verifyMobile"
+		}
 
 		"/main"{
 			controller = "staticPage"

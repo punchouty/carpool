@@ -3,7 +3,7 @@
 <head>
 <meta name="layout" content="main" />
 <title>Welcome to raC looP</title>
-<r:require module="core" />
+<r:require module="map" />
 </head>
 <body>
 	<g:set var="isLandingPage" value="true" scope="request" />

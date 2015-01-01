@@ -168,6 +168,20 @@ grails {
 	}
 }
 
+sms {
+	url = "http://www.smsgatewaycenter.com/library/send_sms_2.php"
+	mask = "MCSCHD"
+	username = "mcs47chd"
+	password = "MCS47CHD?123"
+	templates {
+		verification = 'Your verification code for www.racloop.com code is $verificationCode'
+		newRequest = 'There is new car pool request against your journey on $journeyDate'
+		acceptRequest = 'You car pool request for journey on $journeyDate is ACCEPTED by user $name. Mobile : $mobile'
+		rejectRequest = 'You car pool request for journey on $journeyDate is REJECTED by user $name.'
+		cancelRequest = 'User $name has CANCELLED his journey on $journeyDate'
+	}
+}
+
 // log4j configuration
 log4j = {
 	// Example of changing the log pattern for the default console appender:

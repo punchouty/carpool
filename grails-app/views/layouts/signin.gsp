@@ -30,6 +30,11 @@
 	<nav class="container" role="navigation">
         <g:render template="/templates/shared/footer" />
    	</nav>
+   	<g:if env="development">
+		<div class="well">
+			${params }
+		</div>
+	</g:if>
    	<%--
       <script>
        /* PRE LOADER */

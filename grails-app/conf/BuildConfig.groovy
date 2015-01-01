@@ -90,5 +90,7 @@ grails.project.dependency.resolution = {
 		}
 		
 		compile ":audit-logging:1.0.3"
+		
+		compile ":rest-client-builder:2.0.3"
     }
 }

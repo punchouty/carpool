@@ -12,6 +12,7 @@ class NotificationService {
 	def mailService
 	def grailsApplication
 	def emailService
+	def smsService
 
 	@Queue(name= "msg.notification.workflow.state.change.queue") //also defined in Constant.java. Grails issue
 	def processRequestNotifiactionWorkflow(def messageMap) {
@@ -22,19 +23,19 @@ class NotificationService {
 		JourneyWorkflow workflow = elasticSearchService.findWorkfowById(workflowId)
 		log.info "Workflow details ${workflow}"
 		switch(workflowState) {
-			case WorkflowState.INITIATED.state :
+			case WorkflowState.INITIATED.state : // send request from search result - resultant user should receive email and sms and push
 				sendNotificationForNewRequest(workflow)
 				break
-			case WorkflowState.ACCEPTED.state :
+			case WorkflowState.ACCEPTED.state : // other user accepted request
 				sendNotificationForAcceptRequest(workflow)
 				break
-			case WorkflowState.REJECTED.state :
+			case WorkflowState.REJECTED.state : // other user rejected request
 				sendNotificationForRejectequest(workflow)
 				break
-			case WorkflowState.CANCELLED.state :
+			case WorkflowState.CANCELLED.state : // i am canceling previous accepted request
 				sendNotificationForCancelRequest(workflow)
 				break
-			case WorkflowState.CANCELLED_BY_REQUESTER.state :
+			case WorkflowState.CANCELLED_BY_REQUESTER.state : // i am canceling my own earlier request 
 				sendNotificationForCancelRequestByRequester(workflow)
 				break
 			default :

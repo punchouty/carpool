@@ -12,7 +12,8 @@ class UserSessionController {
 	def userService
 	def recaptchaService
 	LinkGenerator grailsLinkGenerator
-	def emailService
+	//def emailService
+	def userManagerService
 
 	def search() {
 		def user = getAuthenticatedUser();//dynamic method added by nimble
@@ -148,21 +149,24 @@ class UserSessionController {
 			render(view: 'signup', model: [user: user])
 			return
 		}
+		
+		log.info("Sending verification code to $user.profile.mobile")
+		userManagerService.setUpMobileVerificationDuringSignUp(savedUser.profile)
 
-		log.info("Sending account registration confirmation email to $user.profile.email with subject $nimbleConfig.messaging.registration.subject")
+//		log.info("Sending account registration confirmation email to $user.profile.email with subject $nimbleConfig.messaging.registration.subject")
 
-		if(nimbleConfig.messaging.enabled) {
-			emailService.sendMail(user.profile.email, nimbleConfig.messaging.registration.subject, g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString(),grailsApplication.config.grails.messaging.mail.from )
-		}
-		else {
-			log.debug "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: user]).toString()}"
-		}
+//		if(nimbleConfig.messaging.enabled) {
+//			emailService.sendMail(user.profile.email, nimbleConfig.messaging.registration.subject, g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString(),grailsApplication.config.grails.messaging.mail.from )
+//		}
+//		else {
+//			log.debug "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: user]).toString()}"
+//		}
 
 		log.info("Created new account identified as $user.username with internal id $savedUser.id")
 
 		flash.type = "message"
-		flash.message = "Account registered successfully. Please check your email and activate the account."
-		redirect (action: "search")
+		flash.message = "Account registered successfully. Please check your mobile for activation code on SMS."
+		redirect (action: "verifyMobile", params: [mobile : savedUser.profile.mobile])
 	}
 
 	private void resetNewUser(user) {
@@ -179,6 +183,39 @@ class UserSessionController {
 
 	def forgotPassword() {
 		
+	}
+	
+	def verifyMobile() {
+		[mobile : params['mobile']]
+	}
+	
+	def processMobileVerification(String mobile, String verificationCode, String formAction) {
+		if(formAction == 'verifyMobile') {
+			boolean verified = userManagerService.verify(mobile, verificationCode)
+			if(verified) {
+				flash.message = "Mobile verified successfully"
+				redirect(action: "signin")
+				return
+			}
+			else {
+				flash.message = "Invalid mobile number or verification code. Please try again."
+				redirect(action: "verifyMobile", params: [mobile: mobile])
+				return
+			}
+		}
+		else {
+			boolean messageSent = userManagerService.setUpMobileVerificationExistingUser(mobile)
+			if(messageSent) {
+				flash.message = "SMS Sent successfully. Please check your mobile."
+				redirect(action: "verifyMobile", params: [mobile: mobile])
+				return
+			}
+			else {
+				flash.message = "There is problem with this mobile number : ${mobile}. Cannot verify it."
+				redirect(action: "verifyMobile", params: [mobile: mobile])
+				return
+			}
+		}
 	}
 
 	def forgotPasswordProcess(String email) {

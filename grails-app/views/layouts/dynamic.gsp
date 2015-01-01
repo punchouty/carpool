@@ -26,7 +26,7 @@
    	</nav>
 	
 	<g:if env="development">
-	<div>
+	<div class="well">
 		${params }
 	</div>
 	</g:if>	

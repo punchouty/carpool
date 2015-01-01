@@ -21,13 +21,11 @@
 	<nav class="container" role="navigation">
         <g:render template="/templates/shared/footer" />
    	</nav>
-	<%--
 	<g:if env="development">
 	<div>
 		${params }
 	</div>
 	</g:if>	
-	 --%>
 	<r:layoutResources />
 </body>
 </html>
