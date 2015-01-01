@@ -98,7 +98,7 @@ class BootStrap {
 			adminProfile.email = adminUser
 			adminProfile.owner = admin
 			adminProfile.isMale = true
-			adminProfile.mobile = '7307392447'
+			adminProfile.mobile = '9800000001'
 			admin.profile = adminProfile
 
 			log.info("Creating default admin account with username:admin")

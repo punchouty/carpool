@@ -12,10 +12,10 @@ class NotificationService {
 	def mailService
 	def grailsApplication
 	def emailService
-	def smsService
+	def jmsService
 
 	@Queue(name= "msg.notification.workflow.state.change.queue") //also defined in Constant.java. Grails issue
-	def processRequestNotifiactionWorkflow(def messageMap) {
+	def processRequestNotificationWorkflow(def messageMap) {
 		log.info "Received message with messageMap ${messageMap}"
 		String workflowId = messageMap[Constant.WORKFLOW_ID_KEY]
 		String workflowState = messageMap[Constant.WORKFLOW_STATE_KEY]
@@ -59,6 +59,14 @@ class NotificationService {
 			
 			String mailToReciever = "You have received a request to share a ride with ${requestIntiator?.profile?.fullName}"
 			emailService.sendMail(requestTo.profile.email, "Your have received a new request", mailToReciever)
+			
+			def  messageMap =[
+				to: requestTo.profile.mobile, 
+				name:requestIntiator.profile.fullName, 
+				journeyDate: workflow.matchedDateTime.format('dd MMM yy HH:mm'), 
+				state:workflow.state 
+				]
+			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
 		
 	}
@@ -70,6 +78,14 @@ class NotificationService {
 			String mailToRequester = "${requestTo?.profile?.fullName} has accepted the request to share the ride with you"
 			emailService.sendMail(requestIntiator.profile.email, "Your request has been accepted", mailToRequester)
 			
+			def  messageMap =[
+				to: requestIntiator.profile.mobile, 
+				name:requestTo.profile.fullName, 
+				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
+				state:workflow.state,
+				mobile: requestTo.profile.mobile
+				]
+			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
 		
 	}
@@ -81,6 +97,13 @@ class NotificationService {
 			String mailToRequester = "${requestTo?.profile?.fullName} has rejected the request to share the ride with you"
 			emailService.sendMail(requestIntiator.profile.email, "Your request has been rejected", mailToRequester)
 			
+			def  messageMap =[
+				to: requestIntiator.profile.mobile, 
+				name:requestTo.profile.fullName, 
+				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
+				state:workflow.state
+				]
+			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
 
 	}
@@ -92,6 +115,13 @@ class NotificationService {
 			emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessage + " by ${requestTo?.profile?.fullName}")
 			emailService.sendMail(requestTo.profile.email, "Your request has been cancelled", mailMessage)
 			
+			def  messageMap =[
+				to: requestIntiator.profile.mobile, 
+				name:requestTo.profile.fullName, 
+				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
+				state:workflow.state
+				]
+			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
 
 	}
@@ -105,6 +135,13 @@ class NotificationService {
 			emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessageForRequester)
 			emailService.sendMail(requestTo.profile.email, "Your request has been cancelled", mailMessage)
 			
+			def  messageMap =[
+				to: requestTo.profile.mobile, 
+				name:requestIntiator.profile.fullName, 
+				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
+				state:workflow.state
+				]
+			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
 
 	}

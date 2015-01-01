@@ -39,6 +39,8 @@ class UserManagerService {
 			if(profile.verificationCode == verificationCode) {
 				profile.isVerified = true
 				profile.save()
+				profile.owner.enabled = true
+				profile.owner.save();
 				return true
 			}
 		}
