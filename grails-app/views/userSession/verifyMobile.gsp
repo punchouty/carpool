@@ -41,28 +41,20 @@
                 </div>	
 			</g:hasErrors>
 		</div>
-        <div class="col-md-4 col-md-offset-4">
+		<div class="container">
+        <div class="col-md-8 col-md-offset-2">
             <!-- VERTICAL REGISTRATION FORM -->
             <div class="row">
-            	<g:form controller="userSession" action="processMobileVerification" method="POST" class="registration-form" name="verificationForm">
-		             <div class="container">
-		             	<div class="col-md-3">
-	                    <input type="text" id="mobile" name="mobile" value="${mobile}" class="form-control input-box" placeholder="Mobile used during Sign Up" required>
-	                    </div>
-	                    <div class="col-md-1">
-	                    <button id="sendSms" class="btn standard-button standard-red-button" type="button" style="margin-top: 15px;">Send Again</button>
-	                    </div>
-                    </div>
-                    <div class="container">
-	                    <div class="col-md-4">
-	                    <input type="text" id="verificationCode" name="verificationCode" class="form-control input-box" placeholder="Verification Code" >
-	                    <p id="form-error" class="dark-text small-text"><span class="icon-close-alt2 red-text"></span> <span id="error-message" >Error!</span> </p>
-	                    <button id="verify" class="btn standard-button" type="button" >Verify</button>
-		            	</div>
-		            </div>
+            	<g:form controller="userSession" action="processMobileVerification" method="POST" class="form-inline" name="verificationForm">
+		             <input type="text" id="mobile" name="mobile" value="${mobile}" class="form-control input-box" placeholder="Mobile used during Sign Up" required>
+	                 <input type="text" id="verificationCode" name="verificationCode" class="form-control input-box" placeholder="Verification Code" >
+	                 <button id="verify" class="btn standard-button" type="button" >Verify</button>
+	                 <button id="sendSms" class="btn standard-button standard-red-button" type="button">Send SMS Again</button>
+	               	 <p id="form-error" class="dark-text small-text"><span class="icon-close-alt2 red-text"></span> <span id="error-message" >Error!</span> </p>
 		            <input type="hidden" id="formAction" name="formAction" value="verify">
               </g:form>
             </div>
+        </div>
         </div>
     </div>
     <br>
