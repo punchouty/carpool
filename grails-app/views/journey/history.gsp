@@ -71,9 +71,9 @@
 	                                	</g:else>
 	                                	<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-info':'label-info'))}">${matchedWorkflowInstance.state}</span>
 	                                </li>
-	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.workflow.matchedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.workflow.matchedDateTime}"/></span></li>
-	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.workflow.matchedFromPlace}</li>
-	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.workflow.matchedToPlace}</li>
+	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.workflow.requestedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.workflow.requestedDateTime}"/></span></li>
+	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.workflow.requestedFromPlace}</li>
+	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.workflow.requestedToPlace}</li>
 	                                <g:if test = "${matchedWorkflowInstance?.workflow?.state == 'Accepted'}">
 		                                <li>
 											<g:link action="loadReviewPage" controller ="review" params="[workflowId: matchedWorkflowInstance.workflow.id]">
@@ -105,7 +105,7 @@
 	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${requestWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
 	                            <ul class="text-left">
 	                                <li>
-		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
+		                                <g:if test = "${requestWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
 	                                		<span class="label label-primary">Car Owner</span> 
 	                                	</g:if>
 	                                	<g:else>

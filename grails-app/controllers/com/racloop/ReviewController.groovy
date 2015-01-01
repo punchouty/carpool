@@ -13,7 +13,16 @@ class ReviewController {
 		Review review = new Review()
 		def workflowId = params.workflowId
 		boolean isReviewForDriver = true
+		JourneyWorkflow workflow = journeyWorkflowService.getWorkflowById(workflowId)
+		User currentUser = getAuthenticatedUser();
+		if(currentUser.username.equalsIgnoreCase(workflow.requestUser)){
+			review.reviewee = User.findByUsername(workflow.matchingUser)
+		}
+		else {
+			review.reviewee = User.findByUsername(workflow.requestUser)
+		}
 		
+		review.reviewer = currentUser
 		review.comment = params.comments
 		review.safety = params.double('safety')
 		review.comfort = params.double('comfort')

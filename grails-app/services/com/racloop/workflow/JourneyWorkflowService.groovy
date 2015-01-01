@@ -57,7 +57,7 @@ class JourneyWorkflowService {
 	
 	def getWorkflowMatchedForUserForAJourney(String journeyId,User user) {
 		def matchedWorkflowList = elasticSearchService.searchWorkflowMatchedForUserForAJourney(journeyId, user)
-		return populateWorkflowDetails(matchedWorkflowList)
+		return populateMatchededWorkflowDetails(matchedWorkflowList)
 	}
 	
 	def getAlreadySelectedJourneyMapForCurrentJourney(JourneyRequestCommand currentJourney){
@@ -119,8 +119,27 @@ class JourneyWorkflowService {
 		def requestWorkflowDetails =[]
 		requestedWorkflowList.each {workflow ->
 			WorkflowDetails workflowDetails = new WorkflowDetails()
-			workflowDetails.workflow = workflow
 			workflowDetails.otherUser = User.findByUsername(workflow.matchingUser, [readOnly:true])
+			setWorkflowDetails(workflow, workflowDetails)
+			requestWorkflowDetails << workflowDetails
+		}
+		return requestWorkflowDetails
+	}
+	
+	public List populateMatchededWorkflowDetails(List requestedWorkflowList) {
+		def requestWorkflowDetails =[]
+		requestedWorkflowList.each {workflow ->
+			WorkflowDetails workflowDetails = new WorkflowDetails()
+			workflowDetails.otherUser = User.findByUsername(workflow.requestUser, [readOnly:true])
+			setWorkflowDetails(workflow, workflowDetails)
+			requestWorkflowDetails << workflowDetails
+		}
+		return requestWorkflowDetails
+	}
+	
+	public setWorkflowDetails(JourneyWorkflow workflow, WorkflowDetails workflowDetails) {
+		
+			workflowDetails.workflow = workflow
 			workflowDetails.state = workflow.state//(workflow.state ==WorkflowState.INITIATED.getState()?'Sent':workflow.state)
 			workflowDetails.actionButtons.addAll(getAvailableActionForRequestSent(workflow.state))
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForSentRequest(workflow.state)
@@ -128,9 +147,7 @@ class JourneyWorkflowService {
 				workflowDetails?.otherUser?.profile?.mobile=""
 				workflowDetails?.otherUser?.profile?.email=""
 			}
-			requestWorkflowDetails << workflowDetails
-		}
-		return requestWorkflowDetails
+			
 	}
 	
 	private List getAvailableActionForRequestSent(String state) {

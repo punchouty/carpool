@@ -59,11 +59,14 @@
                 <h5>
 	                <g:if test="${matchedUser}">
 	                    <strong>${matchedUser.profile.fullName}</strong><br>
+	                    Rating ${matchedUser.getUserRating()}
+	                    <i class="icon-star-alt"></i> <i class="icon-star-alt"></i> <i class="icon-star-half-alt"></i> &nbsp; <small>${matchedUser.getIncomingReviews().size()} <a href ="#" data-target="#reviews" role="button" data-toggle="modal">Reviews</a>  available</small>
 	                </g:if>
 	               	<g:else>
 	               		<strong>${matchedJourney.name}</strong><br>
+	               		<i class="icon-star-alt"></i> <i class="icon-star-alt"></i> <i class="icon-star-half-alt"></i> &nbsp; <small>4 <a href="#">Reviews</a> available</small>
 	               	</g:else>
-					<i class="icon-star-alt"></i> <i class="icon-star-alt"></i> <i class="icon-star-half-alt"></i> &nbsp; <small>4 <a href="#">Reviews</a> available</small>
+					
 				</h5>
                 <ul class="text-left">
                     <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedJourney.fromPlace}</li>
@@ -100,7 +103,35 @@
             <span class="clearfix"></span>
         </article>
     </div>
-	
+    <div id="reviews" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+          <div class="modal-dialog">
+   			 <div class="modal-content">
+				  <div class="modal-header">
+				    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				    <h3 id="myModalLabel">User Reviews</h3>
+				  </div>
+				  <div class="modal-body">
+				  <g:if test="${matchedUser?.getIncomingReviews()?.size() > 0}">
+				  	<div>
+				  		<g:each in="${matchedUser?.getIncomingReviews()}" status="i" var="review">
+				  			<p>
+				  				${review.comment}
+				  			</p>
+				  		</g:each>
+				  	
+				  	</div>
+				  </g:if>
+				  <g:else>
+				  	<div><p>No Reviews available.</p>
+				  	</div>
+				  </g:else>
+				  <div class="modal-footer">
+				    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+				  </div>
+				</div>
+			</div>
+		</div>
+	</div>
 </body>
 
 </html>
