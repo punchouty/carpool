@@ -64,7 +64,7 @@ class NotificationService {
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
 				journeyDate: workflow.matchedDateTime.format('dd MMM yy HH:mm'), 
-				state:workflow.state 
+				state: WorkflowState.INITIATED.state 
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
@@ -82,7 +82,7 @@ class NotificationService {
 				to: requestIntiator.profile.mobile, 
 				name:requestTo.profile.fullName, 
 				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
-				state:workflow.state,
+				state: WorkflowState.ACCEPTED.state,
 				mobile: requestTo.profile.mobile
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -101,7 +101,7 @@ class NotificationService {
 				to: requestIntiator.profile.mobile, 
 				name:requestTo.profile.fullName, 
 				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
-				state:workflow.state
+				state: WorkflowState.REJECTED.state
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
@@ -119,7 +119,7 @@ class NotificationService {
 				to: requestIntiator.profile.mobile, 
 				name:requestTo.profile.fullName, 
 				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
-				state:workflow.state
+				state: WorkflowState.CANCELLED.state
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
@@ -139,7 +139,7 @@ class NotificationService {
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
 				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
-				state:workflow.state
+				state: WorkflowState.CANCELLED_BY_REQUESTER.state
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
