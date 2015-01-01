@@ -79,10 +79,10 @@
                     		</g:link>	
                     	</g:if>
                     	<g:else>
-                    		<button class="btn btn-info disabled"><i class="icon-aim"></i> Send Request</button> 
+                    		<button class="btn btn-info disabled"><i class="fa fa-mail-forward"></i> Send Request</button> 
                     	</g:else>
                     	<g:link action="backToSearchResult" id="backToSearchResult">                        	
-                            <button class="btn btn-danger"><i class="icon-arrows-remove"></i> Cancel</button>
+                            <button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
                          </g:link> 
                     	
                     </li>
