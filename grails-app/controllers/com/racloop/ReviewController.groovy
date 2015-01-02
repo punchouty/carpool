@@ -10,6 +10,7 @@ class ReviewController {
 
 	def saveUserReview(){
 		println params.inspect()
+		Double defaultRating = 0.0d
 		Review review = new Review()
 		def workflowId = params.workflowId
 		boolean isReviewForDriver = true
@@ -24,10 +25,11 @@ class ReviewController {
 		
 		review.reviewer = currentUser
 		review.comment = params.comments
-		review.safety = params.double('safety')
-		review.comfort = params.double('comfort')
-		review.punctualty = params.double('punctualty')
-		review.overall = params.double('overAll')
+		def ddd = params.safety
+		review.safety = params.safety ? params.double('safety'):defaultRating
+		review.comfort = params.comfort ? params.double('comfort'):defaultRating
+		review.punctualty = params.punctualty ? params.double('punctualty'):defaultRating
+		review.overall = params.overAll ? params.double('overAll'):defaultRating
 		review.workflowId = workflowId
 		review.save()
 		render "Review Added"

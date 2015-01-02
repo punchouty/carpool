@@ -18,12 +18,12 @@ class Review {
 	//double loud
 	
 	//for riders
-	double safety // 1-5 scale
-	double comfort // 1-5 scale
+	Double safety // 1-5 scale
+	Double comfort // 1-5 scale
 	
 	// for both driver and rider
-	double punctualty // 1-5 scale
-	double overall // 1-5 scale
+	Double punctualty // 1-5 scale
+	Double overall // 1-5 scale
 
     static constraints = {
     }
