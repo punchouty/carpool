@@ -31,8 +31,13 @@ class ReviewController {
 		review.punctualty = params.punctualty ? params.double('punctualty'):defaultRating
 		review.overall = params.overAll ? params.double('overAll'):defaultRating
 		review.workflowId = workflowId
-		review.save()
-		render "Review Added"
+		if(!review.save()) {
+			flash.error = "Something went wrong while saving the review."
+		}
+		else {
+			flash.message = "Review added sucessfully"
+		}
+		forward controller: 'journey',action: 'history'
 		
 	}
 	

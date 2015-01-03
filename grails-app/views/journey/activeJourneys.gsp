@@ -10,6 +10,7 @@
  }
 </style>
 </head>
+<body>
 <section class="white-bg" id="section10">
     <div class="container">
 

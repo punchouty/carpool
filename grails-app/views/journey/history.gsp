@@ -5,6 +5,19 @@
 <title>My Past Journeys</title>
 <r:require module="core" />
 </head>
+<body>
+	<g:if test="${flash.message}">
+		<div class="alert alert-success">			
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  ${flash.message}
+		</div>
+	</g:if>
+	<g:if test="${flash.error}">
+		<div class="alert alert-danger">			
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  ${flash.error}
+		</div>
+	</g:if>	
 <section class="white-bg" id="section10">
     <div class="container">
 
@@ -22,18 +35,18 @@
  <div class="container">
  	<g:if test="${journeys?.size > 0}">
  		<g:each in="${journeys}" status="i" var="journeyInstance">
- 			<article id="request-${i}" class="row grey-bg">
+ 			<article id="request-${i}" class="row <g:if test="${i%2 == 0}">grey-bg</g:if><g:else>white-bg</g:else>">
  				<div class="row">
  				
-		             <div class="col-md-5 col-md-offset-1 text-left">
+		             <div class="col-md-8 col-md-offset-2 text-left">
 		                <div>
 		                    <ul class="active-journey-list text-left">
 		                        <li>
 		                        	<g:if test = "${journeyInstance.isDriver == true}">
-		                        		<span class="label label-primary">Car Owner<i class="fa fa-car"></i></span>  
+		                        		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>  
 		                        	</g:if>
 		                        	<g:else>
-		                        		<span class="label label-primary">Ride Seeker<i class="fa fa-male"></i></span> 
+		                        		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span> 
 		                        	</g:else>
 		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span> 
 		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
@@ -74,7 +87,7 @@
 	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.workflow.requestedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.workflow.requestedDateTime}"/></span></li>
 	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.workflow.requestedFromPlace}</li>
 	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.workflow.requestedToPlace}</li>
-	                                <g:if test = "${matchedWorkflowInstance?.workflow?.state == 'Accepted'}">
+	                                <g:if test = "${matchedWorkflowInstance?.workflow?.state != 'Accepted'}">
 		                                <li>
 											<g:link action="loadReviewPage" controller ="review" params="[workflowId: matchedWorkflowInstance.workflow.id]">
 						       					<button class="btn btn-primary">Review</button>
@@ -116,7 +129,7 @@
 	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span></li>
 	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${requestWorkflowInstance.workflow.matchedFromPlace}</li>
 	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${requestWorkflowInstance.workflow.matchedToPlace}</li>
-	                                <g:if test = "${requestWorkflowInstance?.workflow?.state == 'Accepted'}">
+	                                <g:if test = "${requestWorkflowInstance?.workflow?.state != 'Accepted'}">
 		                                <li>
 											<g:link action="loadReviewPage" controller ="review" params="[workflowId: requestWorkflowInstance.workflow.id]">
 						       					<button class="btn btn-primary">Review</button>
