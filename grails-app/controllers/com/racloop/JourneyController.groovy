@@ -349,6 +349,12 @@ class JourneyController {
 		redirect(action: "activeJourneys")
 	}
 	
+	def cancelIncomingRequest() {
+		def workflowId = params.workflowId
+		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.CANCELLED.state)
+		redirect(action: "activeJourneys")
+	}
+	
 	/**
 	 * TODO Where it is used?
 	 * @return

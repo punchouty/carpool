@@ -33,7 +33,12 @@
                     <div>
                         <ul class="text-left">
                             <li>
-	                            <span class="label label-primary">Car Owner</span> 
+	                            <g:if test = "${existingJourney.isDriver == true}">
+			                		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
+			                	</g:if>
+			                	<g:else>
+			                		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
+			                	</g:else> 
 	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${existingJourney.dateOfJourney}"/></span>
 	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${existingJourney.dateOfJourney}"/></span>
                             </li>
@@ -47,7 +52,12 @@
                     <div>
                         <ul class="text-left">
                             <li>
-	                            <span class="label label-primary">Car Owner</span> 
+	                            <g:if test = "${currentJourney.isDriver == true}">
+			                		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
+			                	</g:if>
+			                	<g:else>
+			                		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
+			                	</g:else>
 	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${currentJourney.dateOfJourney}"/></span>
 	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${currentJourney.dateOfJourney}"/></span>
                             </li>
@@ -58,9 +68,9 @@
                 </div>
             </div>
             <div class="row">
-            	<button id ="useExisting" class="btn btn-primary">Use Existing</button> &nbsp;
-            	<a id="useNew" href="#"  data-target="#myModal">
-	                <button id ="useNew"class="btn  btn-primary" type="button" data-toggle="tooltip" data-original-title="Confirm Cancellation">Use New</button>&nbsp; 
+            	<button id ="useExisting" class="btn btn-primary">Use Existing</button>
+            	<a id="useNew" href="#"  data-target="#myModal" class="btn  btn-info" type="button" data-toggle="tooltip" data-original-title="Confirm Cancellation">
+            	Use New    
 				</a> 
             	<g:link action="search" id="backToSearchResult" controller="userSession">                        	
 	               	<button id ="back" class="btn btn-warning" type="button">Back to Search</button>

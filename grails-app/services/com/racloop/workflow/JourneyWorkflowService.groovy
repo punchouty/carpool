@@ -120,6 +120,7 @@ class JourneyWorkflowService {
 		requestedWorkflowList.each {workflow ->
 			WorkflowDetails workflowDetails = new WorkflowDetails()
 			workflowDetails.otherUser = User.findByUsername(workflow.matchingUser, [readOnly:true])
+			workflowDetails.actionButtons.addAll(getAvailableActionForRequestSent(workflow.state))
 			setWorkflowDetails(workflow, workflowDetails)
 			requestWorkflowDetails << workflowDetails
 		}
@@ -131,17 +132,17 @@ class JourneyWorkflowService {
 		requestedWorkflowList.each {workflow ->
 			WorkflowDetails workflowDetails = new WorkflowDetails()
 			workflowDetails.otherUser = User.findByUsername(workflow.requestUser, [readOnly:true])
+			workflowDetails.actionButtons.addAll(getAvailableActionForResponse(workflow.state))
 			setWorkflowDetails(workflow, workflowDetails)
 			requestWorkflowDetails << workflowDetails
 		}
 		return requestWorkflowDetails
 	}
 	
-	public setWorkflowDetails(JourneyWorkflow workflow, WorkflowDetails workflowDetails) {
+	private setWorkflowDetails(JourneyWorkflow workflow, WorkflowDetails workflowDetails) {
 		
 			workflowDetails.workflow = workflow
 			workflowDetails.state = workflow.state//(workflow.state ==WorkflowState.INITIATED.getState()?'Sent':workflow.state)
-			workflowDetails.actionButtons.addAll(getAvailableActionForRequestSent(workflow.state))
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForSentRequest(workflow.state)
 			if(!workflowDetails.showContactInfo) {
 				workflowDetails?.otherUser?.profile?.mobile=""

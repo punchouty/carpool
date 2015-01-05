@@ -9,7 +9,6 @@ class ReviewController {
 	def journeyWorkflowService
 
 	def saveUserReview(){
-		println params.inspect()
 		Double defaultRating = 0.0d
 		Review review = new Review()
 		def workflowId = params.workflowId
@@ -25,7 +24,6 @@ class ReviewController {
 		
 		review.reviewer = currentUser
 		review.comment = params.comments
-		def ddd = params.safety
 		review.safety = params.safety ? params.double('safety'):defaultRating
 		review.comfort = params.comfort ? params.double('comfort'):defaultRating
 		review.punctualty = params.punctualty ? params.double('punctualty'):defaultRating

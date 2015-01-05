@@ -98,7 +98,9 @@
 												</g:link>
 											</g:if>
 											<g:if test = "${action=='Cancel'}">
-												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
+												<g:link action="cancelIncomingRequest" id="cancelIncomingRequest"  params="[workflowId: matchedWorkflowInstance.workflow.id]">
+													<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
+												</g:link>
 											</g:if>
 										</g:each>
 	                                </li>
