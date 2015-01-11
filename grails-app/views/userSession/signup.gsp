@@ -54,7 +54,7 @@
 						<input type="password" id="cf-passConfirm" name="passConfirm" class="form-control input-box" placeholder="Confirm Password" value="${user.pass?.encodeAsHTML()}"  required />
 						<%--data-validation-regex-regex="((?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%]).{6,20})" data-validation-regex-message="Password must be at least 8 character long, contains one digit, one lower case, one uppercase and one special character" --%>
                         <input type="text" id="cf-name" name="fullName" class="form-control input-box" placeholder="Name" value="${user.profile?.fullName?.encodeAsHTML()}" placeholder="Full Name" maxlength="100" minlength="3" required />
-                        <input type="text" id="cf-mobile" name="mobile" class="form-control input-box" placeholder="Mobile Number" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
+                        <input type="text" id="cf-mobile" name="mobile" class="form-control input-box" placeholder="Mobile Number" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required title="10 digit mobile number">
                         <div class=" text-left">
                             <label class="radio-inline">
                                 <input type="radio" name="sex" id="inlineRadio1" value="male" <g:if test="${user?.profile?.isMale}">checked</g:if> /> Male

@@ -38,22 +38,17 @@
 		        <g:hasErrors bean="${user}">			
 					 <div class="alert alert-danger alert-dismissible" role="alert">
 	                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	                    <strong>Warning!</strong> <g:renderErrors bean="${user}" as="list" />
+	                    <strong>Error!</strong> <g:renderErrors bean="${user}" as="list" />
 	                </div>	
 				</g:hasErrors>
 			</div>
 	        <!-- VERTICAL REGISTRATION FORM -->
 	        <div class="row">
-				<g:form id="change-password-form"  name="change-password-form"  controller="userSession" action="updatePassword" method="POST" class="registration-form" >
-	
-	                    <input type="password" id="currentPassword" name="currentPassword" class="form-control input-box" placeholder="Old Password" required />
-	
-	                    <input type="password" id="pass" name="pass" class="form-control input-box" placeholder="New Password" />
-	
-	                    <input type="password" id="passConfirm" name="passConfirm" class="form-control input-box" placeholder="Repeat"  />
-								
-								
-	                    <button class="btn btn-primary standard-button" id="change-help-block" type="submit">Change Password</button>
+				<g:form action="updatePassword" controller="userSession"  name="myForm" method="post"  class="registration-form"  >
+                    <input type="password" id="currentPassword" name="currentPassword" class="form-control input-box" placeholder="Old Password" required />
+                    <input type="password" id="pass" name="pass" class="form-control input-box" placeholder="New Password"  required/>
+                    <input type="password" id="passConfirm" name="passConfirm" class="form-control input-box" placeholder="Repeat" required />
+                    <button class="btn btn-primary" type="submit">Change Password</button>
 	            </g:form>
 	        </div>
         </div>

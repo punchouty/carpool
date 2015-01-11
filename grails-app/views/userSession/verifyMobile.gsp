@@ -50,7 +50,16 @@
 	                 <input type="text" id="verificationCode" name="verificationCode" class="form-control input-box" placeholder="Verification Code" >
 	                 <button id="verify" class="btn standard-button" type="button" >Verify</button>
 	                 <button id="sendSms" class="btn standard-button standard-red-button" type="button">Send SMS Again</button>
-	               	 <p id="form-error" class="dark-text small-text"><span class="icon-close-alt2 red-text"></span> <span id="error-message" >Error!</span> </p>
+	                 <div id = "error" class="hidden">
+		               	 <p class="dark-text small-text">
+			               	 <span class="icon-close-alt2 red-text"></span><span id="error-message" >Error!</span>
+		               	 </p>
+	               	 </div>
+	               	 <div id = "errorCode" class="hidden">
+		               	 <p class="dark-text small-text">
+		               	 	<span class="icon-close-alt2 red-text"></span><span id="error-message-code" >Error!</span>
+		               	 </p>
+	               	 </div>
 		            <input type="hidden" id="formAction" name="formAction" value="verify">
               </g:form>
             </div>
@@ -65,18 +74,21 @@
 		$('#sendSms').click(function() {	
 			$('#form-error').fadeOut(500);
 			var errorMessage = null;
+			var errorMessageForCode = null;
 			var mobile = $('#mobile').val();
 			if(mobile) {
 				if(!phonePattren.test(mobile)) {
-					errorMessage = "Invalid phone number";
+					errorMessage = "Invalid phone number.";
 				}
 			}
 			else {
-				errorMessage = "Please provide mobile number for SMS verification";
+				errorMessage = "Please provide mobile number for SMS verification.";
 			}
 			if(errorMessage != null) {
 				$('#error-message').text(errorMessage);
 				$('#form-error').fadeIn(1000);
+				$("#error").attr("class", "show");
+				$("#errorCode").attr("class", "hide");
 			}
 			else {
 				$('#formAction').val('sendSms');
@@ -90,33 +102,30 @@
 			var verificationCode = $('#verificationCode').val();
 			if(mobile) {
 				if(!phonePattren.test(mobile)) {
-					errorMessage = "Invalid phone number";
+					errorMessage = "Invalid phone number.";
 				}
 			}
 			else {
-				errorMessage = "Please provide mobile number for SMS verification";
+				errorMessage = "Please provide mobile number for SMS verification.";
 			}
 			if(verificationCode) {
 				if(!verificationCodePattren.test(verificationCode)) {
-					if(errorMessage) {
-						errorMessage = errorMessage + "\nInvalid verification code";
-					}
-					else {
-						errorMessage = "Invalid verification code";
-					}
+					errorMessageForCode = "Invalid verification code.";
 				}
 			}
 			else {
-				if(errorMessage) {
-					errorMessage = errorMessage + "\nPlease provide Verification Code";
-				}
-				else {
-					errorMessage = "Please provide Verification Code";
-				}
+				errorMessageForCode = "Please provide the Verification Code.";
 			}
-			if(errorMessage != null) {
+			if(errorMessage != null || errorMessageForCode !=null) {
 				$('#error-message').text(errorMessage);
+				$('#error-message-code').text(errorMessageForCode);
 				$('#form-error').fadeIn(1000);
+				if(errorMessage) {
+					$("#error").attr("class", "show");
+				}
+				if(errorMessageForCode){
+					$("#errorCode").attr("class", "show");
+				}
 				event.preventDefault();
 			}
 			else {

@@ -14,13 +14,13 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
-import grails.plugin.nimble.core.AdminsService
 import grails.plugin.nimble.security.NimbleFilterBase
 
+import org.codehaus.groovy.grails.web.util.WebUtils
+
 /**
- * Filter that works with Nimble security model to protect controllers, actions, views
+ * Filter that works with Nimble security model to protect controllers, actions, views. Overwritten from Nimble
  *
- * @author Bradley Beddoes
  */
 class SecurityFilters extends NimbleFilterBase {
 
@@ -41,5 +41,13 @@ class SecurityFilters extends NimbleFilterBase {
 //		otheradminsecure(controller: "staticData|sampleData") {
 //			accessControl { role(AdminsService.ADMIN_ROLE) }
 //		}
+	}
+	
+	def onNotAuthenticated(subject, filter) {
+		def grailsWebRequest = WebUtils.retrieveGrailsWebRequest()
+		// request is the HttpServletRequest
+		def flash = grailsWebRequest.attributes.getFlashScope(filter.request)
+		flash.message = "Please sign in to continue."
+		super.onNotAuthenticated(subject, filter)
 	}
 }
