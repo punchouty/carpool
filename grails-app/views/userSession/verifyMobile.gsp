@@ -52,12 +52,12 @@
 	                 <button id="sendSms" class="btn standard-button standard-red-button" type="button">Send SMS Again</button>
 	                 <div id = "error" class="hidden">
 		               	 <p class="dark-text small-text">
-			               	 <span class="icon-close-alt2 red-text"></span><span id="error-message" >Error!</span>
+			               	 <span class="icon-close-alt2 red-text"></span>&nbsp;&nbsp;<span id="error-message" >Error!</span>
 		               	 </p>
 	               	 </div>
 	               	 <div id = "errorCode" class="hidden">
 		               	 <p class="dark-text small-text">
-		               	 	<span class="icon-close-alt2 red-text"></span><span id="error-message-code" >Error!</span>
+		               	 	<span class="icon-close-alt2 red-text"></span>&nbsp;&nbsp;<span id="error-message-code" >Error!</span>
 		               	 </p>
 	               	 </div>
 		            <input type="hidden" id="formAction" name="formAction" value="verify">
@@ -98,6 +98,7 @@
 		$('#verify').click(function(event) {	
 			$('#form-error').fadeOut(500);
 			var errorMessage = null;
+			var errorMessageForCode = null;
 			var mobile = $('#mobile').val();
 			var verificationCode = $('#verificationCode').val();
 			if(mobile) {

@@ -231,10 +231,12 @@ $(function() {
         format: 'dd M yy HH:ii P'
         //format: 'dd MM yyyy    HH:ii P'
     }).on('changeDate', function(ev){
-    	//alert(ev.date);
+    	//Nothing
     });
 
 });
+
+
 
 $(function() {
 	$('#offer').click(function() {	
@@ -375,11 +377,16 @@ function getErrorMessage() {
 	var tripDistanceInKm = $('#tripDistance').val();
 	if(tripDistanceInKm) {
 		if(tripDistanceInKm <= 1) {
-			errorMessage = errorMessage + ", Distance you want to travel is very less"
+			if(errorMessage) {
+				errorMessage = errorMessage + ", Distance you want to travel is very less"
+			}
+			else {
+				errorMessage = "Distance you want to travel is very less"
+			}
 		}
 	}
 	if(errorMessage) {
-		errorMessage = "Error Fields : " + errorMessage;
+		errorMessage = "Error Fields: - " + errorMessage;
 	}
 	return errorMessage;
 }

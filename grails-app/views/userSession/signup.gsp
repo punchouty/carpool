@@ -27,7 +27,7 @@
 	        <g:hasErrors bean="${user}">			
 				 <div class="alert alert-danger alert-dismissible" role="alert">
                     <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                    <strong>Warning!</strong> <g:renderErrors bean="${user}" as="list" />
+                    <strong>Error!</strong> <g:renderErrors bean="${user}" as="list" />
                 </div>	
 			</g:hasErrors>
 		</div>

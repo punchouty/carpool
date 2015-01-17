@@ -198,6 +198,7 @@ class UserSessionController {
 				return
 			}
 			else {
+				flash.type = 'error'
 				flash.message = "Invalid mobile number or verification code. Please try again."
 				redirect(action: "verifyMobile", params: [mobile: mobile])
 				return
@@ -211,6 +212,7 @@ class UserSessionController {
 				return
 			}
 			else {
+				flash.type = 'error'
 				flash.message = "There is problem with this mobile number : ${mobile}. Cannot verify it."
 				redirect(action: "verifyMobile", params: [mobile: mobile])
 				return

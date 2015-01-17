@@ -87,7 +87,7 @@
 	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.workflow.requestedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.workflow.requestedDateTime}"/></span></li>
 	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.workflow.requestedFromPlace}</li>
 	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.workflow.requestedToPlace}</li>
-	                                <g:if test = "${matchedWorkflowInstance?.workflow?.state != 'Accepted'}">
+	                                <g:if test = "${matchedWorkflowInstance?.workflow?.state == 'Accepted'}">
 		                                <li>
 											<g:link action="loadReviewPage" controller ="review" params="[workflowId: matchedWorkflowInstance.workflow.id]">
 						       					<button class="btn btn-primary">Review</button>
@@ -129,7 +129,7 @@
 	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span></li>
 	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${requestWorkflowInstance.workflow.matchedFromPlace}</li>
 	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${requestWorkflowInstance.workflow.matchedToPlace}</li>
-	                                <g:if test = "${requestWorkflowInstance?.workflow?.state != 'Accepted'}">
+	                                <g:if test = "${requestWorkflowInstance?.workflow?.state == 'Accepted'}">
 		                                <li>
 											<g:link action="loadReviewPage" controller ="review" params="[workflowId: requestWorkflowInstance.workflow.id]">
 						       					<button class="btn btn-primary">Review</button>

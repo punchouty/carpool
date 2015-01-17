@@ -32,7 +32,13 @@ class JourneyController {
 		def currentUser = getAuthenticatedUser();
 		setUserInformation(currentUser,currentJourney)
 		currentJourney.ip = request.remoteAddr
-		setDates(currentJourney)
+		boolean isValidDate = setDates(currentJourney)
+		if(!isValidDate){
+			log.error 'Error in Date : ' + params
+			flash.error = "Invalid Journey Date"
+			redirect(controller: 'userSession', action: "search")
+			return
+		}
 		if(currentJourney.isFromPageReload() && session.currentJourney) {
 			currentJourney = session.currentJourney
 		}
@@ -82,17 +88,28 @@ class JourneyController {
 		}
 	}
 	
-	private setDates(JourneyRequestCommand currentJourney) {
-		if(currentJourney.dateOfJourneyString) {
-			currentJourney.dateOfJourney = convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
+	private boolean setDates(JourneyRequestCommand currentJourney) {
+		boolean success = true
+		try {
+			if(currentJourney.dateOfJourneyString) {
+				currentJourney.dateOfJourney = convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
+			}
+			if(currentJourney.validStartTimeString) {
+				currentJourney.validStartTime = new DateTime().toDate()//convertUIDateToElasticSearchDate(currentJourney.validStartTimeString).toDate()
+			}
+			if(!currentJourney.validStartTime) {
+				DateTime currentDate = new DateTime()
+				currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
+				currentJourney.validStartTime = currentDate.toDate()
+			}
+			
 		}
-		if(currentJourney.validStartTimeString) {
-			currentJourney.validStartTime = new DateTime().toDate()//convertUIDateToElasticSearchDate(currentJourney.validStartTimeString).toDate()
+		catch(IllegalArgumentException e) {
+			success = false
+			log.error "Something went wrong while setting Dates", e
 		}
-		if(!currentJourney.validStartTime) {
-			DateTime currentDate = new DateTime()
-			currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
-			currentJourney.validStartTime = currentDate.toDate()
+		finally {
+			return success
 		}
 	}
 	
