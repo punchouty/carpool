@@ -126,6 +126,16 @@ class UrlMappings {
 			action = "signup"
 			parseRequest = true
 		}
+		"/mverifymobile"{
+			controller = "mobile"
+			action = "signup"
+			parseRequest = true
+		}
+		"/mresendsms"{
+			controller = "mobile"
+			action = "signup"
+			parseRequest = true
+		}
 		"/mpassword"{
 			controller = "mobile"
 			action = "changePassword"

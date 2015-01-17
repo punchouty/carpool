@@ -28,6 +28,7 @@ class MobileController {
 
 	def shiroSecurityManager
 	def userService
+	def userManagerService
 	def journeyManagerService
 	def journeyService
 	def journeyWorkflowService
@@ -150,12 +151,14 @@ class MobileController {
 						mobileResponse.message = "Input Errors"
 					}
 					else {
-						sendMail {
-							to user.profile.email
-							from grailsApplication.config.grails.messaging.mail.from
-							subject nimbleConfig.messaging.registration.subject
-							html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
-						}
+//						sendMail {
+//							to user.profile.email
+//							from grailsApplication.config.grails.messaging.mail.from
+//							subject nimbleConfig.messaging.registration.subject
+//							html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
+//						}
+						log.info("Sending verification code to $user.profile.mobile")
+						userManagerService.setUpMobileVerificationDuringSignUp(savedUser.profile)
 						mobileResponse.success=true
 						mobileResponse.message = "User sign up sucessfully. Please check your email and activate your account."
 					}
@@ -176,6 +179,55 @@ class MobileController {
 		}
 		render mobileResponse as JSON
 		
+	}
+	
+	def verifyMobile() {
+		MobileResponse mobileResponse = new MobileResponse();
+		def json = request.JSON
+		def errors = null
+		if(json) {
+			def mobile = json?.mobile
+			def verificationCode = json?.verificationCode
+			boolean verified = userManagerService.verify(mobile, verificationCode)
+			if(verified) {
+				mobileResponse.message="Mobile Verified"
+				mobileResponse.total=0
+				mobileResponse.success=true
+			}
+			else {
+				mobileResponse.message="invalid user"
+				mobileResponse.total=0
+				mobileResponse.success=false
+			}
+		}
+		else {
+			mobileResponse.message = "Invalid Input Json"
+		}
+		render mobileResponse as JSON
+	}
+	
+	def resendSms() {
+		MobileResponse mobileResponse = new MobileResponse();
+		def json = request.JSON
+		def errors = null
+		if(json) {
+			def mobile = json?.mobile
+			boolean messageSent = userManagerService.setUpMobileVerificationExistingUser(mobile)
+			if(messageSent) {
+				mobileResponse.message="SMS sent again"
+				mobileResponse.total=0
+				mobileResponse.success=true
+			}
+			else {
+				mobileResponse.message="invalid mobile"
+				mobileResponse.total=0
+				mobileResponse.success=false
+			}
+		}
+		else {
+			mobileResponse.message = "Invalid Input Json"
+		}
+		render mobileResponse as JSON
 	}
 
 	/**
