@@ -168,9 +168,10 @@ grails {
 	}
 }
 
+// Login to account - http://www.smsgatewaycenter.com/login
 sms {
 	url = "http://www.smsgatewaycenter.com/library/send_sms_2.php"
-	mask = "MCSCHD"
+	mask = "RACLOP"
 	username = "mcs47chd"
 	password = "MCS47CHD?123"
 	templates {

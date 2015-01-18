@@ -4,6 +4,7 @@ import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.AuthController
 import grails.plugin.nimble.core.ProfileBase
 
+import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
@@ -106,7 +107,7 @@ class UserSessionController {
 			user.profile.email = 'invalid'
 		}
 		
-		if (user.profile.mobile == user.profile.emergencyContact) {
+		if (user.profile.mobile == user.profile.emergencyContactOne || user.profile.mobile == user.profile.emergencyContactTwo) {
 			flash.type = "message"
 			flash.message = "Mobile Number and Emergency Contact cannot be same"
 			render(view: 'signup', model: [user: user])
@@ -191,29 +192,35 @@ class UserSessionController {
 	
 	def processMobileVerification(String mobile, String verificationCode, String formAction) {
 		if(formAction == 'verifyMobile') {
-			boolean verified = userManagerService.verify(mobile, verificationCode)
-			if(verified) {
+			def status = userManagerService.verify(mobile, verificationCode)
+			if(status == GenericStatus.SUCCESS) {
 				flash.message = "Mobile verified successfully"
 				redirect(action: "signin")
 				return
 			}
+			else if (status == GenericStatus.FAILURE) {
+				flash.type = 'error'
+				flash.message = "Invalid verification code. Please try again."
+				redirect(action: "verifyMobile", params: [mobile: mobile])
+				return
+			}
 			else {
 				flash.type = 'error'
-				flash.message = "Invalid mobile number or verification code. Please try again."
+				flash.message = "No associated account with given mobile number."
 				redirect(action: "verifyMobile", params: [mobile: mobile])
 				return
 			}
 		}
 		else {
-			boolean messageSent = userManagerService.setUpMobileVerificationExistingUser(mobile)
-			if(messageSent) {
+			def status = userManagerService.setUpMobileVerification(mobile)
+			if(status == GenericStatus.SUCCESS) {
 				flash.message = "SMS Sent successfully. Please check your mobile."
 				redirect(action: "verifyMobile", params: [mobile: mobile])
 				return
 			}
 			else {
 				flash.type = 'error'
-				flash.message = "There is problem with this mobile number : ${mobile}. Cannot verify it."
+				flash.message = "No associated account with given mobile number : ${mobile}. Cannot verify it."
 				redirect(action: "verifyMobile", params: [mobile: mobile])
 				return
 			}
@@ -350,8 +357,10 @@ class UserSessionController {
 		[user: user]
 	}
 	
-	def editProfile(String fullName, String sex, String mobile, String emergencyContact) {
+	def editProfile(String fullName, String sex, String mobile, String emergencyContactOne, String emergencyContactTwo) {
 		def user = authenticatedUser
+		def newMobile = mobile
+		def oldMobile = user.profile.mobile
 		boolean isMale = true
 		if(sex != 'male') {
 			isMale = false
@@ -359,13 +368,24 @@ class UserSessionController {
 		user.profile.fullName = fullName
 		user.profile.mobile = mobile
 		user.profile.isMale = isMale
-		user.profile.emergencyContact = emergencyContact
+		user.profile.emergencyContactOne = emergencyContactOne
+		user.profile.emergencyContactTwo = emergencyContactTwo
 		
-		if(mobile == emergencyContact) {
+		if(mobile == emergencyContactOne || mobile == emergencyContactTwo) {
 			flash.type = "error"
 			flash.message = "Emergency contact cannot be same as your mobile number"
 			render view: 'profile', model: [user: user]
 			return
+		}
+		
+		if(newMobile != oldMobile) { //if mobile number is changed
+			Profile profile = Profile.findByMobile(newMobile);
+			if(profile) {
+				flash.type = "error"
+				flash.message = "New mobile number given is already in use"
+				render view: 'profile', model: [user: user]
+				return
+			}
 		}
 		
 		if (!user.validate()) {
@@ -375,12 +395,21 @@ class UserSessionController {
 		}
 
 		def updatedUser = userService.updateUser(user)
-		
 		log.info("Successfully updated details for user [$user.id]$user.username")
-		flash.type = "success"
-		flash.message = message(code: 'nimble.user.update.success', args: [user.username])
-		redirect action: 'profile', user: updatedUser
-		return
+		if(newMobile == oldMobile) {
+			flash.type = "success"
+			flash.message = message(code: 'nimble.user.update.success', args: [user.username])
+			render view: 'profile', model: [user: updatedUser]
+			return
+		}
+		else {
+			userManagerService.setUpVerificationForMobileChange(newMobile)
+			SecurityUtils.subject?.logout()
+			flash.type = "success"
+			flash.message = "You have update your mobile number. Check SMS and verify your new mobile number"
+			redirect action: 'verifyMobile', params: [mobile: newMobile]
+			return;
+		}
 	}
 
 	private getNimbleConfig() {

@@ -165,11 +165,11 @@ class MobileController {
 				}
 				else {
 					errors = user.errors
-					def message = ""
+					def errorMessage = ""
 					errors.allErrors.each {
-						message = message + it + "</br>"
+						errorMessage = errorMessage + g.message(code: it.getCodes()[0], args: []) + "</br>"
 					}
-					mobileResponse.message = message
+					mobileResponse.message = errorMessage
 				}	
 				
 			}	
@@ -190,7 +190,7 @@ class MobileController {
 			def verificationCode = json?.verificationCode
 			boolean verified = userManagerService.verify(mobile, verificationCode)
 			if(verified) {
-				mobileResponse.message="Mobile Verified"
+				mobileResponse.message="Mobile Verified Successfully"
 				mobileResponse.total=0
 				mobileResponse.success=true
 			}
@@ -219,7 +219,7 @@ class MobileController {
 				mobileResponse.success=true
 			}
 			else {
-				mobileResponse.message="invalid mobile"
+				mobileResponse.message="Invalid Mobile Number"
 				mobileResponse.total=0
 				mobileResponse.success=false
 			}
