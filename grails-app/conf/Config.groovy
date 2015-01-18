@@ -176,8 +176,8 @@ sms {
 	templates {
 		verification = 'Your verification code for www.racloop.com code is $verificationCode'
 		newRequest = 'There is new car pool request against your journey on $journeyDate'
-		acceptRequest = 'You car pool request for journey on $journeyDate is ACCEPTED by user $name. Mobile : $mobile'
-		rejectRequest = 'You car pool request for journey on $journeyDate is REJECTED by user $name.'
+		acceptRequest = 'Your car pool request for journey on $journeyDate is ACCEPTED by user $name. Mobile : $mobile'
+		rejectRequest = 'Your car pool request for journey on $journeyDate is REJECTED by user $name.'
 		cancelRequest = 'User $name has CANCELLED his journey on $journeyDate'
 	}
 }
