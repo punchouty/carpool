@@ -21,6 +21,8 @@ Web
 11. Amazon deployment Infrastructure
 12. Active Journey - outgoing incoming buttons not working - Rajan
 13. Modal boxes UI - Parminder
+14. Edit Profile - Mobile no change - Send Verification code
+15. User Review - To be added only once.
 
 Mobile
 1. Safety app - where i am, ringer for alert if vehicle is diverting
