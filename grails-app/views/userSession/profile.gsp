@@ -145,8 +145,13 @@
               		</div>
                    
               		<div class="text-left form-group">
-					    <label for="cf-emergencyContact">Emergency Contact :</label>
-						<input type="text" id="cf-emergencyContact" name="emergencyContact" class="form-control input-box zero-margin" placeholder="Emergency Contact" value="${user.profile?.emergencyContact}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
+					    <label for="cf-emergencyContact">Emergency Contact 1 :</label>
+						<input type="text" id="cf-emergencyContactOne" name="emergencyContactOne" class="form-control input-box zero-margin" placeholder="Emergency Contact 1" value="${user.profile?.emergencyContactOne}" pattern="^[6789]\d{9}$" data-validation-pattern-message="Invalid Phone Number">
+              		</div>
+                   
+              		<div class="text-left form-group">
+					    <label for="cf-emergencyContact">Emergency Contact 2 :</label>
+						<input type="text" id="cf-emergencyContactTwo" name="emergencyContactTwo" class="form-control input-box zero-margin" placeholder="Emergency Contact 2" value="${user.profile?.emergencyContactTwo}" pattern="^[6789]\d{9}$" data-validation-pattern-message="Invalid Phone Number">
               		</div>
                    
               		<div class=" text-left">

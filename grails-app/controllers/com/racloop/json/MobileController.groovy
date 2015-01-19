@@ -15,6 +15,7 @@ import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
+import com.racloop.GenericStatus;
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
@@ -160,16 +161,16 @@ class MobileController {
 						log.info("Sending verification code to $user.profile.mobile")
 						userManagerService.setUpMobileVerificationDuringSignUp(savedUser.profile)
 						mobileResponse.success=true
-						mobileResponse.message = "User sign up sucessfully. Please check your email and activate your account."
+						mobileResponse.message = "User sign up sucessfully. Check SMS for verificaton code."
 					}
 				}
 				else {
 					errors = user.errors
-					def message = ""
+					def errorMessage = ""
 					errors.allErrors.each {
-						message = message + it + "</br>"
+						errorMessage = errorMessage + g.message(code: it.getCodes()[0], args: []) + "</br>"
 					}
-					mobileResponse.message = message
+					mobileResponse.message = errorMessage
 				}	
 				
 			}	
@@ -188,19 +189,26 @@ class MobileController {
 		if(json) {
 			def mobile = json?.mobile
 			def verificationCode = json?.verificationCode
-			boolean verified = userManagerService.verify(mobile, verificationCode)
-			if(verified) {
-				mobileResponse.message="Mobile Verified"
+			def status = userManagerService.verify(mobile, verificationCode)
+			if(status == GenericStatus.SUCCESS) {
+				mobileResponse.message="Mobile Verified Successfully"
 				mobileResponse.total=0
 				mobileResponse.success=true
 			}
+			else if (status == GenericStatus.FAILURE) {
+				mobileResponse.message = "Invalid verification code. Please try again."
+				mobileResponse.total=0
+				mobileResponse.success=false
+			}
 			else {
-				mobileResponse.message="invalid user"
+				mobileResponse.message = "No associated account with given mobile number."
 				mobileResponse.total=0
 				mobileResponse.success=false
 			}
 		}
 		else {
+			mobileResponse.total=0
+			mobileResponse.success=false
 			mobileResponse.message = "Invalid Input Json"
 		}
 		render mobileResponse as JSON
@@ -212,19 +220,21 @@ class MobileController {
 		def errors = null
 		if(json) {
 			def mobile = json?.mobile
-			boolean messageSent = userManagerService.setUpMobileVerificationExistingUser(mobile)
-			if(messageSent) {
-				mobileResponse.message="SMS sent again"
+			def status = userManagerService.setUpMobileVerification(mobile)
+			if(status == GenericStatus.SUCCESS) {
+				mobileResponse.message = "SMS Sent successfully. Please check your mobile."
 				mobileResponse.total=0
 				mobileResponse.success=true
 			}
 			else {
-				mobileResponse.message="invalid mobile"
+				mobileResponse.message = "No associated account with given mobile number : ${mobile}. Cannot verify it."
 				mobileResponse.total=0
 				mobileResponse.success=false
 			}
 		}
 		else {
+			mobileResponse.total=0
+			mobileResponse.success=false
 			mobileResponse.message = "Invalid Input Json"
 		}
 		render mobileResponse as JSON
@@ -338,6 +348,11 @@ class MobileController {
 		render mobileResponse as JSON
 	}
 	
+	/**
+	 * TODO changes for sms verification pending
+	 * TODO emergency contacts functionality pending
+	 * @return
+	 */
 	def editProfile() {
 		def json = request.JSON
 		String jsonMessage = null
