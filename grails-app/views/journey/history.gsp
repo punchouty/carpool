@@ -54,8 +54,8 @@
 		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
 		                        <li><i class="icon-basic-map"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
 		                        <li>
-		                        	<g:link action="searchRouteAgain"id="searchRouteAgain"  params="[journeyId: journeyInstance.journeyId]">
-					       				<button class="btn btn-warning"><i class="fa fa-search"></i> Search Again</button>
+		                        	<g:link action="searchRouteAgain"id="searchRouteAgain"  class="btn btn-warning" params="[journeyId: journeyInstance.journeyId]">
+					       				<i class="fa fa-search"></i> Search Again
 					       			</g:link>&nbsp; 
 		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Incoming (${journeyInstance.incomingRequests.size()}) <span class="caret"></span></button> &nbsp; 
 		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn"><i class="fa fa-upload"></i> Outgoing (${journeyInstance.outgoingRequests.size()}) <span class="caret"></span></button> &nbsp;

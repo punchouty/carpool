@@ -47,8 +47,8 @@
 		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
 		                        <li><i class="icon-basic-map"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
 		                        <li>
-		                        	<g:link action="searchAgain"id="searchAgain"  params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
-					       				<button class="btn btn-warning "><i class="fa fa-search"></i> Search Again</button>
+		                        	<g:link action="searchAgain"id="searchAgain"  class="btn btn-warning" params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
+					       				<i class="fa fa-search"></i> Search Again
 					       			</g:link>&nbsp; 
 		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Incoming (${journeyInstance.incomingRequests.size()}) <span class="caret"></span></button> &nbsp; 
 		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn"><i class="fa fa-upload"></i> Outgoing (${journeyInstance.outgoingRequests.size()}) <span class="caret"></span></button> &nbsp; 
