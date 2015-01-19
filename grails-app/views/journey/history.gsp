@@ -17,7 +17,19 @@
 		  <button type="button" class="close" data-dismiss="alert">&times;</button>
 		  ${flash.error}
 		</div>
+	</g:if>
+	<g:if test="${messageMap?.message}">
+		<div class="alert alert-success">			
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  ${messageMap?.message}
+		</div>
 	</g:if>	
+	<g:if test="${messageMap?.error}">
+		<div class="alert alert-danger">			
+		  <button type="button" class="close" data-dismiss="alert">&times;</button>
+		  ${messageMap?.error}
+		</div>
+	</g:if>
 <section class="white-bg" id="section10">
     <div class="container">
 

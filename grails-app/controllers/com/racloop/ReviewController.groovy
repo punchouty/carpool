@@ -9,6 +9,7 @@ class ReviewController {
 	def journeyWorkflowService
 
 	def saveUserReview(){
+		def messageMap =[:]
 		Double defaultRating = 0.0d
 		Review review = new Review()
 		def workflowId = params.workflowId
@@ -30,13 +31,12 @@ class ReviewController {
 		review.overall = params.overAll ? params.double('overAll'):defaultRating
 		review.workflowId = workflowId
 		if(!review.save()) {
-			flash.error = "Something went wrong while saving the review."
+			messageMap.error = "Something went wrong while saving the review."
 		}
 		else {
-			flash.message = "Review added sucessfully"
+			messageMap.message = "Review added sucessfully"
 		}
-		forward controller: 'journey',action: 'history'
-		
+		forward controller: 'journey',action: 'history', model: [messageMap: messageMap]
 	}
 	
 	
