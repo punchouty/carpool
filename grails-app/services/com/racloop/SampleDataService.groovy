@@ -30,7 +30,7 @@ class SampleDataService {
 		
 		int i = 0;
 		Calendar time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 30);
+		time.add(Calendar.MINUTE, -120);
 		//Delhi to Chandigarh - sample.driver
 		lines.each {  line ->
 			i++;
@@ -53,7 +53,7 @@ class SampleDataService {
 		
 		i = 0;
 		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 35);
+		time.add(Calendar.MINUTE, -180);
 		//Delhi to Chandigarh - sample.rider
 		lines.each {  line ->
 			i++;
@@ -77,7 +77,7 @@ class SampleDataService {
 		i = 0;
 		time = Calendar.getInstance();
 		//Delhi to Chandigarh - admin
-		time.add(Calendar.MINUTE, 40);
+		time.add(Calendar.MINUTE, -30);
 		lines.each {  line ->
 			i++;
 			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
@@ -99,7 +99,7 @@ class SampleDataService {
 		
 		i = 0;
 		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, 45);
+		time.add(Calendar.MINUTE, -60);
 		//Delhi to Chandigarh - admin
 		lines.each {  line ->
 			i++;
@@ -120,13 +120,13 @@ class SampleDataService {
 			incomingRequest<<journeyCommand
 		}
 		
-		for ( x in 0..5 ) {
+		for ( x in 0..2 ) {
 			try {
 				JourneyRequestCommand requestObj = outgoingRequest.get(x)
 				outgoingRequest.remove(x)
 				JourneyRequestCommand responseObj = incomingRequest.get(x)
 				incomingRequest.remove(x)
-				//journeyManagerService.saveJourneyAndInitiateWorkflow(requestObj, responseObj)
+				journeyManagerService.saveJourneyAndInitiateWorkflow(requestObj, responseObj)
 			}
 			catch(Exception e) {
 				
