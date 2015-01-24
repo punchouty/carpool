@@ -843,4 +843,41 @@ class MobileController {
 		currentJourney.id = json?.id		
 		return currentJourney
 	}
+	
+	def privacy() {
+		def mobileResponse = new MobileResponse()
+		mobileResponse.message = "Privacy from server" // TODO implementation incomplete and hard coded
+		mobileResponse.success = true
+		mobileResponse.total =0
+		render mobileResponse as JSON
+	}
+	
+	def terms() {
+		def mobileResponse = new MobileResponse()
+		mobileResponse.message = "Terms from server" // TODO implementation incomplete and hard coded
+		mobileResponse.success = true
+		mobileResponse.total =0
+		render mobileResponse as JSON
+	}
+	
+	def saveEmergencyContacts(String emergencyContactOne, String emergencyContactTwo) {
+		
+	}
+	
+	def sos() {
+		
+	}
+	
+	def logCurrentLocation(String journeyId, String currentTime, double lat, double lng) {
+		//check if current location is close to destination
+		//return status
+	}
+	
+	def stopLogging() {
+		
+	}
+	
+	def history() {
+		
+	}
 }
