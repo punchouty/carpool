@@ -9,6 +9,7 @@ import com.racloop.journey.workkflow.WorkflowState;
 
 import grails.plugin.jms.Queue;
 import grails.transaction.Transactional
+import grails.util.GrailsUtil;
 import groovy.text.Template;
 
 import org.springframework.web.util.UriUtils;
@@ -65,17 +66,39 @@ class SmsService {
 		}
 		if(message) {
 			String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
-			def resp = rest.get(restUrl);
-			if(resp.getStatus() != 200) {
-				log.error ('SMS failure with service provider')
-				log.info('Saving failure message to database')
-				SmsFailure smsFailure = new SmsFailure();
-				smsFailure.mobile = to
-				smsFailure.message = message
-				smsFailure.restUrl = restUrl
-				smsFailure.serverResponse = resp.text
-				smsFailure.save();
-				return;
+			if(GrailsUtil.developmentEnv) {
+				def blackListNumbers = ['9800000001', '9800000002', '9800000003', '9800000004'];
+				if(blackListNumbers.contains(to)) {
+					log.info ("Simulating SMS for url : ${restUrl}")
+				}
+				else {
+					def resp = rest.get(restUrl);
+					if(resp.getStatus() != 200) {
+						log.error ('SMS failure with service provider')
+						log.info('Saving failure message to database')
+						SmsFailure smsFailure = new SmsFailure();
+						smsFailure.mobile = to
+						smsFailure.message = message
+						smsFailure.restUrl = restUrl
+						smsFailure.serverResponse = resp.text
+						smsFailure.save();
+						return;
+					}
+				}
+			}
+			else {
+				def resp = rest.get(restUrl);
+				if(resp.getStatus() != 200) {
+					log.error ('SMS failure with service provider')
+					log.info('Saving failure message to database')
+					SmsFailure smsFailure = new SmsFailure();
+					smsFailure.mobile = to
+					smsFailure.message = message
+					smsFailure.restUrl = restUrl
+					smsFailure.serverResponse = resp.text
+					smsFailure.save();
+					return;
+				}
 			}
 		}
 	}
