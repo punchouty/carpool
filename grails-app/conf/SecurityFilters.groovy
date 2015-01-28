@@ -24,9 +24,10 @@ import org.codehaus.groovy.grails.web.util.WebUtils
  */
 class SecurityFilters extends NimbleFilterBase {
 
-	def filters = {		
-		journeysecure(controller: "journey", action: "(newJourney|requestService|getWorkflow)") {
-			before = { accessControl { true } }
+	def filters = {	
+		def clos = { true}
+		journeysecure(controller: "journey", action: "(newJourney|requestService|getWorkflow|history|activeJourneys)") {
+			before = { accessControl(auth: false, clos) }
 		}
 		
 //		homesecure(controller: "staticPage", action: "search") {
@@ -35,7 +36,7 @@ class SecurityFilters extends NimbleFilterBase {
 		
 		// Account management requiring authentication
 		accountsecure(controller: "userSession", action: "(changePassword|updatePassword|changedPassword|profile|editProfile)") {
-			before = { accessControl { true } }
+			before = { accessControl(auth: false, clos) }
 		}
 		
 //		otheradminsecure(controller: "staticData|sampleData") {
