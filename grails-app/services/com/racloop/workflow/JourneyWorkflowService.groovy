@@ -144,9 +144,8 @@ class JourneyWorkflowService {
 			workflowDetails.workflow = workflow
 			workflowDetails.state = workflow.state//(workflow.state ==WorkflowState.INITIATED.getState()?'Sent':workflow.state)
 			workflowDetails.showContactInfo = shouldDisplayOtherUserInfoForSentRequest(workflow.state)
-			if(!workflowDetails.showContactInfo) {
-				workflowDetails?.otherUser?.profile?.mobile=""
-				workflowDetails?.otherUser?.profile?.email=""
+			if(workflowDetails.showContactInfo) {
+				workflowDetails.otherUserMobileNummber = workflowDetails?.otherUser?.profile?.mobile
 			}
 			
 	}

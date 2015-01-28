@@ -71,7 +71,7 @@
                     <g:each in="${journeyInstance.incomingRequests}" status="k" var="matchedWorkflowInstance">
 	                    <div class="row">
 	                    	<div class="col-md-7 col-md-offset-2 text-left">
-	                    		<h5>${matchedWorkflowInstance?.otherUser?.profile?.fullName?:matchedWorkflowInstance?.workflow?.requestUser}<g:if test = "${matchedWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${matchedWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
+	                    		<h5>${matchedWorkflowInstance?.otherUser?.profile?.fullName?:matchedWorkflowInstance?.workflow?.requestUser}<g:if test = "${matchedWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${matchedWorkflowInstance.otherUserMobileNummber}</g:if> </h5>
 	                    		<ul class="text-left">
 	                                <li>
 	                                	<g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
@@ -126,7 +126,7 @@
                 	<g:each in="${journeyInstance.outgoingRequests}" status="j" var="requestWorkflowInstance">
                 		<div class="row">
                    			<div class="col-md-7 col-md-offset-2 text-left">
-	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName?:requestWorkflowInstance?.workflow?.matchingUser} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${requestWorkflowInstance.otherUser?.profile?.mobile}</g:if> </h5>
+	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName?:requestWorkflowInstance?.workflow?.matchingUser} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${requestWorkflowInstance.otherUserMobileNummber}</g:if> </h5>
 	                            <ul class="text-left">
 	                                <li>
 		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">

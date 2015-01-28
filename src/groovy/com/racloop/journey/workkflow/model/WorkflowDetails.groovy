@@ -10,6 +10,7 @@ class WorkflowDetails {
 	List actionButtons
 	String state
 	boolean showContactInfo
+	String otherUserMobileNummber
 	
 	
 	public WorkflowDetails () {
