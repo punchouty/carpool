@@ -13,7 +13,10 @@ class UserMarshaller {
 				password : user.pass,
 				photoUrl : user.profile.getGravatarUri(),
 				mobile : user.profile.mobile,
-				isMale : user.profile.isMale
+				isMale : user.profile.isMale,
+				emergencyContactOne: user.profile.emergencyContactOne,
+				emergencyContactTwo: user.profile.emergencyContactTwo,
+				isVerified: user.profile.isVerified
 			]
 		}
 		

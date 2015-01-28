@@ -70,7 +70,7 @@ class MobileController {
 			}
 			catch (DisabledAccountException e) {
 				log.info "Attempt to login to disabled account for user '${email}'."
-				mobileResponse.message="Acount Disabled"
+				mobileResponse.message="Mobile number is not verified or Acount is disabled"
 				mobileResponse.success=false
 			}
 			catch (AuthenticationException e) {
