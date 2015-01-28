@@ -879,5 +879,32 @@ class MobileController {
 	
 	def history() {
 		
+		def mobileResponse = new MobileResponse()
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		JourneyRequestCommand journeyRequestCommand = new JourneyRequestCommand()
+		journeyRequestCommand.user = json?.user
+
+		def workflows =[]
+		def journeys =[]
+		int numberOfRecords = 0
+		def currentUser = getAuthenticatedUser();
+		if(!currentUser) {
+			currentUser = User.findByUsername(journeyRequestCommand.user);
+		}
+		if(currentUser) {
+			journeys = journeyService.findHistoricJourneyDetailsForUser(currentUser)
+			mobileResponse.data = journeys
+			mobileResponse.success = true
+			mobileResponse.total = journeys?.size()
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+		render mobileResponse as JSON
+		
 	}
 }
