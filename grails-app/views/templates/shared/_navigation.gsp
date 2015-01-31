@@ -14,7 +14,7 @@
                         </button>
 
                         <!-- LOGO -->
-                        <a class="navbar-brand logo-racloop" href="${request.contextPath}/">
+                        <a id="logo-racloop" class="navbar-brand logo-racloop" href="${request.contextPath}/">
                             RACLOOP
                             <!-- <img src="images/logo-nav.png" alt=""> -->
                         </a>

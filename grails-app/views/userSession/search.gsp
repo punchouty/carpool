@@ -53,7 +53,7 @@
                       <div class="col-sm-12">
                           <div class="horizontal-subscribe-form">
                           	<g:form class="form-inline" name="search-form" controller="journey" action="findMatching">
-                          		<input type="text" id="dateOfJourneyString" name="dateOfJourneyString" size="16" autocomplete="off" class="form-control input-box form_datetime" placeholder="Date and Time">
+                          		<input type="text" id="dateOfJourneyString" name="dateOfJourneyString" size="17" autocomplete="off" class="form-control input-box form_datetime" placeholder="Date and Time">
                           		<span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
                           		<input type="text" id="fromPlace" name="fromPlace" size="25" autocomplete="off" value="${commandInstance?.fromPlace}" class="form-control input-box" placeholder="From : Landmark">
                           		<g:hiddenField name="_hFromPlace" value="${commandInstance?.fromPlace}" />

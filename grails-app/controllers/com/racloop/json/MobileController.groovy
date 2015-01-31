@@ -419,37 +419,43 @@ class MobileController {
 		if(currentUser) {
 			setUserInformation(currentUser,currentJourney)
 			currentJourney.ip = request.remoteAddr
-			setDates(currentJourney)
-			if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
-				if(currentJourney.validate()) {
-					session.currentJourney = currentJourney
-					boolean shouldSearchJourneys = true
-					if(currentUser && currentJourney.isNewJourney()) {//Usually it will be the case for Mobile search
-						JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
-						if(existingJourney) {
-							mobileResponse.data = ['existingJourney':existingJourney,'currentJourney':currentJourney] 
-							mobileResponse.success = true
-							mobileResponse.total = 0
-							mobileResponse.message = "Existing journey found!"
-							mobileResponse.existingJourney=true
-							
-							shouldSearchJourneys = false
-						}
-					}
-					if(shouldSearchJourneys){
-						searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
-						session.currentJourney = currentJourney
-						mobileResponse.data = searchResultMap
-						mobileResponse.success = true
-						mobileResponse.total = searchResultMap.numberOfRecords
-						mobileResponse.existingJourney=false
-					}
-				}
+			boolean isValidDate = setDates(currentJourney)
+			if(!isValidDate){
+				mobileResponse.success = false
+				mobileResponse.message = "Invalid Date"
 			}
 			else {
-				mobileResponse.message = "Invalid travel date and time"
-				mobileResponse.success = false
-				mobileResponse.total =0
+				if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
+					if(currentJourney.validate()) {
+						session.currentJourney = currentJourney
+						boolean shouldSearchJourneys = true
+						if(currentUser && currentJourney.isNewJourney()) {//Usually it will be the case for Mobile search
+							JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
+							if(existingJourney) {
+								mobileResponse.data = ['existingJourney':existingJourney,'currentJourney':currentJourney] 
+								mobileResponse.success = true
+								mobileResponse.total = 0
+								mobileResponse.message = "Existing journey found!"
+								mobileResponse.existingJourney=true
+								
+								shouldSearchJourneys = false
+							}
+						}
+						if(shouldSearchJourneys){
+							searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
+							session.currentJourney = currentJourney
+							mobileResponse.data = searchResultMap
+							mobileResponse.success = true
+							mobileResponse.total = searchResultMap.numberOfRecords
+							mobileResponse.existingJourney=false
+						}
+					}
+				}
+				else {
+					mobileResponse.message = "Invalid travel date and time"
+					mobileResponse.success = false
+					mobileResponse.total =0
+				}	
 			}
 		}
 		else {
@@ -784,18 +790,28 @@ class MobileController {
 	
 	
 	private setDates(JourneyRequestCommand currentJourney) {
-		if(currentJourney.dateOfJourneyString && currentJourney.dateOfJourneyString != 'null') {
-			currentJourney.dateOfJourney = convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
+		boolean success = true
+		try {
+			if(currentJourney.dateOfJourneyString) {
+				currentJourney.dateOfJourney = convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
+			}
+			if(currentJourney.validStartTimeString) {
+				currentJourney.validStartTime = new DateTime().toDate()//convertUIDateToElasticSearchDate(currentJourney.validStartTimeString).toDate()
+			}
+			if(!currentJourney.validStartTime) {
+				DateTime currentDate = new DateTime()
+				currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
+				currentJourney.validStartTime = currentDate.toDate()
+			}
+			
 		}
-		if(currentJourney.validStartTimeString) {
-			currentJourney.validStartTime = convertUIDateToElasticSearchDate(currentJourney.validStartTimeString).toDate()
+		catch(IllegalArgumentException e) {
+			success = false
+			log.error "Something went wrong while setting Dates", e
 		}
-		if(!currentJourney.validStartTime) {
-			DateTime currentDate = new DateTime()
-			//TODO - get this Info from config
-			currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
-			currentJourney.validStartTime = currentDate.toDate()
-		}		
+		finally {
+			return success
+		}	
 	}
 	
 	private Double convertToDouble(Object input) {

@@ -206,13 +206,17 @@ function setMapHelp() {
 }
 
 var now = new Date();
-var reserveTime = 30;//in minutes
+var reserveTime = 25;//in minutes
 var timeLimitInDays = 7;//in days
 var validStartTime = new Date(now.getTime() + reserveTime * 60000);
 var initialTime = new Date(now.getTime() + (reserveTime + 15) * 60000);
 //console.log(validStartTime);
 var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);
 //console.log(validEndTime);
+
+// for configration of time picker
+var uiValidStartTime = new Date(now.getTime() + 15 * 60000); // 15 minutes from now
+var uiValidEndTime = validEndTime; // 15 minutes from now
 
 //Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
 //This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
@@ -222,7 +226,10 @@ $('#validStartTimeString').val(validStartTime.toString('dd MMMM yyyy    hh:mm tt
 $(function() {
 	$('#dateOfJourneyString').datetimepicker({
         weekStart: 1,
-        todayBtn:  0,
+        //todayBtn:  true,
+        startDate: uiValidStartTime,
+        endDate: uiValidEndTime,
+        todayHighlight: true,
 		autoclose: true,
         minuteStep: 15,
         showMeridian: true,

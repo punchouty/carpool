@@ -19,7 +19,7 @@ environments {
 			pooled = true
 			username = "root"
 			password = ""
-			logSql = true
+			//logSql = true
 			properties {
                maxActive = -1
                minEvictableIdleTimeMillis=1800000

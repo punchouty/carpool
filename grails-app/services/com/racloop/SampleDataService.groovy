@@ -19,7 +19,7 @@ class SampleDataService {
 		def outgoingRequest =[] 
 		def incomingRequest = []
 		
-		int timeInterval = 10
+		int timeInterval = 15
 		User user1 = User.findByUsername('admin@racloop.com');
 		User user2 = User.findByUsername('sample.user@racloop.com');
 		User user3 = User.findByUsername('sample.driver@racloop.com');
@@ -30,94 +30,114 @@ class SampleDataService {
 		
 		int i = 0;
 		Calendar time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, -120);
+		time.set(Calendar.MINUTE, 0);
+		time.set(Calendar.SECOND, 0);
+		time.set(Calendar.MILLISECOND, 0);
+		time.add(Calendar.MINUTE, -60);
 		//Delhi to Chandigarh - sample.driver
 		lines.each {  line ->
 			i++;
-			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
-			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.isMale = false
-			journeyCommand.fromPlace = line[6]
-			journeyCommand.fromLatitude = Double.parseDouble(line[4])
-			journeyCommand.fromLongitude = Double.parseDouble(line[5])
-			journeyCommand.toPlace = line[11]
-			journeyCommand.toLatitude = Double.parseDouble(line[9])
-			journeyCommand.toLongitude = Double.parseDouble(line[10])
-			journeyCommand.isDriver = true
-			journeyCommand.tripDistance = 250.0d
-			journeyCommand.user = user3.username
-			journeyManagerService.createJourney(user3, journeyCommand)
+			if(i%4 == 0) {
+				JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+				journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+				journeyCommand.isMale = false
+				journeyCommand.fromPlace = line[6]
+				journeyCommand.fromLatitude = Double.parseDouble(line[4])
+				journeyCommand.fromLongitude = Double.parseDouble(line[5])
+				journeyCommand.toPlace = line[11]
+				journeyCommand.toLatitude = Double.parseDouble(line[9])
+				journeyCommand.toLongitude = Double.parseDouble(line[10])
+				journeyCommand.isDriver = true
+				journeyCommand.tripDistance = 250.0d
+				journeyCommand.user = user1.username
+				journeyManagerService.createJourney(user3, journeyCommand)
+				outgoingRequest<<journeyCommand
+			}
 			time.add(Calendar.MINUTE, timeInterval);
-			outgoingRequest<<journeyCommand
 		}
 		
 		i = 0;
 		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, -180);
+		time.set(Calendar.MINUTE, 0);
+		time.set(Calendar.SECOND, 0);
+		time.set(Calendar.MILLISECOND, 0);
+		time.add(Calendar.MINUTE, -90);
 		//Delhi to Chandigarh - sample.rider
 		lines.each {  line ->
 			i++;
-			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
-			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.isMale = false
-			journeyCommand.fromPlace = line[6]
-			journeyCommand.fromLatitude = Double.parseDouble(line[4])
-			journeyCommand.fromLongitude = Double.parseDouble(line[5])
-			journeyCommand.toPlace = line[11]
-			journeyCommand.toLatitude = Double.parseDouble(line[9])
-			journeyCommand.toLongitude = Double.parseDouble(line[10])
-			journeyCommand.isDriver = false
-			journeyCommand.tripDistance = 250.0d
-
-			journeyCommand.user = user4.username
-			journeyManagerService.createJourney(user4, journeyCommand)
+			if(i%4 == 1) {
+				JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+				journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+				journeyCommand.isMale = false
+				journeyCommand.fromPlace = line[6]
+				journeyCommand.fromLatitude = Double.parseDouble(line[4])
+				journeyCommand.fromLongitude = Double.parseDouble(line[5])
+				journeyCommand.toPlace = line[11]
+				journeyCommand.toLatitude = Double.parseDouble(line[9])
+				journeyCommand.toLongitude = Double.parseDouble(line[10])
+				journeyCommand.isDriver = false
+				journeyCommand.tripDistance = 250.0d
+	
+				journeyCommand.user = user2.username
+				journeyManagerService.createJourney(user4, journeyCommand)
+				incomingRequest<<journeyCommand
+			}
 			time.add(Calendar.MINUTE, timeInterval);
-			incomingRequest<<journeyCommand
 		}		
 		i = 0;
 		time = Calendar.getInstance();
+		time.set(Calendar.MINUTE, 0);
+		time.set(Calendar.SECOND, 0);
+		time.set(Calendar.MILLISECOND, 0);
 		//Delhi to Chandigarh - admin
-		time.add(Calendar.MINUTE, -30);
+		time.add(Calendar.MINUTE, -120);
 		lines.each {  line ->
 			i++;
-			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
-			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.isMale = false
-			journeyCommand.fromPlace = line[6]
-			journeyCommand.fromLatitude = Double.parseDouble(line[4])
-			journeyCommand.fromLongitude = Double.parseDouble(line[5])
-			journeyCommand.toPlace = line[11]
-			journeyCommand.toLatitude = Double.parseDouble(line[9])
-			journeyCommand.toLongitude = Double.parseDouble(line[10])
-			journeyCommand.isDriver = true
-			journeyCommand.tripDistance = 250.0d
-			journeyCommand.user = user2.username
-			journeyManagerService.createJourney(user2, journeyCommand)
+			if(i%4 == 2) {
+				JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+				journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+				journeyCommand.isMale = false
+				journeyCommand.fromPlace = line[6]
+				journeyCommand.fromLatitude = Double.parseDouble(line[4])
+				journeyCommand.fromLongitude = Double.parseDouble(line[5])
+				journeyCommand.toPlace = line[11]
+				journeyCommand.toLatitude = Double.parseDouble(line[9])
+				journeyCommand.toLongitude = Double.parseDouble(line[10])
+				journeyCommand.isDriver = true
+				journeyCommand.tripDistance = 250.0d
+				journeyCommand.user = user3.username
+				journeyManagerService.createJourney(user2, journeyCommand)
+				outgoingRequest<<journeyCommand
+			}
 			time.add(Calendar.MINUTE, timeInterval);
-			outgoingRequest<<journeyCommand
 		}
 		
 		i = 0;
 		time = Calendar.getInstance();
-		time.add(Calendar.MINUTE, -60);
+		time.set(Calendar.MINUTE, 0);
+		time.set(Calendar.SECOND, 0);
+		time.set(Calendar.MILLISECOND, 0);
+		time.add(Calendar.MINUTE, -150);
 		//Delhi to Chandigarh - admin
 		lines.each {  line ->
 			i++;
-			JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
-			journeyCommand.dateOfJourney = new Date(time.timeInMillis)
-			journeyCommand.isMale = false
-			journeyCommand.fromPlace = line[6]
-			journeyCommand.fromLatitude = Double.parseDouble(line[4])
-			journeyCommand.fromLongitude = Double.parseDouble(line[5])
-			journeyCommand.toPlace = line[11]
-			journeyCommand.toLatitude = Double.parseDouble(line[9])
-			journeyCommand.toLongitude = Double.parseDouble(line[10])
-			journeyCommand.isDriver = false
-			journeyCommand.tripDistance = 250.0d
-			journeyCommand.user = user1.username
-			journeyManagerService.createJourney(user1, journeyCommand)
+			if(i%4 == 3) {
+				JourneyRequestCommand journeyCommand = new JourneyRequestCommand()
+				journeyCommand.dateOfJourney = new Date(time.timeInMillis)
+				journeyCommand.isMale = false
+				journeyCommand.fromPlace = line[6]
+				journeyCommand.fromLatitude = Double.parseDouble(line[4])
+				journeyCommand.fromLongitude = Double.parseDouble(line[5])
+				journeyCommand.toPlace = line[11]
+				journeyCommand.toLatitude = Double.parseDouble(line[9])
+				journeyCommand.toLongitude = Double.parseDouble(line[10])
+				journeyCommand.isDriver = false
+				journeyCommand.tripDistance = 250.0d
+				journeyCommand.user = user4.username
+				journeyManagerService.createJourney(user1, journeyCommand)
+				incomingRequest<<journeyCommand
+			}
 			time.add(Calendar.MINUTE, timeInterval);
-			incomingRequest<<journeyCommand
 		}
 		
 		for ( x in 0..2 ) {
