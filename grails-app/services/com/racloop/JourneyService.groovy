@@ -29,6 +29,11 @@ class JourneyService {
 				return false;
 			}
 		}
+		else {
+			journey.errors.each {
+				println it
+			}
+		}
 		return false
 	}
 	

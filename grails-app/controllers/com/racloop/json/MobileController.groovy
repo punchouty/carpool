@@ -15,6 +15,7 @@ import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
+import com.racloop.ElasticSearchService;
 import com.racloop.GenericStatus;
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
@@ -468,7 +469,30 @@ class MobileController {
 		render mobileResponse as JSON
     }
 
-	
+	def searchAgain() {
+		def json = request.JSON
+		def journeyId = json?.journeyId
+		def mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser();
+		if(!currentUser) {
+			currentUser = User.findByUsername(currentJourney.user);
+		}
+		if(currentUser) {
+			def indexName = ElasticSearchService.JOURNEY //params.indexName
+			def currentJourney = journeyService.findJourneyById(journeyId, indexName)
+			def searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
+			mobileResponse.data = searchResultMap
+			mobileResponse.success = true
+			mobileResponse.total = searchResultMap.numberOfRecords
+			mobileResponse.existingJourney=false
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+		render mobileResponse as JSON
+	}
 	
 	def addJourney() {
 		def user = getAuthenticatedUser()currentJourney
@@ -830,10 +854,14 @@ class MobileController {
 		def newJourney = json?.searchWithNewJourney
 		def currentJourney
 		if("newJourney".equals(newJourney)) {
+			println("searchWithExistingJourney : " + newJourney)
 			journeyManagerService.deleteJourney(existingJourneyId)
 			currentJourney = convertJsonToJourneyObject(json)
+			setDates(currentJourney);
+			journeyManagerService.createJourney(currentUser, currentJourney)
 		}
 		else {
+			println("searchWithExistingJourney : " + newJourney)
 			currentJourney = journeyService.findJourneyById(existingJourneyId, false)
 		}
 //		chain(action: 'search', model: [currentJourney: currentJourney])

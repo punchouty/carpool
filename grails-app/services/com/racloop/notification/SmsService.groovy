@@ -109,6 +109,7 @@ class SmsService {
 		String verificationCode = messageMap[Constant.VERIFICATION_CODE_KEY]
 		def message = templates.get(VERIFICATOIN_KEY).make(['verificationCode' : verificationCode]).toString();
 		String restUrl = urlPrefixIndividual + '&To=' + mobile + '&Message=' + message;
+		log.info('Sending SMS to sms provider with URL : ' + restUrl)
 		def resp = rest.get(restUrl);
 		if(resp.getStatus() != 200) {
 			log.error ('SMS failure with service provider')
