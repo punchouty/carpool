@@ -1,6 +1,7 @@
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@page import="grails.plugin.nimble.core.UserBase"%>
 <%@ page import="grails.plugin.nimble.core.AdminsService"%>
+<%@page import="grails.plugin.facebooksdk.FacebookContext"%>
 <!doctype html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
 	<g:layoutHead />
 	<r:layoutResources />
 </head>
+<facebook:initJS appId="${racloop.getAppId()}" />	
 <body>
 	<%--
 	<div class="preloader">

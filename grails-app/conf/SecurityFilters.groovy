@@ -14,20 +14,34 @@
  *  See the License for the specific language governing permissions and
  *  limitations under the License.
  */
+import grails.plugin.facebooksdk.FacebookContext
 import grails.plugin.nimble.security.NimbleFilterBase
 
 import org.codehaus.groovy.grails.web.util.WebUtils
+
+import com.racloop.User
 
 /**
  * Filter that works with Nimble security model to protect controllers, actions, views. Overwritten from Nimble
  *
  */
 class SecurityFilters extends NimbleFilterBase {
+	
+	FacebookContext facebookContextProxy
 
 	def filters = {	
 		def clos = { true}
 		journeysecure(controller: "journey", action: "(newJourney|requestService|getWorkflow|history|activeJourneys)") {
-			before = { accessControl(auth: false, clos) }
+			before = { 
+				if (facebookContextProxy.app.id && facebookContextProxy.authenticated) {
+					User user  = User.findByFacebookId(facebookContextProxy.user.id.toString())
+					if(user) {
+						return true
+					}
+					
+				}
+				accessControl(auth: false, clos) 
+			}
 		}
 		
 //		homesecure(controller: "staticPage", action: "search") {
@@ -36,7 +50,16 @@ class SecurityFilters extends NimbleFilterBase {
 		
 		// Account management requiring authentication
 		accountsecure(controller: "userSession", action: "(changePassword|updatePassword|changedPassword|profile|editProfile)") {
-			before = { accessControl(auth: false, clos) }
+			before = { 
+				if (facebookContextProxy.app.id && facebookContextProxy.authenticated) {
+					User user  = User.findByFacebookId(facebookContextProxy.user.id.toString())
+					if(user) {
+						return true
+					}
+					
+				}
+				accessControl(auth: false, clos) 
+			}
 		}
 		
 //		otheradminsecure(controller: "staticData|sampleData") {

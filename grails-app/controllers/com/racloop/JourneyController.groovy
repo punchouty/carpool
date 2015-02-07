@@ -17,6 +17,7 @@ class JourneyController {
 	def journeyService
 	def journeyWorkflowService
 	def journeyManagerService
+	
 
 	/**
 	 * Main Search from web front end
@@ -29,7 +30,7 @@ class JourneyController {
 		if(currentJourneyFromRequest) {
 			currentJourney = currentJourneyFromRequest
 		}
-		def currentUser = getAuthenticatedUser();
+		def currentUser = getRacloopAuthenticatedUser();
 		setUserInformation(currentUser,currentJourney)
 		currentJourney.ip = request.remoteAddr
 		boolean isValidDate = setDates(currentJourney)
@@ -74,7 +75,7 @@ class JourneyController {
 	}
 	
 	public findOppositeSideMatching() {
-		def currentUser = getAuthenticatedUser();
+		def currentUser = getRacloopAuthenticatedUser();
 		def searchResultMap = journeyService.getSearchResults(currentUser, currentJourney) //getSearchResultMap(currentUser, currentJourney)
 		render(view: "results", model: ['searchResults': searchResultMap])
 	}
@@ -142,7 +143,7 @@ class JourneyController {
 	def history() {
 		def journeys =[]
 		int numberOfRecords = 0
-		def currentUser = getAuthenticatedUser()
+		def currentUser = getRacloopAuthenticatedUser()
 		if(currentUser) {
 			journeys = journeyService.findHistoricJourneyDetailsForUser(currentUser)
 			numberOfRecords = journeys?.size()
@@ -153,7 +154,7 @@ class JourneyController {
 	}
 	
 //	def results() {
-//		def currentUser = getAuthenticatedUser();
+//		def currentUser = getRacloopAuthenticatedUser();
 //		def currentJourney = session.currentJourney
 //		if(currentJourney.isSaved) {
 //			log.warnEnabled "Should not come here. This journey is already processed"
@@ -174,7 +175,7 @@ class JourneyController {
 	 * @return
 	 */
 	def newJourney() {
-		def currentUser = getAuthenticatedUser();
+		def currentUser = getRacloopAuthenticatedUser();
 		def currentJourney = session.currentJourney
 		if(!currentJourney.id) {
 			journeyManagerService.createJourney(currentUser, currentJourney)
@@ -194,7 +195,7 @@ class JourneyController {
 	 */
 	def requestService(JourneyRequestCommand myJourney) {
 		def currentJourney = session.currentJourney
-		def currentUser = getAuthenticatedUser()
+		def currentUser = getRacloopAuthenticatedUser()
 		def matchedJourneyId = params.matchedJourneyId
 		boolean isDummy =params.boolean('dummy')
 		if(!currentJourney.user) {
@@ -212,7 +213,7 @@ class JourneyController {
 
 	
 	def getWorkflow(){
-		def currentUser = getAuthenticatedUser()
+		def currentUser = getRacloopAuthenticatedUser()
 		def workflows = journeyWorkflowService.searchWorkflowRequestedByUser(currentUser)
 		render workflows as JSON
 	}
@@ -247,7 +248,7 @@ class JourneyController {
 		def workflows =[]
 		def journeys =[]
 		int numberOfRecords = 0
-		def currentUser = getAuthenticatedUser()
+		def currentUser = getRacloopAuthenticatedUser()
 		if(currentUser) {
 			journeys = journeyService.findAllActiveJourneyDetailsForUser(currentUser)
 			numberOfRecords = journeys?.size()
@@ -263,7 +264,7 @@ class JourneyController {
 	def myMatchedJourneys() {
 		def workflows =[]
 		int numberOfRecords = 0
-		def currentUser = getAuthenticatedUser()
+		def currentUser = getRacloopAuthenticatedUser()
 		if(currentUser) {
 			workflows = journeyWorkflowService.searchWorkflowMatchedForUser(currentUser)
 			numberOfRecords = workflows?.size()

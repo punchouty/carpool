@@ -159,7 +159,7 @@ class ElasticSearchService {
 			startObject().
 				field("user", user.username).
 				field("name", user.profile.fullName).
-				field("photoUrl", user.profile.getGravatarUri()).
+				field("photoUrl", user.facebookId ? user.getFacebookProfilePic(): user.profile.getGravatarUri()).
 				field("isMale", user.profile.isMale).
 				field("dateOfJourney", dateOfJourney).
 				field("fromPlace", journey.fromPlace).

@@ -15,7 +15,7 @@ class ReviewController {
 		def workflowId = params.workflowId
 		boolean isReviewForDriver = true
 		JourneyWorkflow workflow = journeyWorkflowService.getWorkflowById(workflowId)
-		User currentUser = getAuthenticatedUser();
+		User currentUser = getRacloopAuthenticatedUser();
 		if(currentUser.username.equalsIgnoreCase(workflow.requestUser)){
 			review.reviewee = User.findByUsername(workflow.matchingUser)
 		}
@@ -44,7 +44,7 @@ class ReviewController {
 		def workflowId = params.workflowId
 		boolean isReviewForDriver = true
 		JourneyWorkflow workflow = journeyWorkflowService.getWorkflowById(workflowId)
-		User currentUser = getAuthenticatedUser();
+		User currentUser = getRacloopAuthenticatedUser();
 		if(currentUser.username.equalsIgnoreCase(workflow?.requestUser)){
 			if(workflow.isRequesterDriving){
 				isReviewForDriver = false

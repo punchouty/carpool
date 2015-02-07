@@ -6,7 +6,6 @@
 </head>
 <body>
 	<g:set var="isSignin" value="true" scope="request"/>	
-
 	<!-- CONTAINER -->
     <div class="container">
 		<div class="row">
@@ -54,5 +53,6 @@
 			</div> 
 		</div>
 	</div>
+	<facebook:loginLink appPermissions="${facebookContext.app.permissions}" returnUrl="${request.contextPath}/userSession/signinUsingFacebook?targetUri=${targetUri}">Login</facebook:loginLink>
 </body>
 </html>

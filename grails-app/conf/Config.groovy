@@ -65,7 +65,7 @@ grails.resources.debug = true
 
 // The default scope for controllers. May be prototype, session or singleton.
 // If unspecified, controllers are prototype scoped.
-grails.controllers.defaultScope = 'singleton'
+grails.controllers.defaultScope = 'prototype'
 
 // GSP settings
 grails {
@@ -115,7 +115,7 @@ grails.hibernate.cache.queries = false
 // Below configuration after cleaning c:\\data
 grails.startup.elasticsearch.index.create = true
 grails.startup.sampleUsers.create = true
-grails.startup.masterData.places.create = true
+grails.startup.masterData.places.create = false
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
 //grails.startup.sampleUsers.create = false
@@ -138,6 +138,11 @@ grails.messaging.mail.from="help@racloop.com"
 grails.approx.distance.to.match = 3.0
 grails.approx.time.to.match = 30
 grails.max.active.requests = 5
+
+grails.plugin.facebooksdk.app.id = 393926260773644
+grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
+grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
+
 
 environments {
 	development {

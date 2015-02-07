@@ -8,6 +8,7 @@
 	<g:layoutHead />
 	<r:layoutResources />
 </head>
+<facebook:initJS appId="${racloop.getAppId()}" />	
 <body>
 	    <!-- =========================
 	     SECTION: HOME / HEADER  
