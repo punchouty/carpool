@@ -64,6 +64,11 @@ class UserSessionController {
 		if(isAuthenticatedFromFacebook()){
 			user = getLocalUserUsingFacebook()
 			if(user){
+				if(!user.profile.isVerified){
+					flash.message ="Please get your mobile number verified."
+					redirect(action:"verifyMobile" ,params:[mobile:user.profile.mobile])
+					return
+				}
 				if(targetURL && !"null".equalsIgnoreCase(targetURL)){
 					redirect(uri: targetURL)
 				}

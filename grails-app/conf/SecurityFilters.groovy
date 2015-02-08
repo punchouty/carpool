@@ -35,7 +35,7 @@ class SecurityFilters extends NimbleFilterBase {
 			before = { 
 				if (facebookContextProxy.app.id && facebookContextProxy.authenticated) {
 					User user  = User.findByFacebookId(facebookContextProxy.user.id.toString())
-					if(user) {
+					if(user && user.profile.isVerified) {
 						return true
 					}
 					
