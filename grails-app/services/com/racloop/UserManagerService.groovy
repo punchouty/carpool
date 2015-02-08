@@ -34,7 +34,7 @@ class UserManagerService {
 		Profile profile = Profile.findByMobile(mobile);
 		profile.verificationCode = generateVerificationCode();
 		profile.isVerified = false
-		profile.save();
+		profile.save(flush: true);
 		def  messageMap =[(Constant.MOBILE_KEY) : mobile, (Constant.VERIFICATION_CODE_KEY):profile.verificationCode]
 		jmsService.send(queue: Constant.MOBILE_VERIFICATION_QUEUE, messageMap);
 	}
@@ -49,7 +49,7 @@ class UserManagerService {
 		if(profile) {
 			profile.verificationCode = generateVerificationCode();
 			profile.isVerified = false
-			profile.save();
+			profile.save(flush:true);
 			def  messageMap =[(Constant.MOBILE_KEY) : mobile, (Constant.VERIFICATION_CODE_KEY):profile.verificationCode]
 			jmsService.send(queue: Constant.MOBILE_VERIFICATION_QUEUE, messageMap);
 			return GenericStatus.SUCCESS;

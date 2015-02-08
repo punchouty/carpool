@@ -45,7 +45,7 @@ class RacloopTagLib {
 		if (facebookContextProxy.app.id && facebookContextProxy.authenticated) {
 			user  = User.findByFacebookId(facebookContextProxy.user.id.toString())
 		}
-		return user?true:false
+		return user && user.profile.isVerified?true:false
 	}
 	
 	def getAppId = {attrs, body ->

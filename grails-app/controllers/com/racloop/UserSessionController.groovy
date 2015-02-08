@@ -60,13 +60,21 @@ class UserSessionController {
 	
 	def signinUsingFacebook() {
 		def targetURL = params['targetUri']
-		def user = getFBUser()
-		if(user) {
-			if(targetURL && !"null".equalsIgnoreCase(targetURL)){
-				redirect(uri: targetURL)
+		def user
+		if(isAuthenticatedFromFacebook()){
+			user = getLocalUserUsingFacebook()
+			if(user){
+				if(targetURL && !"null".equalsIgnoreCase(targetURL)){
+					redirect(uri: targetURL)
+				}
+				else {
+					redirect(action: "search")
+				}
 			}
 			else {
-				redirect(action: "search")
+				handleNewFBUser()
+				flash.message ="Please add your mobile number"
+				redirect(action:"profile")
 			}
 		}
 		else {
@@ -217,6 +225,10 @@ class UserSessionController {
 			def status = userManagerService.verify(mobile, verificationCode)
 			if(status == GenericStatus.SUCCESS) {
 				flash.message = "Mobile verified successfully"
+				if(isAuthenticatedFromFacebook()){
+					redirect(action: "search")
+					return
+				}
 				redirect(action: "signin")
 				return
 			}
@@ -451,6 +463,18 @@ class UserSessionController {
 		}
 	}
 	
+	private User getLocalUserUsingFacebook(){
+		User user
+		if (facebookContext.app.id && facebookContext.authenticated) {
+			user  = User.findByFacebookId(facebookContext.user.id.toString())
+		}
+		return user
+	}
+	
+	private boolean isAuthenticatedFromFacebook(){
+		return facebookContext.app.id && facebookContext.authenticated
+	}
+	
 	private handleNewFBUser(){
 		def fbUser
 		def user
@@ -478,7 +502,7 @@ class UserSessionController {
 				userProfile.email = fbUser.email
 				userProfile.owner = user
 				userProfile.isMale = "male".equalsIgnoreCase(fbUser.gender)?true:false
-				userProfile.mobile = '9810095629'
+				userProfile.mobile = '0000000000'
 				user.profile = userProfile
 
 				log.info("Creating default user account with username:sample.user")
