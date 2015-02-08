@@ -138,6 +138,7 @@ grails.messaging.mail.from="help@racloop.com"
 grails.approx.distance.to.match = 3.0
 grails.approx.time.to.match = 30
 grails.max.active.requests = 5
+grails.approx.time.range= 45
 
 grails.plugin.facebooksdk.app.id = 393926260773644
 grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']

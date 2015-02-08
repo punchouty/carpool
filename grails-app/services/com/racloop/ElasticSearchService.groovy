@@ -277,8 +277,8 @@ class ElasticSearchService {
 		
 		double filterDistance = Double.valueOf(grailsApplication.config.grails.approx.distance.to.match)
 		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
-		DateTime start = dateOfJourney.minusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
-		DateTime end = dateOfJourney.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
+		DateTime start = dateOfJourney.minusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.range))
+		DateTime end = dateOfJourney.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.range))
 		FilterBuilder filter = null;
 		filter = FilterBuilders.andFilter(
 			//FilterBuilders.limitFilter(10),
@@ -798,6 +798,26 @@ class ElasticSearchService {
 		sorter.order(SortOrder.DESC);
 		def journeys = []
 		SearchHit[] hits = queryDocument(JOURNEY, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 100, sorter)
+		for (SearchHit searchHit : hits) {
+			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
+			journeys << journeyTemp
+		}
+		
+		return journeys
+	}
+	
+	def findAllJourneysForUserBetweenDates(User user, DateTime startDate, DateTime endDate) {
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.rangeFilter("dateOfJourney").gte(startDate),
+			FilterBuilders.rangeFilter("dateOfJourney").lte(endDate),
+			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username),
+				getFilterOnDeletedJourney())
+			
+		)
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
+		sorter.order(SortOrder.ASC);
+		def journeys = []
+		SearchHit[] hits = queryDocument(JOURNEY, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 5, sorter)
 		for (SearchHit searchHit : hits) {
 			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
 			journeys << journeyTemp
