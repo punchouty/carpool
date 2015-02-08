@@ -73,6 +73,11 @@
                         <p id="terms-help-block" class="help-block"></p> 
                         <button id="signup-button" type="submit" class="btn btn-primary standard-button">Register</button>
                   	</g:form>
+                  	<p>
+                  	<br>
+					<label>OR Sign up with</label><br> 
+						<facebook:loginLink appPermissions="${facebookContext.app.permissions}" returnUrl="${request.contextPath}/userSession/signinUsingFacebook?targetUri=${targetUri}" elementClass="btn standard-button btn-primary"><span class="icon-social-facebook"></span>Facebook</facebook:loginLink>
+					</p>	
 					<p id="form-success" class="dark-text small-text"><span class="icon-check-alt2 colored-text"></span> <span id="success-message">Thanks!</span></p>
 	                <p id="form-error" class="dark-text small-text"><span class="icon-close-alt2 red-text"></span> <span id="error-message" >Error!</span> </p> 
                 </div>
