@@ -5,6 +5,7 @@ import grails.plugin.facebooksdk.FacebookGraphClient
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.AuthController
 import grails.plugin.nimble.core.ProfileBase
+import grails.plugin.nimble.core.UserBase
 
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.crypto.hash.Sha256Hash
@@ -71,15 +72,28 @@ class UserSessionController {
 				}
 				if(targetURL && !"null".equalsIgnoreCase(targetURL)){
 					redirect(uri: targetURL)
+					return
 				}
 				else {
 					redirect(action: "search")
+					return
 				}
 			}
 			else {
-				handleNewFBUser()
-				flash.message ="Please add your mobile number"
-				redirect(action:"profile")
+				user = handleNewFBUser()
+				if(!user.profile.isVerified){
+					flash.message ="Please add your mobile number."
+					redirect(action:"profile")
+					return
+				}
+				if(targetURL && !"null".equalsIgnoreCase(targetURL)){
+					redirect(uri: targetURL)
+					return
+				}
+				else {
+					redirect(action: "search")
+					return
+				}
 			}
 		}
 		else {
@@ -494,28 +508,35 @@ class UserSessionController {
 			FacebookGraphClient facebookGraphClient = new FacebookGraphClient(token)
 			try {
 				fbUser = facebookGraphClient.fetchObject(facebookContext.user.id.toString())
+				user = UserBase.findByUsername(fbUser.email)
+				if(user) {
+					user.facebookId = fbUser.id
+					userService.updateUser(user)
+				}
+				else{
 
-				user= InstanceGenerator.user(grailsApplication)
-				user.username = fbUser.email
-				user.pass = 'P@ssw0rd'
-				user.passConfirm = 'P@ssw0rd'
-				user.enabled = true
-				user.facebookId = fbUser.id
-
-				def userProfile = InstanceGenerator.profile(grailsApplication)
-				userProfile.fullName = fbUser.name
-				userProfile.email = fbUser.email
-				userProfile.owner = user
-				userProfile.isMale = "male".equalsIgnoreCase(fbUser.gender)?true:false
-				userProfile.mobile = '0000000000'
-				user.profile = userProfile
-
-				log.info("Creating default user account with username:sample.user")
-
-				def savedUser = userService.createUser(user)
-				if (savedUser.hasErrors()) {
-					savedUser.errors.each { log.error(it) }
-					throw new RuntimeException("Error creating Facebook user")
+					user= InstanceGenerator.user(grailsApplication)
+					user.username = fbUser.email
+					user.pass = 'P@ssw0rd'
+					user.passConfirm = 'P@ssw0rd'
+					user.enabled = true
+					user.facebookId = fbUser.id
+	
+					def userProfile = InstanceGenerator.profile(grailsApplication)
+					userProfile.fullName = fbUser.name
+					userProfile.email = fbUser.email
+					userProfile.owner = user
+					userProfile.isMale = "male".equalsIgnoreCase(fbUser.gender)?true:false
+					userProfile.mobile = '0000000000'
+					user.profile = userProfile
+	
+					log.info("Creating default user account with username:sample.user")
+	
+					def savedUser = userService.createUser(user)
+					if (savedUser.hasErrors()) {
+						savedUser.errors.each { log.error(it) }
+						throw new RuntimeException("Error creating Facebook user")
+					}
 				}
 
 
