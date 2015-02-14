@@ -5,8 +5,9 @@ import grails.plugin.nimble.core.UserBase
 import grails.util.Environment
 import liquibase.util.csv.opencsv.CSVReader
 
+import org.apache.shiro.SecurityUtils
 import org.elasticsearch.common.geo.GeoPoint
-import org.springframework.web.context.support.WebApplicationContextUtils;
+import org.springframework.web.context.support.WebApplicationContextUtils
 
 import com.racloop.Place
 import com.racloop.staticdata.StaticData
@@ -22,9 +23,12 @@ class BootStrap {
 	def adminsService
 	def sampleDataService
 	def smsService
+	def userAuthenticationService
 		
     def init = { servletContext ->
 		internalBootStap(servletContext)
+		
+		injectAuthentication()
 		
 		//JSON marshallars
 		def springContext = WebApplicationContextUtils.getWebApplicationContext( servletContext )
@@ -248,4 +252,34 @@ class BootStrap {
 			etiquettes.save()
 		}
 	}
+	
+	private injectAuthentication() {
+		grailsApplication.filtersClasses.each { filter ->
+			log.debug("Injecting methods to Filter ${filter}")
+			injectAuthn(filter.clazz)
+		}
+
+		// Supply functionality to controllers
+		grailsApplication.controllerClasses.each { controller ->
+			log.debug("Injecting methods to Controller ${controller}")
+			injectAuthn(controller)
+		}
+
+		// Supply functionality to services
+		grailsApplication.serviceClasses.each { service ->
+			log.debug("Injecting methods to Service ${service}")
+			injectAuthn(service)
+		}
+	}
+	
+	private void injectAuthn(clazz) {
+		clazz.metaClass.getAuthenticatedSubject = { -> SecurityUtils.getSubject() }
+
+		clazz.metaClass.getRacloopAuthenticatedUser = { ->
+			
+			return userAuthenticationService.getRacloopUser()
+		}
+	}
+	
+	
 }

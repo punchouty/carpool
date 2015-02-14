@@ -1,12 +1,17 @@
 package com.racloop
 
+import grails.plugin.facebooksdk.FacebookContext
+import grails.plugin.facebooksdk.FacebookGraphClient
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.AuthController
 import grails.plugin.nimble.core.ProfileBase
+import grails.plugin.nimble.core.UserBase
 
-import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.SecurityUtils
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
+
+import com.restfb.exception.FacebookOAuthException
 
 class UserSessionController {
 
@@ -15,9 +20,11 @@ class UserSessionController {
 	LinkGenerator grailsLinkGenerator
 	//def emailService
 	def userManagerService
+	FacebookContext facebookContext
 
 	def search() {
-		def user = getAuthenticatedUser();//dynamic method added by nimble
+		
+		def user = getRacloopAuthenticatedUser();//dynamic method added in bootstrap
 		JourneyRequestCommand commandInstance = new JourneyRequestCommand();
 		JourneyRequestCommand journeyFromRequest = request.getAttribute('journeyInstance')
 		if(journeyFromRequest) {
@@ -49,7 +56,49 @@ class UserSessionController {
 			session.setAttribute(AuthController.TARGET, targetUri)
 		}
 
-		model: [local: local, registration: registration, username: username, rememberMe: (rememberMe != null), targetUri: targetUri]
+		model: [local: local, registration: registration, username: username, rememberMe: (rememberMe != null), targetUri: targetUri, facebookContext:facebookContext]
+	}
+	
+	def signinUsingFacebook() {
+		def targetURL = params['targetUri']
+		def user
+		if(isAuthenticatedFromFacebook()){
+			user = getLocalUserUsingFacebook()
+			if(user){
+				if(!user.profile.isVerified){
+					flash.message ="Please get your mobile number verified."
+					redirect(action:"verifyMobile" ,params:[mobile:user.profile.mobile])
+					return
+				}
+				if(targetURL && !"null".equalsIgnoreCase(targetURL)){
+					redirect(uri: targetURL)
+					return
+				}
+				else {
+					redirect(action: "search")
+					return
+				}
+			}
+			else {
+				user = handleNewFBUser()
+				if(!user.profile.isVerified){
+					flash.message ="Please add your mobile number."
+					redirect(action:"profile")
+					return
+				}
+				if(targetURL && !"null".equalsIgnoreCase(targetURL)){
+					redirect(uri: targetURL)
+					return
+				}
+				else {
+					redirect(action: "search")
+					return
+				}
+			}
+		}
+		else {
+			redirect(action: "signin")
+		}
 	}
 
 	def signup() {
@@ -195,6 +244,10 @@ class UserSessionController {
 			def status = userManagerService.verify(mobile, verificationCode)
 			if(status == GenericStatus.SUCCESS) {
 				flash.message = "Mobile verified successfully"
+				if(isAuthenticatedFromFacebook()){
+					redirect(action: "search")
+					return
+				}
 				redirect(action: "signin")
 				return
 			}
@@ -299,11 +352,11 @@ class UserSessionController {
 	}
 	
 	def changePassword(){
-		[user:authenticatedUser]
+		[user:getRacloopAuthenticatedUser()]
 	}
 
 	def updatePassword(String currentPassword, String pass, String passConfirm) {
-		def user = authenticatedUser
+		def user = getRacloopAuthenticatedUser()
 
 		if(!currentPassword) {
 			log.warn("User [$user?.id]$user?.username attempting to change password but has not supplied current password")
@@ -353,12 +406,12 @@ class UserSessionController {
 	}
 	
 	def profile() {
-		def user = authenticatedUser
+		def user = getRacloopAuthenticatedUser()
 		[user: user]
 	}
 	
 	def editProfile(String fullName, String sex, String mobile, String emergencyContactOne, String emergencyContactTwo) {
-		def user = authenticatedUser
+		def user = getRacloopAuthenticatedUser()
 		def newMobile = mobile
 		def oldMobile = user.profile.mobile
 		boolean isMale = true
@@ -414,5 +467,91 @@ class UserSessionController {
 
 	private getNimbleConfig() {
 		grailsApplication.config.nimble
+	}
+	
+	private User getFBUser(){
+		
+		if (facebookContext.app.id && facebookContext.authenticated) {
+			User user  = User.findByFacebookId(facebookContext.user.id.toString())
+			if(user) {
+				return user
+			}
+			else {
+				return handleNewFBUser()
+			}
+		}
+	}
+	
+	private User getLocalUserUsingFacebook(){
+		User user
+		if (facebookContext.app.id && facebookContext.authenticated) {
+			user  = User.findByFacebookId(facebookContext.user.id.toString())
+		}
+		return user
+	}
+	
+	private boolean isAuthenticatedFromFacebook(){
+		return facebookContext.app.id && facebookContext.authenticated
+	}
+	
+	private handleNewFBUser(){
+		def fbUser
+		def user
+		String token = facebookContext.user.token
+		if (token) {
+			if (facebookContext.authenticated && !facebookContext.user.tokenExpired) {
+				// Exchange token to get an extended expiration time (60 days)
+				log.info "Current token expiration time: " + new Date(facebookContext.user.tokenExpirationTime)
+				facebookContext.user.exchangeToken()
+				log.info "Exchanged token expiration time:  " + new Date(facebookContext.user.tokenExpirationTime)
+			}
+			FacebookGraphClient facebookGraphClient = new FacebookGraphClient(token)
+			try {
+				fbUser = facebookGraphClient.fetchObject(facebookContext.user.id.toString())
+				user = UserBase.findByUsername(fbUser.email)
+				if(user) {
+					user.facebookId = fbUser.id
+					userService.updateUser(user)
+				}
+				else{
+
+					user= InstanceGenerator.user(grailsApplication)
+					user.username = fbUser.email
+					user.pass = 'P@ssw0rd'
+					user.passConfirm = 'P@ssw0rd'
+					user.enabled = true
+					user.facebookId = fbUser.id
+	
+					def userProfile = InstanceGenerator.profile(grailsApplication)
+					userProfile.fullName = fbUser.name
+					userProfile.email = fbUser.email
+					userProfile.owner = user
+					userProfile.isMale = "male".equalsIgnoreCase(fbUser.gender)?true:false
+					userProfile.mobile = '0000000000'
+					user.profile = userProfile
+	
+					log.info("Creating default user account with username:sample.user")
+	
+					def savedUser = userService.createUser(user)
+					if (savedUser.hasErrors()) {
+						savedUser.errors.each { log.error(it) }
+						throw new RuntimeException("Error creating Facebook user")
+					}
+				}
+
+
+			} catch (FacebookOAuthException exception) {
+				facebookContext.user.invalidate()
+			}
+		}
+		
+		return user
+	}
+	
+	def signout() {
+		facebookContext.user.invalidate()
+		facebookContext.setSignedRequest(null)
+		SecurityUtils.subject?.logout()
+		redirect(uri: '/')
 	}
 }

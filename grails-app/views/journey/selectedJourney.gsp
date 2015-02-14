@@ -89,11 +89,16 @@
                 </ul>
             </div>
             <div class="col-md-2 text-left">
-            	<g:if test = "${matchedUser?.profile?.gravatarUri}">
+            	<g:if test = "${matchedUser?.facebookProfilePic}">
+            		<div>	
+	                 	<img src="${matchedUser?.facebookProfilePic}" alt="profile image" class="img-thumbnail"> </img>
+	                 </div>
+	            </g:if>
+            	<g:elseif test = "${matchedUser?.profile?.gravatarUri}">
 	                <div>
 	                    <img src="${matchedUser?.profile?.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
 	                </div>
-                </g:if>
+                </g:elseif>
                 <g:else>
                 	<div>
 	                	<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>

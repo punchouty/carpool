@@ -50,7 +50,7 @@ class StaticPageController {
 	}
 	
 	def main() {
-		def user = authenticatedUser
+		def user = getRacloopAuthenticatedUser
 		if(user) {
 			redirect (controller : "userSession" , action: "search")
 		}
@@ -60,7 +60,7 @@ class StaticPageController {
 	}
 	
 	def index() {
-		def user = authenticatedUser
+		def user = getRacloopAuthenticatedUser
 		[user: user]
 	}
 

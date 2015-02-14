@@ -495,25 +495,26 @@ class MobileController {
 	}
 	
 	def addJourney() {
-		def user = getAuthenticatedUser()currentJourney
+		def user = getAuthenticatedUser()
 		def json = request.JSON
-		JourneyRequestCommand journeyRequestCommand = new JourneyRequestCommand()
-		journeyRequestCommand.user = json.user
-		journeyRequestCommand.fromLatitude = json.fromLatitude
-		journeyRequestCommand.fromLongitude =json.fromLongitude
-		journeyRequestCommand.fromPlace = json.fromPlace
-		journeyRequestCommand.toPlace = json.toPlace
-		journeyRequestCommand.toLatitude =json.toLatitude
-		journeyRequestCommand.toLongitude = json.toLongitude
-		journeyRequestCommand.isDriver = json.isDriver
-		journeyRequestCommand.dateOfJourney = DateUtil.convertElasticSearchDateToDateTime(json.dateOfJourney).toDate()
+		JourneyRequestCommand journeyRequestCommand = session.currentJourney
 		if(!user) {
 			user = User.findByUsername(journeyRequestCommand.user);
 		}
 		journeyManagerService.createJourney(user, journeyRequestCommand)
 		MobileResponse mobileResponse = getMobileResoponse(journeyRequestCommand)
 		render mobileResponse as JSON
-		
+	}
+	
+	def deleteJourney() {
+		def json = request.JSON
+		def journeyId = json?.journeyId
+		journeyManagerService.deleteJourney(journeyId)
+		MobileResponse mobileResponse = new MobileResponse()
+		mobileResponse.message = "Journey Deleted Successfully"
+		mobileResponse.success = true
+		mobileResponse.total = 0
+		render mobileResponse as JSON
 	}
 	
 //	curl -X POST -H "Content-Type: application/json" -d '{"user":"admin","name":"Administrator"}' http://localhost:8080/app/mobile/myJourneys
@@ -548,6 +549,35 @@ class MobileController {
 	}
 	
 //	curl -X POST -H "Content-Type: application/json" -d '{"user":"admin","name":"Administrator","myJourneyId":"89","matchedJourneyId":"12de4899-74af-451a-a5ad-f3a8bfd1f678","isDummy":true}' http://localhost:8080/app/mobile/requestService
+	
+	def myCurrentJourney() {
+		def mobileResponse = new MobileResponse()
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		JourneyRequestCommand journeyRequestCommand = new JourneyRequestCommand()
+		journeyRequestCommand.user = json?.user
+
+		def workflows =[]
+		def journeys =[]
+		int numberOfRecords = 0
+		def currentUser = getAuthenticatedUser();
+		if(!currentUser) {
+			currentUser = User.findByUsername(journeyRequestCommand.user);
+		}
+		if(currentUser) {
+			journeys = journeyService.findCurrentJourneyForUser(currentUser)
+			mobileResponse.data = journeys
+			mobileResponse.success = true
+			mobileResponse.total = journeys?.size()
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+		render mobileResponse as JSON
+	}
 	
 	def requestService() {
 		def json = request.JSON

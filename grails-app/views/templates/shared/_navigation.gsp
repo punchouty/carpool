@@ -1,7 +1,7 @@
 		<%@ page import="grails.plugin.nimble.core.AdminsService"%>	
 		<%@page import="grails.plugin.nimble.core.UserBase"%>
 		<%@ page import="org.apache.shiro.SecurityUtils"%>	
-		<g:set var="currentUser" value="${UserBase.get(SecurityUtils.subject?.principal)}" />	
+		<g:set var="currentUser" value="${racloop.getUser()}" />	
 		<!-- STICKY NAVIGATION -->
             <div <g:if test="${isLandingPage}">class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation appear-on-scroll"</g:if><g:else>class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation"</g:else> role="navigation">
                 <div class="container">
@@ -38,7 +38,7 @@
 
                         <!-- LOGIN REGISTER -->
                         <ul class="nav navbar-nav navbar-right login-register small-text">
-	                        <g:if test="${SecurityUtils.subject.principal != null}">
+	                         <racloop:userLoggedIn>
 	                            <li class="login">
 	                                <a href="${request.contextPath}/search"><i class="icon-basic-magnifier"></i> Search</a>
 	                            </li>
@@ -71,12 +71,13 @@
 	                                        <a href="${request.contextPath}/password/change">Change Password</a>
 	                                    </li>
 	                                    <li>
-	                                        <a href="${request.contextPath}/signout">Logout</a>
+	                                        
+					                        <facebook:logoutLink nextUrl="${createLink(controller:'userSession', action:'signout')}">Logout</facebook:logoutLink>
 	                                    </li>
 	                                </ul>
 	                            </li>
-	                        </g:if>
-                            <n:notUser>
+	                        </racloop:userLoggedIn>
+                            <racloop:userNotLoggedIn>
                             	<g:if test="${isSignin == null}">
 	                            <li class="login js-login">
 	                                <a href="${request.contextPath}/signin">Login</a>
@@ -87,7 +88,7 @@
 	                                <a href="${request.contextPath}/signup" class="navbar-register-button">Sign Up</a>
 	                            </li>
 	                            </g:if>
-                            </n:notUser>
+                            </racloop:userNotLoggedIn>
 
                         </ul>
                     </div>

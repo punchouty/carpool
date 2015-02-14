@@ -113,7 +113,7 @@
 	            <g:else>
 	            <div class="alert alert-info alert-dismissible" role="alert">
 	                  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	                  <strong>Success!</strong> <n:flashembed/> 
+	                  <n:flashembed/> 
 	             </div>
 	            </g:else>
 			</g:if>
@@ -141,7 +141,13 @@
                    
                     <div class="text-left form-group">
 					    <label for="cf-mobile">Mobile :</label>
-						<input type="text" id="cf-mobile" name="mobile" class="form-control input-box zero-margin" placeholder="Mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
+					    <g:if test="${user?.profile?.mobile == '0000000000'}">
+					    	<input type="text" id="cf-mobile" name="mobile" class="form-control input-box zero-margin" placeholder="Mobile" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
+					    </g:if>
+					    <g:else>
+					    	<input type="text" id="cf-mobile" name="mobile" class="form-control input-box zero-margin" placeholder="Mobile" value="${user.profile?.mobile}" pattern="^[6789]\d{9}$" required data-validation-pattern-message="Invalid Phone Number">
+					    </g:else>
+						
               		</div>
                    
               		<div class="text-left form-group">

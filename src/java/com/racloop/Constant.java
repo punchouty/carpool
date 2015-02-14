@@ -17,5 +17,7 @@ public interface Constant {
 	
 	public static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 	public static final String GRAVATAR_URL_SUFFIX = "?s=200&d=mm";
+	public static final String FACEBOOK_URL = "http://graph.facebook.com/";
+	public static final String PICTURE = "/picture";
 
 }

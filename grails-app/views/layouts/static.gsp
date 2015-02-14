@@ -8,6 +8,7 @@
 	<g:layoutHead />
 	<r:layoutResources />
 </head>
+<facebook:initJS appId="${racloop.getAppId()}" />	
 <body>
 	<header class="header-racloop" data-stellar-background-ratio="0.5">
         <!-- COLOR OVER IMAGE -->
