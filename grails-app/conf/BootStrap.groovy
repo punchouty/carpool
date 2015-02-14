@@ -58,7 +58,8 @@ class BootStrap {
 		if (Environment.current == Environment.DEVELOPMENT) {
 			sampleDataService.deleteSampleData()
 			log.info("Populating Sample Data");
-			sampleDataService.populateSampleData();
+			Boolean createSampleData = grailsApplication.config.grails.startup.sampleData.create
+			if(createSampleData) sampleDataService.populateSampleData();
 			
         }
     }

@@ -116,6 +116,7 @@ grails.hibernate.cache.queries = false
 grails.startup.elasticsearch.index.create = true
 grails.startup.sampleUsers.create = true
 grails.startup.masterData.places.create = true
+grails.startup.sampleData.create = true
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
 //grails.startup.sampleUsers.create = false
