@@ -240,8 +240,9 @@ class UserSessionController {
 	}
 	
 	def processMobileVerification(String mobile, String verificationCode, String formAction) {
+		def user = getRacloopAuthenticatedUser()
 		if(formAction == 'verifyMobile') {
-			def status = userManagerService.verify(mobile, verificationCode)
+			def status = userManagerService.verify(mobile, verificationCode, user?.profile?.email)
 			if(status == GenericStatus.SUCCESS) {
 				flash.message = "Mobile verified successfully"
 				if(isAuthenticatedFromFacebook()){
@@ -265,7 +266,7 @@ class UserSessionController {
 			}
 		}
 		else {
-			def status = userManagerService.setUpMobileVerification(mobile)
+			def status = userManagerService.setUpMobileVerification(mobile, user?.profile?.email)
 			if(status == GenericStatus.SUCCESS) {
 				flash.message = "SMS Sent successfully. Please check your mobile."
 				redirect(action: "verifyMobile", params: [mobile: mobile])
@@ -432,7 +433,7 @@ class UserSessionController {
 		}
 		
 		if(newMobile != oldMobile) { //if mobile number is changed
-			Profile profile = Profile.findByMobile(newMobile);
+			Profile profile = Profile.findByMobileAndEmail(newMobile, user.profile.email);
 			if(profile) {
 				flash.type = "error"
 				flash.message = "New mobile number given is already in use"
@@ -456,7 +457,7 @@ class UserSessionController {
 			return
 		}
 		else {
-			userManagerService.setUpVerificationForMobileChange(newMobile)
+			userManagerService.setUpVerificationForMobileChange(newMobile, user.profile.email)
 			SecurityUtils.subject?.logout()
 			flash.type = "success"
 			flash.message = "You have update your mobile number. Check SMS and verify your new mobile number"

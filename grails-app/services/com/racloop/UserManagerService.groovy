@@ -1,9 +1,5 @@
 package com.racloop
 
-import java.util.Random;
-
-import com.racloop.Profile;
-
 import grails.transaction.Transactional
 
 @Transactional
@@ -30,8 +26,8 @@ class UserManagerService {
 	 * @param newMobile
 	 * @return
 	 */
-	def setUpVerificationForMobileChange(String mobile) {
-		Profile profile = Profile.findByMobile(mobile);
+	def setUpVerificationForMobileChange(String mobile, String email=null) {
+		Profile profile = getUserProfile(mobile, email)
 		profile.verificationCode = generateVerificationCode();
 		profile.isVerified = false
 		profile.save(flush: true);
@@ -44,8 +40,8 @@ class UserManagerService {
 	 * @param mobile
 	 * @return
 	 */
-	def setUpMobileVerification(String mobile) {
-		Profile profile = Profile.findByMobile(mobile);
+	def setUpMobileVerification(String mobile, String email=null) {
+		Profile profile = getUserProfile(mobile,email)
 		if(profile) {
 			profile.verificationCode = generateVerificationCode();
 			profile.isVerified = false
@@ -66,8 +62,8 @@ class UserManagerService {
 	 * @param verificationCode
 	 * @return
 	 */
-	def verify(String mobile, String verificationCode) {
-		Profile profile = Profile.findByMobile(mobile);
+	def verify(String mobile, String verificationCode, String email=null) {
+		Profile profile = getUserProfile(mobile, email)
 		if(profile) {
 			if(profile.verificationCode == verificationCode) {
 				profile.isVerified = true
@@ -89,5 +85,17 @@ class UserManagerService {
 		Random rnd = new Random();
 		int n = 100000 + rnd.nextInt(900000);
 		return n;
+	}
+	
+	private Profile getUserProfile(String mobile, String email){
+		Profile profile = null
+		if(email){
+			profile = Profile.findByMobileAndEmail(mobile, email)
+		}
+		else {
+			profile = Profile.findByMobile(mobile)
+		}
+		
+		return profile
 	}
 }
