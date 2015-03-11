@@ -7,4 +7,5 @@ class MobileResponse {
 	String message = ""
 	Object data = null
 	boolean existingJourney=false
+	Object currentJourney = null
 }

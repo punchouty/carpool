@@ -20,6 +20,7 @@ class JourneyRequestDetails {
 	Double toLongitude = -1;
 	Boolean isDriver
 	String photoUrl
+	Double tripDistance = -1;
 	List outgoingRequests
 	List incomingRequests
 	int numberOfIncomingRequests = 0
@@ -44,7 +45,7 @@ class JourneyRequestDetails {
 		this.toLongitude = journey.toLongitude
 		this.photoUrl = journey.photoUrl
 		this.dateOfJourney = journey.dateOfJourney
-		
+		this.tripDistance = journey.tripDistance
 	}
 
 }

@@ -171,6 +171,8 @@ function computeTotalDistance(result) {
 }
 
 function changeDirections(result) {
+	var resultString = JSON.stringify(result);
+	console.log("result : " + resultString);
 	var total = 0;
 	var myroute = result.routes[0];
 	var numberOfLegs = 0;
@@ -191,7 +193,7 @@ function changeDirections(result) {
 		$('#fromPlace').val(start_address);
 		$('#toPlace').val(end_address);
 		numberOfLegs++;
-		console.log(sla + ":" + start_location.lat() + ", " + slo + ":" + start_location.lng() + ", " +ela + ":" + end_location.lat() + ", " + elo + ":" + end_location.lng())
+		console.log(i + " changeDirections : " + sla + ":" + start_location.lat() + ", " + slo + ":" + start_location.lng() + ", " +ela + ":" + end_location.lat() + ", " + elo + ":" + end_location.lng())
 	}
 	if(numberOfLegs != 1) {
 		console.log("numberOfLegs : " + numberOfLegs);

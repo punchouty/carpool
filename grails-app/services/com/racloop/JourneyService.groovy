@@ -207,12 +207,12 @@ class JourneyService {
 		return populateJourneysWithWorkflowDetails(journeys, user)
 	}
 	
-	def List findCurrentJourneyForUser(User user) {
-		DateTime startDate = new DateTime()
-		DateTime endDate = new DateTime()
+	def List findCurrentJourneyForUser(User user, DateTime current) {
+		DateTime startDate = null
+		DateTime endDate = null
 		Integer rangeFactor = Integer.valueOf(grailsApplication.config.grails.approx.time.range)
-		startDate = startDate.minusMinutes(rangeFactor)
-		endDate = endDate.plusMinutes(rangeFactor)
+		startDate = current.minusMinutes(rangeFactor)
+		endDate = current.plusMinutes(rangeFactor)
 		def journeys = elasticSearchService.findAllJourneysForUserBetweenDates(user, startDate, endDate)
 		return populateJourneysWithWorkflowDetails(journeys, user)
 	}

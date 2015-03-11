@@ -52,6 +52,8 @@ class MobileController {
 			def email = json.email
 			def password = json.password
 			def rememberMe = json.rememberMe
+			def currentDateString = json.currentDateString
+			def currentDate = convertUIDateToElasticSearchDate(currentDateString).toDate()
 			def authToken = new UsernamePasswordToken(email, password)			
 			if (rememberMe) {
 				authToken.rememberMe = true
@@ -62,6 +64,11 @@ class MobileController {
 				userService.createLoginRecord(request)
 				authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
 				mobileResponse.data=authenticatedUser
+				def journeys = journeyService.findCurrentJourneyForUser(authenticatedUser, currentDate)
+				def currentJourney = null
+				if(journeys.size() > 0) currentJourney = journeys[0]
+				//JourneyRequestCommand currentJourney = journeyService.searchCurrentJourney(authenticatedUser, currentDate)
+				mobileResponse.currentJourney = currentJourney
 				mobileResponse.success=true
 			}
 			catch (IncorrectCredentialsException e) {
@@ -544,7 +551,8 @@ class MobileController {
 			mobileResponse.message = "User is not logged in. Cannot fetch search results"
 			mobileResponse.success = false
 			mobileResponse.total =0
-		}		
+		}
+		log.info "My Journeys size : ${mobileResponse.total}"	
 		render mobileResponse as JSON
 	}
 	
