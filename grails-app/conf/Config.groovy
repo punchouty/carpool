@@ -141,18 +141,22 @@ grails.approx.time.to.match = 30
 grails.max.active.requests = 5
 grails.approx.time.range= 45
 
-grails.plugin.facebooksdk.app.id = 393926260773644
-grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
-grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
+
 
 
 environments {
 	development {
 		grails.logging.jul.usebridge = true
+		grails.plugin.facebooksdk.app.id = 417141881785415
+		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
+		grails.plugin.facebooksdk.app.secret = '3461eaa74e391bb6add17f9b25a38355'
 	}
 	production {
 		grails.logging.jul.usebridge = false
 		grails.serverURL = "http://www.racloop.com"
+		grails.plugin.facebooksdk.app.id = 393926260773644
+		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
+		grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
 	}
 }
 
