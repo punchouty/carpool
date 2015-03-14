@@ -53,7 +53,7 @@ class MobileController {
 			def password = json.password
 			def rememberMe = json.rememberMe
 			def currentDateString = json.currentDateString
-			def currentDate = convertUIDateToElasticSearchDate(currentDateString).toDate()
+			def currentDate = convertUIDateToElasticSearchDate(currentDateString)
 			def authToken = new UsernamePasswordToken(email, password)			
 			if (rememberMe) {
 				authToken.rememberMe = true
