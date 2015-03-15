@@ -1,16 +1,13 @@
 package com.racloop.workflow
 
-
-
+import grails.plugin.jms.JmsService
 import grails.test.mixin.*
 import grails.test.mixin.domain.DomainClassUnitTestMixin
 
-import org.apache.el.lang.ELSupport;
 import org.junit.*
 
 import com.racloop.ElasticSearchService
 import com.racloop.Journey
-import com.racloop.JourneyManagerService
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 
@@ -40,13 +37,14 @@ class JourneyWorkflowServiceTests {
 		myMatch.dateOfJourneyString=""
 		myMatch.fromPlace ="From"
 		myMatch.toPlace ="To"
-		def mockJourneyManager = mockFor(JourneyManagerService)
-		mockJourneyManager.demand.createJourney(){->true}
-		service.journeyManagerService =  mockJourneyManager.createMock()
+		myMatch.isDriver= true
+		def mockJmsService = mockFor(JmsService)
+		mockJmsService.demand.send(){->true}
+		service.jmsService =  mockJmsService.createMock()
 		def mockElasticSearchService = mockFor(ElasticSearchService)
 		mockElasticSearchService.demand.indexWorkflow(){->true}
 		service.elasticSearchService =  mockElasticSearchService.createMock()
-        JourneyWorkflow workflow = service.saveJourneyAndInitiateWorkflow(myRequest, myMatch)
+        JourneyWorkflow workflow = service.initiateWorkflow(myRequest, myMatch)
 		assert workflow != null
     }
 	

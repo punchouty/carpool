@@ -1,6 +1,7 @@
 
 package com.racloop
 
+import com.racloop.elasticsearch.WorkflowIndexFields;
 import com.racloop.vechicle.Vehicle
 
 class User extends grails.plugin.nimble.core.UserBase {
@@ -43,6 +44,14 @@ class User extends grails.plugin.nimble.core.UserBase {
 		else {
 			return 0.0d
 		}
+	}
+	
+	public String getUserWorkflowIndexName(){
+		return WorkflowIndexFields.USER_WORKFLOW_INDEX_PREFIX + getUserHash()
+	}
+	
+	private int getUserHash(){
+		return Math.abs(username.hashCode()%WorkflowIndexFields.NUMBER_OF_INDEX)
 	}
 	
 }

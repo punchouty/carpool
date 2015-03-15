@@ -24,5 +24,9 @@ class WorkflowIndexFields {
 	public static final String MATCHED_DATE_TIME ='matchedDateTime'
 	public static final String IS_REQUESTER_DRIVING ='isRequesterDriving'
 	public static final String IS_MATCHED_USER_DRIVING ='isMatchedUserDriving'
+	
+	public static final String USER_WORKFLOW_INDEX_PREFIX = 'USER_WORKFLOW_'
+	public static final int NUMBER_OF_INDEX = 8191;
+	
 
 }
