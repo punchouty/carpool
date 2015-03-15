@@ -58,11 +58,9 @@
 	                                	<li>
 											<g:link controller="admins" action="index" target="_blank">User Administration</g:link>
 										</li>
-										<%-- Need to change in future
 										<li>
-											<g:link controller="staticData" action="list">Static Pages</g:link>
+											<g:link controller="staticData" action="list">Configuration</g:link>
 										</li>
-										 --%>
 	                                	</n:hasRole>
 	                                    <li>
 	                                        <a href="${request.contextPath}/profile">Profile</a>

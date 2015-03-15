@@ -116,7 +116,7 @@ grails.hibernate.cache.queries = false
 grails.startup.elasticsearch.index.create = true
 grails.startup.sampleUsers.create = true
 grails.startup.masterData.places.create = true
-grails.startup.sampleData.create = true
+grails.startup.sampleData.create = false
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
 //grails.startup.sampleUsers.create = false
@@ -191,6 +191,7 @@ sms {
 		acceptRequest = 'Your car pool request for journey on $journeyDate is ACCEPTED by user $name. Mobile : $mobile'
 		rejectRequest = 'Your car pool request for journey on $journeyDate is REJECTED by user $name.'
 		cancelRequest = 'User $name has CANCELLED his journey on $journeyDate'
+		sosRequest = 'Please connect ${name} immediately. In unreachable please call police. Last known location : '
 	}
 }
 

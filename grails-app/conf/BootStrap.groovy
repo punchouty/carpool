@@ -3,6 +3,8 @@ import grails.plugin.nimble.core.AdminsService
 import grails.plugin.nimble.core.Role
 import grails.plugin.nimble.core.UserBase
 import grails.util.Environment
+import grails.gsp.PageRenderer
+
 import liquibase.util.csv.opencsv.CSVReader
 
 import org.apache.shiro.SecurityUtils
@@ -24,6 +26,7 @@ class BootStrap {
 	def sampleDataService
 	def smsService
 	def userAuthenticationService
+	PageRenderer groovyPageRenderer
 		
     def init = { servletContext ->
 		internalBootStap(servletContext)
@@ -223,32 +226,43 @@ class BootStrap {
 	private void intializeStaticData() {
 		StaticData staticData  = StaticData.find {staticDataKey == 'safety'}
 		if(!staticData){
-			StaticData terms = [staticDataKey:'safety', pageData :'<p>Safety</p>']
+			String data = groovyPageRenderer.render view: '/staticPage/safety'
+			StaticData terms = [staticDataKey:'safety', pageData :data]
 			terms.save()
 		}
 		staticData  = StaticData.find {staticDataKey == 'faq'}
 		if(!staticData){
-			StaticData about = [staticDataKey:'faq', pageData :'<p>FAQ</p>']
+			String data = groovyPageRenderer.render view: '/staticPage/faq'
+			StaticData about = [staticDataKey:'faq', pageData : data]
 			about.save()
 		}
 		staticData  = StaticData.find {staticDataKey == 'about'}
 		if(!staticData){
-			StaticData about = [staticDataKey:'about', pageData :'<p>About Us</p>']
+			String data = groovyPageRenderer.render view: '/staticPage/about'
+			StaticData about = [staticDataKey:'about', pageData :data]
 			about.save()
 		}
 		staticData  = StaticData.find {staticDataKey == 'terms'}
 		if(!staticData){
-			StaticData terms = [staticDataKey:'terms', pageData :'<p>Terms and Condition</p>']
+			String data = groovyPageRenderer.render view: '/staticPage/terms'
+			StaticData terms = [staticDataKey:'terms', pageData :data]
 			terms.save()
 		}
 		staticData  = StaticData.find {staticDataKey == 'privacy'}
 		if(!staticData){
-			StaticData etiquettes = [staticDataKey:'privacy', pageData :'<p>Privacy Policy</p>']
+			String data = groovyPageRenderer.render view: '/staticPage/privacy'
+			StaticData etiquettes = [staticDataKey:'privacy', pageData : data]
 			etiquettes.save()
 		}
 		staticData  = StaticData.find {staticDataKey == 'etiquettes'}
 		if(!staticData){
-			StaticData etiquettes = [staticDataKey:'etiquettes', pageData :'<p>Etiquettes</p>']
+			String data = groovyPageRenderer.render view: '/staticPage/etiquettes'
+			StaticData etiquettes = [staticDataKey:'etiquettes', pageData :data]
+			etiquettes.save()
+		}
+		staticData  = StaticData.find {staticDataKey == 'emergencyContacts'}
+		if(!staticData){
+			StaticData etiquettes = [staticDataKey:'emergencyContacts', pageData :'9717744392']
 			etiquettes.save()
 		}
 	}

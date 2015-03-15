@@ -3,7 +3,7 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="static">
+		<meta name="layout" content="edithtml">
 		<g:set var="entityName" value="${message(code: 'staticData.label', default: 'StaticData')}" />
 		<title><g:message code="default.show.label" args="[entityName]" /></title>
 	</head>
