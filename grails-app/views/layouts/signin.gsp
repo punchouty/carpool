@@ -9,7 +9,9 @@
 	<g:layoutHead />
 	<r:layoutResources />
 </head>
+<!-- ####### Disable Facebook login for time being##########
 <facebook:initJS appId="${racloop.getAppId()}" />	
+-->
 <body>
 	<%--
 	<div class="preloader">
