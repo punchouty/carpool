@@ -116,7 +116,7 @@ grails.hibernate.cache.queries = false
 grails.startup.elasticsearch.index.create = true
 grails.startup.sampleUsers.create = true
 grails.startup.masterData.places.create = true
-grails.startup.sampleData.create = false
+grails.startup.sampleData.create = true
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
 //grails.startup.sampleUsers.create = false
@@ -133,6 +133,8 @@ grails.startup.masterData.places.file = "all.csv"
 
 grails.email.exception.one="rajan@racloop.com"
 grails.email.exception.two="rohit@racloop.com"
+grails.sms.emergency.one="9717744392"
+grails.sms.emergency.two="7307392447"
 
 grails.messaging.mail.from="help@racloop.com"
 
@@ -191,7 +193,9 @@ sms {
 		acceptRequest = 'Your car pool request for journey on $journeyDate is ACCEPTED by user $name. Mobile : $mobile'
 		rejectRequest = 'Your car pool request for journey on $journeyDate is REJECTED by user $name.'
 		cancelRequest = 'User $name has CANCELLED his journey on $journeyDate'
-		sosRequest = 'Please connect ${name} immediately. In unreachable please call police. Last known location : '
+		sos = '${name} is in danger. Please contact immediately. If unreachable please call police. Location: ${lat}, ${lng}'
+		sosUser = 'You have raised SOS alert. Please cancel it on app home screen, if you dont need emergency assistance.'
+		sosAdmin = '${name} | ${mobile} | ${email} | ${emergencyContactOne} | ${emergencyContactTwo} | ${lat} | ${lng} | ${journeyIds}'
 	}
 }
 

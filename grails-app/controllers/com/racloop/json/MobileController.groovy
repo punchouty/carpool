@@ -15,9 +15,12 @@ import org.elasticsearch.common.joda.time.DateTime
 import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
+import com.racloop.Constant;
 import com.racloop.ElasticSearchService;
 import com.racloop.GenericStatus;
 import com.racloop.JourneyRequestCommand
+import com.racloop.Profile;
+import com.racloop.Sos;
 import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.mobile.data.response.MobileResponse
@@ -34,6 +37,7 @@ class MobileController {
 	def journeyManagerService
 	def journeyService
 	def journeyWorkflowService
+	def jmsService
 	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST', forgotPassword : 'POST' ]
 	
@@ -946,7 +950,76 @@ class MobileController {
 		
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	def sos() {
+		def json = request.JSON
+		def mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser()
+		if(currentUser == null) {
+			log.info("Current user not in session : " + json.email)
+			def email = json.email
+			Profile profile = Profile.findByEmail(email);
+			if(profile)
+				currentUser = profile.owner
+		}
+		if(currentUser) {
+			def currentDateString = json.currentDateString
+			DateTime currentDate = convertUIDateToElasticSearchDate(currentDateString)
+			def journeys = journeyService.findCurrentJourneyForUser(currentUser, currentDate)
+			def journeyIds = null
+			journeys.each { journey ->
+				journeyIds = journeyIds + "~" + journey.id
+			}
+			def emergencyContactOne = null
+			def emergencyContactTwo = null
+			if(currentUser?.profile?.emergencyContactOne) {
+				emergencyContactOne = currentUser?.profile?.emergencyContactOne
+			}
+			else {
+				log.info("Emergency contact one not present")
+			}
+			if(currentUser?.profile?.emergencyContactTwo) {
+				emergencyContactTwo = currentUser?.profile?.emergencyContactTwo
+			}
+			else {
+				log.info("Emergency contact two not present")
+			}
+			
+			def  messageMap =[
+				(Constant.EMAIL_KEY) : currentUser?.profile?.email,
+				(Constant.MOBILE_KEY) : currentUser?.profile?.mobile,
+				(Constant.SOS_NAME_KEY) : currentUser?.profile?.fullName,
+				(Constant.EMERGENCY_CONTACT_ONE_KEY) : emergencyContactOne,
+				(Constant.EMERGENCY_CONTACT_TWO_KEY) : emergencyContactTwo,
+				(Constant.JOURNEY_IDS_KEY) : journeyIds,
+				(Constant.SOS_USER_LATITUDE) : json.lat,
+				(Constant.SOS_USER_LONGITUDE): json.lng
+			]
+			
+			Sos sos = new Sos();
+			sos.userName = currentUser?.profile?.email
+			sos.mobile = currentUser?.profile?.mobile
+			sos.latitude = json.lat
+			sos.longitude = json.lng
+			sos.sosTimestamp = currentDate.toDate()
+			sos.journeyIds = journeyIds
+			sos.save();
+			jmsService.send(queue: Constant.MOBILE_SOS_QUEUE, messageMap)
+			log.info("SMS parameters : " + messageMap)
+			mobileResponse.message = "Sos registered Successfully" 
+			mobileResponse.success = true
+		}
+		else {
+			mobileResponse.message = "Sos not registered Successfully. Email not found " +  json.email// TODO implementation incomplete and hard coded
+			mobileResponse.success = false
+		}
+		render mobileResponse as JSON
+	}
+	
+	def sosCancel() {
 		
 	}
 	

@@ -26,6 +26,8 @@ class SmsService {
 	public static final String VERIFICATOIN_KEY = "verification_key";
 	String urlPrefixIndividual = null;
 	String urlPrefixBulk = null;
+	String adminSosContactOne = null;
+	String adminSosContactTwo = null;
 	
 	def init() {// Initialized in Bootstrap.groovy
 		def engine = new groovy.text.SimpleTemplateEngine()
@@ -35,11 +37,16 @@ class SmsService {
 		templates.put(WorkflowState.REJECTED.state, engine.createTemplate(grailsApplication.config.sms.templates.rejectRequest));
 		templates.put(WorkflowState.CANCELLED.state, engine.createTemplate(grailsApplication.config.sms.templates.cancelRequest));
 		templates.put(WorkflowState.CANCELLED_BY_REQUESTER.state, engine.createTemplate(grailsApplication.config.sms.templates.cancelRequest));
+		templates.put(Constant.SOS_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sos));
+		templates.put(Constant.SOS_USER_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosUser));
+		templates.put(Constant.SOS_ADMIN_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosAdmin));
 		urlPrefixIndividual = grailsApplication.config.sms.url + '?&UserName=' + grailsApplication.config.sms.username + '&Password=' + grailsApplication.config.sms.password + '&Type=Individual&Mask=' + grailsApplication.config.sms.mask
 		urlPrefixBulk = grailsApplication.config.sms.url + '?&UserName=' + grailsApplication.config.sms.username + '&Password=' + grailsApplication.config.sms.password + '&Type=Bulk&Mask=' + grailsApplication.config.sms.mask
+		adminSosContactOne = grailsApplication.config.sms.emergency.one
+		adminSosContactTwo = grailsApplication.config.sms.emergency.two
 	}
 	
-	@Queue(name= "msg.sms.notification.queue") //also defined in Constant.java. Grails issue //TODO can we use Constant.MOBILE_VERIFICATION_QUEUE ????
+	@Queue(name= Constant.NOTIFICATION_SMS_QUEUE) //also defined in Constant.java. Grails issue //TODO can we use Constant.MOBILE_VERIFICATION_QUEUE ????
 	def sendWorkflowSms(def messageMap) {
 		def message = null;
 		String to = messageMap['to'] 
@@ -103,7 +110,7 @@ class SmsService {
 		}
 	}
 	
-	@Queue(name= "msg.notification.mobile.verification.queue") //also defined in Constant.java. Grails issue //TODO can we use Constant.MOBILE_VERIFICATION_QUEUE ????
+	@Queue(name= Constant.MOBILE_VERIFICATION_QUEUE) //also defined in Constant.java. Grails issue //TODO can we use Constant.MOBILE_VERIFICATION_QUEUE ????
     def sendVerificationSms(def messageMap) {
 		String mobile = messageMap[Constant.MOBILE_KEY]
 		String verificationCode = messageMap[Constant.VERIFICATION_CODE_KEY]
@@ -123,4 +130,59 @@ class SmsService {
 			return;
 		}
     }
+	
+	@Queue(name= Constant.MOBILE_SOS_QUEUE) 
+	def sendSos(def messageMap) {
+		String mobile = messageMap[Constant.MOBILE_KEY]
+		String email = messageMap[Constant.EMAIL_KEY]
+		String fullName = messageMap[Constant.SOS_NAME_KEY]
+		String emergencyContactOne = messageMap[Constant.EMERGENCY_CONTACT_ONE_KEY]
+		String emergencyContactTwo = messageMap[Constant.EMERGENCY_CONTACT_TWO_KEY]
+		String journeyIds = messageMap[Constant.JOURNEY_IDS_KEY]
+		String latitude = messageMap[Constant.SOS_USER_LATITUDE]
+		String longitude = messageMap[Constant.SOS_USER_LONGITUDE]
+		
+		def to = emergencyContactOne
+		def message = templates.get(Constant.SOS_KEY).make(['name' : fullName, 'lat' : latitude, 'lng' : longitude]).toString();
+		if(to != null && message != null) sendSms(to, message)
+		
+		to = emergencyContactTwo
+		if(to != null && message != null) sendSms(to, message)
+		
+		to = mobile
+		message = templates.get(Constant.SOS_USER_KEY).make([]).toString();
+		if(to != null && message != null) sendSms(to, message)
+		
+		to = adminSosContactOne
+		message = templates.get(Constant.SOS_ADMIN_KEY).make([
+			'name' : fullName, 
+			'mobile' : mobile, 
+			'email' : email, 
+			'emergencyContactOne' : emergencyContactOne, 
+			'emergencyContactTwo' : emergencyContactTwo, 
+			'lat' : latitude, 
+			'lng' : longitude, 
+			'journeyIds' : journeyIds]).toString();
+		if(to != null && message != null) sendSms(to, message)
+		
+		to = adminSosContactTwo
+		if(to != null && message != null) sendSms(to, message)
+	}
+	
+	def sendSms(def to, def message) {
+		String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
+		log.info('Sending SoS SMS with URL : ' + restUrl)
+		def resp = rest.get(restUrl);
+		if(resp.getStatus() != 200) {
+			log.error ('SMS failure with service provider')
+			log.info('Saving failure message to database')
+			SmsFailure smsFailure = new SmsFailure();
+			smsFailure.mobile = to
+			smsFailure.message = message
+			smsFailure.restUrl = restUrl
+			smsFailure.serverResponse = resp.text
+			smsFailure.save();
+			return;
+		}
+	}
 }
