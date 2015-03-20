@@ -69,8 +69,10 @@
 	                                        <a href="${request.contextPath}/password/change">Change Password</a>
 	                                    </li>
 	                                    <li>
-	                                        
+	                                        <!-- ####### Disable Facebook login for time being##########
 					                        <facebook:logoutLink nextUrl="${createLink(controller:'userSession', action:'signout')}">Logout</facebook:logoutLink>
+					                        -->
+					                        <a href="${createLink(controller:'userSession', action:'signout')}">Logout</a>
 	                                    </li>
 	                                </ul>
 	                            </li>

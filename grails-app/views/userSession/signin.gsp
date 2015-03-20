@@ -45,6 +45,7 @@
 				</g:form>
 				   
 				<p>
+				<!-- ####### Disable Facebook login for time being##########
 				<br>
 				<label>OR Sign in with</label><br> 
 				<facebook:loginLink appPermissions="${facebookContext.app.permissions}" returnUrl="${request.contextPath}/userSession/signinUsingFacebook?targetUri=${targetUri}" elementClass="btn standard-button btn-primary"><span class="icon-social-facebook"></span>Facebook</facebook:loginLink>
@@ -52,6 +53,7 @@
 				<br>
 				<a href="${request.contextPath}/password/forgot" >Forgot Password</a> <br><a href="${request.contextPath}/verifyMobile"  class="red-text">Verify Mobile</a> 
 				</p>
+				 -->	
 				<p id="form-success" class="dark-text small-text"><span class="icon-check-alt2 colored-text"></span> <span id="success-message">Thanks!</span></p>
                 <p id="form-error" class="dark-text small-text"><span class="icon-close-alt2 red-text"></span> <span id="error-message" >Error!</span> </p> 
 		     	</div>
