@@ -139,7 +139,7 @@ class BootStrap {
 			userProfile.email = sampleUser
 			userProfile.owner = user
 			userProfile.isMale = true
-			userProfile.mobile = '9800000002'
+			userProfile.mobile = '9800000001'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:sample.user")

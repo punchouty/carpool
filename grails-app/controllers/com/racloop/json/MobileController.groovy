@@ -161,7 +161,12 @@ class MobileController {
 					if (savedUser.hasErrors()) {
 						errors = savedUser.errors
 						mobileResponse.success = false
-						mobileResponse.message = "Input Errors"
+						def errorMessage = ""
+						errors.allErrors.each {
+							errorMessage = errorMessage + g.message(code: it.getCodes()[0], args: []) + "</br>"
+							println "g.message(code: it.getCodes()[0], args: []) : " + g.message(code: it.getCodes()[0], args: []) 
+						}
+						mobileResponse.message = errorMessage
 					}
 					else {
 //						sendMail {
@@ -283,7 +288,12 @@ class MobileController {
 						mobileResponse.success = true;
 					}
 					else {
-						mobileResponse.message = "Unable to change password"
+						errors = user.errors
+						def errorMessage = ""
+						errors.allErrors.each {
+							errorMessage = errorMessage + g.message(code: it.getCodes()[0], args: []) + "</br>"
+						}
+						mobileResponse.message = errorMessage
 					}
 				}
 			}
@@ -367,6 +377,7 @@ class MobileController {
 	 */
 	def editProfile() {
 		def json = request.JSON
+		def mobileResponse = new MobileResponse()
 		String jsonMessage = null
 		String jsonResponse = "error"
 		def errors = null
@@ -387,25 +398,24 @@ class MobileController {
 			user.profile.isMale = isMale
 			if (user.validate()) {
 				def updatedUser = userService.updateUser(user)
-				jsonResponse = "ok"
-				jsonMessage = "Profile updated successfully"
+				mobileResponse.success = true
+				mobileResponse.message = "Profile updated successfully"
 			}
 			else {
 				errors = user.errors
-				jsonMessage = "Invalid Data"
+				mobileResponse.success = false
+				def errorMessage = ""
+				errors.allErrors.each {
+					errorMessage = errorMessage + g.message(code: it.getCodes()[0], args: []) + "</br>"
+				}
+				mobileResponse.message = errorMessage
 			}
 		}
 		else {
-			jsonMessage = "User is not logged in. Cannot change user profile"
+			mobileResponse.success = false
+			mobileResponse.message = "User is not logged in. Cannot change user profile"
 		}
 		
-		def jsonResponseBody = [
-			"response": jsonResponse,
-			"message": jsonMessage,
-			"errors" : errors,
-			"jsessionid" : session.id
-		]
-		MobileResponse mobileResponse = getMobileResoponse(jsonResponseBody)
 		render mobileResponse as JSON
 	}
 	
@@ -790,8 +800,6 @@ class MobileController {
 			mobileResponse.total =0
 		}
 	   render mobileResponse as JSON
-		
-		
 	}
 	
 	
@@ -946,8 +954,22 @@ class MobileController {
 		render mobileResponse as JSON
 	}
 	
-	def saveEmergencyContacts(String emergencyContactOne, String emergencyContactTwo) {
-		
+	def saveEmergencyContacts() {
+		def json = request.JSON
+		def mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser()
+		if(currentUser != null) {
+			Profile profile = currentUser.profile
+			profile.emergencyContactOne = json.contactOne
+			profile.emergencyContactTwo = json.contactTwo
+			profile.save();
+			mobileResponse.success = true
+			mobileResponse.message = "Emergency contacts saved successfully"
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot save the emergency contacts"
+		}
+	   render mobileResponse as JSON
 	}
 	
 	/**
