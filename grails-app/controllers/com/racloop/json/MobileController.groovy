@@ -24,6 +24,7 @@ import com.racloop.Sos;
 import com.racloop.User
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.mobile.data.response.MobileResponse
+import com.racloop.staticdata.StaticData;
 import com.racloop.util.date.DateUtil
 
 import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
@@ -940,7 +941,8 @@ class MobileController {
 	
 	def privacy() {
 		def mobileResponse = new MobileResponse()
-		mobileResponse.message = "Privacy from server" // TODO implementation incomplete and hard coded
+		def html = StaticData.findByStaticDataKey("privacy").pageData;
+		mobileResponse.message = html 
 		mobileResponse.success = true
 		mobileResponse.total =0
 		render mobileResponse as JSON
@@ -948,7 +950,8 @@ class MobileController {
 	
 	def terms() {
 		def mobileResponse = new MobileResponse()
-		mobileResponse.message = "Terms from server" // TODO implementation incomplete and hard coded
+		def html = StaticData.findByStaticDataKey("terms").pageData;
+		mobileResponse.message = html
 		mobileResponse.success = true
 		mobileResponse.total =0
 		render mobileResponse as JSON

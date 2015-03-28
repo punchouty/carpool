@@ -42,8 +42,8 @@ class SmsService {
 		templates.put(Constant.SOS_ADMIN_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosAdmin));
 		urlPrefixIndividual = grailsApplication.config.sms.url + '?&UserName=' + grailsApplication.config.sms.username + '&Password=' + grailsApplication.config.sms.password + '&Type=Individual&Mask=' + grailsApplication.config.sms.mask
 		urlPrefixBulk = grailsApplication.config.sms.url + '?&UserName=' + grailsApplication.config.sms.username + '&Password=' + grailsApplication.config.sms.password + '&Type=Bulk&Mask=' + grailsApplication.config.sms.mask
-		adminSosContactOne = grailsApplication.config.sms.emergency.one
-		adminSosContactTwo = grailsApplication.config.sms.emergency.two
+		adminSosContactOne = grailsApplication.config.grails.sms.emergency.one
+		adminSosContactTwo = grailsApplication.config.grails.sms.emergency.two
 	}
 	
 	@Queue(name= Constant.NOTIFICATION_SMS_QUEUE) //also defined in Constant.java. Grails issue //TODO can we use Constant.MOBILE_VERIFICATION_QUEUE ????
@@ -150,7 +150,7 @@ class SmsService {
 		if(to != null && message != null) sendSms(to, message)
 		
 		to = mobile
-		message = templates.get(Constant.SOS_USER_KEY).make([]).toString();
+		message = templates.get(Constant.SOS_USER_KEY).make(['name' : fullName, 'lat' : latitude, 'lng' : longitude]).toString();
 		if(to != null && message != null) sendSms(to, message)
 		
 		to = adminSosContactOne

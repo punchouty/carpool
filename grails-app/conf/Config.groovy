@@ -133,7 +133,7 @@ grails.startup.masterData.places.file = "all.csv"
 
 grails.email.exception.one="rajan@racloop.com"
 grails.email.exception.two="rohit@racloop.com"
-grails.sms.emergency.one="9717744392"
+grails.sms.emergency.one="9810095625"
 grails.sms.emergency.two="7307392447"
 
 grails.messaging.mail.from="help@racloop.com"
@@ -194,7 +194,7 @@ sms {
 		rejectRequest = 'Your car pool request for journey on $journeyDate is REJECTED by user $name.'
 		cancelRequest = 'User $name has CANCELLED his journey on $journeyDate'
 		sos = '${name} is in danger. Please contact immediately. If unreachable please call police. Location: ${lat}, ${lng}'
-		sosUser = 'You have raised SOS alert. Please cancel it on app home screen, if you dont need emergency assistance.'
+		sosUser = 'You have raised SOS alert. If you dont need emergency assistance, Please cancel it on app home screen.'
 		sosAdmin = '${name} | ${mobile} | ${email} | ${emergencyContactOne} | ${emergencyContactTwo} | ${lat} | ${lng} | ${journeyIds}'
 	}
 }
