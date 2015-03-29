@@ -15,6 +15,7 @@
  *  limitations under the License.
  */
 import grails.plugin.facebooksdk.FacebookContext
+import grails.plugin.nimble.core.AdminsService
 import grails.plugin.nimble.security.NimbleFilterBase
 
 import org.codehaus.groovy.grails.web.util.WebUtils
@@ -62,9 +63,11 @@ class SecurityFilters extends NimbleFilterBase {
 			}
 		}
 		
-//		otheradminsecure(controller: "staticData|sampleData") {
-//			accessControl { role(AdminsService.ADMIN_ROLE) }
-//		}
+		otheradminsecure(controller: "elasticsearch") {
+			before ={
+				accessControl { role(AdminsService.ADMIN_ROLE) }
+			}
+		}
 	}
 	
 	def onNotAuthenticated(subject, filter) {
