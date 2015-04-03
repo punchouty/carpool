@@ -374,7 +374,7 @@ class UserSessionController {
 
 			if(!crypt.equals(user.passwordHash)) {
 				log.warn("User [$user.id]$user.username attempting to change password but has supplied invalid current password")
-				user.errors.reject('nimble.user.password.nomatch')
+				user.errors.rejectValue('pass', 'nimble.user.password.incorrect.current.pass')
 				render (view:"changePassword", model:[user:user])
 				return
 			}
