@@ -21,6 +21,7 @@ class UserSessionController {
 	//def emailService
 	def userManagerService
 	FacebookContext facebookContext
+	def jmsService
 
 	def search() {
 		
@@ -296,14 +297,17 @@ class UserSessionController {
 		if (user.external || user.federated) {
 			log.info("User identified by [$user.id]$user.username is external or federated")
 
-			log.info("Sending account password reset email to $user.profile.email with subject $nimbleConfig.messaging.passwordreset.external.subject")
+			//log.info("Sending account password reset email to $user.profile.email with subject $nimbleConfig.messaging.passwordreset.external.subject")
+			log.info("Sending account password reset sma to $user.profile.mobile")
 			if(nimbleConfig.messaging.enabled) {
-				sendMail {
+				def  messageMap =[(Constant.MOBILE_KEY):user.profile.mobile, (Constant.NEW_PASSWORD_KEY):user.pass]
+				jmsService.send(queue: Constant.NOTIFICATION_MOBILE_FORGOT_PASSWORD_QUEUE, messageMap)
+				/*sendMail {
 					to user.profile.email
 					from grailsApplication.config.grails.messaging.mail.from
 					subject nimbleConfig.messaging.passwordreset.external.subject
 					html g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
-				}
+				}*/
 			}
 			else {
 				log.debug "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/forgottenpassword_external_email", model: [user: user]).toString()}"
@@ -318,14 +322,17 @@ class UserSessionController {
 
 			userService.setRandomPassword(user)
 
-			log.info("Sending account password reset email to $user.profile.email with subject $nimbleConfig.messaging.passwordreset.subject")
+			//log.info("Sending account password reset email to $user.profile.email with subject $nimbleConfig.messaging.passwordreset.subject")
+			log.info("Sending account password reset SMS to $user.profile.mobile")
 			if(nimbleConfig.messaging.enabled) {
-				sendMail {
+				def  messageMap =[(Constant.MOBILE_KEY):user.profile.mobile, (Constant.NEW_PASSWORD_KEY):user.pass]
+				jmsService.send(queue: Constant.NOTIFICATION_MOBILE_FORGOT_PASSWORD_QUEUE, messageMap)
+				/*sendMail {
 					to user.profile.email
 					from grailsApplication.config.grails.messaging.mail.from
 					subject nimbleConfig.messaging.passwordreset.subject
 					html g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
-				}
+				}*/
 			}
 			else {
 				log.debug "Messaging disabled would have sent: \n${user.profile.email} \n Message: \n ${g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user]).toString()}"
@@ -335,7 +342,7 @@ class UserSessionController {
 
 			//redirect(action: "forgotPasswordComplete", validFlow: true)
 			flash.type = "message"
-			flash.message = "Email is sent to you with new password. Please check your inbox."
+			flash.message = "Your new password has been sent to your registerd mobile."
 			redirect(action: "search")
 			return
 		}

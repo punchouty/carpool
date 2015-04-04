@@ -40,6 +40,7 @@ class SmsService {
 		templates.put(Constant.SOS_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sos));
 		templates.put(Constant.SOS_USER_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosUser));
 		templates.put(Constant.SOS_ADMIN_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosAdmin));
+		templates.put(Constant.NEW_PASSWORD_KEY, engine.createTemplate(grailsApplication.config.sms.templates.newPassword));
 		urlPrefixIndividual = grailsApplication.config.sms.url + '?&UserName=' + grailsApplication.config.sms.username + '&Password=' + grailsApplication.config.sms.password + '&Type=Individual&Mask=' + grailsApplication.config.sms.mask
 		urlPrefixBulk = grailsApplication.config.sms.url + '?&UserName=' + grailsApplication.config.sms.username + '&Password=' + grailsApplication.config.sms.password + '&Type=Bulk&Mask=' + grailsApplication.config.sms.mask
 		adminSosContactOne = grailsApplication.config.grails.sms.emergency.one
@@ -178,6 +179,27 @@ class SmsService {
 			log.info('Saving failure message to database')
 			SmsFailure smsFailure = new SmsFailure();
 			smsFailure.mobile = to
+			smsFailure.message = message
+			smsFailure.restUrl = restUrl
+			smsFailure.serverResponse = resp.text
+			smsFailure.save();
+			return;
+		}
+	}
+	
+	@Queue(name= Constant.NOTIFICATION_MOBILE_FORGOT_PASSWORD_QUEUE)
+	def sendForgotPassword(def messageMap) {
+		String mobile = messageMap[Constant.MOBILE_KEY]
+		String newPassword = messageMap[Constant.NEW_PASSWORD_KEY]
+		def message = templates.get(Constant.NEW_PASSWORD_KEY).make(['newPassword' : newPassword]).toString();
+		String restUrl = urlPrefixIndividual + '&To=' + mobile + '&Message=' + message;
+		log.info('Sending SMS to sms provider with URL : ' + restUrl)
+		def resp = rest.get(restUrl);
+		if(resp.getStatus() != 200) {
+			log.error ('SMS failure with service provider')
+			log.info('Saving failure message to database')
+			SmsFailure smsFailure = new SmsFailure();
+			smsFailure.mobile = mobile
 			smsFailure.message = message
 			smsFailure.restUrl = restUrl
 			smsFailure.serverResponse = resp.text

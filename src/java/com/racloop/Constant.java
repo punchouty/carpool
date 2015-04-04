@@ -9,6 +9,7 @@ public interface Constant {
 	public static final String NOTIFICATION_EMAIL_QUEUE = "msg.email.notification.queue";
 	public static final String NOTIFICATION_SMS_QUEUE = "msg.sms.notification.queue";
 	public static final String NOTIFICATION_MOBILE_PUSH_QUEUE = "msg.push.notification.queue";
+	public static final String NOTIFICATION_MOBILE_FORGOT_PASSWORD_QUEUE = "msg.sms.mobile.forgot.password";
 	
 	public static final String MOBILE_KEY = "mobile";
 	public static final String EMAIL_KEY = "email";
@@ -24,6 +25,7 @@ public interface Constant {
 	public static final String SOS_USER_LATITUDE = "sosUserLatitude";
 	public static final String SOS_USER_LONGITUDE = "sosUserLongitude";
 	public static final String VERIFICATION_CODE_KEY = "verificationCode";
+	public static final String NEW_PASSWORD_KEY = "newPassword";
 	
 	public static final String WORKFLOW_ID_KEY = "workflowIdKey";
 	public static final String WORKFLOW_STATE_KEY = "workflowStateKey";
