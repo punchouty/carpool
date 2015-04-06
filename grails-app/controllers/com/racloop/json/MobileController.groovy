@@ -325,16 +325,19 @@ class MobileController {
 				else{
 					userService.setRandomPassword(user)
 		
-					log.info("Sending account password reset email to $user.profile.email with subject $nimbleConfig.messaging.passwordreset.subject")
 					if(nimbleConfig.messaging.enabled) {
-						sendMail {
+						log.info("Sending account password reset SMS to $user.profile.mobile. Publishing to messaging queue")
+						def  messageMap =[(Constant.MOBILE_KEY):user.profile.mobile, (Constant.NEW_PASSWORD_KEY):user.pass]
+						jmsService.send(queue: Constant.NOTIFICATION_MOBILE_FORGOT_PASSWORD_QUEUE, messageMap)
+						
+						/*sendMail {
 							to user.profile.email
 							from grailsApplication.config.grails.messaging.mail.from
 							subject nimbleConfig.messaging.passwordreset.subject
 							html g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
-						}
+						}*/
 						mobileResponse.success = true
-						mobileResponse.message = "Password retrieve successfully. Please check your email"
+						mobileResponse.message = "Password retrieve successfully. Please check your SMS"
 						
 					}
 					else {
