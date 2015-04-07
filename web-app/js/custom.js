@@ -388,7 +388,7 @@ jQuery(window).load(function() {
     {
       // at least one number, one lowercase and one uppercase letter
       // at least six characters
-      var re = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,20}$/;
+      var re = /{5,20}$/;
       return re.test(str);
     }
      

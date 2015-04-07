@@ -63,6 +63,11 @@ nimble {
 		user = "com.racloop.User"
 		profile = "com.racloop.Profile"
 	}
+	passwords.minlength=5
+	passwords.mustcontain.symbols = false
+	passwords.mustcontain.numbers = false
+	passwords.mustcontain.uppercase = false
+	passwords.mustcontain.lowercase = false
 }
 
 environments {

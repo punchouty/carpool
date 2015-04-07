@@ -34,7 +34,7 @@
 				<div class="vertical-registration-form">                   
 		        <g:form action="signin"  controller="auth" name="login-form" method="post" class="registration-form" id="login-form">
 					<input type="hidden" name="targetUri" value="${targetUri}" />
-			        <input type="email" id="cf-email" name="username"  class="form-control input-box" placeholder="Email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Username is required field" required>
+			        <input type="email" id="cf-email" name="username"  class="form-control input-box" placeholder="Email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Email is required field" required>
 					<input type="password" name="password" id="cf-password" class="form-control input-box" placeholder="Password" data-validation-required-message="Password is required field"  required />
 			     	<div class="checkbox  text-left">
 						<label>
@@ -50,10 +50,12 @@
 				<label>OR Sign in with</label><br> 
 				<facebook:loginLink appPermissions="${facebookContext.app.permissions}" returnUrl="${request.contextPath}/userSession/signinUsingFacebook?targetUri=${targetUri}" elementClass="btn standard-button btn-primary"><span class="icon-social-facebook"></span>Facebook</facebook:loginLink>
 				<br>
+				-->
 				<br>
+				 	
 				<a href="${request.contextPath}/password/forgot" >Forgot Password</a> <br><a href="${request.contextPath}/verifyMobile"  class="red-text">Verify Mobile</a> 
 				</p>
-				 -->	
+				
 				<p id="form-success" class="dark-text small-text"><span class="icon-check-alt2 colored-text"></span> <span id="success-message">Thanks!</span></p>
                 <p id="form-error" class="dark-text small-text"><span class="icon-close-alt2 red-text"></span> <span id="error-message" >Error!</span> </p> 
 		     	</div>
