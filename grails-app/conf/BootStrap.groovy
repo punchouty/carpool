@@ -106,7 +106,7 @@ class BootStrap {
 			adminProfile.email = adminUser
 			adminProfile.owner = admin
 			adminProfile.isMale = true
-			adminProfile.mobile = '9800000001'
+			adminProfile.mobile = '9872883924'
 			admin.profile = adminProfile
 
 			log.info("Creating default admin account with username:admin")
@@ -139,7 +139,7 @@ class BootStrap {
 			userProfile.email = sampleUser
 			userProfile.owner = user
 			userProfile.isMale = true
-			userProfile.mobile = '9800000001'
+			userProfile.mobile = '9717744392'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:sample.user")
@@ -165,7 +165,7 @@ class BootStrap {
 			userProfile.email = sampleDriver
 			userProfile.owner = user
 			userProfile.isMale = true
-			userProfile.mobile = '9800000003'
+			userProfile.mobile = '7307392447'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:sample.user")
@@ -191,7 +191,7 @@ class BootStrap {
 			userProfile.email = sampleRider
 			userProfile.owner = user
 			userProfile.isMale = false
-			userProfile.mobile = '9800000004'
+			userProfile.mobile = '9780242630'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username:sample.user")
