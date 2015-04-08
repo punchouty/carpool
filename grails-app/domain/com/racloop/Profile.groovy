@@ -17,7 +17,7 @@ class Profile extends grails.plugin.nimble.core.ProfileBase {
 	static transients = ['gravatarUri']
 	
 	static constraints = {
-		mobile blank: false, nullable: false, matches:'\\d{10}', unique: 'email'
+		mobile blank: false, nullable: false, matches:'\\d{10}', unique: true
 		emergencyContactOne blank: true, nullable: true
 		emergencyContactTwo blank: true, nullable: true
 		verificationCode blank: true, nullable: true

@@ -74,40 +74,7 @@ class SmsService {
 		}
 		if(message) {
 			String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
-			if(GrailsUtil.developmentEnv) {
-				def blackListNumbers = ['9800000001', '9800000002', '9800000003', '9800000004'];
-				if(blackListNumbers.contains(to)) {
-					log.info ("Simulating SMS for url : ${restUrl}")
-				}
-				else {
-					def resp = rest.get(restUrl);
-					if(resp.getStatus() != 200) {
-						log.error ('SMS failure with service provider')
-						log.info('Saving failure message to database')
-						SmsFailure smsFailure = new SmsFailure();
-						smsFailure.mobile = to
-						smsFailure.message = message
-						smsFailure.restUrl = restUrl
-						smsFailure.serverResponse = resp.text
-						smsFailure.save();
-						return;
-					}
-				}
-			}
-			else {
-				def resp = rest.get(restUrl);
-				if(resp.getStatus() != 200) {
-					log.error ('SMS failure with service provider')
-					log.info('Saving failure message to database')
-					SmsFailure smsFailure = new SmsFailure();
-					smsFailure.mobile = to
-					smsFailure.message = message
-					smsFailure.restUrl = restUrl
-					smsFailure.serverResponse = resp.text
-					smsFailure.save();
-					return;
-				}
-			}
+			sendMessage(restUrl, message, to);
 		}
 	}
 	
@@ -118,18 +85,7 @@ class SmsService {
 		def message = templates.get(VERIFICATOIN_KEY).make(['verificationCode' : verificationCode]).toString();
 		String restUrl = urlPrefixIndividual + '&To=' + mobile + '&Message=' + message;
 		log.info('Sending SMS to sms provider with URL : ' + restUrl)
-		def resp = rest.get(restUrl);
-		if(resp.getStatus() != 200) {
-			log.error ('SMS failure with service provider')
-			log.info('Saving failure message to database')
-			SmsFailure smsFailure = new SmsFailure();
-			smsFailure.mobile = mobile
-			smsFailure.message = message
-			smsFailure.restUrl = restUrl
-			smsFailure.serverResponse = resp.text
-			smsFailure.save();
-			return;
-		}
+		sendMessage(restUrl, message, mobile);
     }
 	
 	@Queue(name= Constant.MOBILE_SOS_QUEUE) 
@@ -145,14 +101,22 @@ class SmsService {
 		
 		def to = emergencyContactOne
 		def message = templates.get(Constant.SOS_KEY).make(['name' : fullName, 'lat' : latitude, 'lng' : longitude]).toString();
-		if(to != null && message != null) sendSms(to, message)
+		if(to != null && message != null) {
+			String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
+			sendMessage(restUrl, message, to);
+		}
 		
 		to = emergencyContactTwo
-		if(to != null && message != null) sendSms(to, message)
-		
+		if(to != null && message != null) {
+			String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
+			sendMessage(restUrl, message, to);
+		}
 		to = mobile
 		message = templates.get(Constant.SOS_USER_KEY).make(['name' : fullName, 'lat' : latitude, 'lng' : longitude]).toString();
-		if(to != null && message != null) sendSms(to, message)
+		if(to != null && message != null) {
+			String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
+			sendMessage(restUrl, message, to);
+		}
 		
 		to = adminSosContactOne
 		message = templates.get(Constant.SOS_ADMIN_KEY).make([
@@ -164,26 +128,15 @@ class SmsService {
 			'lat' : latitude, 
 			'lng' : longitude, 
 			'journeyIds' : journeyIds]).toString();
-		if(to != null && message != null) sendSms(to, message)
+		if(to != null && message != null) {
+			String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
+			sendMessage(restUrl, message, to);
+		}
 		
 		to = adminSosContactTwo
-		if(to != null && message != null) sendSms(to, message)
-	}
-	
-	def sendSms(def to, def message) {
-		String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
-		log.info('Sending SoS SMS with URL : ' + restUrl)
-		def resp = rest.get(restUrl);
-		if(resp.getStatus() != 200) {
-			log.error ('SMS failure with service provider')
-			log.info('Saving failure message to database')
-			SmsFailure smsFailure = new SmsFailure();
-			smsFailure.mobile = to
-			smsFailure.message = message
-			smsFailure.restUrl = restUrl
-			smsFailure.serverResponse = resp.text
-			smsFailure.save();
-			return;
+		if(to != null && message != null) {
+			String restUrl = urlPrefixIndividual + '&To=' + to + '&Message=' + message;
+			sendMessage(restUrl, message, to);
 		}
 	}
 	
@@ -193,18 +146,28 @@ class SmsService {
 		String newPassword = messageMap[Constant.NEW_PASSWORD_KEY]
 		def message = templates.get(Constant.NEW_PASSWORD_KEY).make(['newPassword' : newPassword]).toString();
 		String restUrl = urlPrefixIndividual + '&To=' + mobile + '&Message=' + message;
-		log.info('Sending SMS to sms provider with URL : ' + restUrl)
-		def resp = rest.get(restUrl);
-		if(resp.getStatus() != 200) {
-			log.error ('SMS failure with service provider')
-			log.info('Saving failure message to database')
-			SmsFailure smsFailure = new SmsFailure();
-			smsFailure.mobile = mobile
-			smsFailure.message = message
-			smsFailure.restUrl = restUrl
-			smsFailure.serverResponse = resp.text
-			smsFailure.save();
-			return;
+		log.info('Sending SMS to sms provider with URL : ' + restUrl);
+		sendMessage(restUrl, message, mobile);
+	}
+	
+	def sendMessage(String restUrl, String message, String mobile) {
+		Boolean smsEnabled = grailsApplication.config.grails.sms.enable
+		if(smsEnabled) {
+			def resp = rest.get(restUrl);
+			if(resp.getStatus() != 200) {
+				log.error ('SMS failure with service provider')
+				log.info('Saving failure message to database')
+				SmsFailure smsFailure = new SmsFailure();
+				smsFailure.mobile = mobile
+				smsFailure.message = message
+				smsFailure.restUrl = restUrl
+				smsFailure.serverResponse = resp.text
+				smsFailure.save();
+				return;
+			}
+		}
+		else {
+			log.info ("Mobile : ${mobile}, Message : ${message}")
 		}
 	}
 }

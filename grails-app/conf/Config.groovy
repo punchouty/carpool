@@ -134,6 +134,7 @@ grails.startup.masterData.places.file = "all.csv"
 
 grails.email.exception.one="rajan@racloop.com"
 grails.email.exception.two="rohit@racloop.com"
+grails.sms.enable=false
 grails.sms.emergency.one="9810095625"
 grails.sms.emergency.two="7307392447"
 
