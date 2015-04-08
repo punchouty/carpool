@@ -7,23 +7,31 @@ class SampleDataController {
 	
 	def sampleDataService
 	def smsService
+	def grailsApplication
 
     def index() { 
 		render "Empty Implementation"
 	}
 	
 	def delete() {		
-		Environment.executeForCurrentEnvironment {
-			development {
+		Boolean deleteEnabled = grailsApplication.config.grails.enable.delete.all
+		if(deleteEnabled) {
+			def secret = params.secret
+			if(secret.equals("cleanitup")) {
 				sampleDataService.deleteSampleData();
+				Journey.executeUpdate('delete from Journey');
+				User.findAll ().each {
+					it.activeJourneys.clear();
+					it.save();
+				}
 				render "Delete Complete"
 			}
-			test {
-				render "Empty Implementation"
+			else {
+				render "Wrong Password"
 			}
-			production {
-				render "Empty Implementation"
-			}
+		}
+		else {
+			render "Delete is disable like this"
 		}		
 	}
 	
