@@ -503,8 +503,7 @@ class MobileController {
 			currentUser = User.findByUsername(currentJourney.user);
 		}
 		if(currentUser) {
-			def indexName = ElasticSearchService.JOURNEY //params.indexName
-			def currentJourney = journeyService.findJourneyById(journeyId, indexName)
+			def currentJourney = journeyService.findJourneyById(journeyId)
 			def searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
 			mobileResponse.data = searchResultMap
 			mobileResponse.success = true

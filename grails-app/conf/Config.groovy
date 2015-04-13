@@ -134,7 +134,6 @@ grails.startup.masterData.places.file = "all.csv"
 
 grails.email.exception.one="rajan@racloop.com"
 grails.email.exception.two="rohit@racloop.com"
-grails.sms.enable=false
 grails.sms.emergency.one="9810095625"
 grails.sms.emergency.two="7307392447"
 
@@ -154,6 +153,7 @@ environments {
 		grails.plugin.facebooksdk.app.id = 417141881785415
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = '3461eaa74e391bb6add17f9b25a38355'
+		grails.sms.enable=false
 	}
 	production {
 		grails.logging.jul.usebridge = false
@@ -161,6 +161,7 @@ environments {
 		grails.plugin.facebooksdk.app.id = 393926260773644
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
+		grails.sms.enable=true
 	}
 }
 

@@ -50,7 +50,7 @@ class SampleDataService {
 				journeyCommand.isDriver = true
 				journeyCommand.tripDistance = 250.0d
 				journeyCommand.user = user1.username
-				journeyManagerService.createJourney(user3, journeyCommand)
+				journeyManagerService.createJourney(user1, journeyCommand)
 				outgoingRequest<<journeyCommand
 			}
 			time.add(Calendar.MINUTE, timeInterval);
@@ -79,7 +79,7 @@ class SampleDataService {
 				journeyCommand.tripDistance = 250.0d
 	
 				journeyCommand.user = user2.username
-				journeyManagerService.createJourney(user4, journeyCommand)
+				journeyManagerService.createJourney(user2, journeyCommand)
 				incomingRequest<<journeyCommand
 			}
 			time.add(Calendar.MINUTE, timeInterval);
@@ -106,7 +106,7 @@ class SampleDataService {
 				journeyCommand.isDriver = true
 				journeyCommand.tripDistance = 250.0d
 				journeyCommand.user = user3.username
-				journeyManagerService.createJourney(user2, journeyCommand)
+				journeyManagerService.createJourney(user3, journeyCommand)
 				outgoingRequest<<journeyCommand
 			}
 			time.add(Calendar.MINUTE, timeInterval);
@@ -134,7 +134,7 @@ class SampleDataService {
 				journeyCommand.isDriver = false
 				journeyCommand.tripDistance = 250.0d
 				journeyCommand.user = user4.username
-				journeyManagerService.createJourney(user1, journeyCommand)
+				journeyManagerService.createJourney(user4, journeyCommand)
 				incomingRequest<<journeyCommand
 			}
 			time.add(Calendar.MINUTE, timeInterval);

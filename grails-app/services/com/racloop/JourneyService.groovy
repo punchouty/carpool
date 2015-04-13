@@ -189,8 +189,8 @@ class JourneyService {
 	}
 	
 	def Map findCountOfAllWorkflowRequestForAJourney(String journeyId) {
-		List outgoing = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.REQUEST_JOURNEY_ID, journeyId)
-		List incoming = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.MATCHED_JOURNEY_ID, journeyId)
+		List outgoing = elasticSearchService.searchActiveWorkflowByMatchedJourneyId(WorkflowIndexFields.REQUEST_JOURNEY_ID, journeyId)
+		List incoming = elasticSearchService.searchActiveWorkflowByMatchedJourneyId(WorkflowIndexFields.MATCHED_JOURNEY_ID, journeyId)
 		return [outgoingCount : outgoing?.size(), incomingCount:incoming?.size(), totalCount: outgoing?.size()+ incoming?.size()]
 		
 	}
@@ -242,8 +242,8 @@ class JourneyService {
 		return journeyDetails
 	}
 	
-	def findJourneyById(String journeyId, String indexName) {
-		return elasticSearchService.findJourneyById(journeyId, indexName)
+	def findJourneyById(String journeyId) {
+		return elasticSearchService.findJourneyById(journeyId)
 	}
 	
 	def findJourneyById(String journeyId, boolean isDummy) {
@@ -251,8 +251,7 @@ class JourneyService {
 	}
 	
 	public void markJourneyAsDeleted(String journeyId) {
-		String indexName = ElasticSearchService.JOURNEY.toLowerCase()
-		JourneyRequestCommand currentJourney = elasticSearchService.findJourneyById(journeyId, indexName)
+		JourneyRequestCommand currentJourney = elasticSearchService.findJourneyById(journeyId)
 		elasticSearchService.markJourneyAsDeleted(currentJourney)
 	}
 	

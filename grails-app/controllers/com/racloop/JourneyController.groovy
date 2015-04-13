@@ -210,13 +210,6 @@ class JourneyController {
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
 		forward action: 'findMatching', model: [currentJourney: currentJourney]
 	}
-
-	
-	def getWorkflow(){
-		def currentUser = getRacloopAuthenticatedUser()
-		def workflows = journeyWorkflowService.searchWorkflowRequestedByUser(currentUser)
-		render workflows as JSON
-	}
 	
 	/**
 	 * Request Journey - from search results of main search screen
@@ -257,20 +250,6 @@ class JourneyController {
 		render(view: "activeJourneys", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords, workflows:workflows])
 	}
 	
-	/**
-	 * TODO - might be deprecated
-	 * @return
-	 */
-	def myMatchedJourneys() {
-		def workflows =[]
-		int numberOfRecords = 0
-		def currentUser = getRacloopAuthenticatedUser()
-		if(currentUser) {
-			workflows = journeyWorkflowService.searchWorkflowMatchedForUser(currentUser)
-			numberOfRecords = workflows?.size()
-		}
-		render(view: "myMatchedJourneys", model: [currentUser: currentUser, numberOfRecords : numberOfRecords, workflows:workflows])
-	}
 	
 	/**
 	 * TODO - need to find where it is used
@@ -350,9 +329,8 @@ class JourneyController {
 	 */
 	def searchAgain() {
 		def journeyId = params.journeyId 
-		def indexName = ElasticSearchService.JOURNEY //params.indexName
 		boolean isDriver =params.boolean('isDriver')
-		def journey = journeyService.findJourneyById(journeyId, indexName)
+		def journey = journeyService.findJourneyById(journeyId)
 		//chain(action: 'findMatching', model: [currentJourney: journey])
 		forward action: 'findMatching', model: [currentJourney: journey]
 	}
@@ -418,6 +396,7 @@ class JourneyController {
 		}
 		forward controller: 'userSession', action: 'search', model: [journeyInstance: journey]
 	}
+	
 	
 	private void resetJourney(JourneyRequestCommand journey) {
 		journey.id = null

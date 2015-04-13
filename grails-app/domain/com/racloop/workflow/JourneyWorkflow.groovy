@@ -5,7 +5,7 @@ import com.racloop.journey.workkflow.WorkflowState;
 
 class JourneyWorkflow {
 	
-	UUID id
+	String id
 	String requestJourneyId
 	String requestedFromPlace
 	String requestedToPlace
@@ -26,7 +26,7 @@ class JourneyWorkflow {
     }
 	
 	static mapping = {
-		id generator:'assigned' //disable primary key generation
+		id generator: "com.racloop.util.domain.JourneyWorkflowIdGenerator", column:"id", unique:"true"
 	}
 
 	

@@ -107,10 +107,7 @@ class UrlMappings {
 			controller = "journey"
 			action = "myJourneys"
 		}
-		"/notifications"{
-			controller = "journey"
-			action = "myMatchedJourneys"
-		}
+		
 		"/mlogin"{
 			controller = "mobile"
 			action = "login"

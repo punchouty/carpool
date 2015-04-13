@@ -28,11 +28,13 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders
 import org.elasticsearch.search.sort.SortOrder
+import org.elasticsearch.index.query.IdsQueryBuilder
 
 import com.racloop.elasticsearch.IndexDefinitor
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.util.date.DateUtil;
 import com.racloop.workflow.JourneyWorkflow
+import com.racloop.elasticsearch.IndexNameResolver
 import static com.racloop.elasticsearch.WorkflowIndexFields.*
 import static com.racloop.util.date.DateUtil.convertElasticSearchDateToDateTime
 
@@ -44,9 +46,14 @@ class ElasticSearchService {
 	public static final int DISTANCE_FACTOR = 8
 	public static final String TYPE_DRIVER = "driver"
 	public static final String TYPE_RIDER = "rider"
-	public static final String WORKFLOW = "workflow"
+	public static final String TYPE_WORKFLOW = "workflow"
 	public static final String JOURNEY = "journey"
+	private static final int DAYS_OF_WEEK = 7
+	private static final int WEEKS_IN_A_YEAR = 52
 	private Node node
+	private IndexNameResolver indexNameResolver = new IndexNameResolver()
+	private DateTime FROM_DATE = new DateTime(2015,4,1,0,1)
+	private DateTime TO_DATE = new DateTime(2015,11,1,0,1)
 
 	def init() {
 		log.info "Initialising elastic search client"
@@ -65,9 +72,9 @@ class ElasticSearchService {
 	def indexJourney(User user, JourneyRequestCommand journey) {
 		log.info "Adding record to elastic search ${journey}"
 		def sourceBuilder = createJourneyJson(user, journey)
-		String indexName = JOURNEY//getIndexName(journey.dateOfJourney)
+		String indexName = indexNameResolver.getIndexNameFromId(journey.id)//JOURNEY//getIndexName(journey.dateOfJourney)
 		String type = getType(journey);
-		IndexRequest indexRequest = new IndexRequest(indexName, type).id(journey.id + '').source(sourceBuilder);
+		IndexRequest indexRequest = new IndexRequest(indexName, type).id(journey.id).source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
 		log.info "Successfully indexed ${journey}"
 	}
@@ -107,8 +114,13 @@ class ElasticSearchService {
 	}
 	
 	def createMainJourneyIndex() {
+		DateTime fromDateTime = new DateTime(FROM_DATE)
 		IndexDefinitor indexDefinitor = new IndexDefinitor()
-		indexDefinitor.createMainIndex(node, JOURNEY)
+		while (fromDateTime.compareTo(TO_DATE)<0) {
+			String indexName = indexNameResolver.generateIndexNameFromDate(fromDateTime)
+			indexDefinitor.createMainIndex(node, indexName)
+			fromDateTime = fromDateTime.plusDays(DAYS_OF_WEEK)
+		}
 	}
 	
 	@Deprecated
@@ -208,7 +220,7 @@ class ElasticSearchService {
 	}
 
 	JourneyRequestCommand getJourney(def journeyId, boolean isDriver, def dateOfJourney) {
-		String indexName = JOURNEY//getIndexName(dateOfJourney);
+		String indexName = indexNameResolver.getIndexNameFromId(journeyId)
 		String searchType = null;
 		if(isDriver) {
 			searchType = TYPE_DRIVER;
@@ -221,7 +233,7 @@ class ElasticSearchService {
 	}
 
 	def search(User user, JourneyRequestCommand journey) {
-		String indexName = JOURNEY//getIndexName(journey.dateOfJourney);
+		//String indexName = JOURNEY//getIndexName(journey.dateOfJourney);
 		String searchTypeOpposite = null;
 		if(journey.isDriver) {
 			searchTypeOpposite = TYPE_RIDER;
@@ -255,7 +267,7 @@ class ElasticSearchService {
 		
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey);
 		FieldSortBuilder startTimeSorter = getJourneyStartTimeSorter()
-		return searchJourney(indexName, [TYPE_DRIVER,TYPE_RIDER] as String[], filter , sorter, startTimeSorter)
+		return searchJourney(indexNameResolver.getPossibleIndexNameFromDate(dateOfJourney), [TYPE_DRIVER,TYPE_RIDER] as String[], filter , sorter, startTimeSorter)
 	}
 
 	private GeoDistanceSortBuilder getJourneyFromGeoDistanceSorter(JourneyRequestCommand journey) {
@@ -273,7 +285,7 @@ class ElasticSearchService {
 	
 	
 	def searchPossibleExistingJourneyForUser(User user, JourneyRequestCommand journey) {
-		String indexName = JOURNEY.toLowerCase()//getIndexName(journey.dateOfJourney);
+		//String indexName = JOURNEY.toLowerCase()//getIndexName(journey.dateOfJourney);
 		
 		double filterDistance = Double.valueOf(grailsApplication.config.grails.approx.distance.to.match)
 		DateTime dateOfJourney = new DateTime(journey.dateOfJourney)
@@ -290,7 +302,7 @@ class ElasticSearchService {
 			
 		)
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey)
-		return searchJourney(indexName, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, sorter)
+		return searchJourney(indexNameResolver.getPossibleIndexNameFromDate(dateOfJourney), [TYPE_DRIVER,TYPE_RIDER] as String[], filter, sorter)
 	}
 	/**
 	 * 
@@ -323,7 +335,7 @@ class ElasticSearchService {
 			getFilterOnJourneyToPositon(journey, filterDistance)			
 		);
 		GeoDistanceSortBuilder sorter = getJourneyFromGeoDistanceSorter(journey)
-		return searchJourney(indexName, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, sorter)
+		return searchJourney([indexName] as String[], [TYPE_DRIVER,TYPE_RIDER] as String[], filter, sorter)
 		
 	}
 	
@@ -340,7 +352,7 @@ class ElasticSearchService {
 		sorter.order(SortOrder.ASC);
 		def places = [];
 
-		SearchHit[] hits = queryDocument(indexName, [indexType] as String[], filter, maxRecords, sorter)
+		SearchHit[] hits = queryDocument([indexName] as String[], [indexType] as String[], filter, maxRecords, sorter)
 		for (SearchHit searchHit : hits) {
 			Place place = parsePlaceFromSearchHit(searchHit);
 			places << place
@@ -350,18 +362,25 @@ class ElasticSearchService {
 	}
 	
 	def deleteSampleData() {
-		Calendar time = Calendar.getInstance();
-		Date date = new Date(time.timeInMillis);
-		String indexName = JOURNEY//getIndexName(date);
+		
+		DateTime dateTime = new DateTime()
+		dateTime = dateTime.plusDays(-1)
+		String indexName = indexNameResolver.generateIndexNameFromDate(dateTime)
 		log.info "Removing data from journeys"
 		DeleteByQueryResponse response = node.client.prepareDeleteByQuery(indexName).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
+		indexName = indexNameResolver.generateIndexNameFromDate(dateTime.plusDays(DAYS_OF_WEEK))
+		node.client.prepareDeleteByQuery(indexName).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
 		log.info "Data removed from journeys successfully"
 	}
 	
 	def deleteWorkflowData() {
-		String indexName = WORKFLOW
+		DateTime dateTime = new DateTime()
+		dateTime = dateTime.plusDays(-1)
+		String indexName = indexNameResolver.generateWorkflowIndexNameFromDate(dateTime)
 		log.info "Removing data from workflows"
 		DeleteByQueryResponse response = node.client.prepareDeleteByQuery(indexName).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
+		indexName = indexNameResolver.generateWorkflowIndexNameFromDate(dateTime.plusDays(DAYS_OF_WEEK))
+		node.client.prepareDeleteByQuery(indexName).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
 		log.info "Data removed from workflows successfully"
 	}
 	
@@ -438,15 +457,21 @@ class ElasticSearchService {
 	}
 	
 	def createWorkflowIndex() {
+		DateTime fromDateTime = new DateTime(FROM_DATE)
 		IndexDefinitor indexDefinitor = new IndexDefinitor()
-		indexDefinitor.createWorkflowIndex(node, WORKFLOW.toLowerCase())
+		while (fromDateTime.compareTo(TO_DATE)<0) {
+			String indexName = indexNameResolver.generateWorkflowIndexNameFromDate(fromDateTime)
+			indexDefinitor.createWorkflowIndex(node, indexName)
+			fromDateTime = fromDateTime.plusDays(DAYS_OF_WEEK)
+		}
 
 	}
 	
 	def indexWorkflow(JourneyWorkflow workflow) {
 		log.info "Adding record to elastic search ${workflow}"
 		def sourceBuilder = createWorkflowJson(workflow)
-		IndexRequest indexRequest = new IndexRequest(WORKFLOW, WORKFLOW).id(workflow.id.toString()).refresh(true).source(sourceBuilder);
+		String indexName = indexNameResolver.getIndexNameFromId(workflow.id)
+		IndexRequest indexRequest = new IndexRequest(indexName, TYPE_WORKFLOW).id(workflow.id).refresh(true).source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
 		log.info "Successfully indexed ${workflow}"
 	}
@@ -473,11 +498,43 @@ class ElasticSearchService {
 		return builder;
 	}
 	
-	def findJourneyById(String journeyId, String indexName) {
-		GetResponse response =node.client().prepareGet().setId(journeyId).setIndex(indexName).execute().actionGet();
+	def findJourneyById(String journeyId, String indexName = null) {
+		/*GetResponse response =node.client().prepareGet().setId(journeyId).setIndex(indexName).execute().actionGet();
 		//GetResponse response = node.client.prepareGet(indexName, indexType, journeyId).execute().actionGet();
-		JourneyRequestCommand journeyTemp = parseJourneyFromGetResponse(response)
-		return journeyTemp
+		JourneyRequestCommand journeyTemp = parseJourneyFromGetResponse(response)*/
+		def journeys = []
+		IdsQueryBuilder idBuider = new IdsQueryBuilder()
+		idBuider.ids(journeyId)
+		SearchHit[] hits = []
+		SearchRequestBuilder builder = null
+		try {
+			if(indexName){
+				builder = node.client.prepareSearch(indexName)
+			}
+			else {
+				builder = node.client.prepareSearch()
+			}
+			builder.setTypes()
+					.setSearchType(SearchType.QUERY_THEN_FETCH)
+					.setQuery(idBuider)
+			builder.setSize(1)
+			SearchResponse searchResponse = builder.execute().actionGet();
+			SearchHits searchHits = searchResponse.getHits();
+			hits = searchHits.hits;
+			for (SearchHit searchHit : hits) {
+				JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
+				journeys << journeyTemp
+			}
+		}
+		catch (Exception e) {
+			log.error ("Error",e)
+		}
+		if(journeys){
+			return journeys.get(0)
+		}
+		else {
+			return null
+		}
 	}
 	
 	def findJourneyById(String journeyId, boolean isDummyData) {
@@ -486,7 +543,7 @@ class ElasticSearchService {
 	}
 	
 	public void markJourneyAsDeleted(JourneyRequestCommand journey) {
-		String indexName = JOURNEY.toLowerCase()
+		String indexName = indexNameResolver.getIndexNameFromId(journey.id)
 		def myMap =["isDeleted":true]
 		String indexType = null;
 		if(journey.isDriver) {
@@ -503,38 +560,24 @@ class ElasticSearchService {
 		if(isDummy) {
 			indexName = grailsApplication.config.grails.generatedData.index.name
 		}
-		else {
+		/*else {
 			indexName = JOURNEY//getIndexName(currentJourney.dateOfJourney);
 			
-		}
+		}*/
 		
 		return indexName
 	}
 	
 	def findWorkfowById(String workflowId) {
-		String indexName = WORKFLOW.toLowerCase()
-		GetResponse response = node.client.prepareGet(indexName, WORKFLOW, workflowId).execute().actionGet();
+		String indexName = indexNameResolver.getIndexNameFromId(workflowId)
+		GetResponse response = node.client.prepareGet(indexName, TYPE_WORKFLOW, workflowId).execute().actionGet();
 		JourneyWorkflow journeyWorkflow = parseWorkflowFromGetResponse(response)
 		return journeyWorkflow
 	}
 	
-	def searchWorkflowRequestedByUser(User user) {
-		String indexName = WORKFLOW.toLowerCase()
-		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter(REQUEST_USER, user.username),
-			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("user", user.username))
-			
-		)
-		
-		FieldSortBuilder  sorter = SortBuilders.fieldSort(REQUEST_DATE_TIME)
-		sorter.order(SortOrder.DESC);
-		
-		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
-		return workflows
-	}
 	
 	def searchWorkflowRequestedByUserForAJourney(String journeyId, User user) {
-		String indexName = WORKFLOW.toLowerCase()
+		String indexName = indexNameResolver.getWorkflowIndexNameFromId(journeyId)
 		FilterBuilder filter = FilterBuilders.andFilter(
 			FilterBuilders.termFilter(REQUEST_USER, user.username),
 			FilterBuilders.termFilter(REQUEST_JOURNEY_ID, journeyId)
@@ -543,27 +586,13 @@ class ElasticSearchService {
 		FieldSortBuilder  sorter = SortBuilders.fieldSort(REQUEST_DATE_TIME)
 		sorter.order(SortOrder.DESC);
 		
-		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
+		def workflows = searchWorkflow([indexName] as String[], TYPE_WORKFLOW, filter, sorter)
 		return workflows
 	}
 	
-	def searchWorkflowMatchedForUser(User user) {
-		String indexName = WORKFLOW.toLowerCase()
-		FilterBuilder filter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter(MACTHING_USER, user.username),
-			FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("user", user.username))
-			
-		)
-		
-		FieldSortBuilder  sorter = SortBuilders.fieldSort(MATCHED_DATE_TIME)
-		sorter.order(SortOrder.DESC);
-		
-		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
-		return workflows
-	}
 	
 	def searchWorkflowMatchedForUserForAJourney(String journeyId, User user) {
-		String indexName = WORKFLOW.toLowerCase()
+		String indexName = indexNameResolver.getWorkflowIndexNameFromId(journeyId)
 		FilterBuilder filter = FilterBuilders.andFilter(
 			FilterBuilders.termFilter(MACTHING_USER, user.username),
 			FilterBuilders.termFilter(MATCHED_JOURNEY_ID, journeyId)
@@ -573,25 +602,25 @@ class ElasticSearchService {
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("matchedDateTime")
 		sorter.order(SortOrder.DESC);
 		
-		def workflows = searchWorkflow(indexName, WORKFLOW, filter, sorter)
+		def workflows = searchWorkflow([indexName] as String[], TYPE_WORKFLOW, filter, sorter)
 		return workflows
 	}
 	
 	def searchWorkflowByRequestedJourney(JourneyRequestCommand command) {
-		String indexName = WORKFLOW.toLowerCase()
+		String indexName = indexNameResolver.getWorkflowIndexNameFromId(command.id)
 		FilterBuilder filter = FilterBuilders.andFilter(
 			FilterBuilders.termFilter(REQUEST_USER, command.user),
 			FilterBuilders.termFilter(REQUEST_JOURNEY_ID, command.id)
 			//FilterBuilders.termFilter('state', "")
 		)
 		
-		def workflows = searchWorkflow(indexName, WORKFLOW, filter, null)
+		def workflows = searchWorkflow([indexName] as String[], TYPE_WORKFLOW, filter, null)
 		
 		return workflows
 	}
 	
 	def searchWorkflowByMatchedJourney(JourneyRequestCommand command) {
-		String indexName = WORKFLOW.toLowerCase()
+		String indexName = indexNameResolver.getWorkflowIndexNameFromId(command.id)
 		
 		FilterBuilder incomingRequestFilter = FilterBuilders.andFilter(
 			FilterBuilders.termFilter(MACTHING_USER, command.user),
@@ -600,34 +629,34 @@ class ElasticSearchService {
 		)
 		
 		
-		def workflows = searchWorkflow(indexName, WORKFLOW, incomingRequestFilter, null)
+		def workflows = searchWorkflow([indexName] as String[], TYPE_WORKFLOW, incomingRequestFilter, null)
 		
 		return workflows
 	}
 	
-	def searchActiveWorkflowByMatchedJourney(String indexField ,String value) {
-		String indexName = WORKFLOW.toLowerCase()
+	def searchActiveWorkflowByMatchedJourneyId(String indexField ,String idValue) {
+		String indexName = indexNameResolver.getWorkflowIndexNameFromId(idValue)
 		
 		FilterBuilder incomingRequestFilter = FilterBuilders.andFilter(
-			FilterBuilders.termFilter(indexField, value),
+			FilterBuilders.termFilter(indexField, idValue),
 			FilterBuilders.termsFilter(STATE, WorkflowState.INITIATED.state, WorkflowState.ACCEPTED.state)
 		)
 		
 		
-		def workflows = searchWorkflow(indexName, WORKFLOW, incomingRequestFilter, null)
+		def workflows = searchWorkflow([indexName] as String[], TYPE_WORKFLOW, incomingRequestFilter, null)
 		
 		return workflows
 	}
 	
 	def searchWorkflowByJourneyTuple(String requestJourneyId, String matchedJourneyId) {
-		String indexName = WORKFLOW.toLowerCase()
+		String indexName = indexNameResolver.getWorkflowIndexNameFromId(requestJourneyId)
 		FilterBuilder filter = FilterBuilders.andFilter(
 			FilterBuilders.termFilter(REQUEST_JOURNEY_ID, requestJourneyId),
 			FilterBuilders.termFilter(MATCHED_JOURNEY_ID, matchedJourneyId)
 			
 		)
 		
-		def workflows = searchWorkflow(indexName, WORKFLOW, filter, null)
+		def workflows = searchWorkflow([indexName] as String[], TYPE_WORKFLOW, filter, null)
 		return workflows
 	}
 	
@@ -642,7 +671,10 @@ class ElasticSearchService {
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
 		sorter.order(SortOrder.ASC);
 		def journeys = []
-		SearchHit[] hits = queryDocument(JOURNEY, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 100, sorter)
+		def indexNames = indexNameResolver.getPossibleIndexNameFromDate(inputDate) as Set
+		def additionalIndexNames = indexNameResolver.getPossibleIndexNameFromDate(inputDate.plusDays(DAYS_OF_WEEK)) as Set
+		additionalIndexNames.each {indexNames<<it}
+		SearchHit[] hits = queryDocument(indexNames as String[], [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 100, sorter)
 		for (SearchHit searchHit : hits) {
 			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
 			journeys << journeyTemp
@@ -659,7 +691,7 @@ class ElasticSearchService {
 	
 }
 	
-	private List searchWorkflow(String indexName, String type, FilterBuilder filter, FieldSortBuilder  sorter ) {
+	private List searchWorkflow(String[] indexName, String type, FilterBuilder filter, FieldSortBuilder  sorter ) {
 		def workflows = []
 
 		SearchHit[] hits = queryDocument(indexName, [type] as String[], filter, 10, sorter)
@@ -673,8 +705,7 @@ class ElasticSearchService {
 	
 	private JourneyWorkflow parseWorkflowFromSearchHit(SearchHit searchHit) {
 		JourneyWorkflow workflow = new JourneyWorkflow();
-		String workflowId = searchHit.id
-		workflow.id = UUID.fromString(workflowId)
+		workflow.id = searchHit.id
 		workflow.requestJourneyId = searchHit.getSource().get(REQUEST_JOURNEY_ID);
 		String requestedDateTimeStr = searchHit.getSource().get(REQUEST_DATE_TIME);
 		workflow.requestedDateTime = convertElasticSearchDateToDateTime(requestedDateTimeStr).toDate()
@@ -696,8 +727,7 @@ class ElasticSearchService {
 	
 	private JourneyWorkflow parseWorkflowFromGetResponse(GetResponse getResponse) {
 		JourneyWorkflow workflow = new JourneyWorkflow();
-		String workflowId = getResponse.id
-		workflow.id = UUID.fromString(workflowId)
+		workflow.id = getResponse.id
 		workflow.requestJourneyId = getResponse.getSource().get(REQUEST_JOURNEY_ID);
 		String requestedDateTimeStr = getResponse.getSource().get(REQUEST_DATE_TIME);
 		workflow.requestedDateTime = convertElasticSearchDateToDateTime(requestedDateTimeStr).toDate()
@@ -718,8 +748,9 @@ class ElasticSearchService {
 	}
 	
 	public void updateWorkflowState (String workflowId, String newState){
+		String indexName = indexNameResolver.getIndexNameFromId(workflowId)
 		def myMap =["state":newState]
-		node.client().prepareUpdate(WORKFLOW.toLowerCase(),WORKFLOW,workflowId).setDoc(myMap).setRefresh(true).execute().actionGet()
+		node.client().prepareUpdate(indexName,TYPE_WORKFLOW,workflowId).setDoc(myMap).setRefresh(true).execute().actionGet()
 			//setScript("ctx._state=\"" + newState+ "\"").execute().get()
 		
 	}
@@ -747,7 +778,7 @@ class ElasticSearchService {
 	
 	
 	
-	private searchJourney(String indexName, String[] type, FilterBuilder filter, int size=100, SortBuilder...sorters) {
+	private searchJourney(String[] indexName, String[] type, FilterBuilder filter, int size=100, SortBuilder...sorters) {
 		def journeys = []
 
 		SearchHit[] hits = queryDocument(indexName, type, filter, size, sorters)
@@ -767,7 +798,7 @@ class ElasticSearchService {
 		return builder
 	}
 	
-	private SearchHit[] queryDocument(String indexName, String[] indexType, FilterBuilder filter, int size=100, SortBuilder...sorters){
+	private SearchHit[] queryDocument(String[] indexName, String[] indexType, FilterBuilder filter, int size=100, SortBuilder...sorters){
 		SearchHit[] hits = []
 		try {
 		SearchRequestBuilder builder = node.client.prepareSearch(indexName)
@@ -782,7 +813,7 @@ class ElasticSearchService {
 		hits = searchHits.hits;
 		}
 		catch (IndexMissingException exception) {
-			log.error "Index name ${indexName} does not exists"
+			log.error ("Index name ${indexName} does not exists", exception)
 		}
 		return hits
 	}
@@ -797,7 +828,15 @@ class ElasticSearchService {
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
 		sorter.order(SortOrder.DESC);
 		def journeys = []
-		SearchHit[] hits = queryDocument(JOURNEY, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 100, sorter)
+		DateTime tempDate = new DateTime(inputDate)
+		def indexNames = indexNameResolver.getPossibleIndexNameFromDate(inputDate) as Set
+		while (tempDate.compareTo(FROM_DATE)>1){
+			tempDate = tempDate.minusDays(DAYS_OF_WEEK)
+			def additionalIndexNames = indexNameResolver.getPossibleIndexNameFromDate(tempDate) as Set
+			additionalIndexNames.each {indexNames<<it}
+		}
+		
+		SearchHit[] hits = queryDocument(indexNames as String[], [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 100, sorter)
 		for (SearchHit searchHit : hits) {
 			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
 			journeys << journeyTemp
@@ -817,7 +856,7 @@ class ElasticSearchService {
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
 		sorter.order(SortOrder.ASC);
 		def journeys = []
-		SearchHit[] hits = queryDocument(JOURNEY, [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 5, sorter)
+		SearchHit[] hits = queryDocument(indexNameResolver.getPossibleIndexNameFromDate(startDate), [TYPE_DRIVER,TYPE_RIDER] as String[], filter, 5, sorter)
 		for (SearchHit searchHit : hits) {
 			JourneyRequestCommand journeyTemp = parseJourneyFromSearchHit(searchHit);
 			journeys << journeyTemp
@@ -825,4 +864,5 @@ class ElasticSearchService {
 		
 		return journeys
 	}
+	
 }

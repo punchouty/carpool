@@ -107,7 +107,7 @@
 	                            </ul>
 	                         </div> 
 	                         <div class="col-md-1">
-	                         	<g:if test = "${matchedWorkflowInstance.otherUser?.facebookProfilePic}">
+	                         	<g:if test = "${matchedWorkflowInstance.otherUser?.facebookId}">
 	                            	<img src="${matchedWorkflowInstance.otherUser?.facebookProfilePic}" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
 	                        	<g:elseif test = "${matchedWorkflowInstance.otherUser?.profile?.gravatarUri}">
@@ -161,7 +161,7 @@
 	                            </ul>
                         	</div>
 	                        <div class="col-md-1">
-	                        	<g:if test = "${requestWorkflowInstance.otherUser?.facebookProfilePic}">
+	                        	<g:if test = "${requestWorkflowInstance.otherUser?.facebookId}">
 	                            	<img src="${requestWorkflowInstance.otherUser?.facebookProfilePic}" alt="profile image" class="img-thumbnail"> </img>
 	                            </g:if>
 	                        	<g:elseif test = "${requestWorkflowInstance.otherUser?.profile?.gravatarUri}">
