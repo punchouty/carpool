@@ -89,7 +89,7 @@
                 </ul>
             </div>
             <div class="col-md-2 text-left">
-            	<g:if test = "${matchedUser?.facebookProfilePic}">
+            	<g:if test = "${matchedUser?.facebookId}">
             		<div>	
 	                 	<img src="${matchedUser?.facebookProfilePic}" alt="profile image" class="img-thumbnail"> </img>
 	                 </div>
