@@ -42,8 +42,8 @@ class IndexDefinitor {
 			log.info "Started creating Index name : ${indexName}"
 			node.client.admin().indices().prepareCreate(indexName).execute().actionGet()
 			log.info "Index name : ${indexName} created successfuly"
-			def builder = createWorkflowIndexJson(ElasticSearchService.WORKFLOW)
-			node.client.admin().indices().preparePutMapping(indexName).setType(ElasticSearchService.WORKFLOW).setSource(builder).execute().actionGet()
+			def builder = createWorkflowIndexJson(ElasticSearchService.TYPE_WORKFLOW)
+			node.client.admin().indices().preparePutMapping(indexName).setType(ElasticSearchService.TYPE_WORKFLOW).setSource(builder).execute().actionGet()
 			
 		}
 	}

@@ -3,9 +3,10 @@ package com.racloop.workflow
 import com.racloop.Constant
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
-import com.racloop.elasticsearch.WorkflowIndexFields;
+import com.racloop.elasticsearch.WorkflowIndexFields
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.journey.workkflow.model.WorkflowDetails
+import com.racloop.util.domain.JourneyWorkflowIdGenerator
 
 class JourneyWorkflowService {
 	
@@ -34,10 +35,6 @@ class JourneyWorkflowService {
 	
 	}
 	
-	def searchWorkflowRequestedByUser(User user) {
-		return elasticSearchService.searchWorkflowRequestedByUser(user)
-	}
-	
 	def searchWorkflowRequestedByUserForAJourney(String journeyId, User user) {
 		return elasticSearchService.searchWorkflowRequestedByUserForAJourney(journeyId, user)
 	}
@@ -47,9 +44,6 @@ class JourneyWorkflowService {
 		return populateWorkflowDetails(requestedWorkflowList)
 	}
 	
-	def searchWorkflowMatchedForUser(User user) {
-		return elasticSearchService.searchWorkflowMatchedForUser(user)
-	}
 	
 	def searchWorkflowMatchedForUserForAJourney(String journeyId,User user) {
 		return elasticSearchService.searchWorkflowMatchedForUserForAJourney(journeyId, user)
@@ -93,7 +87,8 @@ class JourneyWorkflowService {
 		workflow.matchedDateTime = matchedJourney.dateOfJourney
 		workflow.isRequesterDriving = requestedJourney.isDriver
 		workflow.isMatchedUserDriving = matchedJourney.isDriver
-		workflow.id = UUID.randomUUID()
+		workflow.id = new JourneyWorkflowIdGenerator().generate(null, workflow)
+		//workflow.save()
 		return workflow
 		
 	}
@@ -194,13 +189,13 @@ class JourneyWorkflowService {
 	}
 	
 	private cancelOutgoingRequestForAJourney (String requestJourneyId) {
-		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.REQUEST_JOURNEY_ID, requestJourneyId)
+		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourneyId(WorkflowIndexFields.REQUEST_JOURNEY_ID, requestJourneyId)
 		cancelWorkflowsAndSendNotification(workflowList, false)
 		
 	}
 	
 	private cancelIncomingRequestForAJourney (String matchedJourneyId) {
-		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourney(WorkflowIndexFields.MATCHED_JOURNEY_ID, matchedJourneyId)
+		def workflowList = elasticSearchService.searchActiveWorkflowByMatchedJourneyId(WorkflowIndexFields.MATCHED_JOURNEY_ID, matchedJourneyId)
 		cancelWorkflowsAndSendNotification(workflowList, true)
 	}
 	
