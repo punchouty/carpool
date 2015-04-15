@@ -3,14 +3,14 @@ package com.racloop
 import grails.converters.JSON
 
 import org.codehaus.groovy.grails.web.json.JSONObject
-import org.elasticsearch.index.query.QueryBuilders
-import org.elasticsearch.node.Node
+import org.elasticsearch.common.joda.time.DateTime
 
-import com.google.gson.JsonObject;
+import com.racloop.util.date.DateUtil
 
 class ElasticsearchController {
 	
 	def rest
+	def elasticSearchService
 
     def execute() { 
 		String url =  "http://localhost:9200/" + params['url']
@@ -32,6 +32,27 @@ class ElasticsearchController {
 	}
 	
 	def query() {
+		
+	}
+	
+	def addIndex(){
+		
+	}
+	
+	def executeAddIndex(){
+		String message = null
+		String indexUptoString = params['indexUptoString']
+		DateTime indexUptoDate = DateUtil.convertUIDateToElasticSearchDate(indexUptoString)
+		DateTime dateAfterThirtyDays = new DateTime().plusDays(30)
+		if(dateAfterThirtyDays.compareTo(indexUptoDate)>0) {
+			elasticSearchService.addNewIndex(new DateTime(), indexUptoDate)
+			message ="Index added sucessfully!!!"
+		}
+		else {
+			message = "You can only add index for next 30 days i.e. till $dateAfterThirtyDays"
+		}
+		
+		render message
 		
 	}
 }

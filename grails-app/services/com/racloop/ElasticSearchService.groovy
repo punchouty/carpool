@@ -123,6 +123,18 @@ class ElasticSearchService {
 		}
 	}
 	
+	def addNewIndex(DateTime fromDate, DateTime toDate){
+		IndexDefinitor indexDefinitor = new IndexDefinitor()
+		while (fromDate.compareTo(toDate)<0) {
+			String journeyIndexName = indexNameResolver.generateIndexNameFromDate(fromDate)
+			indexDefinitor.createMainIndex(node, journeyIndexName)
+			String workflowIndexName = indexNameResolver.generateWorkflowIndexNameFromDate(fromDate)
+			indexDefinitor.createWorkflowIndex(node, journeyIndexName)
+			fromDate = fromDate.plusDays(DAYS_OF_WEEK)
+		}
+		
+	}
+	
 	@Deprecated
 	def closeMainIndexForPreviousWeek() {
 		Calendar time = Calendar.getInstance();
