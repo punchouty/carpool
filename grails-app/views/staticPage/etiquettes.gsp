@@ -51,7 +51,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Though Racloop does suggest an approximate cost but it’s an indicator. Discuss cost in <strong>advance</strong>.
+                               Although Racloop does suggest an approximate cost but it’s just an indicator. Discuss cost in <strong>advance</strong>.
                            </p>
                        </div>
                    </div>
@@ -129,7 +129,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Don’t make unnecessary <strong>stops or detour</strong>. One should stick to its destination and the agreed route.
+                               Don’t make unnecessary <strong>stops or detour</strong>. One should stick to their destination and the agreed route.
                            </p>
                        </div>
                    </div>
@@ -159,7 +159,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               For convience for other please <strong>Accept</strong> or <strong>Reject</strong> your incoming requests.
+                               For convenience for other please <strong>Accept</strong> or <strong>Reject</strong> your incoming requests.
                            </p>
                        </div>
                    </div>
@@ -189,7 +189,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Driver is just sharing ride with you. This is not his profession. Please carry <strong>exact currency</strong> to give.
+                               Driver is just sharing a ride with you. This is not his profession. Please carry <strong>exact currency</strong> to give.
                            </p>
                        </div>
                    </div>
@@ -204,7 +204,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Listening to radio/music while driving is good, but respect other people taste.
+                               Listening to radio/music while driving is good, but respect other people's taste.
                            </p>
                        </div>
                    </div>
