@@ -21,9 +21,9 @@ class SampleDataService {
 		
 		int timeInterval = 15
 		User user1 = User.findByUsername('admin@racloop.com');
-		User user2 = User.findByUsername('sample.user@racloop.com');
-		User user3 = User.findByUsername('sample.driver@racloop.com');
-		User user4 = User.findByUsername('sample.rider@racloop.com');
+		User user2 = User.findByUsername('user@racloop.com');
+		User user3 = User.findByUsername('driver@racloop.com');
+		User user4 = User.findByUsername('rider@racloop.com');
 		String dateFormat = grailsApplication.config.grails.dateFormat
 		CSVReader reader = new CSVReader(new InputStreamReader(this.class.classLoader.getResourceAsStream(grailsApplication.config.grails.startup.sampleData.file)));
 		List lines = reader.readAll();

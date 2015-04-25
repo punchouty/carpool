@@ -97,8 +97,8 @@ class BootStrap {
 			def admins = Role.findByName(AdminsService.ADMIN_ROLE)
 			def admin = InstanceGenerator.user(grailsApplication)
 			admin.username = adminUser
-			admin.pass = "P@ssw0rd"
-			admin.passConfirm = "P@ssw0rd"
+			admin.pass = "qwert"
+			admin.passConfirm = "qwert"
 			admin.enabled = true
 
 			def adminProfile = InstanceGenerator.profile(grailsApplication)
@@ -122,16 +122,16 @@ class BootStrap {
 	}
 	
 	private def createUsers() {
-		String sampleUser = 'sample.user@racloop.com'
-		String sampleDriver ='sample.driver@racloop.com'
-		String sampleRider = 'sample.rider@racloop.com'
+		String sampleUser = 'user@racloop.com'
+		String sampleDriver ='driver@racloop.com'
+		String sampleRider = 'rider@racloop.com'
 		//mail.live.com - user : sample.user@racloop.com, password : S@pient1
 		if(!UserBase.findByUsername(sampleUser)) {
 			// Create example User account
 			def user = InstanceGenerator.user(grailsApplication)
 			user.username = sampleUser
-			user.pass = 'P@ssw0rd'
-			user.passConfirm = 'P@ssw0rd'
+			user.pass = 'qwert'
+			user.passConfirm = 'qwert'
 			user.enabled = true
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
@@ -156,8 +156,8 @@ class BootStrap {
 			// Create example User account
 			def user = InstanceGenerator.user(grailsApplication)
 			user.username = sampleDriver
-			user.pass = 'P@ssw0rd'
-			user.passConfirm = 'P@ssw0rd'
+			user.pass = 'qwert'
+			user.passConfirm = 'qwert'
 			user.enabled = true
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
@@ -182,8 +182,8 @@ class BootStrap {
 			// Create example User account
 			def user = InstanceGenerator.user(grailsApplication)
 			user.username = sampleRider
-			user.pass = 'P@ssw0rd'
-			user.passConfirm = 'P@ssw0rd'
+			user.pass = 'qwert'
+			user.passConfirm = 'qwert'
 			user.enabled = true
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
