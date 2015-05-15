@@ -144,9 +144,6 @@ grails.approx.time.to.match = 30
 grails.max.active.requests = 5
 grails.approx.time.range= 45
 
-
-
-
 environments {
 	development {
 		grails.logging.jul.usebridge = true
@@ -183,6 +180,10 @@ grails {
 //                  "mail.smtp.port":"587"]
 	}
 }
+
+grails.plugin.awssdk.accessKey = "AKIAIDCY5QLPSIUTWBNQ"
+grails.plugin.awssdk.secretKey = "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"
+grails.plugin.awssdk.region = 'ap-southeast-1'
 
 // Login to account - http://www.smsgatewaycenter.com/login
 sms {

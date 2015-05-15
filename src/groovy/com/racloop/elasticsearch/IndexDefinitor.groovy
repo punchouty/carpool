@@ -12,6 +12,128 @@ import static com.racloop.elasticsearch.WorkflowIndexFields.*
 
 class IndexDefinitor {
 	
+	public static final DEFAULT_TYPE = "default_type";
+	
+	public createJourneyIndex(Node node, String indexName){
+		if(isIndexExists(node, indexName)) {
+			log.info "Index name : ${indexName} already exists"
+		}
+		else {
+			log.info "Index name : ${indexName} creation started"
+			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
+			log.info "${indexName} created successfully"
+			def builder = createJourneyIndexJson();
+			node.client.admin().indices().preparePutMapping(indexName).setType(DEFAULT_TYPE).setSource(builder).execute().actionGet();
+			log.info "${indexName} created successfully with mapping"
+			
+		}
+	}
+	
+	private def createJourneyIndexJson() {
+		XContentBuilder builder = XContentFactory.jsonBuilder().
+		startObject().
+			startObject(DEFAULT_TYPE).
+				startObject("properties").
+					startObject("mobile").
+					field("type", "string").field("index", "not_analyzed").
+					endObject().
+					startObject("dateOfJourney").
+					field("type", "date").
+					endObject().
+					startObject("name").
+					field("type", "string").field("index", "not_analyzed").
+					endObject().
+					startObject("isDriver").
+					field("type", "boolean").
+					endObject().
+					startObject("isMale").
+					field("type", "boolean").
+					endObject().
+					startObject("from").
+					field("type", "string").field("index", "not_analyzed").
+					endObject().
+					startObject("fromGeoPoint").
+					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
+					endObject().
+					startObject("to").
+					field("type", "string").field("index", "not_analyzed").
+					endObject().
+					startObject("toGeoPoint").
+					field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
+					endObject().
+					startObject("tripDistance").
+					field("type", "double").
+					endObject().
+					startObject("photoUrl").
+					field("type", "string").
+					endObject().
+					startObject("isDummy").
+					field("type", "boolean").
+					endObject().
+				endObject().
+			endObject().
+		endObject();
+		return builder;
+	}
+	
+	public createDummyIndex(Node node, String indexName){
+		if(isIndexExists(node, indexName)) {
+			log.info "Index name : ${indexName} already exists"
+		}
+		else {
+			log.info "Index name : ${indexName} creation started"
+			node.client.admin().indices().prepareCreate(indexName).execute().actionGet();
+			log.info "${indexName} created successfully"
+			def builder = createJourneyIndexJson();
+			node.client.admin().indices().preparePutMapping(indexName).setType(DEFAULT_TYPE).setSource(builder).execute().actionGet();
+			log.info "${indexName} created successfully with mapping"
+		}
+	}
+	
+	
+	@Deprecated
+	private def createDummyIndexJson() {
+		XContentBuilder builder = XContentFactory.jsonBuilder().
+		startObject().
+		startObject("properties").
+			startObject("mobile").
+			field("type", "string").field("index", "not_analyzed").
+			endObject().
+			startObject("dateOfJourney").
+			field("type", "date").
+			endObject().
+			startObject("name").
+			field("type", "string").field("index", "not_analyzed").
+			endObject().
+			startObject("isDriver").
+			field("type", "boolean").
+			endObject().
+			startObject("isMale").
+			field("type", "boolean").
+			endObject().
+			startObject("from").
+			field("type", "string").field("index", "not_analyzed").
+			endObject().
+			startObject("fromGeoPoint").
+			field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
+			endObject().
+			startObject("to").
+			field("type", "string").field("index", "not_analyzed").
+			endObject().
+			startObject("toGeoPoint").
+			field("type", "geo_point").field("lat_lon", "true").field("geohash", "true").
+			endObject().
+			startObject("tripDistance").
+			field("type", "double").
+			endObject().
+			startObject("photoUrl").
+			field("type", "string").
+			endObject().
+		endObject().
+	endObject();
+		return builder;
+	}
+	
 	public createMainIndex(Node node, String indexName){
 		if(isIndexExists(node, indexName)) {
 			log.info "Index name : ${indexName} already exists"

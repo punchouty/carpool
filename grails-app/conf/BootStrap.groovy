@@ -4,7 +4,6 @@ import grails.plugin.nimble.core.Role
 import grails.plugin.nimble.core.UserBase
 import grails.util.Environment
 import grails.gsp.PageRenderer
-
 import liquibase.util.csv.opencsv.CSVReader
 
 import org.apache.shiro.SecurityUtils
@@ -12,6 +11,7 @@ import org.elasticsearch.common.geo.GeoPoint
 import org.springframework.web.context.support.WebApplicationContextUtils
 
 import com.racloop.Place
+import com.racloop.domain.RacloopUser;
 import com.racloop.staticdata.StaticData
 
 
@@ -24,9 +24,14 @@ class BootStrap {
 	def userService
 	def adminsService
 	def sampleDataService
+	def testDataService
 	def smsService
 	def userAuthenticationService
 	PageRenderer groovyPageRenderer
+	
+	
+	def userDataService
+	def searchService
 		
     def init = { servletContext ->
 		internalBootStap(servletContext)
@@ -45,7 +50,9 @@ class BootStrap {
 			log.info("Users created successfully in Elasticsearch")
 		}
 		//Initialising Elasticsearch
-		elasticSearchService.init()
+		//elasticSearchService.init()
+		
+		searchService.init();
 		smsService.init()
 		Boolean createIndex = grailsApplication.config.grails.startup.elasticsearch.index.create
 		if(createIndex) {
@@ -63,16 +70,20 @@ class BootStrap {
 		intializeStaticData();
 		
 		if (Environment.current == Environment.DEVELOPMENT) {
-			sampleDataService.deleteSampleData()
+			//sampleDataService.deleteSampleData();
+			testDataService.deleteDataForDev();
 			log.info("Populating Sample Data");
 			Boolean createSampleData = grailsApplication.config.grails.startup.sampleData.create
-			if(createSampleData) sampleDataService.populateSampleData();
-			
+			if(createSampleData) {
+				//sampleDataService.populateSampleData();
+				testDataService.generateDataForDev();
+			}
         }
     }
 	
     def destroy = {
-		elasticSearchService.destroy()
+		searchService.destroy();
+		//elasticSearchService.destroy()
     }
 
 	private internalBootStap(servletContext) {
@@ -80,13 +91,16 @@ class BootStrap {
 	}
 	
 	private def createIndexes() {
-		// Main Index
-		elasticSearchService.createMainJourneyIndex()		
-		// Master Data Index
-		elasticSearchService.createMasterLocationIndexIfNotExists();//TODO - check if it need to be here???
-		//Dummy Data Index
-		elasticSearchService.createGeneratedDataIndexIfNotExists();//TODO - check if it need to be here???
-		elasticSearchService.createWorkflowIndex()
+		searchService.createLocationIndex();
+		searchService.createJourneyIndex();
+		searchService.createGeneratedJourneyIndex();
+		//		// Main Index
+//		elasticSearchService.createMainJourneyIndex()		
+//		// Master Data Index
+//		elasticSearchService.createMasterLocationIndexIfNotExists();//TODO - check if it need to be here???
+//		//Dummy Data Index
+//		elasticSearchService.createGeneratedDataIndexIfNotExists();//TODO - check if it need to be here???
+//		elasticSearchService.createWorkflowIndex()
 		
 	}
 	
@@ -115,6 +129,20 @@ class BootStrap {
 			if (savedAdmin.hasErrors()) {
 				savedAdmin.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating administrator")
+			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(adminProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(adminProfile.mobile)
+					racloopUser.setEmail(adminProfile.email);
+					racloopUser.setFullName(adminProfile.fullName)
+					racloopUser.setEmailHash(adminProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${admin.username} already there in dynamodb")
+				}
 			}
 
 			adminsService.add(admin)
@@ -149,6 +177,20 @@ class BootStrap {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
 			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
+			}
 		}
 		
 		//mail.live.com - user : sample.driver@racloop.com, password : S@pient1
@@ -174,6 +216,20 @@ class BootStrap {
 			if (savedUser.hasErrors()) {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
+			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
 			}
 		}
 		
@@ -201,6 +257,20 @@ class BootStrap {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
 			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
+			}
 		}
 	}
 	
@@ -216,7 +286,7 @@ class BootStrap {
 			place.name = name
 			place.location = new GeoPoint(latitude, longitude)
 			if(!place.equals(previousPlace)) {
-				elasticSearchService.indexLocation(place);
+				searchService.indexLocation(place);
 			}
 			previousPlace = place;
 		}
