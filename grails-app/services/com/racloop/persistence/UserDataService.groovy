@@ -17,6 +17,6 @@ class UserDataService {
 	}
 	
     def saveUser(RacloopUser user) {
-		amazonWebService.dynamoDBMapper.save(user, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.CLOBBER));
+		amazonWebService.dynamoDBMapper.save(user, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
     }
 }

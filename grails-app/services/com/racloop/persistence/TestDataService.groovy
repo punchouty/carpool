@@ -43,6 +43,7 @@ class TestDataService {
 				Journey journey = new Journey();
 				journey.mobile = user.profile.mobile
 				journey.dateOfJourney = new Date(time.timeInMillis)
+				journey.email = user.profile.email
 				journey.name = user.profile.fullName
 				journey.from = line[6]
 				journey.fromLatitude = Double.parseDouble(line[4])
@@ -75,6 +76,7 @@ class TestDataService {
 				Journey journey = new Journey();
 				journey.mobile = user.profile.mobile
 				journey.dateOfJourney = new Date(time.timeInMillis)
+				journey.email = user.profile.email
 				journey.name = user.profile.fullName
 				journey.from = line[6]
 				journey.fromLatitude = Double.parseDouble(line[4])
@@ -107,6 +109,7 @@ class TestDataService {
 				Journey journey = new Journey();
 				journey.mobile = user.profile.mobile
 				journey.dateOfJourney = new Date(time.timeInMillis)
+				journey.email = user.profile.email
 				journey.name = user.profile.fullName
 				journey.from = line[6]
 				journey.fromLatitude = Double.parseDouble(line[4])
@@ -139,6 +142,7 @@ class TestDataService {
 				Journey journey = new Journey();
 				journey.mobile = user.profile.mobile
 				journey.dateOfJourney = new Date(time.timeInMillis)
+				journey.email = user.profile.email
 				journey.name = user.profile.fullName
 				journey.from = line[6]
 				journey.fromLatitude = Double.parseDouble(line[4])

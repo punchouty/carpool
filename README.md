@@ -1,5 +1,12 @@
 # Racloop Web Application
 
+## Important TODO
+
+1. change primary key to mobile instead of email. Implemented in server side need to do in client side.
+2. Remove dependency on JourneyRequestCommand instead use Journey
+3. Move User data to Dynamo DB
+4. Relook at Edit Profile
+
 ## Amazon Deploy
 
 ### Changes in code base

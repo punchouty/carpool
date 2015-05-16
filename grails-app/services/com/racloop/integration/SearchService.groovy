@@ -2,6 +2,8 @@ package com.racloop.integration
 
 import org.elasticsearch.search.SearchHit;
 
+import java.text.SimpleDateFormat;
+
 import grails.transaction.Transactional
 import grails.util.Environment;
 
@@ -32,9 +34,13 @@ import org.elasticsearch.search.sort.GeoDistanceSortBuilder;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.ISODateTimeFormat;
 
+import com.racloop.Constant;
 import com.racloop.DistanceUtil;
 import com.racloop.Place;
+import com.racloop.User;
 import com.racloop.domain.Journey
 import com.racloop.elasticsearch.IndexDefinitor
 import com.racloop.elasticsearch.IndexNameResolver
@@ -92,6 +98,7 @@ class SearchService {
 			startObject().
 				field("mobile", journey.getMobile()).
 				field("dateOfJourney", dateOfJourney).
+				field("email", journey.getEmail()).
 				field("name", journey.getName()).
 				field("from", journey.getFrom()).
 				field("fromGeoPoint", fromGeoPoint).
@@ -115,7 +122,11 @@ class SearchService {
 	private Journey parseJourneyFromGetResponse(GetResponse getResponse) {
 		Journey journey = new Journey();
 		journey.setMobile(getResponse.getSource().get('mobile'));
-		journey.setDateOfJourney(getResponse.getSource().get('dateOfJourney'));
+		SimpleDateFormat formatter = new SimpleDateFormat(Constant.DATE_FORMAT_DYNAMODB);
+		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Date date = formatter.parse(getResponse.getSource().get('dateOfJourney'));
+		journey.setDateOfJourney(date);
+		journey.setEmail(getResponse.getSource().get('email'));
 		journey.setName(getResponse.getSource().get('name'));
 		journey.setFrom(getResponse.getSource().get('from'));
 		GeoPoint fromGeoPoint = getResponse.getSource().get('fromGeoPoint')
@@ -173,8 +184,10 @@ class SearchService {
 		FieldSortBuilder startTimeSorter = new FieldSortBuilder("dateOfJourney").order(SortOrder.ASC);
 
 		SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100, sorter, startTimeSorter);
+		def searchResults = [];
 		for (SearchHit searchHit : hits) {
-			
+			Journey item = parseJourneyFromSearchHit(searchHit);
+			searchResults << item
 		}
 	}
 
@@ -203,7 +216,11 @@ class SearchService {
 	private Journey parseJourneyFromSearchHit(SearchHit searchHit) {
 		Journey journey = new Journey();
 		journey.setMobile(searchHit.getSource().get('mobile'));
-		journey.setDateOfJourney(searchHit.getSource().get('dateOfJourney'));
+		SimpleDateFormat formatter = new SimpleDateFormat(Constant.DATE_FORMAT_DYNAMODB);
+		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Date date = formatter.parse(searchHit.getSource().get('dateOfJourney'));
+		journey.setDateOfJourney(date);
+		journey.setEmail(searchHit.getSource().get('email'));
 		journey.setName(searchHit.getSource().get('name'));
 		journey.setFrom(searchHit.getSource().get('from'));
 		GeoPoint fromGeoPoint = searchHit.getSource().get('fromGeoPoint')
@@ -217,6 +234,27 @@ class SearchService {
 		journey.setTripDistance(searchHit.getSource().get('tripDistance'));
 		journey.setPhotoUrl(searchHit.getSource().get('photoUrl'));
 		return journey;
+	}
+	
+	
+	
+	def findAllJourneysForUserBetweenDates(String mobile, DateTime startDate, DateTime endDate) {
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.rangeFilter("dateOfJourney").gte(startDate),
+			FilterBuilders.rangeFilter("dateOfJourney").lte(endDate),
+			FilterBuilders.boolFilter().must(FilterBuilders.termFilter("mobile", mobile))
+			
+		)
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
+		sorter.order(SortOrder.ASC);
+		def journeys = []
+		SearchHit[] hits = queryDocuments(JOURNEY_INDEX_NAME, IndexDefinitor.DEFAULT_TYPE, filter, 5, sorter)
+		def searchResults = [];
+		for (SearchHit searchHit : hits) {
+			Journey item = parseJourneyFromSearchHit(searchHit);
+			searchResults << item
+		}
+		return searchResults
 	}
 	
 	/**
@@ -297,27 +335,27 @@ class SearchService {
 		return places
 	}
 	
-	private SearchHit[] queryDocument(String[] indexName, String[] indexType, FilterBuilder filter, int size=100, SortBuilder...sorters){
-		SearchHit[] hits = []
-		try {
-		SearchRequestBuilder builder = node.client.prepareSearch(indexName)
-				.setTypes(indexType)
-				.setSearchType(SearchType.QUERY_THEN_FETCH)
-				.setQuery(QueryBuilders.matchAllQuery())
-				.setPostFilter(filter)   // Filter
-		for(SortBuilder sorter : sorters) {
-			builder.addSort(sorter)
-		}
-		builder.setSize(size)
-		SearchResponse searchResponse = builder.execute().actionGet();
-		SearchHits searchHits = searchResponse.getHits();
-		hits = searchHits.hits;
-		}
-		catch (IndexMissingException exception) {
-			log.error ("Index name ${indexName} does not exists", exception)
-		}
-		return hits
-	}
+//	private SearchHit[] queryDocument(String[] indexName, String[] indexType, FilterBuilder filter, int size=100, SortBuilder...sorters){
+//		SearchHit[] hits = []
+//		try {
+//		SearchRequestBuilder builder = node.client.prepareSearch(indexName)
+//				.setTypes(indexType)
+//				.setSearchType(SearchType.QUERY_THEN_FETCH)
+//				.setQuery(QueryBuilders.matchAllQuery())
+//				.setPostFilter(filter)   // Filter
+//		for(SortBuilder sorter : sorters) {
+//			builder.addSort(sorter)
+//		}
+//		builder.setSize(size)
+//		SearchResponse searchResponse = builder.execute().actionGet();
+//		SearchHits searchHits = searchResponse.getHits();
+//		hits = searchHits.hits;
+//		}
+//		catch (IndexMissingException exception) {
+//			log.error ("Index name ${indexName} does not exists", exception)
+//		}
+//		return hits
+//	}
 	
 	private Place parsePlaceFromSearchHit(SearchHit searchHit) {
 		Place place = new Place();

@@ -9,12 +9,14 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
+import com.racloop.JourneyRequestCommand;
 
 @DynamoDBTable(tableName = "Journey")
 public class Journey {
 	
 	private String mobile;
 	private Date dateOfJourney;
+	private String email;
 	private String name;
 	private String esJourneyId;
 	private Double fromLatitude;
@@ -50,18 +52,41 @@ public class Journey {
 	
 	private Boolean isDummy;
 	private Long version;
+	
+	public JourneyRequestCommand convert() {
+		JourneyRequestCommand journeyCommand = new JourneyRequestCommand();
+		journeyCommand.setUser(email);
+		journeyCommand.setMobile(mobile);
+		journeyCommand.setId(esJourneyId);
+		journeyCommand.setName(name);
+		journeyCommand.setIsMale(isMale);
+		journeyCommand.setDateOfJourney(dateOfJourney);
+		journeyCommand.setFromPlace(from);
+		journeyCommand.setFromLatitude(fromLatitude);
+		journeyCommand.setFromLongitude(fromLongitude);
+		journeyCommand.setToPlace(to);
+		journeyCommand.setToLatitude(toLatitude);
+		journeyCommand.setToLongitude(toLongitude);
+		journeyCommand.setIsDriver(isDriver);
+		journeyCommand.setTripDistance(tripDistance);
+		journeyCommand.setIp(ip);
+		journeyCommand.setCreatedDate(createdDate);
+		journeyCommand.setPhotoUrl(photoUrl);
+		return journeyCommand;
+	}
 
 	@Override 
 	public String toString(){
 		StringBuffer buffer = new StringBuffer();
-		buffer.append("mobile : " + mobile + "\n");
-		buffer.append("dateOfJourney : " + dateOfJourney + "\n");
-		buffer.append("esJourneyId : " + esJourneyId + "\n");
-		buffer.append("name : " + name + "\n");
-		buffer.append("from : " + from + "\n");
-		buffer.append("to : " + to + "\n");
-		buffer.append("mobileFirst : " + mobileFirst + "\n");
-		buffer.append("mobileSecond : " + mobileSecond + "\n");
+		buffer.append("mobile : " + mobile + ", ");
+		buffer.append("dateOfJourney : " + dateOfJourney + ", ");
+		buffer.append("email : " + email + ", ");
+		buffer.append("esJourneyId : " + esJourneyId + ", ");
+		buffer.append("name : " + name + ", ");
+		buffer.append("from : " + from + ", ");
+		buffer.append("to : " + to + ", ");
+		buffer.append("mobileFirst : " + mobileFirst + ", ");
+		buffer.append("mobileSecond : " + mobileSecond + ", ");
 		return buffer.toString();
 	}
 	
@@ -81,6 +106,15 @@ public class Journey {
 	}
 	public void setDateOfJourney(Date dateOfJourney) {
 		this.dateOfJourney = dateOfJourney;
+	}
+	
+	@DynamoDBAttribute(attributeName="Email") 
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	@DynamoDBAttribute(attributeName="FullName") 

@@ -22,6 +22,8 @@ import com.racloop.JourneyRequestCommand
 import com.racloop.Profile;
 import com.racloop.Sos;
 import com.racloop.User
+import com.racloop.domain.Journey;
+import com.racloop.domain.RacloopUser;
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.mobile.data.response.MobileResponse
 import com.racloop.staticdata.StaticData;
@@ -34,6 +36,7 @@ class UserMobileController {
 	def shiroSecurityManager
 	def userService
 	def userDataService
+	def journeyDataService
 	def userManagerService
 	def journeyManagerService
 	def journeyService
@@ -69,11 +72,12 @@ class UserMobileController {
 				userService.createLoginRecord(request)
 				authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
 				mobileResponse.data=authenticatedUser
-				def journeys = journeyService.findCurrentJourneyForUser(authenticatedUser, currentDate)
-				def currentJourney = null
-				if(journeys.size() > 0) currentJourney = journeys[0]
+//				def journeys = journeyService.findCurrentJourneyForUser(authenticatedUser, currentDate)
+//				def currentJourney = null
+//				if(journeys.size() > 0) currentJourney = journeys[0]
 				//JourneyRequestCommand currentJourney = journeyService.searchCurrentJourney(authenticatedUser, currentDate)
-				mobileResponse.currentJourney = currentJourney
+				Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, currentDate)
+				mobileResponse.currentJourney = currentJourney.convert();
 				mobileResponse.success=true
 			}
 			catch (IncorrectCredentialsException e) {
@@ -170,13 +174,15 @@ class UserMobileController {
 						mobileResponse.message = errorMessage
 					}
 					else {
-//						sendMail {
-//							to user.profile.email
-//							from grailsApplication.config.grails.messaging.mail.from
-//							subject nimbleConfig.messaging.registration.subject
-//							html g.render(template: "/templates/nimble/mail/accountregistration_email", model: [user: savedUser]).toString()
-//						}
-						log.info("Sending verification code to $user.profile.mobile")
+						//Saving user in DynamoDB
+						RacloopUser racloopUser = new RacloopUser();
+						racloopUser.setMobile(profile.mobile);
+						racloopUser.setEmail(profile.email);
+						racloopUser.setFullName(profile.fullName);
+						racloopUser.setEmailHash(profile.emailHash);
+						//TODO take care for failure scenario
+						userDataService.saveUser(racloopUser);
+						log.info("Sending verification code to $user.profile.mobile");
 						userManagerService.setUpMobileVerificationDuringSignUp(savedUser.profile)
 						mobileResponse.success=true
 						mobileResponse.message = "User sign up sucessfully. Check SMS for verificaton code."
@@ -397,11 +403,18 @@ class UserMobileController {
 		def user = getAuthenticatedUser()
 		if(user) {
 			user.profile.fullName = fullName
-			//user.profile.email = email
+			user.profile.email = email
 			user.profile.mobile = mobile
 			user.profile.isMale = isMale
 			if (user.validate()) {
 				def updatedUser = userService.updateUser(user)
+				RacloopUser racloopUser = new RacloopUser();
+				racloopUser.setMobile(user.profile.mobile);
+				racloopUser.setEmail(user.profile.email);
+				racloopUser.setFullName(user.profile.fullName);
+				racloopUser.setEmailHash(user.profile.emailHash);
+				//TODO take care for failure scenario
+				userDataService.saveUser(racloopUser);
 				mobileResponse.success = true
 				mobileResponse.message = "Profile updated successfully"
 			}
