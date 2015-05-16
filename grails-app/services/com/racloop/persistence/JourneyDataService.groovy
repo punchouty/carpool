@@ -3,14 +3,13 @@ package com.racloop.persistence
 import grails.transaction.Transactional
 import grails.util.Environment
 
-import java.text.SimpleDateFormat
+import org.elasticsearch.common.joda.time.DateTime
 
-import org.elasticsearch.common.joda.time.DateTime;
-
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.amazonaws.services.dynamodbv2.model.ComparisonOperator
+import com.amazonaws.services.dynamodbv2.model.Condition
 import com.racloop.domain.Journey
 
 @Transactional
@@ -27,6 +26,24 @@ class JourneyDataService {
 		amazonWebService.dynamoDBMapper.save(journey);
 		//jmsService.send(queue: Constant.HISTORY_QUEUE, command.id);
     }
+	
+	/**
+	 * Find Journey from Dynamo DB
+	 */
+	def findJourney(String mobile, Date dateOfJourney) {
+		Journey journeyKey = new Journey();
+		journeyKey.setMobile(mobile);
+		journeyKey.setDateOfJourney(dateOfJourney);
+		Journey currentJourney = amazonWebService.dynamoDBMapper.load(journeyKey);
+		return currentJourney;
+	}
+	
+	/**
+	 * Find Journey from Dynamo DB
+	 */
+	def saveJourney(Journey currentJourney) {
+		amazonWebService.dynamoDBMapper.save(currentJourney, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
+	}
 	
 	/**
 	 * Current Journey is from Elastic Search
