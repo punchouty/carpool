@@ -37,6 +37,7 @@ public class Journey {
 	
 	//self and first
 	// A -> B
+	private String idFirst;
 	private String mobileFirst;
 	private Date dateOfJourneyFirst;
 	private String esJourneyIdFirst;
@@ -45,6 +46,7 @@ public class Journey {
 	
 	//self and second
 	// A -> B and then A -> C || // A -> B and then B -> C
+	private String idSecond;
 	private String mobileSecond;
 	private Date dateOfJourneySecond;
 	private String esJourneyIdSecond;
@@ -125,7 +127,6 @@ public class Journey {
 		this.id = id;
 	}
 	
-	@DynamoDBHashKey(attributeName="Mobile") 
 	@DynamoDBIndexHashKey(globalSecondaryIndexName = "Mobile-DateOfJourney-index", attributeName = "Mobile")
 	@DynamoDBIndexRangeKey(globalSecondaryIndexName = "DateOfJourney-Mobile-index", attributeName = "Mobile")
 	public String getMobile() {
@@ -135,7 +136,6 @@ public class Journey {
 		this.mobile = mobile;
 	}
 	
-	@DynamoDBRangeKey(attributeName="DateOfJourney") 
 	@DynamoDBIndexHashKey(globalSecondaryIndexName = "DateOfJourney-Mobile-index", attributeName = "DateOfJourney")
 	@DynamoDBIndexRangeKey(globalSecondaryIndexName = "Mobile-DateOfJourney-index", attributeName = "DateOfJourney")
 	public Date getDateOfJourney() {
@@ -273,6 +273,15 @@ public class Journey {
 	public void setPhotoUrl(String photoUrl) {
 		this.photoUrl = photoUrl;
 	}
+
+	@DynamoDBAttribute(attributeName="IdFirst") 
+	public String getIdFirst() {
+		return idFirst;
+	}
+
+	public void setIdFirst(String idFirst) {
+		this.idFirst = idFirst;
+	}
 	
 	@DynamoDBAttribute(attributeName="MobileFirst") 
 	public String getMobileFirst() {
@@ -312,6 +321,15 @@ public class Journey {
 	}
 	public void setRequestDirectionFirst(String requestDirectionFirst) {
 		this.requestDirectionFirst = requestDirectionFirst;
+	}
+
+	@DynamoDBAttribute(attributeName="IdSecond") 
+	public String getIdSecond() {
+		return idSecond;
+	}
+
+	public void setIdSecond(String idSecond) {
+		this.idSecond = idSecond;
 	}
 	
 	@DynamoDBAttribute(attributeName="MobileSecond") 

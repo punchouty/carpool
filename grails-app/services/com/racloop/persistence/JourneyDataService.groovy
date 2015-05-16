@@ -24,7 +24,8 @@ class JourneyDataService {
     def createJourney(Journey journey) {
 		String journeyId = searchService.indexJourney(journey);
 		journey.setEsJourneyId(journeyId);
-		amazonWebService.dynamoDBMapper.save(journey);
+		Journey savedJourney = amazonWebService.dynamoDBMapper.save(journey);
+		log.info("createJourney - ${journey}");
 		//jmsService.send(queue: Constant.HISTORY_QUEUE, command.id);
     }
 	
@@ -35,6 +36,18 @@ class JourneyDataService {
 		log.info("findJourney - id : ${id}");
 		Journey currentJourney = amazonWebService.dynamoDBMapper.load(Journey.class, id);
 		return currentJourney;
+	}
+	
+	/**
+	 * Find Journey from Dynamo DB
+	 */
+	def findAllJourneyForUser(String mobile) {
+		log.info("findAllJourneyForUser - mobile : ${mobile}");
+		Journey journeyKey = new Journey();
+		journeyKey.mobile = mobile;
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
+		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
+		return journeys;
 	}
 	
 	/**
@@ -83,7 +96,7 @@ class JourneyDataService {
 		Journey journeyKey = new Journey();
 		journeyKey.mobile = mobile;
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.GT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
-		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition);
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
 		return journeys;
 	}
@@ -97,7 +110,7 @@ class JourneyDataService {
 		Journey journeyKey = new Journey();
 		journeyKey.mobile = mobile;
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.LT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
-		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition);
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
 		return journeys;
 	}
@@ -119,10 +132,13 @@ class JourneyDataService {
 			journeyKey.mobile = mobile
 			DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 			List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
-			for (Journey dbJourney: journeys) {
-				log.info("Journey found : ${dbJourney} Going to delete it");
-				amazonWebService.dynamoDBMapper.delete(dbJourney);
-			}
+			amazonWebService.dynamoDBMapper.batchDelete(journeys);
+//			for (Journey dbJourney: journeys) {
+//				log.info("Journey found : ${dbJourney} Going to delete it");
+//				Journey journeyTemp = new Journey();
+//				journeyTemp.setId(dbJourney.getId())
+//				amazonWebService.dynamoDBMapper.delete(journeyTemp);
+//			}
 		}
 		else {
 			log.warn("Cannot delete journey in non development enviornment");

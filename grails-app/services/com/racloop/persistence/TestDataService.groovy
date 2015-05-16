@@ -176,4 +176,59 @@ class TestDataService {
 		
 		
 	}
+	
+	def populateElasticSearch() {
+		User user1 = User.findByUsername('admin@racloop.com');
+		User user = user1;
+		List<Journey> journeys = journeyDataService.findAllJourneyForUser(user.profile.mobile);
+		for (Journey dbJourney: journeys) {
+			Journey esJourney = searchService.getJourney(dbJourney.getEsJourneyId());
+			if(esJourney == null) {
+				log.info("In populateElasticSearch no data in ES ${dbJourney}")
+				searchService.indexJourney(dbJourney, dbJourney.getEsJourneyId());
+			}
+			else {
+				log.info("Found in ES ${dbJourney}")
+			}
+		}
+		User user2 = User.findByUsername('user@racloop.com');
+		user = user2;
+		journeys = journeyDataService.findAllJourneyForUser(user.profile.mobile);
+		for (Journey dbJourney: journeys) {
+			Journey esJourney = searchService.getJourney(dbJourney.getEsJourneyId());
+			if(esJourney == null) {
+				log.info("In populateElasticSearch no data in ES ${dbJourney}")
+				searchService.indexJourney(dbJourney, dbJourney.getEsJourneyId());
+			}
+			else {
+				log.info("Found in ES ${dbJourney}")
+			}
+		}
+		User user3 = User.findByUsername('driver@racloop.com');
+		user = user3;
+		journeys = journeyDataService.findAllJourneyForUser(user.profile.mobile);
+		for (Journey dbJourney: journeys) {
+			Journey esJourney = searchService.getJourney(dbJourney.getEsJourneyId());
+			if(esJourney == null) {
+				log.info("In populateElasticSearch no data in ES ${dbJourney}")
+				searchService.indexJourney(dbJourney, dbJourney.getEsJourneyId());
+			}
+			else {
+				log.info("Found in ES ${dbJourney}")
+			}
+		}
+		User user4 = User.findByUsername('rider@racloop.com');
+		user = user4;
+		journeys = journeyDataService.findAllJourneyForUser(user.profile.mobile);
+		for (Journey dbJourney: journeys) {
+			Journey esJourney = searchService.getJourney(dbJourney.getEsJourneyId());
+			if(esJourney == null) {
+				log.info("In populateElasticSearch no data in ES ${dbJourney}")
+				searchService.indexJourney(dbJourney, dbJourney.getEsJourneyId());
+			}
+			else {
+				log.info("Found in ES ${dbJourney}")
+			}
+		}
+	}
 }

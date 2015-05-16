@@ -89,6 +89,15 @@ class SearchService {
 		return indexResponse.getId();
 	}
 
+	def indexJourney(Journey journey, String id) {
+		log.info "Adding record to elastic search ${journey}"
+		def sourceBuilder = createJourneyJson(journey)
+		IndexRequest indexRequest = new IndexRequest(JOURNEY_INDEX_NAME, IndexDefinitor.DEFAULT_TYPE, id).source(sourceBuilder);
+		IndexResponse indexResponse = node.client.index(indexRequest).actionGet();
+		log.info "Successfully indexed ${journey} with ${indexResponse.getId()}"
+		return indexResponse.getId();
+	}
+
 	private def createJourneyJson(Journey journey) {
 		GeoPoint fromGeoPoint = new GeoPoint(journey.getFromLatitude(), journey.getFromLongitude())
 		GeoPoint toGeoPoint = new GeoPoint(journey.getToLatitude(), journey.getToLongitude())
@@ -115,7 +124,10 @@ class SearchService {
 
 	Journey getJourney(String journeyId) {
 		GetResponse getResponse = node.client.prepareGet(JOURNEY_INDEX_NAME, IndexDefinitor.DEFAULT_TYPE, journeyId).execute().actionGet();
-		Journey journey = parseJourneyFromGetResponse(getResponse);
+		Journey journey = null;
+		if(getResponse.isExists()) {
+			journey = parseJourneyFromGetResponse(getResponse);
+		}
 		return journey;
 	}
 
