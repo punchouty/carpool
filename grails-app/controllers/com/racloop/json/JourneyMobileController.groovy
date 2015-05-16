@@ -25,6 +25,7 @@ import com.racloop.JourneyRequestCommand
 import com.racloop.Profile;
 import com.racloop.Sos;
 import com.racloop.User
+import com.racloop.domain.Journey;
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.mobile.data.response.MobileResponse
 import com.racloop.staticdata.StaticData;
@@ -35,6 +36,76 @@ import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 class JourneyMobileController {
 	
 	def journeyDataService
+	
+	def search() {
+		def json = request.JSON
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def mobileResponse = new MobileResponse()
+		def errors = null
+		def searchResultMap = null
+		JourneyRequestCommand currentJourney = convertJsonToJourneyObject(json)
+		JourneyRequestCommand currentJourneyFromRequest = request.getAttribute('currentJourney')
+		if(currentJourneyFromRequest) {
+			currentJourney = currentJourneyFromRequest
+		}
+		def currentUser = getAuthenticatedUser();
+		if(!currentUser) {
+			currentUser = User.findByUsername(currentJourney.user);
+		}
+		if(currentUser) {
+			currentJourney.user = currentUser.username
+			currentJourney.name = currentUser.profile.fullName
+			currentJourney.isMale = currentUser.profile.isMale
+			currentJourney.ip = request.remoteAddr
+			boolean isValidDate = setDates(currentJourney)
+			if(!isValidDate){
+				mobileResponse.success = false
+				mobileResponse.message = "Invalid Date"
+			}
+			else {
+				if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
+//					if(currentJourney.validate()) {
+//						session.currentJourney = currentJourney
+//						boolean shouldSearchJourneys = true
+//						if(currentUser && currentJourney.isNewJourney()) {//Usually it will be the case for Mobile search
+//							JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
+//							if(existingJourney) {
+//								mobileResponse.data = ['existingJourney':existingJourney,'currentJourney':currentJourney]
+//								mobileResponse.success = true
+//								mobileResponse.total = 0
+//								mobileResponse.message = "Existing journey found!"
+//								mobileResponse.existingJourney=true
+//								
+//								shouldSearchJourneys = false
+//							}
+//						}
+//						if(shouldSearchJourneys){
+//							searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
+//							session.currentJourney = currentJourney
+//							mobileResponse.data = searchResultMap
+//							mobileResponse.success = true
+//							mobileResponse.total = searchResultMap.numberOfRecords
+//							mobileResponse.existingJourney=false
+//						}
+//					}
+				}
+				else {
+					mobileResponse.message = "Invalid travel date and time"
+					mobileResponse.success = false
+					mobileResponse.total =0
+				}
+			}
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+		
+		
+		render mobileResponse as JSON
+	}
 
     def myJourneys() {			
 		def mobileResponse = new MobileResponse()
@@ -43,11 +114,14 @@ class JourneyMobileController {
 		String currentTime = params.currentTime;//json?.currentTime
 		log.info "myJourneys currentUser : ${currentUser.profile.email} currentTime : ${currentTime}"
 		if(currentUser) {
-			//ISODateTimeFormat.dateTimeNoMillis();
-			def journeys = journeyDataService.findMyJourneys(currentUser.profile.mobile, uiToDynamoDbFormat(currentTime));
-			mobileResponse.data = journeys
+			def journeys = journeyDataService.findMyJourneys(currentUser.profile.mobile, DateUtil.uiDateStringToJavaDate(currentTime));
+			def oldJourneys = [];
+			for (Journey dbJourney: journeys) {
+				oldJourneys << dbJourney.convert();
+			}
+			mobileResponse.data = oldJourneys
 			mobileResponse.success = true
-			mobileResponse.total = journeys?.size()
+			mobileResponse.total = oldJourneys?.size()
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Cannot fetch search results"
@@ -65,10 +139,14 @@ class JourneyMobileController {
 		String currentTime = params.currentTime;//json?.currentTime
 		log.info "myHistory currentUser : ${currentUser.profile.email} currentTime : ${currentTime}"
 		if(currentUser) {
-			def journeys = journeyDataService.findMyHistory(currentUser.profile.mobile, uiToDynamoDbFormat(currentTime));
-			mobileResponse.data = journeys
+			def journeys = journeyDataService.findMyHistory(currentUser.profile.mobile, DateUtil.uiDateStringToJavaDate(currentTime));
+			def oldJourneys = [];
+			for (Journey dbJourney: journeys) {
+				oldJourneys << dbJourney.convert();
+			}
+			mobileResponse.data = oldJourneys
 			mobileResponse.success = true
-			mobileResponse.total = journeys?.size()
+			mobileResponse.total = oldJourneys?.size()
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Cannot fetch search results"
@@ -98,13 +176,27 @@ class JourneyMobileController {
 		return currentJourney
 	}
 	
-	private String uiToDynamoDbFormat(String source) {
+	private setDates(JourneyRequestCommand currentJourney) {
+		boolean success = true
 		SimpleDateFormat uiFormatter = new SimpleDateFormat(Constant.DATE_FORMAT_UI);
-		Date date = uiFormatter.parse(source);
-		SimpleDateFormat dBFormatter = new SimpleDateFormat(Constant.DATE_FORMAT_DYNAMODB);
-		dBFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
-		String output = dBFormatter.format(date);
-		log.info "source time ${source}, output time ${output}"
-		return output;
+		try {
+			if(currentJourney.dateOfJourneyString) {
+				currentJourney.dateOfJourney = uiFormatter.parse(currentJourney.dateOfJourneyString);//convertUIDateToElasticSearchDate(currentJourney.dateOfJourneyString).toDate()
+			}
+			if(currentJourney.validStartTimeString) {
+				currentJourney.validStartTime = uiFormatter.parse(currentJourney.validStartTimeString);//new DateTime().toDate()
+			}
+			if(!currentJourney.validStartTime) {
+				DateTime currentDate = new DateTime()
+				currentDate.plusMinutes(Integer.valueOf(grailsApplication.config.grails.approx.time.to.match))
+				currentJourney.validStartTime = currentDate.toDate()
+			}
+			
+		}
+		catch(IllegalArgumentException e) {
+			success = false
+			log.error "Something went wrong while setting Dates", e
+		}
+		return success;
 	}
 }

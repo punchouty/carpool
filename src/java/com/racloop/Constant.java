@@ -37,4 +37,5 @@ public interface Constant {
 	
 	public static final String DATE_FORMAT_DYNAMODB = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";//"yyyy-MM-dd HH:mm:ss.u Z";
 	public static final String DATE_FORMAT_UI = "yyyy-MM-dd'T'HH:mm:ssXXX";
+	public static final String DATE_FORMAT_ES = "yyyyMMdd’T'HHmmssZ";
 }

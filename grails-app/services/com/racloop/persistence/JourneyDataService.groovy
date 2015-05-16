@@ -11,6 +11,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator
 import com.amazonaws.services.dynamodbv2.model.Condition
 import com.racloop.domain.Journey
+import com.racloop.util.date.DateUtil;
 
 @Transactional
 class JourneyDataService {
@@ -30,12 +31,25 @@ class JourneyDataService {
 	/**
 	 * Find Journey from Dynamo DB
 	 */
-	def findJourney(String mobile, Date dateOfJourney) {
-		Journey journeyKey = new Journey();
-		journeyKey.setMobile(mobile);
-		journeyKey.setDateOfJourney(dateOfJourney);
-		Journey currentJourney = amazonWebService.dynamoDBMapper.load(journeyKey);
+	def findJourney(String id) {
+		log.info("findJourney - id : ${id}");
+		Journey currentJourney = amazonWebService.dynamoDBMapper.load(Journey.class, id);
 		return currentJourney;
+	}
+	
+	/**
+	 * Find Journey from Dynamo DB
+	 */
+	def findJourney(String mobile, Date dateOfJourney) {
+		String currentTimeStr = DateUtil.javaDateToDynamoDbDateString(dateOfJourney);
+		log.info("findJourney - mobile : ${mobile}, currentTimeStr : ${currentTimeStr}");
+		Journey journeyKey = new Journey();
+		journeyKey.mobile = mobile;
+		journeyKey.dateOfJourney = dateOfJourney;
+		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.EQ.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition);
+		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
+		return journeys;
 	}
 	
 	/**
@@ -63,37 +77,29 @@ class JourneyDataService {
 	/**
 	 * My Journey from DynamoDb
 	 */
-	def findMyJourneys(String mobile, String currentTimeStr) {
+	def findMyJourneys(String mobile, Date currentTime) {
+		String currentTimeStr = DateUtil.javaDateToDynamoDbDateString(currentTime);
 		log.info("mobile : ${mobile}, currentTimeStr : ${currentTimeStr}");
 		Journey journeyKey = new Journey();
 		journeyKey.mobile = mobile;
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.GT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition);
 		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
-		def returnJourneys = [];
-		for (Journey dbJourney: journeys) {
-			log.info("Journey found in my journey: ${dbJourney}");
-			returnJourneys << dbJourney.convert();
-		}
-		return returnJourneys;
+		return journeys;
 	}
 	
 	/**
 	 * My History from Dynamo DB
 	 */
-	def findMyHistory(String mobile, String currentTimeStr) {
+	def findMyHistory(String mobile, Date currentTime) {
+		String currentTimeStr = DateUtil.javaDateToDynamoDbDateString(currentTime);
 		log.info("mobile : ${mobile}, currentTimeStr : ${currentTimeStr}");
 		Journey journeyKey = new Journey();
 		journeyKey.mobile = mobile;
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.LT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition);
 		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
-		def returnJourneys = [];
-		for (Journey dbJourney: journeys) {
-			log.info("Journey found in my journey: ${dbJourney}");
-			returnJourneys << dbJourney.convert();
-		}
-		return returnJourneys;
+		return journeys;
 	}
 	
 	/**
@@ -108,10 +114,10 @@ class JourneyDataService {
 	 */
 	def deleteJourneyForUser(String mobile) {
 		if (Environment.current == Environment.DEVELOPMENT) {
-			log.info("Starting deleting all journey for user with mobile : ${mobile}");
-			Journey journey = new Journey();
-			journey.mobile = mobile
-			DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journey);
+			log.info("deleteJourneyForUser Starting deleting all journey for user with mobile : ${mobile}");
+			Journey journeyKey = new Journey();
+			journeyKey.mobile = mobile
+			DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 			List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
 			for (Journey dbJourney: journeys) {
 				log.info("Journey found : ${dbJourney} Going to delete it");
