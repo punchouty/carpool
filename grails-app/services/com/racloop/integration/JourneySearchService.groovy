@@ -4,6 +4,7 @@ import grails.transaction.Transactional
 
 import com.racloop.JourneyRequestCommand;
 import com.racloop.domain.Journey
+import com.racloop.domain.UserJourney;
 import com.racloop.mobile.data.response.MobileResponse;
 import com.racloop.util.date.DateUtil
 
@@ -14,7 +15,7 @@ class JourneySearchService {
 	def searchService
 	def journeyDataService;
 	
-	def processSearch(JourneyRequestCommand currentJourney){
+	def executeSearch(JourneyRequestCommand currentJourney){
 		Date timeOfJourney = currentJourney.dateOfJourney
 		Date validStartTime = currentJourney.validStartTime
 		String mobile = currentJourney.mobile
@@ -24,8 +25,7 @@ class JourneySearchService {
 		Double toLon = currentJourney.toLongitude
 		MobileResponse mobileResponse = new MobileResponse()
 		List<Journey> journeys = journeyDataService.findMyJourneys(mobile, timeOfJourney);
-		Journey existingJourney = null;
-		existingJourney = getSimilarJourney(journeys, timeOfJourney)
+		Journey existingJourney = getSimilarJourney(journeys, timeOfJourney)
 		if(existingJourney != null) {
 			mobileResponse.data = ['existingJourney':existingJourney.convert(),'currentJourney':currentJourney]
 			mobileResponse.success = true
@@ -34,6 +34,7 @@ class JourneySearchService {
 		}
 		else {
 			List<Journey> searchResults = searchService.search(searchService.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+			enrichResults(searchResults, journeys);
 			if(searchResults.size() > 0) {
 				def returnJourneys = []
 				for (Journey dbJourney: journeys) {
@@ -61,6 +62,12 @@ class JourneySearchService {
 			}
 		}	
 		return mobileResponse;
+	}
+	
+	private enrichResults(List<Journey> searchResults, List<Journey> myJourneys) {
+		for (Journey dbJourney: myJourneys) {
+			UserJourney userJourney = journeyDataService.allJourneyData(dbJourney);
+		}
 	}
 
 	private Journey getSimilarJourney(List<Journey> journeys, Date timeOfJourney) {

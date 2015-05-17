@@ -11,6 +11,8 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator
 import com.amazonaws.services.dynamodbv2.model.Condition
 import com.racloop.domain.Journey
+import com.racloop.domain.JourneyPair;
+import com.racloop.domain.UserJourney;
 import com.racloop.util.date.DateUtil;
 
 @Transactional
@@ -20,12 +22,42 @@ class JourneyDataService {
 	def amazonWebService
 	def searchService
 	def jmsService
+	def journeyPairDataService
 
     def createJourney(Journey journey) {
-		Journey savedJourney = amazonWebService.dynamoDBMapper.save(journey);
-		searchService.indexJourney(journey, savedJourney.getId());
+		amazonWebService.dynamoDBMapper.save(journey);
 		log.info("createJourney - ${journey}");
+		searchService.indexJourney(journey, journey.getId());
     }
+	
+	def allJourneyData(String id) {
+		Journey currentJourney = amazonWebService.dynamoDBMapper.load(Journey.class, id);
+		return allJourneyData(currentJourney)
+	}
+	
+	def allJourneyData(Journey currentJourney){
+		Set<JourneyPair> journeyPairs = new HashSet<JourneyPair>();
+		HashMap<String, Journey> allRelatedJourneysAsMap = new HashMap<String, Journey>()
+		Set<String> journeyPairIds = currentJourney.getJourneyPairIds();
+		journeyPairIds.each { pairId ->
+			JourneyPair journeyPair = journeyPairDataService.findPairById(pairId);
+			String journeyId = journeyPair.initiatorJourneyId
+			Journey journey = allRelatedJourneysAsMap.get(journeyId);
+			if(journey == null) {
+				Journey journeyDb = findJourney(journeyId)
+				allRelatedJourneysAsMap.put(journeyId, journeyDb);
+			}
+			journeyId = journeyPair.recieverJourneyId
+			journey = allRelatedJourneysAsMap.get(journeyId);
+			if(journey == null) {
+				Journey journeyDb = findJourney(journeyId)
+				allRelatedJourneysAsMap.put(journeyId, journeyDb);
+			}
+			journeyPairs << journeyPair
+		}
+		UserJourney userJourney = new UserJourney(currentJourney, journeyPairs, allRelatedJourneysAsMap);
+		return userJourney;
+	}
 	
 	/**
 	 * Find Journey from Dynamo DB
