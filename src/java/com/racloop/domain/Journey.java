@@ -20,7 +20,6 @@ public class Journey {
 	private Date dateOfJourney;
 	private String email;
 	private String name;
-	private String esJourneyId;
 	private Double fromLatitude;
 	private Double fromLongitude;
 	private String from;
@@ -42,9 +41,9 @@ public class Journey {
 	
 	public JourneyRequestCommand convert() {
 		JourneyRequestCommand journeyCommand = new JourneyRequestCommand();
+		journeyCommand.setId(id);
 		journeyCommand.setUser(email);
 		journeyCommand.setMobile(mobile);
-		journeyCommand.setId(esJourneyId);
 		journeyCommand.setName(name);
 		journeyCommand.setIsMale(isMale);
 		journeyCommand.setDateOfJourney(dateOfJourney);
@@ -69,7 +68,6 @@ public class Journey {
 		buffer.append("mobile : " + mobile + ", ");
 		buffer.append("dateOfJourney : " + dateOfJourney + ", ");
 		buffer.append("email : " + email + ", ");
-		buffer.append("esJourneyId : " + esJourneyId + ", ");
 		buffer.append("name : " + name + ", ");
 		buffer.append("from : " + from + ", ");
 		buffer.append("to : " + to + ", ");
@@ -120,14 +118,6 @@ public class Journey {
 	}
 	public void setName(String name) {
 		this.name = name;
-	}
-	
-	@DynamoDBAttribute(attributeName="EsJourneyId") 
-	public String getEsJourneyId() {
-		return esJourneyId;
-	}
-	public void setEsJourneyId(String esJourneyId) {
-		this.esJourneyId = esJourneyId;
 	}
 	
 	@DynamoDBAttribute(attributeName="FromLatitude") 

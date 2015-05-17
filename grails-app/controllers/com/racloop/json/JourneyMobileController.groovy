@@ -40,6 +40,8 @@ class JourneyMobileController {
 	
 	def search() {
 		def json = request.JSON
+		String dateOfJourneyString = json?.dateOfJourneyString
+		String validStartTimeString = json?.validStartTimeString
 		String jsonMessage = null
 		String jsonResponse = "error"
 		def mobileResponse = new MobileResponse()
