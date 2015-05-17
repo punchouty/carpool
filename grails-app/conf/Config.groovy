@@ -177,7 +177,7 @@ grails {
 		from = "raC looP <help@racloop.com>"
 		host = "smtp.racloop.com"
 		port = 25
-		username = "help@racloop.com"
+		username = "admin@racloop.com"
 		password = "P@ssw0rd"
 //		props = ["mail.smtp.starttls.enable":"true", 
 //                  "mail.smtp.port":"587"]

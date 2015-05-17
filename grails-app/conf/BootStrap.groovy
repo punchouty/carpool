@@ -109,7 +109,7 @@ class BootStrap {
 			adminProfile.mobile = '9872883924'
 			admin.profile = adminProfile
 
-			log.info("Creating default admin account with username:admin")
+			log.info("Creating default admin account with username: ${admin.username}")
 
 			def savedAdmin = userService.createUser(admin)
 			if (savedAdmin.hasErrors()) {
@@ -142,12 +142,12 @@ class BootStrap {
 			userProfile.mobile = '9717744392'
 			user.profile = userProfile
 
-			log.info("Creating default user account with username:sample.user")
+			log.info("Creating default user account with username: ${user.username}")
 
 			def savedUser = userService.createUser(user)
 			if (savedUser.hasErrors()) {
 				savedUser.errors.each { log.error(it) }
-				throw new RuntimeException("Error creating example sample.user")
+				throw new RuntimeException("Error creating example ${user.username}")
 			}
 		}
 		
@@ -168,12 +168,12 @@ class BootStrap {
 			userProfile.mobile = '7307392447'
 			user.profile = userProfile
 
-			log.info("Creating default user account with username:sample.user")
+			log.info("Creating default user account with username: ${user.username}")
 
 			def savedUser = userService.createUser(user)
 			if (savedUser.hasErrors()) {
 				savedUser.errors.each { log.error(it) }
-				throw new RuntimeException("Error creating example sample.user")
+				throw new RuntimeException("Error creating example ${user.username}")
 			}
 		}
 		
@@ -194,12 +194,12 @@ class BootStrap {
 			userProfile.mobile = '9780242630'
 			user.profile = userProfile
 
-			log.info("Creating default user account with username:sample.user")
+			log.info("Creating default user account with username: ${user.username}")
 
 			def savedUser = userService.createUser(user)
 			if (savedUser.hasErrors()) {
 				savedUser.errors.each { log.error(it) }
-				throw new RuntimeException("Error creating example sample.user")
+				throw new RuntimeException("Error creating example ${user.username}")
 			}
 		}
 	}

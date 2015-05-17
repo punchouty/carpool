@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="layout" content="main" />
-<title>Welcome to raC looP</title>
+<title>Welcome to RACLOOP | Share Car, Cab and Auto Rides, carpool</title>
 <r:require module="map" />
 </head>
 <body>
