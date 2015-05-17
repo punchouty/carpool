@@ -430,6 +430,7 @@ public class JourneyRequestCommand {
 	Date createdDate = new Date();
 	Boolean isSaved = false
 	String photoUrl
+	String actionOnSearchUi
 	
 	static constraints = {
 		id nullable : true

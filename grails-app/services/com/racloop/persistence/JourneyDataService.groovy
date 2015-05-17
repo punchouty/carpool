@@ -22,11 +22,9 @@ class JourneyDataService {
 	def jmsService
 
     def createJourney(Journey journey) {
-		String journeyId = searchService.indexJourney(journey);
-		journey.setEsJourneyId(journeyId);
 		Journey savedJourney = amazonWebService.dynamoDBMapper.save(journey);
+		searchService.indexJourney(journey, savedJourney.getId());
 		log.info("createJourney - ${journey}");
-		//jmsService.send(queue: Constant.HISTORY_QUEUE, command.id);
     }
 	
 	/**

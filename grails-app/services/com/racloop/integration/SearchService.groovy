@@ -67,7 +67,13 @@ class SearchService {
 
 	def init() {
 		log.info "Initialising elastic search client"
-		node = NodeBuilder.nodeBuilder().node()
+		if (Environment.current == Environment.DEVELOPMENT) {
+			node = NodeBuilder.nodeBuilder().node();
+		}
+		else {
+			node = NodeBuilder.nodeBuilder().client(true).node();
+		}
+		
 	}
 
 	def destroy() {
@@ -79,15 +85,6 @@ class SearchService {
 	def createJourneyIndex() {
 		IndexDefinitor indexDefinitor = new IndexDefinitor();
 		indexDefinitor.createJourneyIndex(node, JOURNEY_INDEX_NAME);
-	}
-
-	def indexJourney(Journey journey) {
-		log.info "Adding record to elastic search ${journey}"
-		def sourceBuilder = createJourneyJson(journey)
-		IndexRequest indexRequest = new IndexRequest(JOURNEY_INDEX_NAME, IndexDefinitor.DEFAULT_TYPE).source(sourceBuilder);
-		IndexResponse indexResponse = node.client.index(indexRequest).actionGet();
-		log.info "Successfully indexed ${journey} with ${indexResponse.getId()}"
-		return indexResponse.getId();
 	}
 
 	def indexJourney(Journey journey, String id) {
@@ -128,6 +125,7 @@ class SearchService {
 		Journey journey = null;
 		if(getResponse.isExists()) {
 			journey = parseJourneyFromGetResponse(getResponse);
+			journey.setId(journeyId);
 		}
 		return journey;
 	}
@@ -231,6 +229,7 @@ class SearchService {
 	
 	private Journey parseJourneyFromSearchHit(SearchHit searchHit) {
 		Journey journey = new Journey();
+		journey.setId(searchHit.id);
 		journey.setMobile(searchHit.getSource().get('mobile'));
 		SimpleDateFormat formatter = new SimpleDateFormat(Constant.DATE_FORMAT_DYNAMODB);
 		formatter.setTimeZone(TimeZone.getTimeZone("UTC"));
