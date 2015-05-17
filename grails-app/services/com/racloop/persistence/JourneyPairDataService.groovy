@@ -2,6 +2,7 @@ package com.racloop.persistence
 
 import grails.transaction.Transactional
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig
 import com.racloop.domain.JourneyPair
 
 
@@ -13,6 +14,10 @@ class JourneyPairDataService {
 	def createJourneyPair(JourneyPair journeyPair){
 		JourneyPair savedPair = amazonWebService.dynamoDBMapper.save(journeyPair);
 		log.info("createJourney - ${savedPair}");
+	}
+	
+	def saveJourneyPair(JourneyPair journeyPair) {
+		amazonWebService.dynamoDBMapper.save(journeyPair, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
 	}
 	
 	def findPairById(String id) {
