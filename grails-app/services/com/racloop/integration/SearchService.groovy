@@ -39,6 +39,7 @@ import org.joda.time.format.ISODateTimeFormat;
 
 import com.racloop.Constant;
 import com.racloop.DistanceUtil;
+import com.racloop.NamesUtil;
 import com.racloop.Place;
 import com.racloop.User;
 import com.racloop.domain.Journey
@@ -166,6 +167,7 @@ class SearchService {
 	 * Used for search in main index as well as dummy (or generated data) index
 	 */
 	def search(String indexName, Date timeOfJourney, Date validStartTime, String mobile, Double fromLat, Double fromLon, Double toLat, Double toLon) {
+		log.info("search index ${indexName}")
 		DateTime dateOfJourney = new DateTime(timeOfJourney);
 		DateTime start = dateOfJourney.minusHours(4);
 		DateTime end = dateOfJourney.plusHours(4);
@@ -195,12 +197,14 @@ class SearchService {
 
 		FieldSortBuilder startTimeSorter = new FieldSortBuilder("dateOfJourney").order(SortOrder.ASC);
 
-		SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100, sorter, startTimeSorter);
+		//SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100, sorter, startTimeSorter);
+		SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100);
 		def searchResults = [];
 		for (SearchHit searchHit : hits) {
 			Journey item = parseJourneyFromSearchHit(searchHit);
 			searchResults << item
 		}
+		return searchResults;
 	}
 
 	private SearchHit[] queryDocuments(String indexName, String indexType, FilterBuilder filter, int size, SortBuilder...sorters){
@@ -292,10 +296,83 @@ class SearchService {
 	def indexGeneratedJourney(Journey journey) {
 		log.info "Adding record to elastic search ${journey}"
 		def sourceBuilder = createJourneyJson(journey)
-		IndexRequest indexRequest = new IndexRequest(DUMMY_INDEX_NAME).source(sourceBuilder);
+		IndexRequest indexRequest = new IndexRequest(DUMMY_INDEX_NAME, IndexDefinitor.DEFAULT_TYPE).source(sourceBuilder);
 		IndexResponse indexResponse = node.client.index(indexRequest).actionGet();
 		log.info "Successfully indexed ${journey} with ${indexResponse.getId()}"
 		return indexResponse.getId();
+	}
+	
+	def generateData(Date timeOfJourney, String mobile, Double fromLat, Double fromLon, Double toLat, Double toLon) {
+		DateTime tempDate = new DateTime(timeOfJourney);
+		if(Environment.current.getName() == "production") {
+			if(tempDate.getHourOfDay() > 20 || tempDate.getHourOfDay() < 7) return [];
+		}
+		Random randomGenerator = new Random();
+		Integer numberOfRecords = randomGenerator.nextInt(5);
+		if(numberOfRecords < 2) numberOfRecords = 2;//expecting 2,3,4 number of records
+		def journeys = [];
+		def names = NamesUtil.getRandomBoyNames(numberOfRecords);
+		double tripDistance = DistanceUtil.distance(fromLat, fromLon, toLat, toLon);
+		def maxDistance = tripDistance / (DISTANCE_FACTOR + 1)
+		Place [] fromPlaces = searchNearLocations(maxDistance, fromLat, fromLon, numberOfRecords);
+		Place [] toPlaces = searchNearLocations(maxDistance, toLat, toLon, numberOfRecords);
+		Random randomMinutesGenerator = new Random();
+		int index = 0;
+		final def random = new Random();
+		final def possibleMinutes = [0, 15, 30, 45]
+		if(fromPlaces.size() <= toPlaces.size()) {
+			fromPlaces.each {
+				def i = random.nextInt(possibleMinutes.size())
+				tempDate = tempDate.plusMinutes(possibleMinutes[i]);
+				def name = names[index]
+				def fromPlace = it;
+				def toPlace = toPlaces[index]
+				Journey journey = new Journey();
+				journey.mobile = '9800000000';
+				journey.dateOfJourney = tempDate.toDate();
+				journey.email= 'dummy@racloop.com';
+				journey.name= name;
+				journey.isDriver = false;
+				journey.fromLatitude = fromPlace.location.lat();
+				journey.fromLongitude = fromPlace.location.lon();
+				journey.from = fromPlace.name
+				journey.toLatitude = toPlace.location.lat();
+				journey.toLongitude = toPlace.location.lon();
+				journey.to = toPlace.name
+				journey.tripDistance = 100;
+				journey.isDummy = true;
+				journey.id = indexGeneratedJourney(journey)
+				journeys << journey
+				index++
+			}
+		}
+		else {
+			toPlaces.each {
+				def i = random.nextInt(possibleMinutes.size())
+				tempDate = tempDate.plusMinutes(possibleMinutes[i]);
+				def name = names[index]
+				def toPlace = it;
+				def fromPlace = fromPlaces[index]
+				Journey journey = new Journey();
+				journey.mobile = '9800000000';
+				journey.dateOfJourney = tempDate.toDate();
+				journey.email= 'dummy@racloop.com';
+				journey.name= name;
+				journey.isDriver = false;
+				journey.fromLatitude = fromPlace.location.lat();
+				journey.fromLongitude = fromPlace.location.lon();
+				journey.from = fromPlace.name
+				journey.toLatitude = toPlace.location.lat();
+				journey.toLongitude = toPlace.location.lon();
+				journey.to = toPlace.name
+				journey.tripDistance = 100;
+				journey.isDummy = true;
+				journey.id = indexGeneratedJourney(journey)
+				journeys << journey
+				index++
+			}
+		}
+		return journeys;
 	}
 	
 	/**** Generated dummy data Handling START ****/
@@ -338,7 +415,7 @@ class SearchService {
 		sorter.order(SortOrder.ASC);
 		def places = [];
 
-		SearchHit[] hits = queryDocument([indexName] as String[], [indexType] as String[], filter, maxRecords, sorter)
+		SearchHit[] hits = queryDocuments(indexName, indexType, filter, maxRecords, sorter)
 		for (SearchHit searchHit : hits) {
 			Place place = parsePlaceFromSearchHit(searchHit);
 			places << place

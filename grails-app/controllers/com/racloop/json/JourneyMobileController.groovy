@@ -36,6 +36,7 @@ import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 class JourneyMobileController {
 	
 	def journeyDataService
+	def workflowDataService
 	
 	def search() {
 		def json = request.JSON
@@ -65,30 +66,24 @@ class JourneyMobileController {
 			}
 			else {
 				if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
-//					if(currentJourney.validate()) {
-//						session.currentJourney = currentJourney
-//						boolean shouldSearchJourneys = true
-//						if(currentUser && currentJourney.isNewJourney()) {//Usually it will be the case for Mobile search
-//							JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
-//							if(existingJourney) {
-//								mobileResponse.data = ['existingJourney':existingJourney,'currentJourney':currentJourney]
-//								mobileResponse.success = true
-//								mobileResponse.total = 0
-//								mobileResponse.message = "Existing journey found!"
-//								mobileResponse.existingJourney=true
-//								
-//								shouldSearchJourneys = false
-//							}
-//						}
-//						if(shouldSearchJourneys){
-//							searchResultMap = journeyService.getSearchResults(currentUser, currentJourney)
-//							session.currentJourney = currentJourney
-//							mobileResponse.data = searchResultMap
-//							mobileResponse.success = true
-//							mobileResponse.total = searchResultMap.numberOfRecords
-//							mobileResponse.existingJourney=false
-//						}
-//					}
+					def returnValue = workflowDataService.processSearch(currentJourney.getDateOfJourney(), currentJourney.getValidStartTime(), currentUser.profile.mobile, currentJourney.getFromLatitude(), currentJourney.getFromLongitude(), currentJourney.getToLatitude(), currentJourney.getToLongitude())
+					if(returnValue instanceof Journey) {
+						mobileResponse.data = ['existingJourney':returnValue.convert(),'currentJourney':currentJourney]
+						mobileResponse.success = true
+						mobileResponse.total = 0
+						mobileResponse.message = "Existing journey found!"
+						mobileResponse.existingJourney=true
+					}
+					else {
+						def journeys = [];
+						for (Journey dbJourney: returnValue) {
+							journeys << dbJourney.convert()
+						}
+						mobileResponse.data = journeys
+						mobileResponse.success = true
+						mobileResponse.total = journeys.size()
+						mobileResponse.existingJourney=false
+					}
 				}
 				else {
 					mobileResponse.message = "Invalid travel date and time"
@@ -174,6 +169,13 @@ class JourneyMobileController {
 		currentJourney.user = json?.user
 		currentJourney.id = json?.id		
 		return currentJourney
+	}
+	
+	private Double convertToDouble(Object input) {
+		if(input){
+			 return Double.valueOf(input)
+		}
+		return null
 	}
 	
 	private setDates(JourneyRequestCommand currentJourney) {

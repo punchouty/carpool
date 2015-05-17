@@ -23,6 +23,16 @@ class WorkflowDataService {
 		}
 			
 		List<Journey> searchResults = searchService.search(searchService.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+		if(searchResults.size() > 0) {
+			return searchResults;
+		}
+		else {
+			List<Journey> dummyResults = searchService.search(searchService.DUMMY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+			if(dummyResults.size() <= 0) {
+				dummyResults = searchService.generateData(timeOfJourney, mobile, fromLat, fromLon, toLat, toLon);
+			}
+			return dummyResults;
+		}
 			
 	}
 
