@@ -56,6 +56,11 @@ grails.project.dependency.resolution = {
 			excludes 'commons-logging'
 		}
 		compile 'org.springframework:spring-jms:3.2.5.RELEASE'
+		
+		build 'org.apache.httpcomponents:httpcore:4.3.2'
+		build 'org.apache.httpcomponents:httpclient:4.3.2'
+		runtime 'org.apache.httpcomponents:httpcore:4.3.2'
+		runtime 'org.apache.httpcomponents:httpclient:4.3.2'
     }
 
     plugins {
@@ -91,5 +96,7 @@ grails.project.dependency.resolution = {
 		compile ":audit-logging:1.0.3"
 		
 		compile ":rest-client-builder:2.0.3"
+		
+		runtime ':aws-sdk:1.9.22'
     }
 }

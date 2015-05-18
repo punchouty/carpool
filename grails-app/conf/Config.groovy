@@ -137,15 +137,16 @@ grails.email.exception.two="rohit@racloop.com"
 grails.sms.emergency.one="9810095625"
 grails.sms.emergency.two="7307392447"
 
-grails.messaging.mail.from="help@racloop.com"
+grails.messaging.mail.from="admin@racloop.com"
 
 grails.approx.distance.to.match = 3.0
 grails.approx.time.to.match = 30
 grails.max.active.requests = 5
 grails.approx.time.range= 45
 
-
-
+grails.plugin.awssdk.accessKey = "AKIAIDCY5QLPSIUTWBNQ"
+grails.plugin.awssdk.secretKey = "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"
+grails.plugin.awssdk.region = 'ap-southeast-1'
 
 environments {
 	development {
@@ -174,7 +175,7 @@ auditLog {
 
 grails {
 	mail {
-		from = "raC looP <help@racloop.com>"
+		from = "raC looP <admin@racloop.com>"
 		host = "smtp.racloop.com"
 		port = 25
 		username = "admin@racloop.com"

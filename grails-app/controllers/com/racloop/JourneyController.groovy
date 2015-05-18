@@ -409,6 +409,7 @@ class JourneyController {
 public class JourneyRequestCommand {
 	
 	String user
+	String mobile
 	String id;//will be assigned later
 	String name; //Should get from user. 
 	Boolean isMale; //Should get from user.
@@ -429,6 +430,7 @@ public class JourneyRequestCommand {
 	Date createdDate = new Date();
 	Boolean isSaved = false
 	String photoUrl
+	String actionOnSearchUi = "SEARCH"
 	
 	static constraints = {
 		id nullable : true

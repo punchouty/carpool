@@ -15,6 +15,8 @@ import com.racloop.Place
 import com.racloop.staticdata.StaticData
 
 
+import org.elasticsearch.node.Node
+import org.elasticsearch.node.NodeBuilder
 class BootStrap {
 	
 	def grailsApplication
@@ -27,7 +29,9 @@ class BootStrap {
 	def smsService
 	def userAuthenticationService
 	PageRenderer groovyPageRenderer
-		
+	def node = null;
+	def searchService	
+	
     def init = { servletContext ->
 		internalBootStap(servletContext)
 		
@@ -45,7 +49,10 @@ class BootStrap {
 			log.info("Users created successfully in Elasticsearch")
 		}
 		//Initialising Elasticsearch
-		elasticSearchService.init()
+		node = NodeBuilder.nodeBuilder().node()
+		elasticSearchService.init(node)
+		searchService.init(node)
+		
 		smsService.init()
 		Boolean createIndex = grailsApplication.config.grails.startup.elasticsearch.index.create
 		if(createIndex) {
@@ -72,7 +79,8 @@ class BootStrap {
     }
 	
     def destroy = {
-		elasticSearchService.destroy()
+		//elasticSearchService.destroy()
+		node.close();
     }
 
 	private internalBootStap(servletContext) {
@@ -80,6 +88,9 @@ class BootStrap {
 	}
 	
 	private def createIndexes() {
+		searchService.createLocationIndex();
+		searchService.createJourneyIndex();
+		searchService.createGeneratedJourneyIndex();
 		// Main Index
 		elasticSearchService.createMainJourneyIndex()		
 		// Master Data Index

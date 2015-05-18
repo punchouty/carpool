@@ -5,6 +5,8 @@ import org.elasticsearch.common.joda.time.format.DateTimeFormat
 import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 import org.elasticsearch.common.joda.time.format.ISODateTimeFormat
 
+
+@Deprecated
 class DateUtil {
 	
 	private static final String JAVA_DATE_FORMAT = "dd MMM yy hh:mm a";

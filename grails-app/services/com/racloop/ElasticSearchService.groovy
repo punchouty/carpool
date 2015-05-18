@@ -55,13 +55,14 @@ class ElasticSearchService {
 	private DateTime FROM_DATE = new DateTime(2015,4,1,0,1)
 	private DateTime TO_DATE = new DateTime(2015,11,1,0,1)
 
-	def init() {
-		log.info "Initialising elastic search client"
-		node = NodeBuilder.nodeBuilder().node()
+	def init(Node node) {
+		this.node = node
+		//log.info "Initialising elastic search client"
+		//node = NodeBuilder.nodeBuilder().node()
 	}
 
 	def destroy() {
-		node.close()
+		//node.close()
 	}
 
 //	def indexJourneyWithIndexCheck(Journey journey) {
