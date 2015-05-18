@@ -29,6 +29,9 @@ public interface Constant {
 	
 	public static final String WORKFLOW_ID_KEY = "workflowIdKey";
 	public static final String WORKFLOW_STATE_KEY = "workflowStateKey";
+	public static final String JOURNEY_WORKFLOW_SOURCE_ID = "journeyWorkflowSourceId";
+	public static final String JOURNEY_WORKFLOW_TARGET_ID = "journeyWorkflowTargetId";
+
 	
 	public static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 	public static final String GRAVATAR_URL_SUFFIX = "?s=200&d=mm";
@@ -38,5 +41,4 @@ public interface Constant {
 	public static final String DATE_FORMAT_DYNAMODB = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";//"yyyy-MM-dd HH:mm:ss.u Z";
 	public static final String DATE_FORMAT_UI = "yyyy-MM-dd'T'HH:mm:ssXXX";
 	public static final String DATE_FORMAT_ES = "yyyyMMdd'T'HHmmssZ";
-
 }

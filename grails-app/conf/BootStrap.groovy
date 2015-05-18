@@ -4,7 +4,6 @@ import grails.plugin.nimble.core.Role
 import grails.plugin.nimble.core.UserBase
 import grails.util.Environment
 import grails.gsp.PageRenderer
-
 import liquibase.util.csv.opencsv.CSVReader
 
 import org.apache.shiro.SecurityUtils
@@ -12,8 +11,8 @@ import org.elasticsearch.common.geo.GeoPoint
 import org.springframework.web.context.support.WebApplicationContextUtils
 
 import com.racloop.Place
+import com.racloop.domain.RacloopUser;
 import com.racloop.staticdata.StaticData
-
 
 import org.elasticsearch.node.Node
 import org.elasticsearch.node.NodeBuilder
@@ -31,6 +30,8 @@ class BootStrap {
 	PageRenderer groovyPageRenderer
 	def node = null;
 	def searchService	
+	def userDataService
+	def testDataService
 	
     def init = { servletContext ->
 		internalBootStap(servletContext)
@@ -73,7 +74,14 @@ class BootStrap {
 			sampleDataService.deleteSampleData()
 			log.info("Populating Sample Data");
 			Boolean createSampleData = grailsApplication.config.grails.startup.sampleData.create
-			if(createSampleData) sampleDataService.populateSampleData();
+			if(createSampleData) {
+				sampleDataService.populateSampleData();
+				testDataService.deleteDataForDev();
+				testDataService.generateDataForDev();
+			}
+			else {
+				testDataService.populateElasticSearch();
+			}
 			
         }
     }
@@ -127,6 +135,20 @@ class BootStrap {
 				savedAdmin.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating administrator")
 			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(adminProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(adminProfile.mobile)
+					racloopUser.setEmail(adminProfile.email);
+					racloopUser.setFullName(adminProfile.fullName)
+					racloopUser.setEmailHash(adminProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${admin.username} already there in dynamodb")
+				}
+			}
 
 			adminsService.add(admin)
 		}
@@ -160,6 +182,20 @@ class BootStrap {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
 			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
+			}
 		}
 		
 		//mail.live.com - user : sample.driver@racloop.com, password : S@pient1
@@ -185,6 +221,20 @@ class BootStrap {
 			if (savedUser.hasErrors()) {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
+			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
 			}
 		}
 		
@@ -212,6 +262,20 @@ class BootStrap {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
 			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
+			}
 		}
 	}
 	
@@ -228,6 +292,7 @@ class BootStrap {
 			place.location = new GeoPoint(latitude, longitude)
 			if(!place.equals(previousPlace)) {
 				elasticSearchService.indexLocation(place);
+				searchService.indexLocation(place);
 			}
 			previousPlace = place;
 		}

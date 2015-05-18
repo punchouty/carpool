@@ -1,6 +1,7 @@
 package com.racloop.domain;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
@@ -59,6 +60,35 @@ public class Journey {
 		journeyCommand.setCreatedDate(createdDate);
 		journeyCommand.setPhotoUrl(photoUrl);
 		return journeyCommand;
+	}
+	
+	public void addPairIdToJourney (String ... pairIds){
+		Set<String> existingPairId = this.getJourneyPairIds();
+		if(existingPairId == null || existingPairId.isEmpty()){
+			existingPairId = new HashSet<String>();
+		}
+		for (String id: pairIds) {           
+		    existingPairId.add(id);
+		}
+		
+		this.setJourneyPairIds(existingPairId);
+		return;
+	}
+	
+	public void incrementNumberOfCopassengers(){
+		assert this.numberOfCopassengers < 2;
+		this.numberOfCopassengers++;
+	}
+	
+	public void decrementNumberOfCopassengers(){
+		assert this.numberOfCopassengers > 0;
+		this.numberOfCopassengers--;
+	}
+
+	public void incrementNumberOfCopassengers(int count) {
+		for (int i = 0; i < count; i++) {
+			incrementNumberOfCopassengers();
+		}
 	}
 
 	@Override 
