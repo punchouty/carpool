@@ -47,7 +47,7 @@ class JourneyMobileController {
 			currentJourney.isMale = currentUser.profile.isMale
 			currentJourney.mobile = currentUser.profile.mobile
 			currentJourney.ip = request.remoteAddr
-			flash.currentJourney = currentJourney
+			session.currentJourney = currentJourney
 			if(currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				mobileResponse = journeySearchService.executeSearch(currentJourney);
 			}
@@ -65,58 +65,55 @@ class JourneyMobileController {
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			JourneyRequestCommand currentJourney = flash.currentJourney
+			JourneyRequestCommand currentJourney = session.currentJourney
 			if(currentJourney != null) {
-				forward action: 'search', model: [currentJourney: currentJourney]
+				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
 			}
 			else {
 				mobileResponse.message = "Error : No journey to search"
-				log.warn ("currentJourney not in flash scope for user ${currentUser}")
-				render mobileResponse as JSON
+				log.warn ("currentJourney not in session scope for user ${currentUser}")
 			}
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Unable to perform search"
-			render mobileResponse as JSON
 		}
+		render mobileResponse as JSON
 	}
 	
 	def replaceAndSearch() {
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			JourneyRequestCommand currentJourney = flash.currentJourney
+			JourneyRequestCommand currentJourney = session.currentJourney
 			if(currentJourney != null) {
 				workflowDataService.replace(Journey.convert(currentJourney));
-				forward action: 'search', model: [currentJourney: currentJourney]
+				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
 			}
 			else {
 				mobileResponse.message = "Error : No journey to search"
-				log.warn ("currentJourney not in flash scope for user ${currentUser}")
-				render mobileResponse as JSON
+				log.warn ("currentJourney not in session scope for user ${currentUser}")
 			}
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Unable to perform search"
-			render mobileResponse as JSON
 		}
+		render mobileResponse as JSON
 	}
 	
 	def save() {
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			JourneyRequestCommand currentJourney = flash.currentJourney
+			JourneyRequestCommand currentJourney = session.currentJourney
 			if(currentJourney != null) {
 				Journey journey = Journey.convert(currentJourney);
 				journeyDataService.createJourney(journey);
-				mobileResponse.success = true
+				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
 				mobileResponse.message = "Journey saved successfully"
-				mobileResponse.data = currentJourney;
 			}
 			else {
 				mobileResponse.message = "Error : No journey to save"
-				log.warn ("currentJourney not in flash scope for user ${currentUser}")
+				log.warn ("currentJourney not in session scope for user ${currentUser}")
 			}
 		}
 		else {

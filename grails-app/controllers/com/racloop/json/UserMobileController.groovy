@@ -1,5 +1,6 @@
 package com.racloop.json
 
+import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 import grails.converters.JSON
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.ProfileBase
@@ -12,24 +13,15 @@ import org.apache.shiro.authc.UsernamePasswordToken
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.elasticsearch.common.joda.time.DateTime
-import org.elasticsearch.common.joda.time.format.DateTimeFormat
-import org.elasticsearch.common.joda.time.format.DateTimeFormatter
 
-import com.racloop.Constant;
-import com.racloop.ElasticSearchService;
-import com.racloop.GenericStatus;
-import com.racloop.JourneyRequestCommand
-import com.racloop.Profile;
-import com.racloop.Sos;
-import com.racloop.User
-import com.racloop.domain.Journey;
-import com.racloop.domain.RacloopUser;
-import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.Constant
+import com.racloop.GenericStatus
+import com.racloop.Profile
+import com.racloop.Sos
+import com.racloop.domain.Journey
+import com.racloop.domain.RacloopUser
 import com.racloop.mobile.data.response.MobileResponse
-import com.racloop.staticdata.StaticData;
-import com.racloop.util.date.DateUtil
-
-import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
+import com.racloop.staticdata.StaticData
 
 class UserMobileController {
 	
@@ -429,6 +421,111 @@ class UserMobileController {
 			mobileResponse.message = "User is not logged in. Cannot change user profile"
 		}
 		
+		render mobileResponse as JSON
+	}
+	
+	def privacy() {
+		def mobileResponse = new MobileResponse()
+		def html = StaticData.findByStaticDataKey("privacy").pageData;
+		mobileResponse.message = html 
+		mobileResponse.success = true
+		mobileResponse.total =0
+		render mobileResponse as JSON
+	}
+	
+	def terms() {
+		def mobileResponse = new MobileResponse()
+		def html = StaticData.findByStaticDataKey("terms").pageData;
+		mobileResponse.message = html
+		mobileResponse.success = true
+		mobileResponse.total =0
+		render mobileResponse as JSON
+	}
+	
+	def saveEmergencyContacts() {
+		def json = request.JSON
+		def mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser()
+		if(currentUser != null) {
+			Profile profile = currentUser.profile
+			profile.emergencyContactOne = json.contactOne
+			profile.emergencyContactTwo = json.contactTwo
+			profile.save();
+			mobileResponse.success = true
+			mobileResponse.message = "Emergency contacts saved successfully"
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot save the emergency contacts"
+		}
+	   render mobileResponse as JSON
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	def sos() {
+		def json = request.JSON
+		def mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser()
+		if(currentUser == null) {
+			log.info("Current user not in session : " + json.email)
+			def email = json.email
+			Profile profile = Profile.findByEmail(email);
+			if(profile)
+				currentUser = profile.owner
+		}
+		if(currentUser) {
+			def currentDateString = json.currentDateString
+			DateTime currentDate = convertUIDateToElasticSearchDate(currentDateString)
+			def journeys = journeyService.findCurrentJourneyForUser(currentUser, currentDate)
+			def journeyIds = null
+			journeys.each { journey ->
+				journeyIds = journeyIds + "~" + journey.id
+			}
+			def emergencyContactOne = null
+			def emergencyContactTwo = null
+			if(currentUser?.profile?.emergencyContactOne) {
+				emergencyContactOne = currentUser?.profile?.emergencyContactOne
+			}
+			else {
+				log.info("Emergency contact one not present")
+			}
+			if(currentUser?.profile?.emergencyContactTwo) {
+				emergencyContactTwo = currentUser?.profile?.emergencyContactTwo
+			}
+			else {
+				log.info("Emergency contact two not present")
+			}
+			
+			def  messageMap =[
+				(Constant.EMAIL_KEY) : currentUser?.profile?.email,
+				(Constant.MOBILE_KEY) : currentUser?.profile?.mobile,
+				(Constant.SOS_NAME_KEY) : currentUser?.profile?.fullName,
+				(Constant.EMERGENCY_CONTACT_ONE_KEY) : emergencyContactOne,
+				(Constant.EMERGENCY_CONTACT_TWO_KEY) : emergencyContactTwo,
+				(Constant.JOURNEY_IDS_KEY) : journeyIds,
+				(Constant.SOS_USER_LATITUDE) : json.lat,
+				(Constant.SOS_USER_LONGITUDE): json.lng
+			]
+			
+			Sos sos = new Sos();
+			sos.userName = currentUser?.profile?.email
+			sos.mobile = currentUser?.profile?.mobile
+			sos.latitude = json.lat
+			sos.longitude = json.lng
+			sos.sosTimestamp = currentDate.toDate()
+			sos.journeyIds = journeyIds
+			sos.save();
+			jmsService.send(queue: Constant.MOBILE_SOS_QUEUE, messageMap)
+			log.info("SMS parameters : " + messageMap)
+			mobileResponse.message = "Sos registered Successfully" 
+			mobileResponse.success = true
+		}
+		else {
+			mobileResponse.message = "Sos not registered Successfully. Email not found " +  json.email// TODO implementation incomplete and hard coded
+			mobileResponse.success = false
+		}
 		render mobileResponse as JSON
 	}
 }

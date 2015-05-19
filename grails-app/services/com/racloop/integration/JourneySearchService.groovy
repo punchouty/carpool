@@ -35,26 +35,39 @@ class JourneySearchService {
 				mobileResponse.existingJourney = true;
 			}
 			else {
-				List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
-				if(searchResults.size() > 0) {
-					def returnJourneys = enrichResults(searchResults, myJourneys);
-					int length = 0
-					if(returnJourneys !=  null) length = returnJourneys.size()
-					mobileResponse.data = ['journeys': returnJourneys]
-					mobileResponse.success = true
-					mobileResponse.total = length
-					mobileResponse.message = "${length} results found"
-				}
-				else {
-					mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
-				}
+				mobileResponse = straightThruSearch(currentJourney);
 			}
 		}
 		else {
-			List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, null, fromLat, fromLon, toLat, toLon);
-			if(searchResults.size() <= 0) {
-				mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+			mobileResponse = straightThruSearch(currentJourney);
+		}
+		return mobileResponse;
+	}
+	
+	def straightThruSearch(JourneyRequestCommand currentJourney) {
+		Date timeOfJourney = currentJourney.dateOfJourney
+		Date validStartTime = currentJourney.validStartTime
+		String mobile = currentJourney.mobile
+		Double fromLat = currentJourney.fromLatitude
+		Double fromLon = currentJourney.fromLongitude
+		Double toLat = currentJourney.toLatitude
+		Double toLon = currentJourney.toLongitude
+		MobileResponse mobileResponse = new MobileResponse();
+		List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+		if(searchResults.size() > 0) {
+			def returnJourneys = []
+			for (Journey dbJourney: searchResults) {
+				returnJourneys << dbJourney.convert();
 			}
+			int length = 0
+			if(returnJourneys !=  null) length = returnJourneys.size()
+			mobileResponse.data = ['journeys': returnJourneys]
+			mobileResponse.success = true
+			mobileResponse.total = length
+			mobileResponse.message = "${length} results found"
+		}
+		else {
+			mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 		}
 		return mobileResponse;
 	}
@@ -71,8 +84,8 @@ class JourneySearchService {
 		}
 		mobileResponse.data = ['journeys': returnJourneys]
 		mobileResponse.success = true
-		mobileResponse.total = returnJourneys.size()
-		mobileResponse.message = "${returnJourneys.size()} results found"
+		mobileResponse.total = returnJourneys?.size()
+		mobileResponse.message = "${returnJourneys?.size()} results found"
 		mobileResponse.isDummy = true;
 		return mobileResponse;
 	}
@@ -94,7 +107,6 @@ class JourneySearchService {
 //				}
 			}
 			else {
-				println result
 				returnJourneys << result.convert();
 			}
 		}

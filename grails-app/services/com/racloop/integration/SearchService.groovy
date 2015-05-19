@@ -190,7 +190,7 @@ class SearchService {
 		FieldSortBuilder startTimeSorter = new FieldSortBuilder("dateOfJourney").order(SortOrder.ASC);
 
 		//SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100, sorter, startTimeSorter);
-		SearchHit[] hits = queryDocuments(indexName, IndexMetadata.DEFAULT_TYPE, filter, 20);
+		SearchHit[] hits = queryDocuments(indexName, IndexMetadata.DEFAULT_TYPE, filter, 20, sorter, startTimeSorter);
 		def searchResults = [];
 		for (SearchHit searchHit : hits) {
 			Journey item = parseJourneyFromSearchHit(searchHit);
