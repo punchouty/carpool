@@ -14,6 +14,12 @@ public class GenericUtil {
 		Date date = uiFormatter.parse(source);
 		return date;
 	}
+	public static Date uiDateStringToJavaDateForSearch(String source) throws ParseException {
+		SimpleDateFormat uiFormatter = new SimpleDateFormat(Constant.DATE_FORMAT_UI);
+		uiFormatter.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Date date = uiFormatter.parse(source);
+		return date;
+	}
 	
 	public static String javaDateToDynamoDbDateString(Date date) throws ParseException {
 		SimpleDateFormat dBFormatter = new SimpleDateFormat(Constant.DATE_FORMAT_DYNAMODB);

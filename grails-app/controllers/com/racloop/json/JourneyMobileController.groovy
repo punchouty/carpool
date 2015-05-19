@@ -63,6 +63,7 @@ class JourneyMobileController {
 			currentJourney.user = currentUser.username
 			currentJourney.name = currentUser.profile.fullName
 			currentJourney.isMale = currentUser.profile.isMale
+			currentJourney.mobile = currentUser.profile.mobile
 			currentJourney.ip = request.remoteAddr
 			if(currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				mobileResponse = journeySearchService.executeSearch(currentJourney);
@@ -136,9 +137,9 @@ class JourneyMobileController {
 	private def convertJsonToJourneyObject(def json) {
 		JourneyRequestCommand currentJourney = new JourneyRequestCommand()
 		currentJourney.dateOfJourneyString = json?.dateOfJourneyString
-		currentJourney.dateOfJourney = GenericUtil.uiDateStringToJavaDate(json?.dateOfJourneyString);
+		currentJourney.dateOfJourney = GenericUtil.uiDateStringToJavaDateForSearch(json?.dateOfJourneyString);
 		currentJourney.validStartTimeString = json?.validStartTimeString
-		currentJourney.validStartTime = GenericUtil.uiDateStringToJavaDate(json?.validStartTimeString);
+		currentJourney.validStartTime = GenericUtil.uiDateStringToJavaDateForSearch(json?.validStartTimeString);
 		currentJourney.fromPlace = json?.fromPlace
 		currentJourney.fromLatitude = convertToDouble(json?.fromLatitude)
 		currentJourney.fromLongitude = convertToDouble(json?.fromLongitude)

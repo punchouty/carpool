@@ -190,7 +190,7 @@ class SearchService {
 		FieldSortBuilder startTimeSorter = new FieldSortBuilder("dateOfJourney").order(SortOrder.ASC);
 
 		//SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100, sorter, startTimeSorter);
-		SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100);
+		SearchHit[] hits = queryDocuments(indexName, IndexMetadata.DEFAULT_TYPE, filter, 20);
 		def searchResults = [];
 		for (SearchHit searchHit : hits) {
 			Journey item = parseJourneyFromSearchHit(searchHit);
@@ -257,7 +257,7 @@ class SearchService {
 		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
 		sorter.order(SortOrder.ASC);
 		def journeys = []
-		SearchHit[] hits = queryDocuments(IndexMetadata.JOURNEY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, filter, 5, sorter)
+		SearchHit[] hits = queryDocuments(IndexMetadata.JOURNEY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, filter, 20, sorter)
 		def searchResults = [];
 		for (SearchHit searchHit : hits) {
 			Journey item = parseJourneyFromSearchHit(searchHit);

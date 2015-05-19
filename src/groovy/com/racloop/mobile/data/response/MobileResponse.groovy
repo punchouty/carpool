@@ -8,4 +8,5 @@ class MobileResponse {
 	Object data = null
 	boolean existingJourney=false
 	Object currentJourney = null
+	boolean isDummy = false
 }

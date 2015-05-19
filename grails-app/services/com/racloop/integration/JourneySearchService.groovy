@@ -2,13 +2,12 @@ package com.racloop.integration
 
 import grails.transaction.Transactional
 
-import com.racloop.GenericUtil;
-import com.racloop.JourneyRequestCommand;
+import com.racloop.GenericUtil
+import com.racloop.JourneyRequestCommand
 import com.racloop.domain.Journey
-import com.racloop.domain.UserJourney;
-import com.racloop.elasticsearch.IndexMetadata;
-import com.racloop.mobile.data.response.MobileResponse;
-import com.racloop.util.date.DateUtil
+import com.racloop.domain.UserJourney
+import com.racloop.elasticsearch.IndexMetadata
+import com.racloop.mobile.data.response.MobileResponse
 
 @Transactional
 class JourneySearchService {
@@ -25,40 +24,54 @@ class JourneySearchService {
 		Double fromLon = currentJourney.fromLongitude
 		Double toLat = currentJourney.toLatitude
 		Double toLon = currentJourney.toLongitude
-		MobileResponse mobileResponse = new MobileResponse()
-		List<Journey> journeys = journeyDataService.findMyJourneys(mobile, timeOfJourney);
-		Journey existingJourney = getSimilarJourney(journeys, timeOfJourney)
-		if(existingJourney != null) {
-			mobileResponse.data = ['existingJourney':existingJourney.convert(),'currentJourney':currentJourney]
-			mobileResponse.success = true
-			mobileResponse.message = "Existing journey found!"
-			mobileResponse.existingJourney = true
-		}
-		else {
-			List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
-			if(searchResults.size() > 0) {
-				def returnJourneys = enrichResults(searchResults, journeys);
-				mobileResponse.data = returnJourneys
+		MobileResponse mobileResponse = new MobileResponse();
+		if(mobile != null) {
+			List<Journey> myJourneys = journeyDataService.findMyJourneys(mobile, timeOfJourney);
+			Journey existingJourney = getSimilarJourney(myJourneys, timeOfJourney);
+			if(existingJourney != null) {
+				mobileResponse.data = ['existingJourney': existingJourney.convert(), 'currentJourney': currentJourney]
 				mobileResponse.success = true
-				mobileResponse.total = returnJourneys.size()
-				mobileResponse.message = "${returnJourneys.size()} results found"
+				mobileResponse.message = "Existing journey found!"
+				mobileResponse.existingJourney = true
 			}
 			else {
-				List<Journey> dummyResults = searchService.search(IndexMetadata.DUMMY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
-				if(dummyResults.size() <= 0) {
-					dummyResults = searchService.generateData(timeOfJourney, mobile, fromLat, fromLon, toLat, toLon);
+				List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+				if(searchResults.size() > 0) {
+					def returnJourneys = enrichResults(searchResults, myJourneys);
+					mobileResponse.data = ['journeys': returnJourneys]
+					mobileResponse.success = true
+					mobileResponse.total = returnJourneys.size()
+					mobileResponse.message = "${returnJourneys.size()} results found"
 				}
-				def returnJourneys = []
-				for (Journey dbJourney: dummyResults) {
-					returnJourneys << dbJourney.convert();
+				else {
+					mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 				}
-				mobileResponse.data = returnJourneys
-				mobileResponse.success = true
-				mobileResponse.total = returnJourneys.size()
-				mobileResponse.message = "${returnJourneys.size()} results found"
-				mobileResponse.isDummy = true;
 			}
-		}	
+		}
+		else {
+			List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, null, fromLat, fromLon, toLat, toLon);
+			if(searchResults.size() <= 0) {
+				mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+			}
+		}
+		return mobileResponse;
+	}
+	
+	private MobileResponse getGeneratedData(Date timeOfJourney, Date validStartTime, String mobile, Double fromLat, Double fromLon, Double toLat, Double toLon) {
+		MobileResponse mobileResponse = new MobileResponse()
+		List<Journey> dummyResults = searchService.search(IndexMetadata.DUMMY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+		if(dummyResults.size() <= 0) {
+			dummyResults = searchService.generateData(timeOfJourney, mobile, fromLat, fromLon, toLat, toLon);
+		}
+		def returnJourneys = []
+		for (Journey dbJourney: dummyResults) {
+			returnJourneys << dbJourney.convert();
+		}
+		mobileResponse.data = ['journeys': returnJourneys]
+		mobileResponse.success = true
+		mobileResponse.total = returnJourneys.size()
+		mobileResponse.message = "${returnJourneys.size()} results found"
+		mobileResponse.isDummy = true;
 		return mobileResponse;
 	}
 	
