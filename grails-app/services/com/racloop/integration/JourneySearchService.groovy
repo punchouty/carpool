@@ -38,10 +38,12 @@ class JourneySearchService {
 				List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 				if(searchResults.size() > 0) {
 					def returnJourneys = enrichResults(searchResults, myJourneys);
+					int length = 0
+					if(returnJourneys !=  null) length = returnJourneys.size()
 					mobileResponse.data = ['journeys': returnJourneys]
 					mobileResponse.success = true
-					mobileResponse.total = returnJourneys.size()
-					mobileResponse.message = "${returnJourneys.size()} results found"
+					mobileResponse.total = length
+					mobileResponse.message = "${length} results found"
 				}
 				else {
 					mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
@@ -92,9 +94,11 @@ class JourneySearchService {
 //				}
 			}
 			else {
+				println result
 				returnJourneys << result.convert();
 			}
 		}
+		return returnJourneys;
 	}
 
 	private Journey getSimilarJourney(List<Journey> journeys, Date timeOfJourney) {
