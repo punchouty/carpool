@@ -235,6 +235,7 @@ class SearchService {
 		GeoPoint fromGeoPoint = searchHit.getSource().get('fromGeoPoint')
 		journey.setFromLatitude(fromGeoPoint.getLat());
 		journey.setFromLongitude(fromGeoPoint.getLon());
+		journey.setTo(searchHit.getSource().get('to'));
 		GeoPoint toGeoPoint = searchHit.getSource().get('toGeoPoint')
 		journey.setToLatitude(toGeoPoint.getLat());
 		journey.setToLongitude(toGeoPoint.getLon());
