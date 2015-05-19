@@ -152,7 +152,7 @@ class WorkflowDataService {
 		}
 		pairToBeRejected.setInitiatorStatus(WorkflowStatus.REJECTED.getStatus())
 		pairToBeRejected.setRecieverStatus(WorkflowStatus.REJECTED.getStatus())
-		journeyPairDataService.saveJourneyPair(pairToBeAccepted)
+		journeyPairDataService.saveJourneyPair(pairToBeRejected)
 		myJourney.decrementNumberOfCopassengers()
 		journeyToBeRejected.decrementNumberOfCopassengers()
 		saveJourneys(myJourney,journeyToBeRejected)
@@ -160,8 +160,71 @@ class WorkflowDataService {
 		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeRejected, WorkflowStatus.REJECTED.getStatus())
 	}
 	
+	def cancelRequestInitiatedByMe(String journeyIdToBeCancelled, String myJourneyId){
+		Journey journeyToBeCancelled = journeyDataService.findJourney(journeyIdToBeCancelled)
+		Journey myJourney = journeyDataService.findJourney(myJourneyId)
+		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
+		JourneyPair pairToBeCancelled = null
+		for(JourneyPair pair : journeyPairs){
+			if(pair.getInitiatorJourneyId().equals(myJourneyId) && pair.getRecieverJourneyId().equals(journeyToBeCancelled)){
+				pairToBeCancelled = pair;
+				break;
+			}
+		}
+		pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
+		pairToBeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
+		journeyPairDataService.saveJourneyPair(pairToBeCancelled)
+		myJourney.decrementNumberOfCopassengers()
+		journeyToBeCancelled.decrementNumberOfCopassengers()
+		saveJourneys(myJourney,journeyToBeCancelled)
+		//TODO:  Send cancelled journey to ES if required
+		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled, WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
+	}
+	
+	def cancelRequestAcceptedByMe(String journeyIdToBeCancelled, String myJourneyId){
+		Journey journeyToBeCancelled = journeyDataService.findJourney(journeyIdToBeCancelled)
+		Journey myJourney = journeyDataService.findJourney(myJourneyId)
+		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
+		JourneyPair pairToBeCancelled = null
+		for(JourneyPair pair : journeyPairs){
+			if(pair.getInitiatorJourneyId().equals(journeyIdToBeCancelled) && pair.getRecieverJourneyId().equals(myJourneyId)){
+				pairToBeCancelled = pair;
+				break;
+			}
+		}
+		pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
+		pairToBeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED.getStatus())
+		journeyPairDataService.saveJourneyPair(pairToBeCancelled)
+		myJourney.decrementNumberOfCopassengers()
+		journeyToBeCancelled.decrementNumberOfCopassengers()
+		saveJourneys(myJourney,journeyToBeCancelled)
+		//TODO:  Send cancelled journey to ES if required
+		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled, WorkflowStatus.CANCELLED.getStatus())
+	}
+	
+	def cancelMyJourney(String myJourneyId){
+		String otherJourneyId = null
+		Journey myJourney = journeyDataService.findJourney(myJourneyId)
+		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
+		for(JourneyPair pair : journeyPairs){
+			pair.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
+			pair.setRecieverStatus(WorkflowStatus.CANCELLED.getStatus())
+			journeyPairDataService.saveJourneyPair(pair)
+			otherJourneyId = pair.getInitiatorJourneyId().equals(myJourneyId) ? pair.getRecieverJourneyId() : pair.getInitiatorJourneyId()
+			Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
+			otherJourney.decrementNumberOfCopassengers()
+			saveJourneys(otherJourney)
+			//TODO:  Send cancelled journey to ES if required
+			sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
+		}
+	}
+	
 	private void sendNotificationForWorkflowStateChange (String sourceId,String targetId, String state){
 		def  messageMap =[(Constant.JOURNEY_WORKFLOW_SOURCE_ID):sourceId,(Constant.JOURNEY_WORKFLOW_TARGET_ID):targetId, (Constant.WORKFLOW_STATE_KEY):state]
 		jmsService.send(queue: Constant.NOTIFICATION_WORKFLOW_STATE_CHANGE_QUEUE, messageMap)
+	}
+	
+	def replace(Journey journey) {
+		
 	}
 }

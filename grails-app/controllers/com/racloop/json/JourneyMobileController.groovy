@@ -1,38 +1,18 @@
 package com.racloop.json
 
-import java.text.SimpleDateFormat;
-
-import grails.converters.JSON
-import grails.plugin.nimble.InstanceGenerator
-import grails.plugin.nimble.core.ProfileBase
-
-import org.apache.shiro.SecurityUtils
-import org.apache.shiro.authc.AuthenticationException
-import org.apache.shiro.authc.DisabledAccountException
-import org.apache.shiro.authc.IncorrectCredentialsException
-import org.apache.shiro.authc.UsernamePasswordToken
-import org.apache.shiro.crypto.hash.Sha256Hash
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import org.elasticsearch.common.joda.time.DateTime
-import org.elasticsearch.common.joda.time.format.DateTimeFormat
-import org.elasticsearch.common.joda.time.format.DateTimeFormatter
-import org.elasticsearch.common.joda.time.format.ISODateTimeFormat;
-
-import com.racloop.Constant;
-import com.racloop.ElasticSearchService;
-import com.racloop.GenericStatus;
-import com.racloop.GenericUtil;
-import com.racloop.JourneyRequestCommand
-import com.racloop.Profile;
-import com.racloop.Sos;
-import com.racloop.User
-import com.racloop.domain.Journey;
-import com.racloop.journey.workkflow.WorkflowState
-import com.racloop.mobile.data.response.MobileResponse
-import com.racloop.staticdata.StaticData;
-import com.racloop.util.date.DateUtil
-
 import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
+import grails.converters.JSON
+
+import java.text.SimpleDateFormat
+
+import org.elasticsearch.common.joda.time.DateTime
+
+import com.racloop.Constant
+import com.racloop.GenericUtil
+import com.racloop.JourneyRequestCommand
+import com.racloop.User
+import com.racloop.domain.Journey
+import com.racloop.mobile.data.response.MobileResponse
 
 class JourneyMobileController {
 	
@@ -45,16 +25,18 @@ class JourneyMobileController {
 		def json = request.JSON
 		String jsonMessage = null
 		String jsonResponse = "error"
-		def mobileResponse = new MobileResponse()
+		MobileResponse mobileResponse = new MobileResponse()
 		def errors = null
 		def searchResultMap = null
-		JourneyRequestCommand currentJourney = convertJsonToJourneyObject(json);
+		JourneyRequestCommand currentJourney = null;//convertJsonToJourneyObject(json);
 		//in case this search request is forwarded from other method
 		JourneyRequestCommand currentJourneyFromRequest = request.getAttribute('currentJourney')
 		if(currentJourneyFromRequest) {
 			currentJourney = currentJourneyFromRequest
 		}
-		
+		else {
+			currentJourney = convertJsonToJourneyObject(json);
+		}
 		def currentUser = getAuthenticatedUser();
 		if(!currentUser) {
 			currentUser = User.findByUsername(currentJourney.user);
@@ -65,19 +47,80 @@ class JourneyMobileController {
 			currentJourney.isMale = currentUser.profile.isMale
 			currentJourney.mobile = currentUser.profile.mobile
 			currentJourney.ip = request.remoteAddr
+			flash.currentJourney = currentJourney
 			if(currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 				mobileResponse = journeySearchService.executeSearch(currentJourney);
 			}
 			else {
 				mobileResponse.message = "Invalid travel date and time"
-				mobileResponse.success = false
-				mobileResponse.total =0
 			}
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Cannot fetch search results"
-			mobileResponse.success = false
-			mobileResponse.total =0
+		}
+		render mobileResponse as JSON
+	}
+	
+	def keepOriginalAndSearch() {
+		MobileResponse mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			JourneyRequestCommand currentJourney = flash.currentJourney
+			if(currentJourney != null) {
+				forward action: 'search', model: [currentJourney: currentJourney]
+			}
+			else {
+				mobileResponse.message = "Error : No journey to search"
+				log.warn ("currentJourney not in flash scope for user ${currentUser}")
+				render mobileResponse as JSON
+			}
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform search"
+			render mobileResponse as JSON
+		}
+	}
+	
+	def replaceAndSearch() {
+		MobileResponse mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			JourneyRequestCommand currentJourney = flash.currentJourney
+			if(currentJourney != null) {
+				workflowDataService.replace(Journey.convert(currentJourney));
+				forward action: 'search', model: [currentJourney: currentJourney]
+			}
+			else {
+				mobileResponse.message = "Error : No journey to search"
+				log.warn ("currentJourney not in flash scope for user ${currentUser}")
+				render mobileResponse as JSON
+			}
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform search"
+			render mobileResponse as JSON
+		}
+	}
+	
+	def save() {
+		MobileResponse mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			JourneyRequestCommand currentJourney = flash.currentJourney
+			if(currentJourney != null) {
+				Journey journey = Journey.convert(currentJourney);
+				journeyDataService.createJourney(journey);
+				mobileResponse.success = true
+				mobileResponse.message = "Journey saved successfully"
+				mobileResponse.data = currentJourney;
+			}
+			else {
+				mobileResponse.message = "Error : No journey to save"
+				log.warn ("currentJourney not in flash scope for user ${currentUser}")
+			}
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform save"
 		}
 		render mobileResponse as JSON
 	}

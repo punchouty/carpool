@@ -32,7 +32,7 @@ class JourneySearchService {
 				mobileResponse.data = ['existingJourney': existingJourney.convert(), 'currentJourney': currentJourney]
 				mobileResponse.success = true
 				mobileResponse.message = "Existing journey found!"
-				mobileResponse.existingJourney = true
+				mobileResponse.existingJourney = true;
 			}
 			else {
 				List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);

@@ -62,6 +62,28 @@ public class Journey {
 		return journeyCommand;
 	}
 	
+	public static Journey convert(JourneyRequestCommand requestCommand) {
+		Journey journey = new Journey();
+		journey.setId(requestCommand.getId());
+		journey.setMobile(requestCommand.getMobile());
+		journey.setDateOfJourney(requestCommand.getDateOfJourney());
+		journey.setEmail(requestCommand.getUser());
+		journey.setName(requestCommand.getName());
+		journey.setFrom(requestCommand.getFromPlace());
+		journey.setFromLatitude(requestCommand.getFromLatitude());
+		journey.setFromLongitude(requestCommand.getFromLongitude());
+		journey.setTo(requestCommand.getToPlace());
+		journey.setToLatitude(requestCommand.getToLatitude());
+		journey.setToLongitude(requestCommand.getToLongitude());
+		journey.setIsMale(requestCommand.getIsMale());
+		journey.setIsDriver(requestCommand.getIsDriver());
+		journey.setTripDistance(requestCommand.getTripDistance());
+		journey.setIp(requestCommand.getIp());
+		journey.setCreatedDate(requestCommand.getCreatedDate());
+		journey.setPhotoUrl(requestCommand.getPhotoUrl());
+		return journey;
+	}
+	
 	public void addPairIdToJourney (String ... pairIds){
 		Set<String> existingPairId = this.getJourneyPairIds();
 		if(existingPairId == null || existingPairId.isEmpty()){
