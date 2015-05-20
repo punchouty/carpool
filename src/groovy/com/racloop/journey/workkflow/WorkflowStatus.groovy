@@ -2,40 +2,63 @@ package com.racloop.journey.workkflow
 
 
 enum WorkflowStatus {
-	INITIATED("New"),
-	ACCEPTED("Accepted"),
-	CANCELLED("Cancelled"),
-	REJECTED("Rejected"),
-	CANCELLED_BY_REQUESTER("Cancelled By Requester"),
+	
 	REQUESTED("Requested"),
 	REQUEST_RECIEVED("Request Recieved"),
-	NA("NA")
+	ACCEPTED("Accepted"),
+	REJECTED("Rejected"),
+	CANCELLED("Cancelled"),
+	INHERITED("Inherited"),
+	DELEGATED("Delegated")
+
+	private final String status;
+	private static final REQUESTED_ACTIONS = [WorkflowAction.CANCEL.getAction()];
+	private static final REQUEST_RECIEVED_ACTIONS = [WorkflowAction.ACCEPT.getAction(), WorkflowAction.REJECT.getAction()];
+	private static final ACCEPTED_ACTIONS = [WorkflowAction.CANCEL.getAction()];
+	private static final REJECTED_ACTIONS = [];
+	private static final CANCELLED_ACTIONS = [];
+	private static final INHERITED_ACTIONS = [WorkflowAction.REJECT.getAction()];
+	private static final DELEGATED_ACTIONS = [WorkflowAction.CANCEL.getAction()];
+	private static final HashMap<WorkflowStatus, String []> statusToActionMapping = new HashMap<WorkflowStatus, String []>();
+	
+	static {
+		statusToActionMapping.put(WorkflowStatus.REQUESTED, REQUESTED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.REQUEST_RECIEVED, REQUEST_RECIEVED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.ACCEPTED, ACCEPTED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.REJECTED, REJECTED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.CANCELLED, CANCELLED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.INHERITED, INHERITED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.DELEGATED, DELEGATED_ACTIONS);
+	}
 
 	WorkflowStatus(String status) {
 		this.status = status
 	}
 
-	private final String status
-	private static final Map<String,WorkflowStatus> lookup= new HashMap<String,WorkflowStatus>()
-
-	static {
-		for(WorkflowStatus s : EnumSet.allOf(WorkflowStatus.class))
-			lookup.put(s.getStatus(), s);
-	}
-
 	public String getStatus() {
 		return status
 	}
+	
+	public String[] getActions() {
+		return statusToActionMapping.get(this);
+	}
 
-	public static WorkflowStatus get(String state) {
-		return lookup.get(state);
+	public static WorkflowStatus fromString(String status) {
+		if (status != null) {
+			for (WorkflowStatus b : WorkflowStatus.values()) {
+				if (status.equalsIgnoreCase(b.status)) {
+					return b;
+				}
+			}
+		}
+		return null;
 	}
 
 	public static boolean canBeIgnored(String status){
 		boolean canBeIgnored = false;
 		WorkflowStatus workflowstate = this.get(status)
 		switch(workflowstate) {
-			case INITIATED: canBeIgnored = false
+			case REQUESTED: canBeIgnored = false
 				break
 			case ACCEPTED: canBeIgnored = false
 				break
@@ -43,36 +66,17 @@ enum WorkflowStatus {
 				break
 			case REJECTED: canBeIgnored = true
 				break
-			case CANCELLED_BY_REQUESTER: canBeIgnored = true
-				break
 			case REQUESTED: canBeIgnored = false
 				break
 			case REQUEST_RECIEVED: canBeIgnored = false
 				break
-			case NA: canBeIgnored = true
+			case INHERITED: canBeIgnored = false
+				break
+			case DELEGATED: canBeIgnored = false
 				break
 
 			default : canBeIgnored = false
 		}
 		return canBeIgnored
-	}
-
-	public static List getAction (String state) {
-		def action=[]
-		WorkflowStatus workflowstate = this.get(state)
-		switch(workflowstate) {
-			case INITIATED: action=["Accept", "Reject"]
-				break
-			case ACCEPTED: action=["Cancel"]
-				break
-			case CANCELLED: action =[]
-				break
-			case REJECTED: action=[]
-				break
-			case CANCELLED_BY_REQUESTER: action=[]
-				break
-			default : action=[]
-		}
-		return action
 	}
 }

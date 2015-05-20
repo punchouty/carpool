@@ -61,6 +61,27 @@ class JourneyMobileController {
 		render mobileResponse as JSON
 	}
 	
+	def searchAgain() {
+		def json = request.JSON
+		def journeyId = json?.journeyId
+		MobileResponse mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			JourneyRequestCommand currentJourney = journeyDataService.findJourney(journeyId);
+			if(currentJourney != null) {
+				mobileResponse = journeySearchService.straightThruSearch(currentJourney, false);
+			}
+			else {
+				mobileResponse.message = "Error : No journey to search"
+				log.warn ("currentJourney not in session scope for user ${currentUser}")
+			}
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform search"
+		}
+		render mobileResponse as JSON
+	}
+	
 	def keepOriginalAndSearch() {
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
@@ -99,28 +120,6 @@ class JourneyMobileController {
 		}
 		render mobileResponse as JSON
 	}
-	
-	def save() {
-		MobileResponse mobileResponse = new MobileResponse()
-		def currentUser = getAuthenticatedUser();
-		if(currentUser) {
-			JourneyRequestCommand currentJourney = session.currentJourney
-			if(currentJourney != null) {
-				Journey journey = Journey.convert(currentJourney);
-				journeyDataService.createJourney(journey);
-				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
-				mobileResponse.message = "Journey saved successfully"
-			}
-			else {
-				mobileResponse.message = "Error : No journey to save"
-				log.warn ("currentJourney not in session scope for user ${currentUser}")
-			}
-		}
-		else {
-			mobileResponse.message = "User is not logged in. Unable to perform save"
-		}
-		render mobileResponse as JSON
-	}
 
     def myJourneys() {	
 		log.info("myJourneys Request from ${request.remoteAddr}")		
@@ -131,13 +130,9 @@ class JourneyMobileController {
 		log.info "myJourneys currentUser : ${currentUser?.profile?.email} currentTime : ${currentTime}"
 		if(currentUser) {
 			def journeys = journeyDataService.findMyJourneys(currentUser.profile.mobile, GenericUtil.uiDateStringToJavaDate(currentTime));
-			def oldJourneys = [];
-			for (Journey dbJourney: journeys) {
-				oldJourneys << dbJourney.convert();
-			}
-			mobileResponse.data = oldJourneys
+			mobileResponse.data = journeys
 			mobileResponse.success = true
-			mobileResponse.total = oldJourneys?.size()
+			mobileResponse.total = journeys?.size()
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Cannot fetch search results"
@@ -157,13 +152,9 @@ class JourneyMobileController {
 		log.info "myHistory currentUser : ${currentUser?.profile?.email} currentTime : ${currentTime}"
 		if(currentUser) {
 			def journeys = journeyDataService.findMyHistory(currentUser.profile.mobile, GenericUtil.uiDateStringToJavaDate(currentTime));
-			def oldJourneys = [];
-			for (Journey dbJourney: journeys) {
-				oldJourneys << dbJourney.convert();
-			}
-			mobileResponse.data = oldJourneys
+			mobileResponse.data = journeys
 			mobileResponse.success = true
-			mobileResponse.total = oldJourneys?.size()
+			mobileResponse.total = journeys?.size()
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Cannot fetch search results"
