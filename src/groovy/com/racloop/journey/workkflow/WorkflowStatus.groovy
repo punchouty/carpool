@@ -56,7 +56,7 @@ enum WorkflowStatus {
 
 	public static boolean canBeIgnored(String status){
 		boolean canBeIgnored = false;
-		WorkflowStatus workflowstate = this.getStatus(status)
+		WorkflowStatus workflowstate = fromString(status)
 		switch(workflowstate) {
 			case REQUESTED: canBeIgnored = false
 				break
