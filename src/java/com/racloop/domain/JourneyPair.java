@@ -5,6 +5,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIgnore;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
+import com.racloop.journey.workkflow.WorkflowStatus;
 
 @DynamoDBTable(tableName = "JourneyPair")
 public class JourneyPair {
@@ -137,6 +138,16 @@ public class JourneyPair {
 
 	public void setRecieverJourney(Journey recieverJourney) {
 		this.recieverJourney = recieverJourney;
+	}
+	
+	@DynamoDBIgnore
+	public WorkflowStatus getInitiatorStatusAsEnum() {
+		return WorkflowStatus.fromString(initiatorStatus);
+	}
+	
+	@DynamoDBIgnore
+	public WorkflowStatus getRecieverStatusAsEnum() {
+		return WorkflowStatus.fromString(recieverStatus);
 	}
 
 }
