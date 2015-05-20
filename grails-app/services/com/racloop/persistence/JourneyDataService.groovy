@@ -235,13 +235,18 @@ class JourneyDataService {
 			journeyKey.mobile = mobile
 			DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 			List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
+			def journeyPairs = []
+			for (Journey dbJourney: journeys) {
+				Set pairIds = dbJourney.getJourneyPairIds()
+				pairIds.each {it ->
+					def pair = journeyPairDataService.findPairById(it)
+					journeyPairs << pair
+				}
+			}
+			if(journeyPairs){
+				amazonWebService.dynamoDBMapper.batchDelete(journeyPairs);
+			}
 			amazonWebService.dynamoDBMapper.batchDelete(journeys);
-//			for (Journey dbJourney: journeys) {
-//				log.info("Journey found : ${dbJourney} Going to delete it");
-//				Journey journeyTemp = new Journey();
-//				journeyTemp.setId(dbJourney.getId())
-//				amazonWebService.dynamoDBMapper.delete(journeyTemp);
-//			}
 		}
 		else {
 			log.warn("Cannot delete journey in non development enviornment");
