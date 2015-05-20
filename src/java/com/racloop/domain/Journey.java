@@ -98,11 +98,17 @@ public class Journey {
 	}
 	
 	public void incrementNumberOfCopassengers(){
+		if(this.numberOfCopassengers == null){
+			this.numberOfCopassengers = 0;
+		}
 		assert this.numberOfCopassengers < 2;
 		this.numberOfCopassengers++;
 	}
 	
 	public void decrementNumberOfCopassengers(){
+		if(this.numberOfCopassengers == null){
+			this.numberOfCopassengers = 0;
+		}
 		assert this.numberOfCopassengers > 0;
 		this.numberOfCopassengers--;
 	}

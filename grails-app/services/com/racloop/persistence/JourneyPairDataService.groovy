@@ -29,7 +29,7 @@ class JourneyPairDataService {
 	def List findPairsByIds(Set ids){
 		def journeyPairs = []
 		ids.each{it ->
-			journeyPairs << findPairById(id)
+			journeyPairs << findPairById(it)
 			
 		}
 		return journeyPairs
