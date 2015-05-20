@@ -44,10 +44,10 @@ class WorkflowDataService {
 			if(anotherRequestExistsForRequester){
 				thirdJourneyPair.setInitiatorJourneyId(thirdJourney.getId())
 				thirdJourneyPair.setInitiatorDirection(WorkflowDirection.FORCED_OUTGOING.getDirection())
-				thirdJourneyPair.setInitiatorStatus(WorkflowStatus.NA.getStatus())
+				thirdJourneyPair.setInitiatorStatus(WorkflowStatus.DELEGATED.getStatus())
 				thirdJourneyPair.setRecieverJourneyId(otherJourneyId)
 				thirdJourneyPair.setRecieverDirection(WorkflowDirection.FORCED_INCOMING.getDirection())
-				thirdJourneyPair.setRecieverStatus(WorkflowStatus.NA.getStatus())
+				thirdJourneyPair.setRecieverStatus(WorkflowStatus.INHERITED.getStatus())
 				journeyPairDataService.createJourneyPair(thirdJourneyPair)
 				requesterJourney.addPairIdToJourney(journeyPair.getId())
 				requesterJourney.incrementNumberOfCopassengers();
@@ -55,14 +55,15 @@ class WorkflowDataService {
 				otherJourney.incrementNumberOfCopassengers(2)
 				thirdJourney.addPairIdToJourney(thirdJourneyPair.getId())
 				thirdJourney.incrementNumberOfCopassengers()
+				journeyDataService.makeJourneyNonSearchable(otherJourney.getId())
 			}
 			else {
 				thirdJourneyPair.setInitiatorJourneyId(requesterJourneyId)
 				thirdJourneyPair.setInitiatorDirection(WorkflowDirection.FORCED_OUTGOING.getDirection())
-				thirdJourneyPair.setInitiatorStatus(WorkflowStatus.NA.getStatus())
+				thirdJourneyPair.setInitiatorStatus(WorkflowStatus.DELEGATED.getStatus())
 				thirdJourneyPair.setRecieverJourneyId(thirdJourney.getId())
 				thirdJourneyPair.setRecieverDirection(WorkflowDirection.FORCED_INCOMING.getDirection())
-				thirdJourneyPair.setRecieverStatus(WorkflowStatus.NA.getStatus())
+				thirdJourneyPair.setRecieverStatus(WorkflowStatus.INHERITED.getStatus())
 				journeyPairDataService.createJourneyPair(thirdJourneyPair)
 				
 				requesterJourney.addPairIdToJourney(journeyPair.getId(), thirdJourneyPair.getId())
@@ -71,6 +72,7 @@ class WorkflowDataService {
 				otherJourney.incrementNumberOfCopassengers()
 				thirdJourney.addPairIdToJourney(thirdJourneyPair.getId())
 				thirdJourney.incrementNumberOfCopassengers()
+				journeyDataService.makeJourneyNonSearchable(requesterJourneyId)
 			}
 			saveJourneys(requesterJourney, otherJourney, thirdJourney)
 		}
@@ -79,6 +81,7 @@ class WorkflowDataService {
 			requesterJourney.incrementNumberOfCopassengers()
 			otherJourney.addPairIdToJourney(journeyPair.getId())
 			otherJourney.incrementNumberOfCopassengers()
+			journeyDataService.makeJourneyNonSearchable(requesterJourneyId)
 			saveJourneys(requesterJourney, otherJourney)
 		}
 		
@@ -102,7 +105,7 @@ class WorkflowDataService {
 				}
 			}
 			if(thirdJourneyId.size()>1){
-				throw new RuntimeException("Somethig is not right. Requester already has more than one 1 journey pairs {requestJourney}")
+				throw new RuntimeException("Somethig is not right. Requester already has more than one active journey pairs ${journey}")
 			}
 		}
 		if(thirdJourneyId){
@@ -155,9 +158,28 @@ class WorkflowDataService {
 		journeyPairDataService.saveJourneyPair(pairToBeRejected)
 		myJourney.decrementNumberOfCopassengers()
 		journeyToBeRejected.decrementNumberOfCopassengers()
+		Journey thirdJourney = findThirdJourneyAvailableForPairing(journeyToBeRejected)
+		if(thirdJourney){
+			journeyPairs = journeyPairDataService.findPairsByIds(journeyToBeRejected.getJourneyPairIds())
+			pairToBeRejected = null
+			for(JourneyPair pair : journeyPairs){
+				if(pair.getInitiatorJourneyId().equals(thirdJourney.getId()) || pair.getRecieverJourneyId().equals(thirdJourney.getId())){
+					pairToBeRejected = pair;
+					break;
+				}
+			}
+			pairToBeRejected.setInitiatorStatus(WorkflowStatus.REJECTED.getStatus())
+			pairToBeRejected.setRecieverStatus(WorkflowStatus.REJECTED.getStatus())
+			journeyPairDataService.saveJourneyPair(pairToBeRejected)
+			thirdJourney.decrementNumberOfCopassengers()
+			journeyToBeRejected.decrementNumberOfCopassengers()
+			saveJourneys(thirdJourney)
+		}
 		saveJourneys(myJourney,journeyToBeRejected)
-		//TODO:  Send rejected journey to ES if required
-		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeRejected, WorkflowStatus.REJECTED.getStatus())
+		if(journeyToBeRejected.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(journeyToBeRejected)
+		}
+		sendNotificationForWorkflowStateChange(myJourneyId, journeyIdToBeRejected, WorkflowStatus.REJECTED.getStatus())
 	}
 	
 	def cancelRequestInitiatedByMe(String journeyIdToBeCancelled, String myJourneyId){
@@ -171,14 +193,16 @@ class WorkflowDataService {
 				break;
 			}
 		}
-		pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
-		pairToBeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
+		pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
+		pairToBeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED.getStatus())
 		journeyPairDataService.saveJourneyPair(pairToBeCancelled)
 		myJourney.decrementNumberOfCopassengers()
 		journeyToBeCancelled.decrementNumberOfCopassengers()
 		saveJourneys(myJourney,journeyToBeCancelled)
-		//TODO:  Send cancelled journey to ES if required
-		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled, WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
+		if(journeyToBeCancelled.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(journeyToBeCancelled)
+		}
+		sendNotificationForWorkflowStateChange(myJourneyId, journeyIdToBeCancelled, WorkflowStatus.CANCELLED.getStatus())
 	}
 	
 	def cancelRequestAcceptedByMe(String journeyIdToBeCancelled, String myJourneyId){
@@ -198,8 +222,10 @@ class WorkflowDataService {
 		myJourney.decrementNumberOfCopassengers()
 		journeyToBeCancelled.decrementNumberOfCopassengers()
 		saveJourneys(myJourney,journeyToBeCancelled)
-		//TODO:  Send cancelled journey to ES if required
-		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled, WorkflowStatus.CANCELLED.getStatus())
+		if(journeyToBeCancelled.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(journeyToBeCancelled)
+		}
+		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled.getId(), WorkflowStatus.CANCELLED.getStatus())
 	}
 	
 	def cancelMyJourney(String myJourneyId){
@@ -214,7 +240,9 @@ class WorkflowDataService {
 			Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
 			otherJourney.decrementNumberOfCopassengers()
 			saveJourneys(otherJourney)
-			//TODO:  Send cancelled journey to ES if required
+			if(otherJourney.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(otherJourney)
+				}
 			sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
 		}
 	}

@@ -251,4 +251,12 @@ class JourneyDataService {
 			log.warn("Cannot delete journey in non development enviornment");
 		}
 	}
+	
+	def makeJourneyNonSearchable(String journeyId){
+		searchService.deleteJourney(journeyId)
+	}
+	
+	def makeJourneySearchable (Journey journey){
+		searchService.indexJourney(journey, journey.getId())
+	}
 }
