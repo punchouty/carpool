@@ -34,7 +34,7 @@ class WorkflowDataService {
 		
 		Journey thirdJourney = findThirdJourneyAvailableForPairing(requesterJourney)
 		if(thirdJourney){
-			anotherRequestExistsForRequester = false
+			anotherRequestExistsForRequester = true
 		}
 		else {
 			thirdJourney = findThirdJourneyAvailableForPairing(otherJourney)
