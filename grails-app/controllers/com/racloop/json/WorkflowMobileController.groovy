@@ -37,9 +37,14 @@ class WorkflowMobileController {
 	
 	def request() {
 		def json = request.JSON
-		log.info("json : ${json}")	
-		String jsonMessage = null
-		String jsonResponse = "error"
+		log.info("request() json : ${json}");
+		def mobileResponse = new MobileResponse()
+		render mobileResponse as JSON
+	}
+	
+	def deleteJourney() {
+		def json = request.JSON
+		log.info("deleteJourney() json : ${json}");
 		def mobileResponse = new MobileResponse()
 		render mobileResponse as JSON
 	}
