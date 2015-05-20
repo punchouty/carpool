@@ -170,7 +170,7 @@ class JourneyDataService {
 	}
 	
 	def enrichJourney(Journey journey) {
-		List<String> pairIds = journey.journeyPairIds
+		Set<String> pairIds = journey.journeyPairIds
 		pairIds.each { id ->
 			JourneyPair journeyPair = journeyPairDataService.findPairById(id);
 			if(journeyPair != null) {

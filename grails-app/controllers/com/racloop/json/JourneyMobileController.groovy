@@ -67,9 +67,10 @@ class JourneyMobileController {
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			JourneyRequestCommand currentJourney = journeyDataService.findJourney(journeyId);
+			Journey currentJourney = journeyDataService.findJourney(journeyId);
 			if(currentJourney != null) {
-				mobileResponse = journeySearchService.straightThruSearch(currentJourney, false);
+				JourneyRequestCommand currentJourneyCommand = currentJourney.convert()
+				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand, false);
 			}
 			else {
 				mobileResponse.message = "Error : No journey to search"
@@ -171,10 +172,10 @@ class JourneyMobileController {
 		currentJourney.dateOfJourney = GenericUtil.uiDateStringToJavaDateForSearch(json?.dateOfJourneyString);
 		currentJourney.validStartTimeString = json?.validStartTimeString
 		currentJourney.validStartTime = GenericUtil.uiDateStringToJavaDateForSearch(json?.validStartTimeString);
-		currentJourney.fromPlace = json?.fromPlace
+		currentJourney.from = json?.from
 		currentJourney.fromLatitude = convertToDouble(json?.fromLatitude)
 		currentJourney.fromLongitude = convertToDouble(json?.fromLongitude)
-		currentJourney.toPlace = json?.toPlace
+		currentJourney.to = json?.to
 		currentJourney.toLatitude = convertToDouble(json?.toLatitude)
 		currentJourney.toLongitude = convertToDouble(json?.toLongitude)
 		currentJourney.isDriver = json?.isDriver?.toBoolean()

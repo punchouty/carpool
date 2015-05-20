@@ -410,6 +410,7 @@ public class JourneyRequestCommand {
 	
 	String user
 	String mobile
+	String email
 	String id;//will be assigned later
 	String name; //Should get from user. 
 	Boolean isMale; //Should get from user.
@@ -417,10 +418,10 @@ public class JourneyRequestCommand {
 	Date dateOfJourney; //it should get populated before validation
 	String validStartTimeString; //date as string
 	Date validStartTime; //it should get populated before validation
-	String fromPlace;
+	String from;
 	Double fromLatitude = -1;
 	Double fromLongitude = -1;
-	String toPlace;
+	String to;
 	Double toLatitude = -1;
 	Double toLongitude = -1;
 	Boolean isDriver;
@@ -439,7 +440,7 @@ public class JourneyRequestCommand {
 	}
 	
 	String toString(){
-		return "JourneyRequestCommand -> id : ${id} | name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${fromPlace} | toPlace : ${toPlace}";
+		return "JourneyRequestCommand -> id : ${id} | name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${from} | toPlace : ${to}";
 	}
 	
 	boolean isNewJourney() {

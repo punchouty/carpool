@@ -59,8 +59,13 @@ public class JourneyPair {
 	
 	@Override
 	public boolean equals(Object obj) {
-		JourneyPair other = (JourneyPair)obj;
-		return other.id.equals(this.id);
+		if(obj != null && obj instanceof JourneyPair) {
+			JourneyPair other = (JourneyPair)obj;
+			return other.id.equals(this.id);
+		}
+		else {
+			return false;
+		}
 	}
 	
 	@DynamoDBHashKey(attributeName = "Id")

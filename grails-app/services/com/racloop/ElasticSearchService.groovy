@@ -187,9 +187,9 @@ class ElasticSearchService {
 				field("photoUrl", user.facebookId ? user.getFacebookProfilePic(): user.profile.getGravatarUri()).
 				field("isMale", user.profile.isMale).
 				field("dateOfJourney", dateOfJourney).
-				field("fromPlace", journey.fromPlace).
+				field("fromPlace", journey.from).
 				field("from", from).
-				field("toPlace", journey.toPlace).
+				field("toPlace", journey.to).
 				field("to", to).
 				//field("requesterIp", journey.ip).
 				field("createdDate", createdDate).

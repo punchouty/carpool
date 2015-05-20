@@ -49,15 +49,16 @@ public class Journey {
 	public JourneyRequestCommand convert() {
 		JourneyRequestCommand journeyCommand = new JourneyRequestCommand();
 		journeyCommand.setId(id);
-		journeyCommand.setUser(email);
+		journeyCommand.setUser(getUser());
+		journeyCommand.setEmail(email);
 		journeyCommand.setMobile(mobile);
 		journeyCommand.setName(name);
 		journeyCommand.setIsMale(isMale);
 		journeyCommand.setDateOfJourney(dateOfJourney);
-		journeyCommand.setFromPlace(from);
+		journeyCommand.setFrom(from);
 		journeyCommand.setFromLatitude(fromLatitude);
 		journeyCommand.setFromLongitude(fromLongitude);
-		journeyCommand.setToPlace(to);
+		journeyCommand.setTo(to);
 		journeyCommand.setToLatitude(toLatitude);
 		journeyCommand.setToLongitude(toLongitude);
 		journeyCommand.setIsDriver(isDriver);
@@ -75,10 +76,10 @@ public class Journey {
 		journey.setDateOfJourney(requestCommand.getDateOfJourney());
 		journey.setEmail(requestCommand.getUser());
 		journey.setName(requestCommand.getName());
-		journey.setFrom(requestCommand.getFromPlace());
+		journey.setFrom(requestCommand.getFrom());
 		journey.setFromLatitude(requestCommand.getFromLatitude());
 		journey.setFromLongitude(requestCommand.getFromLongitude());
-		journey.setTo(requestCommand.getToPlace());
+		journey.setTo(requestCommand.getTo());
 		journey.setToLatitude(requestCommand.getToLatitude());
 		journey.setToLongitude(requestCommand.getToLongitude());
 		journey.setIsMale(requestCommand.getIsMale());
@@ -146,8 +147,13 @@ public class Journey {
 	
 	@Override
 	public boolean equals(Object obj) {
-		Journey other = (Journey)obj;
-		return other.id.equals(this.id);
+		if(obj != null && obj instanceof Journey) {
+			Journey other = (Journey)obj;
+			return other.id.equals(this.id);
+		}
+		else {
+			return false;
+		}
 	}
 	
 	@DynamoDBHashKey(attributeName = "Id")
@@ -387,6 +393,11 @@ public class Journey {
 
 	public void setJourneyPairs(Set<JourneyPair> journeyPairs) {
 		this.journeyPairs = journeyPairs;
+	}
+
+	@DynamoDBIgnore
+	public String getUser() {
+		return email;
 	}
 
 }

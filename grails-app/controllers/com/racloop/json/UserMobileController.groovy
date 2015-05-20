@@ -1,6 +1,5 @@
 package com.racloop.json
 
-import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 import grails.converters.JSON
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.ProfileBase
@@ -16,6 +15,7 @@ import org.elasticsearch.common.joda.time.DateTime
 
 import com.racloop.Constant
 import com.racloop.GenericStatus
+import com.racloop.GenericUtil;
 import com.racloop.Profile
 import com.racloop.Sos
 import com.racloop.domain.Journey
@@ -53,7 +53,7 @@ class UserMobileController {
 			def password = json.password
 			def rememberMe = json.rememberMe
 			def currentDateString = json.currentDateString
-			def currentDate = convertUIDateToElasticSearchDate(currentDateString)
+			def currentDate = GenericUtil.uiDateStringToJavaDateForSearch(currentDateString);
 			def authToken = new UsernamePasswordToken(email, password, true)			
 //			if (rememberMe) {
 //				authToken.rememberMe = true
@@ -64,7 +64,7 @@ class UserMobileController {
 				userService.createLoginRecord(request)
 				authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
 				mobileResponse.data=authenticatedUser
-				Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, currentDate)
+				Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
 				if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
 				mobileResponse.success=true
 			}
@@ -477,7 +477,8 @@ class UserMobileController {
 		}
 		if(currentUser) {
 			def currentDateString = json.currentDateString
-			DateTime currentDate = convertUIDateToElasticSearchDate(currentDateString)
+			Date date = GenericUtil.uiDateStringToJavaDate(currentDateString);
+			DateTime currentDate = new DateTime(date)
 			def journeys = journeyService.findCurrentJourneyForUser(currentUser, currentDate)
 			def journeyIds = null
 			journeys.each { journey ->
