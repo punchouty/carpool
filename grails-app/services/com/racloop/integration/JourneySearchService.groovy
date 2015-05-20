@@ -44,7 +44,7 @@ class JourneySearchService {
 		return mobileResponse;
 	}
 	
-	def straightThruSearch(JourneyRequestCommand currentJourney) {
+	def straightThruSearch(JourneyRequestCommand currentJourney, boolean searchFromDummy = true) {
 		Date timeOfJourney = currentJourney.dateOfJourney
 		Date validStartTime = currentJourney.validStartTime
 		String mobile = currentJourney.mobile
@@ -67,7 +67,16 @@ class JourneySearchService {
 			mobileResponse.message = "${length} results found"
 		}
 		else {
-			mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+			if(searchFromDummy) {
+				mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+			}
+			else {
+				def emptyResults = []
+				mobileResponse.data = ['journeys': emptyResults]
+				mobileResponse.success = true
+				mobileResponse.total = 0
+				mobileResponse.message = "No matching results found"
+			}
 		}
 		return mobileResponse;
 	}

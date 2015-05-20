@@ -55,7 +55,7 @@ class TestDataService {
 				journey.isDriver = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
 				journey.photoUrl = user.profile.getGravatarUri()
-				journey.isDummy = true;
+				journey.isDummy = false;
 				journey.createdDate = new Date();
 				journeyDataService.createJourney(journey);
 				outgoingRequest<<journey

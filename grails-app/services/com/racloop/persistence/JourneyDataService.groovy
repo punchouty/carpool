@@ -66,7 +66,6 @@ class JourneyDataService {
 	 * Find Journey from Dynamo DB
 	 */
 	def findJourney(String id) {
-		log.info("findJourney - id : ${id}");
 		Journey currentJourney = amazonWebService.dynamoDBMapper.load(Journey.class, id);
 		return currentJourney;
 	}
@@ -124,6 +123,7 @@ class JourneyDataService {
 	 * My Journey from DynamoDb
 	 */
 	def findMyJourneys(String mobile, Date currentTime) {
+		Map<Journey, List<Journey>> returnMap = new HashMap<Journey, List<Journey>>();
 		String currentTimeStr = GenericUtil.javaDateToDynamoDbDateString(currentTime);
 		log.info("mobile : ${mobile}, currentTimeStr : ${currentTimeStr}");
 		Journey journeyKey = new Journey();
@@ -131,7 +131,17 @@ class JourneyDataService {
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.GT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
-		return journeys;
+		def returnJourneys = [];
+		journeys.each { indexJourney ->
+			Journey enrichedJourney = enrichJourney(indexJourney);
+			if(enrichedJourney != null) {
+				returnJourneys << enrichedJourney
+			}
+			else {
+				log.error("Invalid Journey : ${indexJourney}")
+			}
+		}
+		return returnJourneys;
 	}
 	
 	/**
@@ -145,7 +155,67 @@ class JourneyDataService {
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.LT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
-		return journeys;
+		def returnJourneys = [];
+		journeys.each { indexJourney ->
+			Journey enrichedJourney = enrichJourney(indexJourney);
+			if(enrichedJourney != null) {
+				returnJourneys << enrichedJourney
+			}
+			else {
+				log.error("Invalid Journey : ${indexJourney}")
+			}
+		}
+		return returnJourneys;
+	}
+	
+	def enrichJourney(Journey journey) {
+		List<String> pairIds = journey.journeyPairIds
+		pairIds.each { id ->
+			JourneyPair journeyPair = journeyPairDataService.findPairById(id);
+			if(journeyPair != null) {
+				journey.getJourneyPairs().add(journeyPair);
+				Journey otherJourney = null;
+				if(journey.id == journeyPair.initiatorJourneyId) {
+					String otherJourneyId = journeyPair.recieverJourneyId;
+					otherJourney = findJourney(otherJourneyId);
+					if(otherJourney != null) {
+						journeyPair.initiatorJourney = journey;
+						journeyPair.recieverJourney = otherJourney;
+						journey.setMyStatus(journeyPair.getInitiatorStatus());
+						journey.setMyDirection(journeyPair.getInitiatorDirection());
+						journey.getRelatedJourneys().add(otherJourney);
+					}
+					else {
+						log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
+						return null;
+					}
+				}
+				else if(journey.id == journeyPair.recieverJourneyId) {
+					String otherJourneyId = journeyPair.initiatorJourneyId;
+					otherJourney = findJourney(otherJourneyId);
+					if(otherJourney != null) {
+						journeyPair.initiatorJourney = otherJourney;
+						journeyPair.recieverJourney = journey;
+						journey.setMyStatus(journeyPair.getRecieverStatus());
+						journey.setMyDirection(journeyPair.getRecieverDirection());
+						journey.getRelatedJourneys().add(otherJourney);
+					}
+					else {
+						log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
+						return null;
+					}
+				}
+				else {
+					log.error("Invalid state for journey : ${journey}. \nNone of the ids in pair are related to current journey");
+					return null;
+				}
+			}
+			else {
+				log.error("Invalid state for journey : ${journey}. \n JourneyPair provided for id does not exists ${id}");
+				return null;
+			}
+		}
+		return journey;
 	}
 	
 	/**

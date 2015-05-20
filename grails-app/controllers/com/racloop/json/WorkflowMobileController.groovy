@@ -1,44 +1,39 @@
 package com.racloop.json
 
-import java.text.SimpleDateFormat;
-
-import grails.converters.JSON
-import grails.plugin.nimble.InstanceGenerator
-import grails.plugin.nimble.core.ProfileBase
-
-import org.apache.shiro.SecurityUtils
-import org.apache.shiro.authc.AuthenticationException
-import org.apache.shiro.authc.DisabledAccountException
-import org.apache.shiro.authc.IncorrectCredentialsException
-import org.apache.shiro.authc.UsernamePasswordToken
-import org.apache.shiro.crypto.hash.Sha256Hash
-import org.codehaus.groovy.grails.web.mapping.LinkGenerator
-import org.elasticsearch.common.joda.time.DateTime
-import org.elasticsearch.common.joda.time.format.DateTimeFormat
-import org.elasticsearch.common.joda.time.format.DateTimeFormatter
-import org.elasticsearch.common.joda.time.format.ISODateTimeFormat;
-
-import com.racloop.Constant;
-import com.racloop.ElasticSearchService;
-import com.racloop.GenericStatus;
-import com.racloop.GenericUtil;
-import com.racloop.JourneyRequestCommand
-import com.racloop.Profile;
-import com.racloop.Sos;
-import com.racloop.User
-import com.racloop.domain.Journey;
-import com.racloop.journey.workkflow.WorkflowState
-import com.racloop.mobile.data.response.MobileResponse
-import com.racloop.staticdata.StaticData;
-import com.racloop.util.date.DateUtil
-
 import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
+import grails.converters.JSON
+
+import com.racloop.JourneyRequestCommand
+import com.racloop.domain.Journey
+import com.racloop.mobile.data.response.MobileResponse
 
 class WorkflowMobileController {
 	
 	def journeyDataService
 	def workflowDataService
 	def journeySearchService
+	
+	def save() {
+		MobileResponse mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			JourneyRequestCommand currentJourney = session.currentJourney
+			if(currentJourney != null) {
+				Journey journey = Journey.convert(currentJourney);
+				journeyDataService.createJourney(journey);
+				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
+				mobileResponse.message = "Journey saved successfully"
+			}
+			else {
+				mobileResponse.message = "Error : No journey to save"
+				log.warn ("currentJourney not in session scope for user ${currentUser}")
+			}
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform save"
+		}
+		render mobileResponse as JSON
+	}
 	
 	def request() {
 		def json = request.JSON
