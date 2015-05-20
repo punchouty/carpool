@@ -14,6 +14,7 @@ import com.racloop.GenericUtil;
 import com.racloop.domain.Journey
 import com.racloop.domain.JourneyPair;
 import com.racloop.domain.UserJourney;
+import com.racloop.journey.workkflow.WorkflowAction;
 
 @Transactional
 class JourneyDataService {
@@ -183,11 +184,11 @@ class JourneyDataService {
 						journeyPair.recieverJourney = otherJourney;
 						journey.setMyStatus(journeyPair.getInitiatorStatus());
 						journey.setMyDirection(journeyPair.getInitiatorDirection());
+						journey.setMyActions(journeyPair.getInitiatorStatusAsEnum().getActions());
 						journey.getRelatedJourneys().add(otherJourney);
 					}
 					else {
 						log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
-						return null;
 					}
 				}
 				else if(journey.id == journeyPair.recieverJourneyId) {
@@ -198,21 +199,19 @@ class JourneyDataService {
 						journeyPair.recieverJourney = journey;
 						journey.setMyStatus(journeyPair.getRecieverStatus());
 						journey.setMyDirection(journeyPair.getRecieverDirection());
+						journey.setMyActions(journeyPair.getRecieverStatusAsEnum().getActions());
 						journey.getRelatedJourneys().add(otherJourney);
 					}
 					else {
 						log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
-						return null;
 					}
 				}
 				else {
 					log.error("Invalid state for journey : ${journey}. \nNone of the ids in pair are related to current journey");
-					return null;
 				}
 			}
 			else {
 				log.error("Invalid state for journey : ${journey}. \n JourneyPair provided for id does not exists ${id}");
-				return null;
 			}
 		}
 		return journey;
