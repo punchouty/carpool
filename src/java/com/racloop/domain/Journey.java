@@ -42,7 +42,7 @@ public class Journey {
 	private Long version;
 	private String myStatus;
 	private String myDirection;
-	private Set<String> myActions = new HashSet<String>(); //ACCEPT, REJECT, CANCEL, DELETE
+	private String[] myActions; 
 	private Set<Journey> relatedJourneys = new HashSet<Journey>();
 	private Set<JourneyPair> journeyPairs = new HashSet<JourneyPair>();
 	
@@ -354,11 +354,11 @@ public class Journey {
 	}
 
 	@DynamoDBIgnore
-	public Set<String> getMyActions() {
+	public String[] getMyActions() {
 		return myActions;
 	}
 
-	public void setMyActions(Set<String> myActions) {
+	public void setMyActions(String[] myActions) {
 		this.myActions = myActions;
 	}
 
