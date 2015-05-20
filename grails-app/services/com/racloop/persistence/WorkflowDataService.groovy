@@ -81,7 +81,7 @@ class WorkflowDataService {
 			otherJourney.incrementNumberOfCopassengers()
 			saveJourneys(requesterJourney, otherJourney)
 		}
-		
+		journeyDataService.makeJourneyNonSearchable(requesterJourneyId)
 		sendNotificationForWorkflowStateChange(requesterJourneyId, otherJourneyId, WorkflowStatus.REQUESTED.getStatus())
 	}
 	
@@ -157,6 +157,9 @@ class WorkflowDataService {
 		journeyToBeRejected.decrementNumberOfCopassengers()
 		saveJourneys(myJourney,journeyToBeRejected)
 		//TODO:  Send rejected journey to ES if required
+		if(journeyToBeRejected.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(journeyToBeRejected)
+		}
 		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeRejected, WorkflowStatus.REJECTED.getStatus())
 	}
 	
@@ -177,7 +180,9 @@ class WorkflowDataService {
 		myJourney.decrementNumberOfCopassengers()
 		journeyToBeCancelled.decrementNumberOfCopassengers()
 		saveJourneys(myJourney,journeyToBeCancelled)
-		//TODO:  Send cancelled journey to ES if required
+		if(journeyToBeCancelled.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(journeyToBeCancelled)
+		}
 		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled, WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
 	}
 	
@@ -198,8 +203,10 @@ class WorkflowDataService {
 		myJourney.decrementNumberOfCopassengers()
 		journeyToBeCancelled.decrementNumberOfCopassengers()
 		saveJourneys(myJourney,journeyToBeCancelled)
-		//TODO:  Send cancelled journey to ES if required
-		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled, WorkflowStatus.CANCELLED.getStatus())
+		if(journeyToBeCancelled.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(journeyToBeCancelled)
+		}
+		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled.getId(), WorkflowStatus.CANCELLED.getStatus())
 	}
 	
 	def cancelMyJourney(String myJourneyId){
@@ -214,7 +221,9 @@ class WorkflowDataService {
 			Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
 			otherJourney.decrementNumberOfCopassengers()
 			saveJourneys(otherJourney)
-			//TODO:  Send cancelled journey to ES if required
+			if(otherJourney.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(otherJourney)
+				}
 			sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
 		}
 	}

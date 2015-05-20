@@ -65,19 +65,19 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
-				journeyDate: workflow.matchedDateTime.format('dd MMM yy HH:mm'), 
+				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
 				state: WorkflowState.INITIATED.state 
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
-		if(targetJourney.getMobileSecond()){
+		/*if(targetJourney.getNumberOfCopassengers()>1){
 			Journey thirdJourney  = getThirdJourney(targetJourney, sourceJourney)
 			User thirdUser = getUserDeatils(thirdJourney.getEmail())
 			if(validateUser(thirdUser)){
 				String mail = "Another request to share a ride with you has been raised by ${requestIntiator?.profile?.fullName}"
 				emailService.sendMail(thirdUser.profile.email, "Another passenger in your journey", mail)
 			}
-		}
+		}*/
 		
 	}
 	
@@ -102,7 +102,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestIntiator.profile.mobile, 
 				name:requestTo.profile.fullName, 
-				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
+				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
 				state: WorkflowState.ACCEPTED.state,
 				mobile: requestTo.profile.mobile
 				]
@@ -121,7 +121,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestIntiator.profile.mobile, 
 				name:requestTo.profile.fullName, 
-				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
+				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
 				state: WorkflowState.REJECTED.state
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
