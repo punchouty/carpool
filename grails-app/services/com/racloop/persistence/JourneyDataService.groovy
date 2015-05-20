@@ -239,7 +239,7 @@ class JourneyDataService {
 				Set pairIds = dbJourney.getJourneyPairIds()
 				pairIds.each {it ->
 					def pair = journeyPairDataService.findPairById(it)
-					journeyPairs << pair
+					if(pair != null) journeyPairs << pair
 				}
 			}
 			if(journeyPairs){
