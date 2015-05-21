@@ -142,10 +142,10 @@ class JourneyService {
 					journey.dateOfJourney = tempDate.toDate()
 					journey.fromLatitude = fromPlace.location.lat();
 					journey.fromLongitude = fromPlace.location.lon();
-					journey.fromPlace = fromPlace.name
+					journey.from = fromPlace.name
 					journey.toLatitude = toPlace.location.lat();
 					journey.toLongitude = toPlace.location.lon();
-					journey.toPlace = toPlace.name
+					journey.to = toPlace.name
 					journey.tripDistance = command.tripDistance
 					journey.id = elasticSearchService.indexGeneratedJourney(user, journey)
 					journeys << journey

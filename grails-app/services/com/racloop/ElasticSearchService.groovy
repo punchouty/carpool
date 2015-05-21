@@ -213,9 +213,9 @@ class ElasticSearchService {
 				field("name", journey.name).
 				field("isMale", isMale).
 				field("dateOfJourney", dateOfJourney).
-				field("fromPlace", journey.fromPlace).
+				field("fromPlace", journey.from).
 				field("from", from).
-				field("toPlace", journey.toPlace).
+				field("toPlace", journey.to).
 				field("to", to).
 				field("createdDate", createdDate).
 				field("tripDistance", journey.tripDistance).
@@ -414,8 +414,8 @@ class ElasticSearchService {
 		String dateStr = searchHit.getSource().get('dateOfJourney');
 		DateTime dateTime = convertElasticSearchDateToDateTime(dateStr)
 		journeyTemp.dateOfJourney = dateTime.toDate();
-		journeyTemp.fromPlace = searchHit.getSource().get('fromPlace');
-		journeyTemp.toPlace = searchHit.getSource().get('toPlace')
+		journeyTemp.from = searchHit.getSource().get('fromPlace');
+		journeyTemp.to = searchHit.getSource().get('toPlace')
 		journeyTemp.isSaved = true
 		journeyTemp.isMale=searchHit.getSource().get('isMale')
 		journeyTemp.tripDistance=searchHit.getSource().get('tripDistance')
@@ -437,11 +437,11 @@ class ElasticSearchService {
 		DateTime dateTime = convertElasticSearchDateToDateTime(dateStr)
 		journeyTemp.dateOfJourney = dateTime.toDate();
 		//journeyTemp.isDriver = getResponse.getSource().get('isDriver');
-		journeyTemp.fromPlace = getResponse.getSource().get('fromPlace');
+		journeyTemp.from = getResponse.getSource().get('fromPlace');
 		GeoPoint from = getResponse.getSource().get('from');
 		journeyTemp.fromLatitude = from.lat();
 		journeyTemp.fromLongitude = from.lon();
-		journeyTemp.toPlace = getResponse.getSource().get('toPlace');
+		journeyTemp.to = getResponse.getSource().get('toPlace');
 		GeoPoint to = getResponse.getSource().get('to');
 		journeyTemp.toLatitude = to.lat();
 		journeyTemp.toLongitude = to.lon();

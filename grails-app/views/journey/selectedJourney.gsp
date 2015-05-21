@@ -69,8 +69,8 @@
 					
 				</h5>
                 <ul class="text-left">
-                    <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedJourney.fromPlace}</li>
-                    <li><i class="icon-basic-geolocalize-05"></i> <strong>To :</strong>${matchedJourney.toPlace}</li>
+                    <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedJourney.from}</li>
+                    <li><i class="icon-basic-geolocalize-05"></i> <strong>To :</strong>${matchedJourney.to}</li>
                     <li><i class="icon-ecommerce-dollar"></i> <strong>Approximate Cost :</strong> 250/150/100 INR for 2/3/4 Passengers (By Car)</li>
                     <li>
                     	<g:if test = "${showRequestButton}">

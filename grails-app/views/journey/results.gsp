@@ -39,10 +39,10 @@
                 		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
                 	</g:else>
                     <div>
-                        <i class="icon-icon-house-alt"></i> <strong>From :</strong> ${currentJourney.fromPlace}
+                        <i class="icon-icon-house-alt"></i> <strong>From :</strong> ${currentJourney.from}
                     </div>
                     <div>
-                        <i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${currentJourney.toPlace}
+                        <i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${currentJourney.to}
                     </div>
                     <div>
                         <i class="icon-basic-calendar"></i> <strong>On :</strong> <g:formatDate format="dd MMMM yyyy hh:mm a" date="${currentJourney.dateOfJourney}"/>
@@ -107,8 +107,8 @@
 	            <div class="col-md-5 text-left">
 	                <h5>${journeyInstance.name}</h5>
 	                <ul class="text-left">
-	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
-	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
+	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${journeyInstance.from}</li>
+	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${journeyInstance.to}</li>
 	                    <g:if test = "${matchedResult.workflow}">
 							<g:set var="workflow" value="${matchedResult.workflow}"/>
 							<g:if test = "${workflow}">

@@ -55,12 +55,12 @@
                           	<g:form class="form-inline" name="search-form" controller="journey" action="findMatching">
                           		<input type="text" id="dateOfJourneyString" name="dateOfJourneyString" size="17" autocomplete="off" class="form-control input-box form_datetime" placeholder="Date and Time">
                           		<span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
-                          		<input type="text" id="fromPlace" name="fromPlace" size="25" autocomplete="off" value="${commandInstance?.fromPlace}" class="form-control input-box" placeholder="From : Landmark">
-                          		<g:hiddenField name="_hFromPlace" value="${commandInstance?.fromPlace}" />
+                          		<input type="text" id="from" name="from" size="25" autocomplete="off" value="${commandInstance?.from}" class="form-control input-box" placeholder="From : Landmark">
+                          		<g:hiddenField name="_hFromPlace" value="${commandInstance?.from}" />
                           		<g:hiddenField name="fromLatitude" value="${commandInstance?.fromLatitude}" />
 								<g:hiddenField name="fromLongitude" value="${commandInstance?.fromLongitude}" />
-								<input type="text" id="toPlace" name="toPlace" size="25" autocomplete="off" value="${commandInstance?.toPlace}" class="form-control input-box" placeholder="To : Landmark">
-								<g:hiddenField name="_hToPlace" value="${commandInstance?.toPlace}" />
+								<input type="text" id="to" name="to" size="25" autocomplete="off" value="${commandInstance?.to}" class="form-control input-box" placeholder="To : Landmark">
+								<g:hiddenField name="_hToPlace" value="${commandInstance?.to}" />
 								<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
 								<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
 								
