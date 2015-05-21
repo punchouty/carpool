@@ -50,9 +50,10 @@ class BootStrap {
 			log.info("Users created successfully in Elasticsearch")
 		}
 		//Initialising Elasticsearch
-		node = NodeBuilder.nodeBuilder().node()
-		elasticSearchService.init(node)
-		searchService.init(node)
+//		node = NodeBuilder.nodeBuilder().node()
+//		elasticSearchService.init(node)
+//		searchService.init(node)
+		searchService.init();
 		
 		smsService.init()
 		Boolean createIndex = grailsApplication.config.grails.startup.elasticsearch.index.create
@@ -71,11 +72,11 @@ class BootStrap {
 		intializeStaticData();
 		
 		if (Environment.current == Environment.DEVELOPMENT) {
-			sampleDataService.deleteSampleData()
+			//sampleDataService.deleteSampleData()
 			log.info("Populating Sample Data");
 			Boolean createSampleData = grailsApplication.config.grails.startup.sampleData.create
 			if(createSampleData) {
-				sampleDataService.populateSampleData();
+				//sampleDataService.populateSampleData();
 				testDataService.deleteDataForDev();
 				testDataService.generateDataForDev();
 			}
@@ -88,7 +89,8 @@ class BootStrap {
 	
     def destroy = {
 		//elasticSearchService.destroy()
-		node.close();
+		//node.close();
+		searchService.destroy();
     }
 
 	private internalBootStap(servletContext) {
@@ -100,12 +102,12 @@ class BootStrap {
 		searchService.createJourneyIndex();
 		searchService.createGeneratedJourneyIndex();
 		// Main Index
-		elasticSearchService.createMainJourneyIndex()		
+		//elasticSearchService.createMainJourneyIndex()		
 		// Master Data Index
-		elasticSearchService.createMasterLocationIndexIfNotExists();//TODO - check if it need to be here???
+		//elasticSearchService.createMasterLocationIndexIfNotExists();//TODO - check if it need to be here???
 		//Dummy Data Index
-		elasticSearchService.createGeneratedDataIndexIfNotExists();//TODO - check if it need to be here???
-		elasticSearchService.createWorkflowIndex()
+		//elasticSearchService.createGeneratedDataIndexIfNotExists();//TODO - check if it need to be here???
+		//elasticSearchService.createWorkflowIndex()
 		
 	}
 	
@@ -291,7 +293,7 @@ class BootStrap {
 			place.name = name
 			place.location = new GeoPoint(latitude, longitude)
 			if(!place.equals(previousPlace)) {
-				elasticSearchService.indexLocation(place);
+				//elasticSearchService.indexLocation(place);
 				searchService.indexLocation(place);
 			}
 			previousPlace = place;

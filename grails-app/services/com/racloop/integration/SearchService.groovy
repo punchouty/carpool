@@ -3,6 +3,7 @@ package com.racloop.integration
 import org.elasticsearch.search.SearchHit;
 
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 import grails.transaction.Transactional
 import grails.util.Environment;
@@ -67,12 +68,12 @@ class SearchService {
 //		else {
 //			node = NodeBuilder.nodeBuilder().client(true).node();
 //		}
-		//node = NodeBuilder.nodeBuilder().node();
-		this.node = node
+		this.node = NodeBuilder.nodeBuilder().node();
+		//this.node = node
 	}
 
 	def destroy() {
-		//node.close()
+		this.node.close()
 	}
 
 	/**** Journey Handling START (Main Index) ****/
@@ -210,8 +211,10 @@ class SearchService {
 					.setSearchType(SearchType.QUERY_THEN_FETCH)
 					.setQuery(QueryBuilders.matchAllQuery())
 					.setPostFilter(filter)   // Filter
-			for(SortBuilder sorter : sorters) {
-				builder.addSort(sorter)
+			if(sorters != null) {
+				for(SortBuilder sorter : sorters) {
+					builder.addSort(sorter)
+				}
 			}
 			builder.setSize(size)
 			SearchResponse searchResponse = builder.execute().actionGet();
@@ -249,8 +252,6 @@ class SearchService {
 		journey.setNumberOfCopassengers(searchHit.getSource().get('numberOfCopassengers'));
 		return journey;
 	}
-	
-	
 	
 	def findAllJourneysForUserBetweenDates(String mobile, DateTime startDate, DateTime endDate) {
 		FilterBuilder filter = FilterBuilders.andFilter(

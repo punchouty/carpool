@@ -29,6 +29,7 @@ class UserMobileController {
 	def userService
 	def userDataService
 	def journeyDataService
+	def searchService
 	def userManagerService
 	def journeyManagerService
 	def journeyService
@@ -479,11 +480,8 @@ class UserMobileController {
 			def currentDateString = json.currentDateString
 			Date date = GenericUtil.uiDateStringToJavaDate(currentDateString);
 			DateTime currentDate = new DateTime(date)
-			def journeys = journeyService.findCurrentJourneyForUser(currentUser, currentDate)
-			def journeyIds = null
-			journeys.each { journey ->
-				journeyIds = journeyIds + "~" + journey.id
-			}
+			Journey journey = journeyDataService.findCurrentJourney(currentUser.profile.mobile, currentDate);
+			
 			def emergencyContactOne = null
 			def emergencyContactTwo = null
 			if(currentUser?.profile?.emergencyContactOne) {
@@ -505,7 +503,7 @@ class UserMobileController {
 				(Constant.SOS_NAME_KEY) : currentUser?.profile?.fullName,
 				(Constant.EMERGENCY_CONTACT_ONE_KEY) : emergencyContactOne,
 				(Constant.EMERGENCY_CONTACT_TWO_KEY) : emergencyContactTwo,
-				(Constant.JOURNEY_IDS_KEY) : journeyIds,
+				(Constant.JOURNEY_IDS_KEY) : journey?.id,
 				(Constant.SOS_USER_LATITUDE) : json.lat,
 				(Constant.SOS_USER_LONGITUDE): json.lng
 			]
@@ -516,7 +514,7 @@ class UserMobileController {
 			sos.latitude = json.lat
 			sos.longitude = json.lng
 			sos.sosTimestamp = currentDate.toDate()
-			sos.journeyIds = journeyIds
+			sos.journeyIds = journey?.id
 			sos.save();
 			jmsService.send(queue: Constant.MOBILE_SOS_QUEUE, messageMap)
 			log.info("SMS parameters : " + messageMap)
