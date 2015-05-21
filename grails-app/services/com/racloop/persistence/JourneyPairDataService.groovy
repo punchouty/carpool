@@ -9,20 +9,20 @@ import com.racloop.domain.JourneyPair
 @Transactional
 class JourneyPairDataService {
 
-	def amazonWebService
+	def awsService
 
 	def createJourneyPair(JourneyPair journeyPair){
-		JourneyPair savedPair = amazonWebService.dynamoDBMapper.save(journeyPair);
+		JourneyPair savedPair = awsService.dynamoDBMapper.save(journeyPair);
 		log.info("createJourney - ${savedPair}");
 	}
 	
 	def saveJourneyPair(JourneyPair journeyPair) {
-		amazonWebService.dynamoDBMapper.save(journeyPair, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
+		awsService.dynamoDBMapper.save(journeyPair, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
 	}
 	
 	def findPairById(String id) {
 		log.info("findPairt - id : ${id}");
-		JourneyPair journeyPair = amazonWebService.dynamoDBMapper.load(JourneyPair.class, id);
+		JourneyPair journeyPair = awsService.dynamoDBMapper.load(JourneyPair.class, id);
 		return journeyPair;
 	}
 	

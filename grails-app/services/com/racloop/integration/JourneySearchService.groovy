@@ -12,7 +12,7 @@ import com.racloop.mobile.data.response.MobileResponse
 @Transactional
 class JourneySearchService {
 
-    def amazonWebService;
+    def awsService;
 	def searchService
 	def journeyDataService;
 	

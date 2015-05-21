@@ -110,6 +110,7 @@ class SearchService {
 				field("tripDistance", journey.getTripDistance()).
 				field("photoUrl", journey.getPhotoUrl()).
 				field("isDummy", journey.getIsDummy()).
+				field("numberOfCopassengers", journey.getNumberOfCopassengers()).
 			endObject();
 		return builder;
 	}
@@ -144,6 +145,7 @@ class SearchService {
 		journey.setIsMale(getResponse.getSource().get('isMale'));
 		journey.setTripDistance(getResponse.getSource().get('tripDistance'));
 		journey.setPhotoUrl(getResponse.getSource().get('photoUrl'));
+		journey.setNumberOfCopassengers(getResponse.getSource().get('numberOfCopassengers'));
 		return journey;
 	}
 
@@ -160,6 +162,7 @@ class SearchService {
 	 */
 	def search(String indexName, Date timeOfJourney, Date validStartTime, String mobile, Double fromLat, Double fromLon, Double toLat, Double toLon) {
 		log.info("search index ${indexName}")
+		FilterBuilder  copassengerFilter = FilterBuilders.rangeFilter("numberOfCopassengers").lt(2);
 		DateTime dateOfJourney = new DateTime(timeOfJourney);
 		DateTime start = dateOfJourney.minusHours(4);
 		DateTime end = dateOfJourney.plusHours(4);
@@ -172,12 +175,12 @@ class SearchService {
 		Double tripDistance = DistanceUtil.distance(fromLat, fromLon, toLat, toLon);
 		double filterDistance = tripDistance / DISTANCE_FACTOR;
 		FilterBuilder geoDistanceFilterFrom = FilterBuilders.geoDistanceFilter("fromGeoPoint").point(fromLat, fromLon).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC);
-		FilterBuilder geoDistanceFilterTo =FilterBuilders.geoDistanceFilter("toGeoPoint").point(toLat, toLon).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
-
+		FilterBuilder geoDistanceFilterTo = FilterBuilders.geoDistanceFilter("toGeoPoint").point(toLat, toLon).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
 		FilterBuilder filter = FilterBuilders.andFilter(
-				dateRanageFilter,
-				geoDistanceFilterFrom,
-				geoDistanceFilterTo)
+			copassengerFilter,
+			dateRanageFilter,
+			geoDistanceFilterFrom,
+			geoDistanceFilterTo)
 
 		if(mobile) {
 			filter = FilterBuilders.andFilter(filter, FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("mobile", mobile)));
@@ -243,6 +246,7 @@ class SearchService {
 		journey.setIsMale(searchHit.getSource().get('isMale'));
 		journey.setTripDistance(searchHit.getSource().get('tripDistance'));
 		journey.setPhotoUrl(searchHit.getSource().get('photoUrl'));
+		journey.setNumberOfCopassengers(searchHit.getSource().get('numberOfCopassengers'));
 		return journey;
 	}
 	
@@ -419,28 +423,6 @@ class SearchService {
 		
 		return places
 	}
-	
-//	private SearchHit[] queryDocument(String[] indexName, String[] indexType, FilterBuilder filter, int size=100, SortBuilder...sorters){
-//		SearchHit[] hits = []
-//		try {
-//		SearchRequestBuilder builder = node.client.prepareSearch(indexName)
-//				.setTypes(indexType)
-//				.setSearchType(SearchType.QUERY_THEN_FETCH)
-//				.setQuery(QueryBuilders.matchAllQuery())
-//				.setPostFilter(filter)   // Filter
-//		for(SortBuilder sorter : sorters) {
-//			builder.addSort(sorter)
-//		}
-//		builder.setSize(size)
-//		SearchResponse searchResponse = builder.execute().actionGet();
-//		SearchHits searchHits = searchResponse.getHits();
-//		hits = searchHits.hits;
-//		}
-//		catch (IndexMissingException exception) {
-//			log.error ("Index name ${indexName} does not exists", exception)
-//		}
-//		return hits
-//	}
 	
 	private Place parsePlaceFromSearchHit(SearchHit searchHit) {
 		Place place = new Place();

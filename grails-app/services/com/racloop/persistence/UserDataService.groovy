@@ -9,14 +9,14 @@ import grails.transaction.Transactional
 @Transactional
 class UserDataService {
 
-	def amazonWebService
+	def awsService
 	
 	def findUserByMobile(String mobile) {
-		RacloopUser user = amazonWebService.dynamoDBMapper.load(RacloopUser.class, mobile, new DynamoDBMapperConfig(DynamoDBMapperConfig.ConsistentReads.CONSISTENT));
+		RacloopUser user = awsService.dynamoDBMapper.load(RacloopUser.class, mobile, new DynamoDBMapperConfig(DynamoDBMapperConfig.ConsistentReads.CONSISTENT));
 		return user;
 	}
 	
     def saveUser(RacloopUser user) {
-		amazonWebService.dynamoDBMapper.save(user, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
+		awsService.dynamoDBMapper.save(user, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
     }
 }

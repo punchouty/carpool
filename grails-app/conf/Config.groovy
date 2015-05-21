@@ -116,7 +116,7 @@ grails.hibernate.cache.queries = false
 grails.startup.elasticsearch.index.create = true
 grails.startup.sampleUsers.create = true
 grails.startup.masterData.places.create = true
-grails.startup.sampleData.create = false
+grails.startup.sampleData.create = true
 grails.enable.delete.all = true
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
@@ -144,6 +144,7 @@ grails.approx.time.to.match = 30
 grails.max.active.requests = 5
 grails.approx.time.range= 45
 
+grails.aws.dynamodb.local = true
 grails.plugin.awssdk.accessKey = "AKIAIDCY5QLPSIUTWBNQ"
 grails.plugin.awssdk.secretKey = "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"
 grails.plugin.awssdk.region = 'ap-southeast-1'
@@ -165,6 +166,7 @@ environments {
 		grails.sms.enable=true
 	}
 }
+
 
 auditLog {
 	largeValueColumnTypes = true

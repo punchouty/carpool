@@ -20,19 +20,19 @@ import com.racloop.journey.workkflow.WorkflowAction;
 class JourneyDataService {
 	
 	def grailsApplication
-	def amazonWebService
+	def awsService
 	def searchService
 	def jmsService
 	def journeyPairDataService
 
     def createJourney(Journey journey) {
-		amazonWebService.dynamoDBMapper.save(journey);
+		awsService.dynamoDBMapper.save(journey);
 		log.info("createJourney - ${journey}");
 		searchService.indexJourney(journey, journey.getId());
     }
 	
 	def allJourneyData(String id) {
-		Journey currentJourney = amazonWebService.dynamoDBMapper.load(Journey.class, id);
+		Journey currentJourney = awsService.dynamoDBMapper.load(Journey.class, id);
 		return allJourneyData(currentJourney)
 	}
 	
@@ -67,7 +67,7 @@ class JourneyDataService {
 	 * Find Journey from Dynamo DB
 	 */
 	def findJourney(String id) {
-		Journey currentJourney = amazonWebService.dynamoDBMapper.load(Journey.class, id);
+		Journey currentJourney = awsService.dynamoDBMapper.load(Journey.class, id);
 		return currentJourney;
 	}
 	
@@ -79,7 +79,7 @@ class JourneyDataService {
 		Journey journeyKey = new Journey();
 		journeyKey.mobile = mobile;
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
-		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
+		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		return journeys;
 	}
 	
@@ -94,7 +94,7 @@ class JourneyDataService {
 		journeyKey.dateOfJourney = dateOfJourney;
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.EQ.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition);
-		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
+		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		return journeys;
 	}
 	
@@ -102,7 +102,7 @@ class JourneyDataService {
 	 * Find Journey from Dynamo DB
 	 */
 	def saveJourney(Journey currentJourney) {
-		amazonWebService.dynamoDBMapper.save(currentJourney, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
+		awsService.dynamoDBMapper.save(currentJourney, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
 	}
 	
 	/**
@@ -131,7 +131,7 @@ class JourneyDataService {
 		journeyKey.mobile = mobile;
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.GT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
-		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
+		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		def returnJourneys = [];
 		journeys.each { indexJourney ->
 			Journey enrichedJourney = enrichJourney(indexJourney);
@@ -155,7 +155,7 @@ class JourneyDataService {
 		journeyKey.mobile = mobile;
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.LT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
-		List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
+		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		def returnJourneys = [];
 		journeys.each { indexJourney ->
 			Journey enrichedJourney = enrichJourney(indexJourney);
@@ -233,7 +233,7 @@ class JourneyDataService {
 			Journey journeyKey = new Journey();
 			journeyKey.mobile = mobile
 			DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
-			List<Journey> journeys = amazonWebService.dynamoDBMapper.query(Journey.class, queryExpression);
+			List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 			def journeyPairs = []
 			for (Journey dbJourney: journeys) {
 				Set pairIds = dbJourney.getJourneyPairIds()
@@ -243,9 +243,9 @@ class JourneyDataService {
 				}
 			}
 			if(journeyPairs){
-				amazonWebService.dynamoDBMapper.batchDelete(journeyPairs);
+				awsService.dynamoDBMapper.batchDelete(journeyPairs);
 			}
-			amazonWebService.dynamoDBMapper.batchDelete(journeys);
+			awsService.dynamoDBMapper.batchDelete(journeys);
 		}
 		else {
 			log.warn("Cannot delete journey in non development enviornment");

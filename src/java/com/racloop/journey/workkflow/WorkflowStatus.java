@@ -1,7 +1,10 @@
-package com.racloop.journey.workkflow
+package com.racloop.journey.workkflow;
+
+import java.util.HashMap;
 
 
-enum WorkflowStatus {
+
+public enum WorkflowStatus {
 	
 	REQUESTED("Requested"),
 	REQUEST_RECIEVED("Request Recieved"),
@@ -9,16 +12,16 @@ enum WorkflowStatus {
 	REJECTED("Rejected"),
 	CANCELLED("Cancelled"),
 	INHERITED("Inherited"),
-	DELEGATED("Delegated")
+	DELEGATED("Delegated");
 
 	private final String status;
-	private static final REQUESTED_ACTIONS = [WorkflowAction.CANCEL.getAction()];
-	private static final REQUEST_RECIEVED_ACTIONS = [WorkflowAction.ACCEPT.getAction(), WorkflowAction.REJECT.getAction()];
-	private static final ACCEPTED_ACTIONS = [WorkflowAction.CANCEL.getAction()];
-	private static final REJECTED_ACTIONS = [];
-	private static final CANCELLED_ACTIONS = [];
-	private static final INHERITED_ACTIONS = [WorkflowAction.REJECT.getAction()];
-	private static final DELEGATED_ACTIONS = [WorkflowAction.CANCEL.getAction()];
+	private static final String [] REQUESTED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
+	private static final String [] REQUEST_RECIEVED_ACTIONS = {WorkflowAction.ACCEPT.getAction(), WorkflowAction.REJECT.getAction()};
+	private static final String [] ACCEPTED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
+	private static final String [] REJECTED_ACTIONS = {};
+	private static final String [] CANCELLED_ACTIONS = {};
+	private static final String [] INHERITED_ACTIONS = {WorkflowAction.REJECT.getAction()};
+	private static final String [] DELEGATED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
 	private static final HashMap<WorkflowStatus, String []> statusToActionMapping = new HashMap<WorkflowStatus, String []>();
 	
 	static {
@@ -32,11 +35,11 @@ enum WorkflowStatus {
 	}
 
 	WorkflowStatus(String status) {
-		this.status = status
+		this.status = status;
 	}
 
 	public String getStatus() {
-		return status
+		return status;
 	}
 	
 	public String[] getActions() {
@@ -56,25 +59,25 @@ enum WorkflowStatus {
 
 	public static boolean canBeIgnored(String status){
 		boolean canBeIgnored = false;
-		WorkflowStatus workflowstate = fromString(status)
+		WorkflowStatus workflowstate = fromString(status);
 		switch(workflowstate) {
-			case REQUESTED: canBeIgnored = false
-				break
-			case ACCEPTED: canBeIgnored = false
-				break
-			case CANCELLED: canBeIgnored = true
-				break
-			case REJECTED: canBeIgnored = true
-				break
-			case REQUEST_RECIEVED: canBeIgnored = false
-				break
-			case INHERITED: canBeIgnored = false
-				break
-			case DELEGATED: canBeIgnored = false
-				break
+			case REQUESTED: canBeIgnored = false;
+				break;
+			case ACCEPTED: canBeIgnored = false;
+				break;
+			case CANCELLED: canBeIgnored = true;
+				break;
+			case REJECTED: canBeIgnored = true;
+				break;
+			case REQUEST_RECIEVED: canBeIgnored = false;
+				break;
+			case INHERITED: canBeIgnored = false;
+				break;
+			case DELEGATED: canBeIgnored = false;
+				break;
 
-			default : canBeIgnored = false
+			default : canBeIgnored = false;
 		}
-		return canBeIgnored
+		return canBeIgnored;
 	}
 }

@@ -73,6 +73,9 @@ class IndexMetadata {
 					startObject("isDummy").
 					field("type", "boolean").
 					endObject().
+					startObject("numberOfCopassengers").
+					field("type", "integer").
+					endObject().
 				endObject().
 			endObject().
 		endObject();
