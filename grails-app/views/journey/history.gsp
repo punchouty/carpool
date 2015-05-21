@@ -63,8 +63,8 @@
 		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span> 
 		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
 		                        </li>
-		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.fromPlace}</li>
-		                        <li><i class="icon-basic-map"></i> <strong>To :</strong> ${journeyInstance.toPlace}</li>
+		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.from}</li>
+		                        <li><i class="icon-basic-map"></i> <strong>To :</strong> ${journeyInstance.to}</li>
 		                        <li>
 		                        	<g:link action="searchRouteAgain"id="searchRouteAgain"  class="btn btn-warning" params="[journeyId: journeyInstance.journeyId]">
 					       				<i class="fa fa-search"></i> Search Again

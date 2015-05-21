@@ -19,7 +19,14 @@ class WorkflowDataService {
 	def requestJourney(String requesterJourneyId, String otherJourneyId) {
 		Journey requesterJourney = journeyDataService.findJourney(requesterJourneyId)
 		Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
-		
+		boolean anotherRequestExistsForRequester = false
+		Journey thirdJourney = findThirdJourneyAvailableForPairing(requesterJourney)
+		if(thirdJourney){
+			anotherRequestExistsForRequester = true
+		}
+		else {
+			thirdJourney = findThirdJourneyAvailableForPairing(otherJourney)
+		}
 		JourneyPair journeyPair = new JourneyPair()
 		journeyPair.setInitiatorJourneyId(requesterJourneyId)
 		journeyPair.setInitiatorDirection(WorkflowDirection.OUTGOING.getDirection())
@@ -29,16 +36,6 @@ class WorkflowDataService {
 		journeyPair.setRecieverStatus(WorkflowStatus.REQUEST_RECIEVED.getStatus())
 		
 		journeyPairDataService.createJourneyPair(journeyPair)
-		
-		boolean anotherRequestExistsForRequester = false
-		
-		Journey thirdJourney = findThirdJourneyAvailableForPairing(requesterJourney)
-		if(thirdJourney){
-			anotherRequestExistsForRequester = true
-		}
-		else {
-			thirdJourney = findThirdJourneyAvailableForPairing(otherJourney)
-		}
 		if(thirdJourney){
 			JourneyPair thirdJourneyPair = new JourneyPair()
 			if(anotherRequestExistsForRequester){

@@ -42,8 +42,8 @@
 	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${existingJourney.dateOfJourney}"/></span>
 	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${existingJourney.dateOfJourney}"/></span>
                             </li>
-                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${existingJourney.fromPlace}</li>
-                            <li><i class="icon-basic-map"></i> <strong>To :</strong>${existingJourney.toPlace}</li>
+                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${existingJourney.from}</li>
+                            <li><i class="icon-basic-map"></i> <strong>To :</strong>${existingJourney.to}</li>
                         </ul>
                     </div>
                 </div>
@@ -61,8 +61,8 @@
 	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${currentJourney.dateOfJourney}"/></span>
 	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${currentJourney.dateOfJourney}"/></span>
                             </li>
-                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${currentJourney.fromPlace}</li>
-                            <li><i class="icon-basic-map"></i> <strong>To :</strong>${currentJourney.toPlace}</li>
+                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${currentJourney.from}</li>
+                            <li><i class="icon-basic-map"></i> <strong>To :</strong>${currentJourney.to}</li>
                         </ul>
                     </div>
                 </div>
@@ -80,8 +80,8 @@
     
     <g:hiddenField name="existingJourneyId" value="${existingJourney.id}"/>
 	
-	<g:hiddenField name="toPlace" value="${currentJourney.toPlace}"/>
-	<g:hiddenField name="fromPlace" value="${currentJourney.fromPlace}"/>
+	<g:hiddenField name="toPlace" value="${currentJourney.to}"/>
+	<g:hiddenField name="fromPlace" value="${currentJourney.from}"/>
 	<g:hiddenField name="dateOfJourneyString" value="${currentJourney.dateOfJourneyString}"/>
 	<g:hiddenField name="user" value="${currentJourney.user}"/>
 	
@@ -112,11 +112,11 @@
 		        <tbody>
 			        <tr>
 	                     <td>From : </td>
-	                     <td>${existingJourney.fromPlace}</td>
+	                     <td>${existingJourney.from}</td>
 	                 </tr>
 	                 <tr>
 	                     <td>To : </td>
-	                     <td>${existingJourney.toPlace}</td>
+	                     <td>${existingJourney.to}</td>
 	                 </tr>
 	                 <tr>
 	                     <td>Date :</td>

@@ -12,10 +12,10 @@ class JourneyRequestDetails {
 	String name 
 	Boolean isMale
 	Date dateOfJourney
-	String fromPlace
+	String from
 	Double fromLatitude = -1;
 	Double fromLongitude = -1;
-	String toPlace
+	String to
 	Double toLatitude = -1;
 	Double toLongitude = -1;
 	Boolean isDriver
@@ -37,10 +37,10 @@ class JourneyRequestDetails {
 		this.name = journey.name
 		this.isMale = journey.isMale
 		this.isDriver = journey.isDriver
-		this.fromPlace = journey.fromPlace
+		this.from = journey.from
 		this.fromLatitude = journey.fromLatitude
 		this.fromLongitude = journey.fromLongitude
-		this.toPlace = journey.toPlace
+		this.to = journey.to
 		this.toLatitude = journey.toLatitude
 		this.toLongitude = journey.toLongitude
 		this.photoUrl = journey.photoUrl
