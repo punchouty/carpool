@@ -28,28 +28,28 @@ class JourneyMobileController {
 		MobileResponse mobileResponse = new MobileResponse()
 		def errors = null
 		def searchResultMap = null
-		JourneyRequestCommand currentJourney = null;//convertJsonToJourneyObject(json);
+		JourneyRequestCommand currentJourneyCommand = null;//convertJsonToJourneyObject(json);
 		//in case this search request is forwarded from other method
 		JourneyRequestCommand currentJourneyFromRequest = request.getAttribute('currentJourney')
 		if(currentJourneyFromRequest) {
-			currentJourney = currentJourneyFromRequest
+			currentJourneyCommand = currentJourneyFromRequest
 		}
 		else {
-			currentJourney = convertJsonToJourneyObject(json);
+			currentJourneyCommand = convertJsonToJourneyObject(json);
 		}
 		def currentUser = getAuthenticatedUser();
 		if(!currentUser) {
-			currentUser = User.findByUsername(currentJourney.user);
+			currentUser = User.findByUsername(currentJourneyCommand.user);
 		}
 		if(currentUser) {
-			currentJourney.user = currentUser.username
-			currentJourney.name = currentUser.profile.fullName
-			currentJourney.isMale = currentUser.profile.isMale
-			currentJourney.mobile = currentUser.profile.mobile
-			currentJourney.ip = request.remoteAddr
-			session.currentJourney = currentJourney
-			if(currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
-				mobileResponse = journeySearchService.executeSearch(currentJourney);
+			currentJourneyCommand.user = currentUser.username
+			currentJourneyCommand.name = currentUser.profile.fullName
+			currentJourneyCommand.isMale = currentUser.profile.isMale
+			currentJourneyCommand.mobile = currentUser.profile.mobile
+			currentJourneyCommand.ip = request.remoteAddr
+			session.currentJourneyCommand = currentJourneyCommand
+			if(currentJourneyCommand.dateOfJourney.after(currentJourneyCommand.validStartTime)) {
+				mobileResponse = journeySearchService.executeSearch(currentJourneyCommand);
 			}
 			else {
 				mobileResponse.message = "Invalid travel date and time"
@@ -61,6 +61,10 @@ class JourneyMobileController {
 		render mobileResponse as JSON
 	}
 	
+	/**
+	 * Search request coming from MyJourney
+	 * @return
+	 */
 	def searchAgain() {
 		def json = request.JSON
 		def journeyId = json?.journeyId
@@ -69,8 +73,10 @@ class JourneyMobileController {
 		if(currentUser) {
 			Journey currentJourney = journeyDataService.findJourney(journeyId);
 			if(currentJourney != null) {
-				JourneyRequestCommand currentJourneyCommand = currentJourney.convert()
+				JourneyRequestCommand currentJourneyCommand = currentJourney.convert();
+				//no need to search dummy records
 				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand, false);
+				session.currentJourneyCommand = currentJourneyCommand
 			}
 			else {
 				mobileResponse.message = "Error : No journey to search"
@@ -87,7 +93,7 @@ class JourneyMobileController {
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			JourneyRequestCommand currentJourney = session.currentJourney
+			JourneyRequestCommand currentJourney = session.currentJourneyCommand
 			if(currentJourney != null) {
 				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
 			}
@@ -106,7 +112,7 @@ class JourneyMobileController {
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			JourneyRequestCommand currentJourney = session.currentJourney
+			JourneyRequestCommand currentJourney = session.currentJourneyCommand
 			if(currentJourney != null) {
 				workflowDataService.replace(Journey.convert(currentJourney));
 				mobileResponse = journeySearchService.straightThruSearch(currentJourney);

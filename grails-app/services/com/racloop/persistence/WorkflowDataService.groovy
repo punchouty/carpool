@@ -15,6 +15,10 @@ class WorkflowDataService {
 	def journeyPairDataService
 	def jmsService
 	
+	def requestJourneyAndSave(Journey unsavedJourney, String otherJourneyId) {
+		journeyDataService.saveJourney(unsavedJourney);
+		requestJourney(unsavedJourney.getId(), otherJourneyId);
+	}
 	
 	def requestJourney(String requesterJourneyId, String otherJourneyId) {
 		Journey requesterJourney = journeyDataService.findJourney(requesterJourneyId)
@@ -226,8 +230,9 @@ class WorkflowDataService {
 	}
 	
 	def cancelMyJourney(String myJourneyId){
-		String otherJourneyId = null
-		Journey myJourney = journeyDataService.findJourney(myJourneyId)
+		String otherJourneyId = null;
+		Journey myJourney = journeyDataService.findJourney(myJourneyId);
+		myJourney.setMyStatus(WorkflowStatus.CANCELLED.getStatus());
 		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
 		for(JourneyPair pair : journeyPairs){
 			pair.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
@@ -235,11 +240,12 @@ class WorkflowDataService {
 			journeyPairDataService.saveJourneyPair(pair)
 			otherJourneyId = pair.getInitiatorJourneyId().equals(myJourneyId) ? pair.getRecieverJourneyId() : pair.getInitiatorJourneyId()
 			Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
-			otherJourney.decrementNumberOfCopassengers()
-			saveJourneys(otherJourney)
+			otherJourney.decrementNumberOfCopassengers();
+			saveJourneys(otherJourney);
+			saveJourneys(myJourney);
 			if(otherJourney.getNumberOfCopassengers()<1){
-			journeyDataService.makeJourneySearchable(otherJourney)
-				}
+				journeyDataService.makeJourneySearchable(otherJourney)
+			}
 			sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
 		}
 	}
