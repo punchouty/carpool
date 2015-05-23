@@ -65,9 +65,17 @@ class UserMobileController {
 				userService.createLoginRecord(request)
 				authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
 				mobileResponse.data=authenticatedUser
-				Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
-				if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
-				mobileResponse.success=true
+				Journey journeyFeedback = getJourneyForFeedback();
+				if(journeyFeedback != null) {
+					mobileResponse.success = true
+					mobileResponse.feedbackPending = true
+					mobileResponse.data = journeyFeedback
+				}
+				else {
+					Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
+					if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
+					mobileResponse.success = true
+				}
 			}
 			catch (IncorrectCredentialsException e) {
 				log.info "Credentials failure for user '${email}'."
@@ -93,6 +101,57 @@ class UserMobileController {
 		}
 		render mobileResponse as JSON
 		
+	}
+	
+	private String [] getJourneyForFeedback() {
+		boolean test = true;
+		if(test) {
+			Journey j1 = new Journey();
+			j1.id = "100";
+			j1.name = "Parminder"
+			j1.from = "Delhi"
+			j1.to = "CHandigarh"
+			
+			Journey j2 = new Journey();
+			j2.identity = "101"
+			j2.name = "Sahil"
+			j1.getRelatedJourneys().add(j2)
+			
+			Journey j3 = new Journey();
+			j3.identity = "102"
+			j3.name = "Sahil"
+			j1.getRelatedJourneys().add(j3)
+			//return null
+			return j1;
+		}
+		else {
+			return null
+		}
+	}
+	
+	def sendUserRating() {
+		log.info("deleteJourney() json : ${json}");
+		MobileResponse mobileResponse = new MobileResponse();
+		mobileResponse.message = "Successful"
+		mobileResponse.success = true
+		render mobileResponse as JSON
+	}
+	
+	def getCurrentJourney() {
+		def json = request.JSON
+		def mobileResponse = new MobileResponse();
+		def currentUser = getAuthenticatedUser();
+		def currentDateString = json.currentDateString
+		def currentDate = GenericUtil.uiDateStringToJavaDateForSearch(currentDateString);
+		if(currentUser) {
+			Journey currentJourney = journeyDataService.findCurrentJourney(currentUser.profile.mobile, new DateTime(currentDate))
+			if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
+			mobileResponse.success = true
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform save"
+		}
+		render mobileResponse as JSON
 	}
 
 	/**

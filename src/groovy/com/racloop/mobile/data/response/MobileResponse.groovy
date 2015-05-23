@@ -9,4 +9,5 @@ class MobileResponse {
 	boolean existingJourney=false
 	Object currentJourney = null
 	boolean isDummy = false
+	boolean feedbackPending = false
 }

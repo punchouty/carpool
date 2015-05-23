@@ -15,7 +15,6 @@ public class Rating {
 	private String reviewer;
 	private String comment;
 	private Date dateCreated;
-	private Double ettiquetes; // 1-5 scale
 	private Double punctualty; // 1-5 scale
 	private Double overall; // 1-5 scale
 	
@@ -49,14 +48,6 @@ public class Rating {
 	}
 	public void setDateCreated(Date dateCreated) {
 		this.dateCreated = dateCreated;
-	}
-	
-	@DynamoDBAttribute(attributeName="Ettiquetes") 
-	public Double getEttiquetes() {
-		return ettiquetes;
-	}
-	public void setEttiquetes(Double ettiquetes) {
-		this.ettiquetes = ettiquetes;
 	}
 	
 	@DynamoDBAttribute(attributeName="Punctualty") 
