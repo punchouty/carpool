@@ -184,6 +184,7 @@ class JourneyDataService {
 						journeyPair.recieverJourney = otherJourney;
 						journey.setMyStatus(journeyPair.getInitiatorStatus());
 						journey.setMyDirection(journeyPair.getInitiatorDirection());
+						journey.setMyPairId(journeyPair.getId());
 						journey.setMyActions(journeyPair.getInitiatorStatusAsEnum().getActions());
 						journey.getRelatedJourneys().add(otherJourney);
 					}
@@ -199,6 +200,7 @@ class JourneyDataService {
 						journeyPair.recieverJourney = journey;
 						journey.setMyStatus(journeyPair.getRecieverStatus());
 						journey.setMyDirection(journeyPair.getRecieverDirection());
+						journey.setMyPairId(journeyPair.getId());
 						journey.setMyActions(journeyPair.getRecieverStatusAsEnum().getActions());
 						journey.getRelatedJourneys().add(otherJourney);
 					}

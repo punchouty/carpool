@@ -47,51 +47,59 @@ class UserMobileController {
 	 */
 	def login() {
 		def json = request.JSON
+		log.info("login() json : ${json}");
 		def jsonResponse = null
 		def mobileResponse = new MobileResponse()
 		if(json) {
 			def email = json.email
 			def password = json.password
-			def rememberMe = json.rememberMe
-			def currentDateString = json.currentDateString
-			def currentDate = GenericUtil.uiDateStringToJavaDateForSearch(currentDateString);
-			def authToken = new UsernamePasswordToken(email, password, true)			
-//			if (rememberMe) {
-//				authToken.rememberMe = true
-//			}
-			try {				
-				//TODO - do we need this event mechanism below. See AuthController
-				SecurityUtils.subject.login(authToken)
-				userService.createLoginRecord(request)
-				authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
-				mobileResponse.data=authenticatedUser
-				Journey journeyFeedback = getJourneyForFeedback();
-				if(journeyFeedback != null) {
-					mobileResponse.success = true
-					mobileResponse.feedbackPending = true
-					mobileResponse.data = journeyFeedback
+			if(email == null || password == null) {
+				mobileResponse.message="Empty Username/Password combination"
+				mobileResponse.success=false
+			}
+			else {
+				def rememberMe = json.rememberMe
+				def currentDateString = json.currentDateString
+				def currentDate = GenericUtil.uiDateStringToJavaDateForSearch(currentDateString);
+				def authToken = new UsernamePasswordToken(email, password);
+				rememberMe = true;
+				if (rememberMe) {
+					authToken.rememberMe = true
 				}
-				else {
-					Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
-					if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
-					mobileResponse.success = true
+				try {
+					//TODO - do we need this event mechanism below. See AuthController
+					SecurityUtils.subject.login(authToken)
+					userService.createLoginRecord(request)
+					authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
+					mobileResponse.data=authenticatedUser
+					Journey journeyFeedback = getJourneyForFeedback();
+					if(journeyFeedback != null) {
+						mobileResponse.success = true
+						mobileResponse.feedbackPending = true
+						mobileResponse.data = journeyFeedback
+					}
+					else {
+						Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
+						if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
+						mobileResponse.success = true
+					}
 				}
-			}
-			catch (IncorrectCredentialsException e) {
-				log.info "Credentials failure for user '${email}'."
-				mobileResponse.message="Wrong Username/Password combination"
-				mobileResponse.success=false
-			}
-			catch (DisabledAccountException e) {
-				log.info "Attempt to login to disabled account for user '${email}'."
-				mobileResponse.message="Mobile number is not verified or Acount is disabled"
-				mobileResponse.success=false
-			}
-			catch (AuthenticationException e) {
-				log.info "General authentication failure for user '${email}'."
-				mobileResponse.message="Authentication Failure"
-				mobileResponse.total=0
-				mobileResponse.success=false
+				catch (IncorrectCredentialsException e) {
+					log.info "Credentials failure for user '${email}'."
+					mobileResponse.message="Wrong Username/Password combination"
+					mobileResponse.success=false
+				}
+				catch (DisabledAccountException e) {
+					log.info "Attempt to login to disabled account for user '${email}'."
+					mobileResponse.message="Mobile number is not verified or Acount is disabled"
+					mobileResponse.success=false
+				}
+				catch (AuthenticationException e) {
+					log.info "General authentication failure for user '${email}'."
+					mobileResponse.message="Authentication Failure"
+					mobileResponse.total=0
+					mobileResponse.success=false
+				}
 			}
 		}
 		else {
@@ -103,7 +111,7 @@ class UserMobileController {
 		
 	}
 	
-	private String [] getJourneyForFeedback() {
+	private Journey getJourneyForFeedback() {
 		boolean test = true;
 		if(test) {
 			Journey j1 = new Journey();
@@ -113,12 +121,12 @@ class UserMobileController {
 			j1.to = "CHandigarh"
 			
 			Journey j2 = new Journey();
-			j2.identity = "101"
+			j2.id = "101"
 			j2.name = "Sahil"
 			j1.getRelatedJourneys().add(j2)
 			
 			Journey j3 = new Journey();
-			j3.identity = "102"
+			j3.id = "102"
 			j3.name = "Sahil"
 			j1.getRelatedJourneys().add(j3)
 			//return null
@@ -131,6 +139,14 @@ class UserMobileController {
 	
 	def sendUserRating() {
 		log.info("deleteJourney() json : ${json}");
+		MobileResponse mobileResponse = new MobileResponse();
+		mobileResponse.message = "Successful"
+		mobileResponse.success = true
+		render mobileResponse as JSON
+	}
+	
+	def cancelUserRating() {
+		log.info("cancelUserRating() json : ${json}");
 		MobileResponse mobileResponse = new MobileResponse();
 		mobileResponse.message = "Successful"
 		mobileResponse.success = true

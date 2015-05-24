@@ -42,6 +42,7 @@ public class Journey {
 	private Long version;
 	private String myStatus;
 	private String myDirection;
+	private String myPairId;
 	private String[] myActions; 
 	private Set<Journey> relatedJourneys = new HashSet<Journey>();
 	private Set<JourneyPair> journeyPairs = new HashSet<JourneyPair>();
@@ -360,6 +361,15 @@ public class Journey {
 	}
 
 	@DynamoDBIgnore
+	public String getMyPairId() {
+		return myPairId;
+	}
+
+	public void setMyPairId(String myPairId) {
+		this.myPairId = myPairId;
+	}
+
+	@DynamoDBIgnore
 	public String[] getMyActions() {
 		return myActions;
 	}
@@ -399,5 +409,4 @@ public class Journey {
 	public String getUser() {
 		return email;
 	}
-
 }
