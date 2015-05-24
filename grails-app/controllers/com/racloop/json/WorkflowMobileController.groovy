@@ -92,12 +92,11 @@ class WorkflowMobileController {
 	def acceptRequest() {
 		def json = request.JSON
 		log.info("acceptRequest() json : ${json}");
-		def myJourneyId = json.myJourneyId;
-		def journeyIdToBeAccepted = json.journeyIdToBeAccepted;
+		def journeyPairId = json.journeyPairId;
 		def mobileResponse = new MobileResponse();
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			workflowDataService.acceptRequest(journeyIdToBeAccepted, myJourneyId)
+			workflowDataService.acceptRequest(journeyPairId)
 			mobileResponse.success = true
 			mobileResponse.message = "Successfully Accepted journey request"
 		}
@@ -110,12 +109,11 @@ class WorkflowMobileController {
 	def rejectRequest() {
 		def json = request.JSON
 		log.info("rejectJourneyRequest() json : ${json}");
-		def myJourneyId = json.myJourneyId;
-		def journeyIdToBeRejcted = json.journeyIdToBeRejcted;
+		def journeyPairId = json.journeyPairId;
 		def mobileResponse = new MobileResponse();
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			workflowDataService.rejectRequest(journeyIdToBeRejcted, myJourneyId)
+			workflowDataService.rejectRequest(journeyPairId)
 			mobileResponse.success = true
 			mobileResponse.message = "Successfully rccepted journey request"
 		}
@@ -128,12 +126,11 @@ class WorkflowMobileController {
 	def cancelRequest() {
 		def json = request.JSON
 		log.info("cancelJourneyRequest() json : ${json}");
-		def myJourneyId = json.myJourneyId;
-		def journeyIdToCancelled = json.journeyIdToCancelled;
+		def journeyPairId = json.journeyPairId;
 		def mobileResponse = new MobileResponse();
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			workflowDataService.cancelRequest(journeyIdToCancelled, myJourneyId)
+			workflowDataService.cancelRequest(journeyPairId)
 			mobileResponse.success = true
 			mobileResponse.message = "Successfully cancelled journey request"
 		}
