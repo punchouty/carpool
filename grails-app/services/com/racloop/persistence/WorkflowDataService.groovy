@@ -183,13 +183,17 @@ class WorkflowDataService {
 		sendNotificationForWorkflowStateChange(myJourneyId, journeyIdToBeRejected, WorkflowStatus.REJECTED.getStatus())
 	}
 	
-	def cancelRequestInitiatedByMe(String journeyIdToBeCancelled, String myJourneyId){
+	def cancelRequest(String journeyIdToBeCancelled, String myJourneyId){
 		Journey journeyToBeCancelled = journeyDataService.findJourney(journeyIdToBeCancelled)
 		Journey myJourney = journeyDataService.findJourney(myJourneyId)
 		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
 		JourneyPair pairToBeCancelled = null
 		for(JourneyPair pair : journeyPairs){
 			if(pair.getInitiatorJourneyId().equals(myJourneyId) && pair.getRecieverJourneyId().equals(journeyToBeCancelled)){
+				pairToBeCancelled = pair;
+				break;
+			}
+			else if(pair.getInitiatorJourneyId().equals(journeyIdToBeCancelled) && pair.getRecieverJourneyId().equals(myJourneyId)){
 				pairToBeCancelled = pair;
 				break;
 			}
@@ -206,28 +210,7 @@ class WorkflowDataService {
 		sendNotificationForWorkflowStateChange(myJourneyId, journeyIdToBeCancelled, WorkflowStatus.CANCELLED.getStatus())
 	}
 	
-	def cancelRequestAcceptedByMe(String journeyIdToBeCancelled, String myJourneyId){
-		Journey journeyToBeCancelled = journeyDataService.findJourney(journeyIdToBeCancelled)
-		Journey myJourney = journeyDataService.findJourney(myJourneyId)
-		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
-		JourneyPair pairToBeCancelled = null
-		for(JourneyPair pair : journeyPairs){
-			if(pair.getInitiatorJourneyId().equals(journeyIdToBeCancelled) && pair.getRecieverJourneyId().equals(myJourneyId)){
-				pairToBeCancelled = pair;
-				break;
-			}
-		}
-		pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
-		pairToBeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED.getStatus())
-		journeyPairDataService.saveJourneyPair(pairToBeCancelled)
-		myJourney.decrementNumberOfCopassengers()
-		journeyToBeCancelled.decrementNumberOfCopassengers()
-		saveJourneys(myJourney,journeyToBeCancelled)
-		if(journeyToBeCancelled.getNumberOfCopassengers()<1){
-			journeyDataService.makeJourneySearchable(journeyToBeCancelled)
-		}
-		sendNotificationForWorkflowStateChange(myJourneyId, journeyToBeCancelled.getId(), WorkflowStatus.CANCELLED.getStatus())
-	}
+	
 	
 	def cancelMyJourney(String myJourneyId){
 		String otherJourneyId = null;

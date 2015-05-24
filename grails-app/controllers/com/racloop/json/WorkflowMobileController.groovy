@@ -76,30 +76,70 @@ class WorkflowMobileController {
 		log.info("deleteJourney() json : ${json}");
 		def journeyId = json.journeyId;
 		def mobileResponse = new MobileResponse();
-		workflowDataService.cancelMyJourney(journeyId);
-		mobileResponse.success = true
-		mobileResponse.message = "Successfully Cancelled Journey"
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			workflowDataService.cancelMyJourney(journeyId);
+			mobileResponse.success = true
+			mobileResponse.message = "Successfully Cancelled Journey"
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform cancel my journey"
+		}
+		
 		render mobileResponse as JSON
 	}
 	
 	def acceptRequest() {
 		def json = request.JSON
 		log.info("acceptRequest() json : ${json}");
+		def myJourneyId = json.myJourneyId;
+		def journeyIdToBeAccepted = json.journeyIdToBeAccepted;
 		def mobileResponse = new MobileResponse();
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			workflowDataService.acceptRequest(journeyIdToBeAccepted, myJourneyId)
+			mobileResponse.success = true
+			mobileResponse.message = "Successfully Accepted journey request"
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform accept request"
+		}
 		render mobileResponse as JSON
 	}
 	
 	def rejectRequest() {
 		def json = request.JSON
 		log.info("rejectJourneyRequest() json : ${json}");
+		def myJourneyId = json.myJourneyId;
+		def journeyIdToBeRejcted = json.journeyIdToBeRejcted;
 		def mobileResponse = new MobileResponse();
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			workflowDataService.rejectRequest(journeyIdToBeRejcted, myJourneyId)
+			mobileResponse.success = true
+			mobileResponse.message = "Successfully rccepted journey request"
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform reject request"
+		}
 		render mobileResponse as JSON
 	}
 	
 	def cancelRequest() {
 		def json = request.JSON
 		log.info("cancelJourneyRequest() json : ${json}");
+		def myJourneyId = json.myJourneyId;
+		def journeyIdToCancelled = json.journeyIdToCancelled;
 		def mobileResponse = new MobileResponse();
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			workflowDataService.cancelRequest(journeyIdToCancelled, myJourneyId)
+			mobileResponse.success = true
+			mobileResponse.message = "Successfully cancelled journey request"
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform cancel request"
+		}
 		render mobileResponse as JSON
 	}
 }
