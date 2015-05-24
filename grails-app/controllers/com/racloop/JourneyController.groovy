@@ -81,6 +81,7 @@ class JourneyController {
 			currentJourney.user = currentUser.username
 			currentJourney.name = currentUser.profile.fullName
 			currentJourney.isMale = currentUser.profile.isMale
+			currentJourney.mobile = currentUser.profile.mobile
 		}
 	}
 	
@@ -177,9 +178,9 @@ class JourneyController {
 			journeyDataService.createJourney(journey)
 		}
 		if(journey.id){
-		session.currentJourney.isSaved = true
-		session.currentJourney.id = journey.id
-		flash.message ="Successfully saved your request"
+			session.currentJourney.isSaved = true
+			session.currentJourney.id = journey.getId()
+			flash.message ="Successfully saved your request"
 		}
 		else {
 			flash.message ="Some problem in saving your request"
