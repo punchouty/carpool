@@ -76,7 +76,7 @@ class UserMobileController {
 					if(journeyFeedback != null) {
 						mobileResponse.success = true
 						mobileResponse.feedbackPending = true
-						mobileResponse.data = journeyFeedback
+						mobileResponse.currentJourney = journeyFeedback
 					}
 					else {
 						Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
