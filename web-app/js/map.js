@@ -97,13 +97,13 @@ $(function() {
 });
 //*/		
 $(function() {	
-	$('#fromPlace').placesSearch({
+	$('#from').placesSearch({
 		onSelectAddress : function(result) {
-			fromPlace = result.geometry.location;
-			$('#fromLatitude').val(fromPlace.lat());
-			$('#fromLongitude').val(fromPlace.lng());
-			if(toPlace != null && fromPlace != null) {
-				calcRoute(fromPlace, toPlace);
+			from = result.geometry.location;
+			$('#fromLatitude').val(from.lat());
+			$('#fromLongitude').val(from.lng());
+			if(to != null && from != null) {
+				calcRoute(from, to);
 			}
 			else {
 //				map.setZoom(defaultZoom);
@@ -115,11 +115,11 @@ $(function() {
 	});
 	$('#to').placesSearch({
 		onSelectAddress : function(result) {
-			toPlace = result.geometry.location;
-			$('#toLatitude').val(toPlace.lat());
-			$('#toLongitude').val(toPlace.lng());
-			if(fromPlace != null && toPlace != null) {
-				calcRoute(fromPlace, toPlace);
+			to = result.geometry.location;
+			$('#toLatitude').val(to.lat());
+			$('#toLongitude').val(to.lng());
+			if(to != null && from != null) {
+				calcRoute(from, to);
 			}
 			else {
 //				map.setZoom(defaultZoom);
@@ -344,7 +344,7 @@ function getErrorMessage() {
 		}		
 	}
 	else {		
-		var startPointText = $('#fromPlace').val();
+		var startPointText = $('#from').val();
 		if(startPointText) {
 			
 		}
