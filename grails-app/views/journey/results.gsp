@@ -3,7 +3,7 @@
 <html>
 <head>
 <meta name="layout" content="dynamic" />
-<title>Search Results -  ${searchResults.numberOfRecords} records returned</title>
+<title>Search Results -  ${searchResults.total} records returned</title>
 <r:require module="core" />
 </head>
 <body>
@@ -26,26 +26,26 @@
         <!-- SECTION HEADER -->
             <div class="section-header-racloop">
                 <div class="small-text-medium uppercase colored-text">
-                    ${searchResults.numberOfRecords} matching results found.
+                    ${searchResults.total} matching results found.
                 </div>
                 <h2 class="dark-text"><strong>Search</strong> Results</h2>
                 <div class="colored-line">
                 </div>
                 <div class="sub-heading ">
-                	<g:if test = "${currentJourney.isDriver == true}">
+                	<g:if test = "${currentJourney?.isDriver == true}">
                 		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
                 	</g:if>
                 	<g:else>
                 		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
                 	</g:else>
                     <div>
-                        <i class="icon-icon-house-alt"></i> <strong>From :</strong> ${currentJourney.from}
+                        <i class="icon-icon-house-alt"></i> <strong>From :</strong> ${currentJourney?.from}
                     </div>
                     <div>
-                        <i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${currentJourney.to}
+                        <i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${currentJourney?.to}
                     </div>
                     <div>
-                        <i class="icon-basic-calendar"></i> <strong>On :</strong> <g:formatDate format="dd MMMM yyyy hh:mm a" date="${currentJourney.dateOfJourney}"/>
+                        <i class="icon-basic-calendar"></i> <strong>On :</strong> <g:formatDate format="dd MMMM yyyy hh:mm a" date="${currentJourney?.dateOfJourney}"/>
                     </div>
                     <div>
                         <g:if test ="${session?.currentJourney?.id }">
@@ -62,14 +62,14 @@
     </section>
         
 	
-	<g:if test="${searchResults.numberOfRecords != 0}">
+	<g:if test="${searchResults.total != 0}">
 	 <div class="container">
-	 	<g:each in="${searchResults.matchedJourneys}" status="i" var="matchedResult">
-			<g:set var="journeyInstance" value="${matchedResult.matchedJourney}"/>
+	 	<g:each in="${searchResults.data.get('journeys')}" status="i" var="matchedResult">
+			<g:set var="journeyInstance" value="${matchedResult}"/>
 	        <article class="row white-bg-border racloop-search-fonts">
 	            <div class="col-md-2 col-md-offset-1">
 	                <span class="hidden-sm hidden-xs visible-lg visible-md">
-	                	<g:if test = "${journeyInstance.isDriver == true}">
+	                	<g:if test = "${matchedResult.isDriver == true}">
 	                    	<g:img dir="images" file="racloop/driver.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
 	                    </g:if>
 	                    <g:else>
@@ -80,7 +80,7 @@
 	            <div class="col-md-2">
 	                <ul class="feature-list text-left">
 	                    <li>
-	                        <g:if test = "${journeyInstance.isDriver == true}">
+	                        <g:if test = "${matchedResult.isDriver == true}">
 	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
 	                            	<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
 	                            <g:img dir="images" file="racloop/driver.png" width="100" alt="Car owner" class="img-thumbnail"/>
@@ -100,43 +100,17 @@
 	                        </g:else>
 	                        
 	                    </li>
-	                    <li><i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span></li>
-	                    <li><i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span></li>
+	                    <li><i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedResult.dateOfJourney}"/></span></li>
+	                    <li><i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedResult.dateOfJourney}"/></span></li>
 	                </ul>
 	            </div>
 	            <div class="col-md-5 text-left">
-	                <h5>${journeyInstance.name}</h5>
+	                <h5>${matchedResult.name}</h5>
 	                <ul class="text-left">
-	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${journeyInstance.from}</li>
-	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${journeyInstance.to}</li>
-	                    <g:if test = "${matchedResult.workflow}">
-							<g:set var="workflow" value="${matchedResult.workflow}"/>
-							<g:if test = "${workflow}">
-								<g:if test="${WorkflowState.INITIATED.state.equals(workflow.state)}">
-									<g:if test = "${workflow && workflow.requestJourneyId == currentJourney.id }">
-										<li><g:link action="cancelJourneyRequest" id="cancelled_${i}"  params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]" class="btn btn-warning"><i class="fa fa-trash"></i> Cancel Request</g:link></li>
-									</g:if>
-									<g:else>
-										<li><g:link action="acceptIncomingRequest" id="accept_${i}"  params="[workflowId: workflow.id, redirectToSearch: true]" class="btn btn-info"><i class="fa fa-check-circle-o"></i> Accept</g:link></li>
-										<li><g:link action="rejectIncomingRequest" id="reject_${i}"  params="[workflowId: workflow.id, redirectToSearch: true]" class="btn btn-warning"><i class="fa fa-ban"></i> Reject</g:link></li>
-										
-									</g:else>
-								</g:if>
-								<g:elseif test="${WorkflowState.ACCEPTED.state.equals(workflow.state)}">
-									<li><g:link action="cancelJourneyRequest" id="cancelled_${i}"  params="[requestedJourneyId: currentJourney.id, matchedJourneyId: journeyInstance.id]" class="btn btn-warning"><i class="fa fa-trash"></i> Cancel Request</g:link></li>
-								</g:elseif>
-								<g:elseif test="${WorkflowState.REJECTED.state.equals(workflow.state)}">
-									<li><button class="btn btn-warning disabled"><i class="fa fa-ban"></i> Rejected</button> </li>
-								</g:elseif>
-								<g:elseif test="${WorkflowState.CANCELLED.state.equals(workflow.state) || WorkflowState.CANCELLED_BY_REQUESTER.state.equals(workflow.state)}">
-									<li><button class="btn btn-warning disabled"><i class="fa fa-trash-o"></i> Cancelled</button> </li>
-								</g:elseif>
-							</g:if>
-								
-						</g:if>
-						<g:else>
-							<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id, dummy:searchResults.isDummyData]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link></li>
-						</g:else>	
+	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${matchedResult.from}</li>
+	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${matchedResult.to}</li>
+	                   
+						<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link></li>	
 	                    
 	                </ul>
 	            </div>
@@ -164,7 +138,7 @@
 			<p class="text-error">Sorry your search did not match any results</p>
 		</div>
 	  </g:else> 
-  	<g:hiddenField name="dummy" value="${searchResults.isDummyData}" />
+  	
 	<g:hiddenField name="user_mobile" value="${currentUser?.profile?.mobile}" />
 	<g:hiddenField name="user_email" value="${currentUser?.profile?.email}" />
 	<g:hiddenField name="numberOfRecords" value="${numberOfRecords}" />

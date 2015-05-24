@@ -99,11 +99,11 @@ $(function() {
 $(function() {	
 	$('#fromPlace').placesSearch({
 		onSelectAddress : function(result) {
-			from = result.geometry.location;
-			$('#fromLatitude').val(from.lat());
-			$('#fromLongitude').val(from.lng());
-			if(to != null && from != null) {
-				calcRoute(from, to);
+			fromPlace = result.geometry.location;
+			$('#fromLatitude').val(fromPlace.lat());
+			$('#fromLongitude').val(fromPlace.lng());
+			if(toPlace != null && fromPlace != null) {
+				calcRoute(fromPlace, toPlace);
 			}
 			else {
 //				map.setZoom(defaultZoom);
@@ -113,13 +113,13 @@ $(function() {
 			}	
 		}
 	});
-	$('#toPlace').placesSearch({
+	$('#to').placesSearch({
 		onSelectAddress : function(result) {
-			to = result.geometry.location;
-			$('#toLatitude').val(to.lat());
-			$('#toLongitude').val(to.lng());
-			if(from != null && to != null) {
-				calcRoute(from, to);
+			toPlace = result.geometry.location;
+			$('#toLatitude').val(toPlace.lat());
+			$('#toLongitude').val(toPlace.lng());
+			if(fromPlace != null && toPlace != null) {
+				calcRoute(fromPlace, toPlace);
 			}
 			else {
 //				map.setZoom(defaultZoom);
@@ -190,8 +190,8 @@ function changeDirections(result) {
 		$('#fromLongitude').val(start_location.lng());
 		$('#toLatitude').val(end_location.lat());
 		$('#toLongitude').val(end_location.lng());
-		$('#fromPlace').val(start_address);
-		$('#toPlace').val(end_address);
+		$('#from').val(start_address);
+		$('#to').val(end_address);
 		numberOfLegs++;
 		console.log(i + " changeDirections : " + sla + ":" + start_location.lat() + ", " + slo + ":" + start_location.lng() + ", " +ela + ":" + end_location.lat() + ", " + elo + ":" + end_location.lng())
 	}
@@ -250,7 +250,7 @@ $(function() {
 $(function() {
 	$('#offer').click(function() {	
 		var errorMessage = getErrorMessage();		
-		if(errorMessage){				
+		if(errorMessage){
 //			$('#errorMessage').text(errorMessage);					
 //			$('#myModal').modal({show:true});
 			$("#error-message").text(errorMessage);
@@ -369,7 +369,7 @@ function getErrorMessage() {
 		}			
 	}
 	else {
-		var toPointText = $('#toPlace').val();
+		var toPointText = $('#to').val();
 		if(toPointText) {
 			
 		}

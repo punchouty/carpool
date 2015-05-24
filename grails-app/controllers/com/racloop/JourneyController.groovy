@@ -6,6 +6,7 @@ import grails.converters.JSON
 import org.elasticsearch.common.joda.time.DateTime
 import org.springframework.web.servlet.ModelAndView
 
+import com.racloop.domain.Journey;
 import com.racloop.journey.workkflow.WorkflowState
 
 class JourneyController {
@@ -17,6 +18,8 @@ class JourneyController {
 	def journeyService
 	def journeyWorkflowService
 	def journeyManagerService
+	def journeySearchService
+	def journeyDataService
 	
 
 	/**
@@ -46,16 +49,8 @@ class JourneyController {
 		if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 			if(currentJourney.validate()) {
 				session.currentJourney = currentJourney
-				if(currentUser && currentJourney.isNewJourney()) {
-					JourneyRequestCommand existingJourney = journeyService.searchPossibleExistingJourneyForUser(currentUser, currentJourney)
-					if(existingJourney) {
-						return new ModelAndView("existingJourney", ['currentJourney': currentJourney, 'existingJourney':existingJourney])
-					}
-				
-				}
-				
-				def searchResultMap = journeyService.getSearchResults(currentUser, currentJourney) //getSearchResultMap(currentUser, currentJourney)
-				render(view: "results", model: ['searchResults': searchResultMap])
+				def mobileResponse = journeySearchService.executeSearch(currentJourney)
+				render(view: "results", model: ['searchResults': mobileResponse])
 			}
 			else {
 				log.warn 'Error in command : ' + params
@@ -177,11 +172,18 @@ class JourneyController {
 	def newJourney() {
 		def currentUser = getRacloopAuthenticatedUser();
 		def currentJourney = session.currentJourney
-		if(!currentJourney.id) {
-			journeyManagerService.createJourney(currentUser, currentJourney)
+		Journey journey = Journey.convert(currentJourney)
+		if(!journey.id) {
+			journeyDataService.createJourney(journey)
 		}
+		if(journey.id){
 		session.currentJourney.isSaved = true
+		session.currentJourney.id = journey.id
 		flash.message ="Successfully saved your request"
+		}
+		else {
+			flash.message ="Some problem in saving your request"
+		}
 		//redirect(controller: 'staticPage', action: "search")
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney])
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
