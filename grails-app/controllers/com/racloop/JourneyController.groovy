@@ -20,6 +20,7 @@ class JourneyController {
 	def journeyManagerService
 	def journeySearchService
 	def journeyDataService
+	def workflowDataService
 	
 
 	/**
@@ -202,15 +203,16 @@ class JourneyController {
 		def matchedJourneyId = params.matchedJourneyId
 		boolean isDummy =params.boolean('dummy')
 		if(!currentJourney.user) {
-			currentJourney.user = currentUser.username
-			currentJourney.name = currentUser.profile.fullName
-			currentJourney.isMale = currentUser.profile.isMale
+			setUserInformation(currentUser, currentJourney)
 			session.currentJourney = currentJourney
 		}
-		def matchedJourney = journeyService.findMatchedJourneyById(matchedJourneyId, isDummy)
-		def workflow = journeyManagerService.saveJourneyAndInitiateWorkflow(currentJourney,matchedJourney)
-		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney, journeys : journeys, numberOfRecords : numberOfRecords, isDummyData: isDummyData])
-		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
+		log.info("Requesting service. currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + matchedJourneyId)
+		if(currentJourney.isNewJourney()) {
+			workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), matchedJourneyId);
+		}
+		else {
+			workflowDataService.requestJourney(currentJourney.id, otherJourneyId);
+		}
 		forward action: 'findMatching', model: [currentJourney: currentJourney]
 	}
 	
@@ -249,7 +251,7 @@ class JourneyController {
 		int numberOfRecords = 0
 		def currentUser = getRacloopAuthenticatedUser()
 		if(currentUser) {
-			journeys = journeyService.findAllActiveJourneyDetailsForUser(currentUser)
+			journeys =journeyDataService.findMyJourneys(currentUser.profile.mobile, new Date());
 			numberOfRecords = journeys?.size()
 			
 		}

@@ -47,12 +47,11 @@
 		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.from}</li>
 		                        <li><i class="icon-weather-wind-s"></i> <strong>To :</strong> ${journeyInstance.to}</li>
 		                        <li>
-		                        	<g:link action="searchAgain"id="searchAgain"  class="btn btn-warning" params="[journeyId: journeyInstance.journeyId, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
+		                        	<g:link action="searchAgain"id="searchAgain"  class="btn btn-warning" params="[journeyId: journeyInstance.id, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
 					       				<i class="fa fa-search"></i> Search Again
 					       			</g:link>&nbsp; 
-		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Incoming (${journeyInstance.incomingRequests.size()}) <span class="caret"></span></button> &nbsp; 
-		                        	<button id="outgoing-btn-${i}" data-requestId="${i}" class="btn btn-info outgoing-btn"><i class="fa fa-upload"></i> Outgoing (${journeyInstance.outgoingRequests.size()}) <span class="caret"></span></button> &nbsp; 
-		                        	<a name ="delete" id="delete${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.journeyId}">
+		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Travel Buddies (${journeyInstance.numberOfCopassengers}) <span class="caret"></span></button> &nbsp; 
+		                        	<a name ="delete" id="delete${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
 					       				<button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
 					       			</a>
 		                        </li>
@@ -62,120 +61,41 @@
 		            </div>
 	            </div>
 	            
-	            <g:if test="${journeyInstance.incomingRequests?.size() > 0}">
+	            <g:if test="${journeyInstance.numberOfCopassengers > 0}">
 	            <div id="incoming-requests-${i}" class="incoming-requests">
                     <div class="well  well-sm">
                    		<h4>Incoming Requests</h4>
                		</div>
 	                   
-                    <g:each in="${journeyInstance.incomingRequests}" status="k" var="matchedWorkflowInstance">
+                    <g:each in="${journeyInstance.relatedJourneys}" status="k" var="matchedWorkflowInstance">
 	                    <div class="row">
 	                    	<div class="col-md-7 col-md-offset-2 text-left">
-	                    		<h5>${matchedWorkflowInstance?.otherUser?.profile?.fullName?:matchedWorkflowInstance?.workflow?.requestUser}<g:if test = "${matchedWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${matchedWorkflowInstance.otherUserMobileNummber}</g:if> </h5>
+	                    		<h5>${matchedWorkflowInstance?.name}</h5>
 	                    		<ul class="text-left">
 	                                <li>
-	                                	<g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
+	                                	<g:if test = "${matchedWorkflowInstance?.isDriver== true}">
 	                                		<span class="label label-primary">Car Owner</span> 
 	                                	</g:if>
 	                                	<g:else>
 	                                		<span class="label label-primary">Ride Seeker</span> 
 	                                	</g:else>
-	                                	<span class="${matchedWorkflowInstance.state=='Accepted'?'label label-success':(matchedWorkflowInstance.state=='New'?'label label-info':(matchedWorkflowInstance.state=='Rejected'?'label label-info':'label label-info'))}">${matchedWorkflowInstance.state}</span>
+	                                	<span class="label label-success">Status</span>
 	                                </li>
-	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.workflow.requestedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.workflow.requestedDateTime}"/></span></li>
-	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.workflow.requestedFromPlace}</li>
-	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.workflow.requestedToPlace}</li>
-	                                <li>
-		                                <g:each in ="${matchedWorkflowInstance.actionButtons}" var="action">
-											<g:if test = "${action=='Accept'}">
-												<g:link action="acceptIncomingRequest" id="acceptIncomingRequest"  params="[workflowId: matchedWorkflowInstance.workflow.id]">
-													<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept</button>
-												</g:link>
-											</g:if>
-											<g:if test = "${action=='Reject'}">
-												<g:link action="rejectIncomingRequest" id="rejectIncomingRequest"  params="[workflowId: matchedWorkflowInstance.workflow.id]">
-													<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
-												</g:link>
-											</g:if>
-											<g:if test = "${action=='Cancel'}">
-												<g:link action="cancelIncomingRequest" id="cancelIncomingRequest"  params="[workflowId: matchedWorkflowInstance.workflow.id]">
-													<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
-												</g:link>
-											</g:if>
-										</g:each>
-	                                </li>
+	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.dateOfJourney}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.dateOfJourney}"/></span></li>
+	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.from}</li>
+	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.to}</li>
+	                                
 	                            </ul>
 	                         </div> 
 	                         <div class="col-md-1">
-	                         	<g:if test = "${matchedWorkflowInstance.otherUser?.facebookId}">
-	                            	<img src="${matchedWorkflowInstance.otherUser?.facebookProfilePic}" alt="profile image" class="img-thumbnail"> </img>
-	                            </g:if>
-	                        	<g:elseif test = "${matchedWorkflowInstance.otherUser?.profile?.gravatarUri}">
-	                            	<img src="${matchedWorkflowInstance.otherUser?.profile?.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
-	                            </g:elseif>
-	                            <g:else>
-	                				<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
-	                			</g:else>
+	                         	
+	                			<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
 	                        </div>  
 	                   	</div>     
                     </g:each>
 	             </div>
 	             </g:if>
-	             <g:if test="${journeyInstance.outgoingRequests?.size() > 0}">
-	             <div id="outgoing-requests-${i}" class="outgoing-requests">
-	             	<div class="well well-sm">
-	             		<h4>Outgoing Requests</h4>
-	                </div>
-                	<g:each in="${journeyInstance.outgoingRequests}" status="j" var="requestWorkflowInstance">
-                		<div class="row">
-                   			<div class="col-md-7 col-md-offset-2 text-left">
-	                		    <h5>${requestWorkflowInstance.otherUser?.profile?.fullName?:requestWorkflowInstance?.workflow?.matchingUser} <g:if test = "${requestWorkflowInstance.showContactInfo}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${requestWorkflowInstance.otherUserMobileNummber}</g:if> </h5>
-	                            <ul class="text-left">
-	                                <li>
-		                                <g:if test = "${matchedWorkflowInstance?.workflow?.isMatchedUserDriving == true}">
-	                                		<span class="label label-primary">Car Owner</span> 
-	                                	</g:if>
-	                                	<g:else>
-	                                		<span class="label label-primary">Ride Seeker</span> 
-	                                	</g:else>
-		                                <span class="label label-info">${requestWorkflowInstance.state}</span>
-	                                </li>
-	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${requestWorkflowInstance.workflow.matchedDateTime}"/></span></li>
-	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${requestWorkflowInstance.workflow.matchedFromPlace}</li>
-	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${requestWorkflowInstance.workflow.matchedToPlace}</li>
-	                                <li>
-	                                	<g:each in ="${requestWorkflowInstance.actionButtons}" var="action">
-	   										<g:if test = "${action=='Accept'}">
-	   											<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept</button>
-	   										</g:if>
-	   										<g:if test = "${action=='Reject'}">
-	   											<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
-	   										</g:if>
-	   										<g:if test = "${action=='Cancel'}">
-	   											<g:link action="cancelOutgoingRequest" id="cancelOutgoingRequest"  params="[workflowId: requestWorkflowInstance.workflow.id]">
-	   												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
-	   											</g:link>
-	   										</g:if>
-	   									</g:each>
-	                                </li>
-	                            </ul>
-                        	</div>
-	                        <div class="col-md-1">
-	                        	<g:if test = "${requestWorkflowInstance.otherUser?.facebookId}">
-	                            	<img src="${requestWorkflowInstance.otherUser?.facebookProfilePic}" alt="profile image" class="img-thumbnail"> </img>
-	                            </g:if>
-	                        	<g:elseif test = "${requestWorkflowInstance.otherUser?.profile?.gravatarUri}">
-	                            	<img src="${requestWorkflowInstance.otherUser?.profile.gravatarUri}" alt="profile image" class="img-thumbnail"> </img>
-	                            </g:elseif>
-	                            <g:else>
-			                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
-			                	</g:else>
-	                            
-	                        </div>
-	                   </div>     
-                	</g:each>
-	             </div>
-	             </g:if>
+	             
     		</article>
     	</g:each>
        

@@ -46,7 +46,7 @@ class WorkflowMobileController {
 			JourneyRequestCommand currentJourney = session.currentJourneyCommand
 			if(currentJourney != null) {
 				log.info("currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + otherJourneyId)
-				if(isNewJourney(currentJourney)) {
+				if(currentJourney.isNewJourney()) {
 					workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), otherJourneyId);
 				}
 				else {
