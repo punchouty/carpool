@@ -112,7 +112,7 @@ class UserMobileController {
 	}
 	
 	private Journey getJourneyForFeedback() {
-		boolean test = true;
+		boolean test = false;
 		if(test) {
 			Journey j1 = new Journey();
 			j1.id = "100";
@@ -138,7 +138,8 @@ class UserMobileController {
 	}
 	
 	def sendUserRating() {
-		log.info("deleteJourney() json : ${json}");
+		def json = request.JSON
+		log.info("sendUserRating() json : ${json}");
 		MobileResponse mobileResponse = new MobileResponse();
 		mobileResponse.message = "Successful"
 		mobileResponse.success = true
@@ -146,6 +147,7 @@ class UserMobileController {
 	}
 	
 	def cancelUserRating() {
+		def json = request.JSON
 		log.info("cancelUserRating() json : ${json}");
 		MobileResponse mobileResponse = new MobileResponse();
 		mobileResponse.message = "Successful"
@@ -155,6 +157,7 @@ class UserMobileController {
 	
 	def getCurrentJourney() {
 		def json = request.JSON
+		log.info("getCurrentJourney() json : ${json}");
 		def mobileResponse = new MobileResponse();
 		def currentUser = getAuthenticatedUser();
 		def currentDateString = json.currentDateString

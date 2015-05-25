@@ -154,6 +154,10 @@ class SearchService {
 		DeleteResponse deleteResponse = node.client.prepareDelete(IndexMetadata.JOURNEY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, journeyId).execute().actionGet();
 	}
 
+	def deleteDummyJourney(String journeyId) {
+		DeleteResponse deleteResponse = node.client.prepareDelete(IndexMetadata.DUMMY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, journeyId).execute().actionGet();
+	}
+
 	def deleteJourneyForDate(Date date) {
 		// TODO - user delete by query API
 	}
@@ -393,7 +397,7 @@ class SearchService {
 		String indexType = IndexMetadata.LOCATION_MASTER_INDEX_TYPE_NAME;
 		log.debug "Adding record to location master index in elastic search ${place}"
 		def sourceBuilder = createPlaceJson(place);
-		IndexRequest indexRequest = new IndexRequest(indexName, indexType).source(sourceBuilder);
+		IndexRequest indexRequest = new IndexRequest(indexName, indexType, place.geohash).source(sourceBuilder);
 		node.client.index(indexRequest).actionGet();
 		log.debug "Successfully indexed place : ${place}"
 	}
@@ -429,6 +433,7 @@ class SearchService {
 		Place place = new Place();
 		place.name = searchHit.getSource().get('name');
 		place.location = searchHit.getSource().get('location');
+		place.geohash = searchHit.getSource().get('id');
 		return place;
 	}
 	

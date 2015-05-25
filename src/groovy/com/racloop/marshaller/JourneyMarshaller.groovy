@@ -31,6 +31,7 @@ class JourneyMarshaller {
 				myStatus : journey.myStatus,
 				myDirection : journey.myDirection,
 				myActions : journey.myActions, 
+				myPairId : journey.myPairId,
 				//journeyPairs : journey.journeyPairs,
 				relatedJourneys : journey.relatedJourneys.collect() { Journey relatedJourney ->
 					[ id : relatedJourney.id,
@@ -53,6 +54,7 @@ class JourneyMarshaller {
 					isDummy : relatedJourney.isDummy,
 					myStatus : relatedJourney.myStatus,
 					myDirection : relatedJourney.myDirection,
+					myPairId : relatedJourney.myPairId,
 					myActions : relatedJourney.myActions ]
 				}
 				

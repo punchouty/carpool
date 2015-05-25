@@ -19,4 +19,10 @@ class UserDataService {
     def saveUser(RacloopUser user) {
 		awsService.dynamoDBMapper.save(user, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
     }
+	
+	def deleteUserByMobile(String mobile) {
+		RacloopUser user = awsService.dynamoDBMapper.load(RacloopUser.class, mobile, new DynamoDBMapperConfig(DynamoDBMapperConfig.ConsistentReads.CONSISTENT));
+		awsService.dynamoDBMapper.delete(user);
+		return user;
+	}
 }

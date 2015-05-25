@@ -39,7 +39,7 @@ class TestDataService {
 		User user = user1;
 		lines.each {  line ->
 			i++;
-			if(i%4 == 0) {
+			if(i%4 == 3) {
 				Journey journey = new Journey();
 				journey.mobile = user.profile.mobile
 				journey.dateOfJourney = new Date(time.timeInMillis)
@@ -72,7 +72,7 @@ class TestDataService {
 		user = user2;
 		lines.each {  line ->
 			i++;
-			if(i%3 == 0) {
+			if(i%4 == 2) {
 				Journey journey = new Journey();
 				journey.mobile = user.profile.mobile
 				journey.dateOfJourney = new Date(time.timeInMillis)
@@ -105,7 +105,7 @@ class TestDataService {
 		user = user3;
 		lines.each {  line ->
 			i++;
-			if(i%2 == 0) {
+			if(i%4 == 1) {
 				Journey journey = new Journey();
 				journey.mobile = user.profile.mobile
 				journey.dateOfJourney = new Date(time.timeInMillis)
@@ -129,38 +129,38 @@ class TestDataService {
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 		
-//		i = 0;
-//		time = Calendar.getInstance();
-//		time.set(Calendar.MINUTE, 0);
-//		time.set(Calendar.SECOND, 0);
-//		time.set(Calendar.MILLISECOND, 0);
-//		time.add(Calendar.MINUTE, -90);
-//		user = user4;
-//		lines.each {  line ->
-//			i++;
-//			if(i%1 == 0) {
-//				Journey journey = new Journey();
-//				journey.mobile = user.profile.mobile
-//				journey.dateOfJourney = new Date(time.timeInMillis)
-//				journey.email = user.profile.email
-//				journey.name = user.profile.fullName
-//				journey.from = line[6]
-//				journey.fromLatitude = Double.parseDouble(line[4])
-//				journey.fromLongitude = Double.parseDouble(line[5])
-//				journey.to = line[11]
-//				journey.toLatitude = Double.parseDouble(line[9])
-//				journey.toLongitude = Double.parseDouble(line[10])
-//				journey.isMale = true
-//				journey.isDriver = true
-//				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
-//				journey.photoUrl = user.profile.getGravatarUri()
-//				journey.isDummy = true;
-//				journey.createdDate = new Date();
-//				journeyDataService.createJourney(journey);
-//				outgoingRequest<<journey
-//			}
-//			time.add(Calendar.MINUTE, timeInterval);
-//		}
+		i = 0;
+		time = Calendar.getInstance();
+		time.set(Calendar.MINUTE, 0);
+		time.set(Calendar.SECOND, 0);
+		time.set(Calendar.MILLISECOND, 0);
+		time.add(Calendar.MINUTE, -90);
+		user = user4;
+		lines.each {  line ->
+			i++;
+			if(i%4 == 0) {
+				Journey journey = new Journey();
+				journey.mobile = user.profile.mobile
+				journey.dateOfJourney = new Date(time.timeInMillis)
+				journey.email = user.profile.email
+				journey.name = user.profile.fullName
+				journey.from = line[6]
+				journey.fromLatitude = Double.parseDouble(line[4])
+				journey.fromLongitude = Double.parseDouble(line[5])
+				journey.to = line[11]
+				journey.toLatitude = Double.parseDouble(line[9])
+				journey.toLongitude = Double.parseDouble(line[10])
+				journey.isMale = true
+				journey.isDriver = true
+				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
+				journey.photoUrl = user.profile.getGravatarUri()
+				journey.isDummy = true;
+				journey.createdDate = new Date();
+				//journeyDataService.createJourney(journey);
+				outgoingRequest<<journey
+			}
+			time.add(Calendar.MINUTE, timeInterval);
+		}
 	}
 	
 	def deleteDataForDev() {

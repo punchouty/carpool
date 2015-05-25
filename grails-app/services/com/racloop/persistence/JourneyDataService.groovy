@@ -261,4 +261,40 @@ class JourneyDataService {
 	def makeJourneySearchable (Journey journey){
 		searchService.indexJourney(journey, journey.getId())
 	}
+	
+	def deleteAllDataForUser(String mobile) {
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("Preparing User data for mobile : " + mobile);
+		List<Journey> journeys = findAllJourneyForUser(mobile);
+		Set<Journey> journeysToBeDeleted = new HashSet<Journey>();
+		Set<JourneyPair> journeyPairsToBeDeleted = new HashSet<JourneyPair>();
+		journeys.each { journey ->
+			journeysToBeDeleted.add(journey);
+			String [] pairs = journey.journeyPairIds
+			pairs.each { pairId ->
+				JourneyPair journeyPair = journeyPairDataService.findPairById(pairId);
+				journeyPairsToBeDeleted.add(journeyPair);
+				journeysToBeDeleted.add(findJourney(journeyPair.initiatorJourneyId));
+				journeysToBeDeleted.add(findJourney(journeyPair.recieverJourneyId));
+				buffer.append("Delete PairId : " + pairId + ", journeyPair.initiatorJourneyId : " + journeyPair.initiatorJourneyId  + ", journeyPair.recieverJourneyId : " + journeyPair.recieverJourneyId + "\n");
+			}
+		}
+		journeysToBeDeleted.each { journey ->
+			if(journey.isDummy) {
+				searchService.deleteJourney(journey.id);
+				buffer.append("Delete Dummy Journey in elasticsearch : " + journey.id + "\n");
+			}
+			else {
+				searchService.deleteJourney(journey.id);
+				buffer.append("Delete Journey in elasticsearch : " + journey.id + "\n");
+			}
+		}
+		def tmpPairs = new ArrayList<JourneyPair>();
+		tmpPairs.addAll(journeyPairsToBeDeleted);
+		def tmpJourneys = new ArrayList<Journey>();
+		tmpJourneys.addAll(journeysToBeDeleted);
+		awsService.dynamoDBMapper.batchDelete(tmpPairs);
+		awsService.dynamoDBMapper.batchDelete(tmpJourneys);
+		return buffer.toString();
+	}
 }

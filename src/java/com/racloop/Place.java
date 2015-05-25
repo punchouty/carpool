@@ -5,6 +5,7 @@ import org.elasticsearch.common.geo.GeoPoint;
 public class Place {
 
 	private String name;
+	private String geohash;
 	private GeoPoint location;
 
 	@Override
@@ -43,6 +44,14 @@ public class Place {
 
 	public void setLocation(GeoPoint location) {
 		this.location = location;
+	}
+
+	public String getGeohash() {
+		return geohash;
+	}
+
+	public void setGeohash(String geohash) {
+		this.geohash = geohash;
 	}
 
 }

@@ -1,5 +1,7 @@
 package com.racloop.integration
 
+import org.elasticsearch.common.joda.time.DateTime;
+
 import grails.transaction.Transactional
 
 import com.racloop.GenericUtil
@@ -26,7 +28,8 @@ class JourneySearchService {
 		Double toLon = currentJourney.toLongitude
 		MobileResponse mobileResponse = new MobileResponse();
 		if(mobile != null) {
-			List<Journey> myJourneys = journeyDataService.findMyJourneys(mobile, timeOfJourney);
+			DateTime minimumValidSearchTime = new DateTime(timeOfJourney).minusHours(1);
+			List<Journey> myJourneys = journeyDataService.findMyJourneys(mobile, minimumValidSearchTime.toDate());
 			Journey existingJourney = getSimilarJourney(myJourneys, timeOfJourney);
 			if(existingJourney != null) {
 				mobileResponse.data = ['existingJourney': existingJourney.convert(), 'currentJourney': currentJourney]

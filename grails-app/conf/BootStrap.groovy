@@ -7,6 +7,7 @@ import grails.gsp.PageRenderer
 import liquibase.util.csv.opencsv.CSVReader
 
 import org.apache.shiro.SecurityUtils
+import org.elasticsearch.common.geo.GeoHashUtils;
 import org.elasticsearch.common.geo.GeoPoint
 import org.springframework.web.context.support.WebApplicationContextUtils
 
@@ -127,7 +128,7 @@ class BootStrap {
 			adminProfile.email = adminUser
 			adminProfile.owner = admin
 			adminProfile.isMale = true
-			adminProfile.mobile = '9872883924'
+			adminProfile.mobile = '9717744392'
 			admin.profile = adminProfile
 
 			log.info("Creating default admin account with username: ${admin.username}")
@@ -174,7 +175,7 @@ class BootStrap {
 			userProfile.email = sampleUser
 			userProfile.owner = user
 			userProfile.isMale = true
-			userProfile.mobile = '9717744392'
+			userProfile.mobile = '7307392447'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username: ${user.username}")
@@ -214,7 +215,7 @@ class BootStrap {
 			userProfile.email = sampleDriver
 			userProfile.owner = user
 			userProfile.isMale = true
-			userProfile.mobile = '7307392447'
+			userProfile.mobile = '9646698749'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username: ${user.username}")
@@ -254,7 +255,7 @@ class BootStrap {
 			userProfile.email = sampleRider
 			userProfile.owner = user
 			userProfile.isMale = false
-			userProfile.mobile = '9780242630'
+			userProfile.mobile = '9646695649'
 			user.profile = userProfile
 
 			log.info("Creating default user account with username: ${user.username}")
@@ -290,8 +291,10 @@ class BootStrap {
 			String name = line[0]
 			Double latitude = Double.parseDouble(line[1])
 			Double longitude = Double.parseDouble(line[2])
+			String geohash = GeoHashUtils.encode(latitude, longitude);
 			place.name = name
 			place.location = new GeoPoint(latitude, longitude)
+			place.geohash = geohash;
 			if(!place.equals(previousPlace)) {
 				//elasticSearchService.indexLocation(place);
 				searchService.indexLocation(place);
