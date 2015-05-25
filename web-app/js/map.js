@@ -97,7 +97,7 @@ $(function() {
 });
 //*/		
 $(function() {	
-	$('#fromPlace').placesSearch({
+	$('#from').placesSearch({
 		onSelectAddress : function(result) {
 			from = result.geometry.location;
 			$('#fromLatitude').val(from.lat());
@@ -113,12 +113,12 @@ $(function() {
 			}	
 		}
 	});
-	$('#toPlace').placesSearch({
+	$('#to').placesSearch({
 		onSelectAddress : function(result) {
 			to = result.geometry.location;
 			$('#toLatitude').val(to.lat());
 			$('#toLongitude').val(to.lng());
-			if(from != null && to != null) {
+			if(to != null && from != null) {
 				calcRoute(from, to);
 			}
 			else {
@@ -190,8 +190,8 @@ function changeDirections(result) {
 		$('#fromLongitude').val(start_location.lng());
 		$('#toLatitude').val(end_location.lat());
 		$('#toLongitude').val(end_location.lng());
-		$('#fromPlace').val(start_address);
-		$('#toPlace').val(end_address);
+		$('#from').val(start_address);
+		$('#to').val(end_address);
 		numberOfLegs++;
 		console.log(i + " changeDirections : " + sla + ":" + start_location.lat() + ", " + slo + ":" + start_location.lng() + ", " +ela + ":" + end_location.lat() + ", " + elo + ":" + end_location.lng())
 	}
@@ -250,7 +250,7 @@ $(function() {
 $(function() {
 	$('#offer').click(function() {	
 		var errorMessage = getErrorMessage();		
-		if(errorMessage){				
+		if(errorMessage){
 //			$('#errorMessage').text(errorMessage);					
 //			$('#myModal').modal({show:true});
 			$("#error-message").text(errorMessage);
@@ -344,7 +344,7 @@ function getErrorMessage() {
 		}		
 	}
 	else {		
-		var startPointText = $('#fromPlace').val();
+		var startPointText = $('#from').val();
 		if(startPointText) {
 			
 		}
@@ -369,7 +369,7 @@ function getErrorMessage() {
 		}			
 	}
 	else {
-		var toPointText = $('#toPlace').val();
+		var toPointText = $('#to').val();
 		if(toPointText) {
 			
 		}

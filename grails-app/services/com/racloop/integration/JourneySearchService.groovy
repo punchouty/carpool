@@ -81,6 +81,7 @@ class JourneySearchService {
 				mobileResponse.message = "No matching results found"
 			}
 		}
+		mobileResponse.currentJourney = currentJourney
 		return mobileResponse;
 	}
 	
