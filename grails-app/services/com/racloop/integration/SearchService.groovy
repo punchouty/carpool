@@ -24,6 +24,7 @@ import org.elasticsearch.common.xcontent.XContentBuilder
 import org.elasticsearch.common.xcontent.XContentFactory
 import org.elasticsearch.index.query.FilterBuilder;
 import org.elasticsearch.index.query.FilterBuilders;
+import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.indices.IndexMissingException;
 import org.elasticsearch.node.Node
@@ -284,6 +285,29 @@ class SearchService {
 		if (Environment.current == Environment.DEVELOPMENT) {
 			log.info "Deleting INDEX ${IndexMetadata.JOURNEY_INDEX_NAME}"
 			node.client.prepareDeleteByQuery(IndexMetadata.JOURNEY_INDEX_NAME).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
+			log.info "Deleting INDEX ${IndexMetadata.DUMMY_INDEX_NAME}"
+			node.client.prepareDeleteByQuery(IndexMetadata.DUMMY_INDEX_NAME).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
+		}
+	}
+	
+	/**
+	 * DANGER - use in dev environment only
+	 * @return
+	 */
+	def deleteAllJourneyDataForUser(String mobile) {
+		if (Environment.current == Environment.DEVELOPMENT) {
+			QueryBuilder termQuery = QueryBuilders.termQuery("mobile", mobile);
+			log.info "Deleting INDEX ${IndexMetadata.JOURNEY_INDEX_NAME} for user with mobile : ${mobile}"
+			node.client.prepareDeleteByQuery(IndexMetadata.JOURNEY_INDEX_NAME).setQuery(termQuery).execute().actionGet();
+		}
+	}
+	
+	/**
+	 * DANGER - use in dev environment only
+	 * @return
+	 */
+	def deleteAllDummyData() {
+		if (Environment.current == Environment.DEVELOPMENT) {
 			log.info "Deleting INDEX ${IndexMetadata.DUMMY_INDEX_NAME}"
 			node.client.prepareDeleteByQuery(IndexMetadata.DUMMY_INDEX_NAME).setQuery(QueryBuilders.matchAllQuery()).execute().actionGet();
 		}

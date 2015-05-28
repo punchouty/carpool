@@ -6,7 +6,7 @@ class MobileResponse {
 	boolean success = false
 	String message = ""
 	Object data = null
-	boolean existingJourney=false
+	boolean existingJourney = false
 	Object currentJourney = null
 	boolean isDummy = false
 	boolean feedbackPending = false

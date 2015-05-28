@@ -1,5 +1,6 @@
 package com.racloop.integration
 
+import org.elasticsearch.common.geo.GeoHashUtils;
 import org.elasticsearch.common.joda.time.DateTime;
 
 import grails.transaction.Transactional
@@ -32,16 +33,26 @@ class JourneySearchService {
 			List<Journey> myJourneys = journeyDataService.findMyJourneys(mobile, minimumValidSearchTime.toDate());
 			Journey existingJourney = getSimilarJourney(myJourneys, timeOfJourney);
 			if(existingJourney != null) {
-				mobileResponse.data = ['existingJourney': existingJourney.convert(), 'currentJourney': currentJourney]
-				mobileResponse.success = true
-				mobileResponse.message = "Existing journey found!"
-				mobileResponse.existingJourney = true;
+				if(areJourneysSame(currentJourney, existingJourney)) {
+					log.info("The journey serached is SAME as the one present in db. Search parameters are about same.");
+					mobileResponse = straightThruSearch(currentJourney, false);
+					mobileResponse.data['hideSaveButton'] = true;
+				}
+				else {
+					log.info("The journey serached is SIMILAR as the one present in db. Search parameters are not same.");
+					mobileResponse.data = ['existingJourney': existingJourney.convert(), 'currentJourney': currentJourney]
+					mobileResponse.success = true
+					mobileResponse.message = "Existing journey found!"
+					mobileResponse.existingJourney = true;
+				}
 			}
 			else {
 				mobileResponse = straightThruSearch(currentJourney);
+				mobileResponse.data['hideSaveButton'] = false;
 			}
 		}
 		else {
+			log.info("Search coming with user");
 			mobileResponse = straightThruSearch(currentJourney);
 		}
 		return mobileResponse;
@@ -135,5 +146,20 @@ class JourneySearchService {
 			}
 		}
 		return existingJourney
+	}
+	
+	
+	
+	private boolean areJourneysSame(JourneyRequestCommand currentJourney, Journey dbJourney) {
+		String currentJourneyFromGeoHash = GeoHashUtils.encode(currentJourney.fromLatitude, currentJourney.fromLongitude, 6);
+		String currentJourneyToGeoHash = GeoHashUtils.encode(currentJourney.toLatitude, currentJourney.toLongitude, 6);
+		String fromGeohash = GeoHashUtils.encode(dbJourney.fromLatitude, dbJourney.fromLongitude, 6);
+		String toGeohash = GeoHashUtils.encode(dbJourney.toLatitude, dbJourney.toLongitude, 6);
+		if(fromGeohash.equals(currentJourneyFromGeoHash) && toGeohash.equals(currentJourneyToGeoHash)){//from and to are almost identical with in precision of 6
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 }

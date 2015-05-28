@@ -21,8 +21,8 @@ class JourneyMobileController {
 	def journeySearchService
 	
 	def search() {
-		log.info("myJourneys Request from ${request.remoteAddr}")	
 		def json = request.JSON
+		log.info("search json ${json}")
 		String jsonMessage = null
 		String jsonResponse = "error"
 		MobileResponse mobileResponse = new MobileResponse()
@@ -67,6 +67,7 @@ class JourneyMobileController {
 	 */
 	def searchAgain() {
 		def json = request.JSON
+		log.info("searchAgain json ${json}")
 		def journeyId = json?.journeyId
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
@@ -76,6 +77,7 @@ class JourneyMobileController {
 				JourneyRequestCommand currentJourneyCommand = currentJourney.convert();
 				//no need to search dummy records
 				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand, false);
+				mobileResponse.data['hideSaveButton'] = true;
 				session.currentJourneyCommand = currentJourneyCommand
 			}
 			else {
@@ -96,6 +98,7 @@ class JourneyMobileController {
 			JourneyRequestCommand currentJourney = session.currentJourneyCommand
 			if(currentJourney != null) {
 				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
+				mobileResponse.data['hideSaveButton'] = true;
 			}
 			else {
 				mobileResponse.message = "Error : No journey to search"
@@ -109,17 +112,31 @@ class JourneyMobileController {
 	}
 	
 	def replaceAndSearch() {
+		def json = request.JSON
+		log.info("replaceAndSearch json ${json}")
+		def existingJourneyId = json?.existingJourneyId
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
+		JourneyRequestCommand currentJourneyCommand = convertJsonToJourneyObject(json);
 		if(currentUser) {
-			JourneyRequestCommand currentJourney = session.currentJourneyCommand
-			if(currentJourney != null) {
-				workflowDataService.replace(Journey.convert(currentJourney));
-				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
+			currentJourneyCommand.user = currentUser.username
+			currentJourneyCommand.name = currentUser.profile.fullName
+			currentJourneyCommand.isMale = currentUser.profile.isMale
+			currentJourneyCommand.mobile = currentUser.profile.mobile
+			currentJourneyCommand.ip = request.remoteAddr
+			if(currentJourneyCommand.dateOfJourney.after(currentJourneyCommand.validStartTime)) {
+				workflowDataService.cancelMyJourney(existingJourneyId);
+				Journey journey = Journey.convert(currentJourneyCommand);
+				journey.id = null;
+				journeyDataService.createJourney(journey);
+				currentJourneyCommand.id = journey.id;
+				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand);
+				mobileResponse.message = "Journey replaced successfully"
+				mobileResponse.data['hideSaveButton'] = true;
+				session.currentJourneyCommand = currentJourneyCommand
 			}
 			else {
-				mobileResponse.message = "Error : No journey to search"
-				log.warn ("currentJourney not in session scope for user ${currentUser}")
+				mobileResponse.message = "Invalida date"
 			}
 		}
 		else {
@@ -128,10 +145,10 @@ class JourneyMobileController {
 		render mobileResponse as JSON
 	}
 
-    def myJourneys() {	
-		log.info("myJourneys Request from ${request.remoteAddr}")		
+    def myJourneys() {		
 		def mobileResponse = new MobileResponse()
 		def json = request.JSON
+		log.info("myJourneys json ${json}")
 		def currentUser = getAuthenticatedUser();
 		String currentTime = params.currentTime;//json?.currentTime
 		log.info "myJourneys currentUser : ${currentUser?.profile?.email} currentTime : ${currentTime}"
@@ -150,10 +167,10 @@ class JourneyMobileController {
 		render mobileResponse as JSON
 	}
 
-    def myHistory() {	
-		log.info("myJourneys Request from ${request.remoteAddr}")			
+    def myHistory() {				
 		def mobileResponse = new MobileResponse()
 		def json = request.JSON
+		log.info("myHistory json ${json}")
 		def currentUser = getAuthenticatedUser();
 		String currentTime = params.currentTime;//json?.currentTime
 		log.info "myHistory currentUser : ${currentUser?.profile?.email} currentTime : ${currentTime}"

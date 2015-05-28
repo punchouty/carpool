@@ -42,7 +42,7 @@ class SampleDataController {
 //	}
 	
 	/**
-	 * http://localhost:8080/app/sampleData/delete?secret=051525&mobile=7307392447&deleteUser=false
+	 * http://localhost:8080/app/sampleData/delete?secret=051525&mobile=9646695649
 	 * @return
 	 */
 	def delete() {

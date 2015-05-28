@@ -3,6 +3,7 @@ package com.racloop.json
 import grails.converters.JSON
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.ProfileBase
+import grails.util.Environment;
 
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.authc.AuthenticationException
@@ -35,6 +36,7 @@ class UserMobileController {
 	def journeyService
 	def journeyWorkflowService
 	def jmsService
+	def testDataService
 	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST', forgotPassword : 'POST' ]
 
@@ -604,5 +606,31 @@ class UserMobileController {
 			mobileResponse.success = false
 		}
 		render mobileResponse as JSON
+	}
+	
+	def delete(){
+		if (Environment.current == Environment.DEVELOPMENT) {
+			testDataService.deleteDataForDev();
+			render "deleted data"
+		}
+		else {
+			render "unsupported operation"
+		}
+	}
+	
+	def generate(){
+		log.info("Params : ${params}")
+		int number = 1
+		if(params.number != null) {
+			number = Integer.parseInt(params.number);
+		}
+		if (Environment.current == Environment.DEVELOPMENT) {
+			testDataService.deleteDataForDev();
+			testDataService.generateDataForDev(number);
+			render "data refreshed"
+		}
+		else {
+			render "unsupported operation"
+		}
 	}
 }

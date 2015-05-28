@@ -73,12 +73,12 @@ class BootStrap {
 		intializeStaticData();
 		
 		if (Environment.current == Environment.DEVELOPMENT) {
-			//sampleDataService.deleteSampleData()
+			log.info("Deleting test data");
+			testDataService.deleteDataForDev();
 			log.info("Populating Sample Data");
 			Boolean createSampleData = grailsApplication.config.grails.startup.sampleData.create
 			if(createSampleData) {
 				//sampleDataService.populateSampleData();
-				testDataService.deleteDataForDev();
 				testDataService.generateDataForDev();
 			}
 			else {

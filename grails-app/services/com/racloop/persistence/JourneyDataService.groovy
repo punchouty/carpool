@@ -276,17 +276,17 @@ class JourneyDataService {
 				journeyPairsToBeDeleted.add(journeyPair);
 				journeysToBeDeleted.add(findJourney(journeyPair.initiatorJourneyId));
 				journeysToBeDeleted.add(findJourney(journeyPair.recieverJourneyId));
-				buffer.append("Delete PairId : " + pairId + ", journeyPair.initiatorJourneyId : " + journeyPair.initiatorJourneyId  + ", journeyPair.recieverJourneyId : " + journeyPair.recieverJourneyId + "\n");
+				buffer.append("Delete PairId : " + pairId + ", journeyPair.initiatorJourneyId : " + journeyPair.initiatorJourneyId  + ", journeyPair.recieverJourneyId : " + journeyPair.recieverJourneyId + "</br>");
 			}
 		}
 		journeysToBeDeleted.each { journey ->
 			if(journey.isDummy) {
 				searchService.deleteJourney(journey.id);
-				buffer.append("Delete Dummy Journey in elasticsearch : " + journey.id + "\n");
+				buffer.append("Delete Dummy Journey in elasticsearch : " + journey.id + "</br>");
 			}
 			else {
 				searchService.deleteJourney(journey.id);
-				buffer.append("Delete Journey in elasticsearch : " + journey.id + "\n");
+				buffer.append("Delete Journey in elasticsearch : " + journey.id + "</br>");
 			}
 		}
 		def tmpPairs = new ArrayList<JourneyPair>();

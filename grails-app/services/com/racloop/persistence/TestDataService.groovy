@@ -16,11 +16,11 @@ class TestDataService {
 	def journeyDataService;
 	def searchService;
 	
-	def generateDataForDev() {
+	def generateDataForDev(int numberOfrecordsToGenerate) {
 		def outgoingRequest =[]
 		def incomingRequest = []
-		
-		int timeInterval = 15
+		if(numberOfrecordsToGenerate < 1) numberOfrecordsToGenerate = 1;
+		int timeInterval = 30
 		User user1 = User.findByUsername('admin@racloop.com');
 		User user2 = User.findByUsername('user@racloop.com');
 		User user3 = User.findByUsername('driver@racloop.com');
@@ -30,6 +30,7 @@ class TestDataService {
 		List lines = reader.readAll();
 		
 		int i = 0;
+		int generatedRecordCount = 0;
 		Calendar time = Calendar.getInstance();
 		time.set(Calendar.MINUTE, 0);
 		time.set(Calendar.SECOND, 0);
@@ -57,13 +58,17 @@ class TestDataService {
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = false;
 				journey.createdDate = new Date();
-				journeyDataService.createJourney(journey);
-				outgoingRequest<<journey
+				if(generatedRecordCount < numberOfrecordsToGenerate) {
+					journeyDataService.createJourney(journey);
+					outgoingRequest<<journey
+					generatedRecordCount++;
+				}
 			}
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 		
 		i = 0;
+		generatedRecordCount = 0;
 		time = Calendar.getInstance();
 		time.set(Calendar.MINUTE, 0);
 		time.set(Calendar.SECOND, 0);
@@ -90,13 +95,17 @@ class TestDataService {
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;
 				journey.createdDate = new Date();
-				journeyDataService.createJourney(journey);
-				outgoingRequest<<journey
+				if(generatedRecordCount < numberOfrecordsToGenerate) {
+					journeyDataService.createJourney(journey);
+					outgoingRequest<<journey
+					generatedRecordCount++;
+				}
 			}
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 		
 		i = 0;
+		generatedRecordCount = 0;
 		time = Calendar.getInstance();
 		time.set(Calendar.MINUTE, 0);
 		time.set(Calendar.SECOND, 0);
@@ -123,13 +132,17 @@ class TestDataService {
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;
 				journey.createdDate = new Date();
-				journeyDataService.createJourney(journey);
-				outgoingRequest<<journey
+				if(generatedRecordCount < numberOfrecordsToGenerate) {
+					journeyDataService.createJourney(journey);
+					outgoingRequest<<journey
+					generatedRecordCount++;
+				}
 			}
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 		
 		i = 0;
+		generatedRecordCount = 0;
 		time = Calendar.getInstance();
 		time.set(Calendar.MINUTE, 0);
 		time.set(Calendar.SECOND, 0);
@@ -156,23 +169,35 @@ class TestDataService {
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;
 				journey.createdDate = new Date();
-				//journeyDataService.createJourney(journey);
-				outgoingRequest<<journey
+				if(generatedRecordCount < numberOfrecordsToGenerate) {
+					journeyDataService.createJourney(journey);
+					outgoingRequest<<journey
+					generatedRecordCount++;
+				}
 			}
 			time.add(Calendar.MINUTE, timeInterval);
 		}
 	}
 	
 	def deleteDataForDev() {
-		searchService.deleteAllJourneyData();
+		//searchService.deleteAllJourneyData();
 		User user1 = User.findByUsername('admin@racloop.com');
 		journeyDataService.deleteJourneyForUser(user1.profile.mobile);
+		searchService.deleteAllJourneyDataForUser(user1.profile.mobile);
+		
 		User user2 = User.findByUsername('user@racloop.com');
 		journeyDataService.deleteJourneyForUser(user2.profile.mobile);
+		searchService.deleteAllJourneyDataForUser(user2.profile.mobile);
+		
 		User user3 = User.findByUsername('driver@racloop.com');
 		journeyDataService.deleteJourneyForUser(user3.profile.mobile);
+		searchService.deleteAllJourneyDataForUser(user3.profile.mobile);
+		
 		User user4 = User.findByUsername('rider@racloop.com');
 		journeyDataService.deleteJourneyForUser(user4.profile.mobile);
+		searchService.deleteAllJourneyDataForUser(user4.profile.mobile);
+		
+		searchService.deleteAllDummyData();
 		
 		
 	}
