@@ -130,7 +130,7 @@ class JourneyMobileController {
 				journey.id = null;
 				journeyDataService.createJourney(journey);
 				currentJourneyCommand.id = journey.id;
-				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand);
+				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand, false);
 				mobileResponse.message = "Journey replaced successfully"
 				mobileResponse.data['hideSaveButton'] = true;
 				session.currentJourneyCommand = currentJourneyCommand

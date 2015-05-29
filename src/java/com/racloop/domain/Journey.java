@@ -13,6 +13,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBIndexRangeKey;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
 import com.racloop.JourneyRequestCommand;
+import com.racloop.journey.workkflow.WorkflowStatus;
 
 @DynamoDBTable(tableName = "Journey")
 public class Journey {
@@ -33,13 +34,14 @@ public class Journey {
 	private Double tripDistance;
 	private String tripUnit;
 	private String ip;
-	private Date createdDate;
+	private Date createdDate = new Date();
 	private String photoUrl;
 	private Set<String> journeyPairIds;
 	private Integer numberOfCopassengers = 0;
 	private Boolean isSearchable;
 	private Boolean isDummy = false;
 	private Long version;
+	private String statusAsParent = WorkflowStatus.NONE.getStatus();
 	private String myStatus;
 	private String myDirection;
 	private String myPairId;
@@ -349,6 +351,15 @@ public class Journey {
 
 	public void setVersion(Long version) {
 		this.version = version;
+	}
+
+	@DynamoDBAttribute(attributeName="StatusAsParent") 
+	public String getStatusAsParent() {
+		return statusAsParent;
+	}
+
+	public void setStatusAsParent(String statusAsParent) {
+		this.statusAsParent = statusAsParent;
 	}
 
 	@DynamoDBIgnore

@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 public enum WorkflowStatus {
 	
+	NONE("None"),
 	REQUESTED("Requested"),
 	REQUEST_RECIEVED("Request Recieved"),
 	ACCEPTED("Accepted"),
@@ -15,6 +16,7 @@ public enum WorkflowStatus {
 	DELEGATED("Delegated");
 
 	private final String status;
+	private static final String [] NONE_ACTIONS = {};
 	private static final String [] REQUESTED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
 	private static final String [] REQUEST_RECIEVED_ACTIONS = {WorkflowAction.ACCEPT.getAction(), WorkflowAction.REJECT.getAction()};
 	private static final String [] ACCEPTED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
@@ -25,6 +27,7 @@ public enum WorkflowStatus {
 	private static final HashMap<WorkflowStatus, String []> statusToActionMapping = new HashMap<WorkflowStatus, String []>();
 	
 	static {
+		statusToActionMapping.put(WorkflowStatus.NONE, NONE_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.REQUESTED, REQUESTED_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.REQUEST_RECIEVED, REQUEST_RECIEVED_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.ACCEPTED, ACCEPTED_ACTIONS);

@@ -28,6 +28,7 @@ class JourneyMarshaller {
 				journeyPairIds : journey.journeyPairIds,
 				numberOfCopassengers : journey.numberOfCopassengers,
 				isDummy : journey.isDummy,
+				statusAsParent : journey.statusAsParent,
 				myStatus : journey.myStatus,
 				myDirection : journey.myDirection,
 				myActions : journey.myActions, 
