@@ -9,6 +9,7 @@ import com.racloop.journey.model.JourneyRequestDetails
 import com.racloop.journey.model.MatchedJourneyResult
 import com.racloop.journey.model.SearchResult
 
+@Deprecated
 class JourneyService {
 
     def elasticSearchService

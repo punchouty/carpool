@@ -3,7 +3,7 @@ package com.racloop
 import org.elasticsearch.common.geo.GeoPoint
 
 import com.racloop.workflow.JourneyWorkflow;
-
+@Deprecated
 class JourneyManagerService {
 
 	def elasticSearchService

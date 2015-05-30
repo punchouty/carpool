@@ -211,7 +211,7 @@ class JourneyController {
 			workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), matchedJourneyId);
 		}
 		else {
-			workflowDataService.requestJourney(currentJourney.id, otherJourneyId);
+			workflowDataService.requestJourney(currentJourney.id, matchedJourneyId);
 		}
 		forward action: 'findMatching', model: [currentJourney: currentJourney]
 	}
@@ -338,9 +338,9 @@ class JourneyController {
 	def searchAgain() {
 		def journeyId = params.journeyId 
 		boolean isDriver =params.boolean('isDriver')
-		def journey = journeyService.findJourneyById(journeyId)
+		def journey = journeyDataService.findJourney(journeyId)
 		//chain(action: 'findMatching', model: [currentJourney: journey])
-		forward action: 'findMatching', model: [currentJourney: journey]
+		forward action: 'findMatching', model: [currentJourney: journey.convert()]
 	}
 	
 	/**
