@@ -175,7 +175,7 @@ class WorkflowDataService {
 	
 	def cancelRequest(String journeyPairId){
 		JourneyPair pairToBeCancelled = journeyPairDataService.findPairById(journeyPairId)
-		Journey journeyToBeCancelled = journeyDataService.findJourney(pairToBeCancelled.getInitiatorJourneyId()())
+		Journey journeyToBeCancelled = journeyDataService.findJourney(pairToBeCancelled.getInitiatorJourneyId())
 		Journey myJourney = journeyDataService.findJourney(pairToBeCancelled.getRecieverJourneyId())
 		
 		pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
