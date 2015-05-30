@@ -25,11 +25,11 @@ class JourneyDataService {
 	def jmsService
 	def journeyPairDataService
 
-    def createJourney(Journey journey) {
+	def createJourney(Journey journey) {
 		awsService.dynamoDBMapper.save(journey);
 		log.info("createJourney - ${journey}");
 		searchService.indexJourney(journey, journey.getId());
-    }
+	}
 	
 	def allJourneyData(String id) {
 		Journey currentJourney = awsService.dynamoDBMapper.load(Journey.class, id);
@@ -296,5 +296,14 @@ class JourneyDataService {
 		awsService.dynamoDBMapper.batchDelete(tmpPairs);
 		awsService.dynamoDBMapper.batchDelete(tmpJourneys);
 		return buffer.toString();
+	}
+	
+	def findAllJourneysForADate(Date inputDate) {
+		String inputDateString = GenericUtil.javaDateToDynamoDbDateString(inputDate)
+		Journey journeyKey = new Journey();
+		journeyKey.dateOfJourney = inputDate
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(inputDate).withIndexName("DateOfJourney-Mobile-index").withConsistentRead(false);
+		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
+		return journeys;
 	}
 }
