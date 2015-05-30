@@ -1,15 +1,16 @@
 package com.racloop.integration
 
-import org.elasticsearch.common.geo.GeoHashUtils;
-import org.elasticsearch.common.joda.time.DateTime;
-
 import grails.transaction.Transactional
+
+import org.elasticsearch.common.geo.GeoHashUtils
+import org.elasticsearch.common.joda.time.DateTime
 
 import com.racloop.GenericUtil
 import com.racloop.JourneyRequestCommand
 import com.racloop.domain.Journey
 import com.racloop.domain.UserJourney
 import com.racloop.elasticsearch.IndexMetadata
+import com.racloop.journey.workkflow.WorkflowStatus
 import com.racloop.mobile.data.response.MobileResponse
 
 @Transactional
@@ -140,7 +141,7 @@ class JourneySearchService {
 	private Journey getSimilarJourney(List<Journey> journeys, Date timeOfJourney) {
 		Journey existingJourney = null
 		for (Journey dbJourney: journeys) {
-			if(GenericUtil.isDateInRange(timeOfJourney, dbJourney.getDateOfJourney(), 60)) {
+			if(GenericUtil.isDateInRange(timeOfJourney, dbJourney.getDateOfJourney(), 60) && !WorkflowStatus.CANCELLED.getStatus().equals(dbJourney.getStatusAsParent())) {
 				existingJourney = dbJourney
 				break;
 			}

@@ -7,7 +7,7 @@ import com.racloop.elasticsearch.WorkflowIndexFields
 import com.racloop.journey.workkflow.WorkflowState
 import com.racloop.journey.workkflow.model.WorkflowDetails
 import com.racloop.util.domain.JourneyWorkflowIdGenerator
-
+@Deprecated
 class JourneyWorkflowService {
 	
 	def elasticSearchService

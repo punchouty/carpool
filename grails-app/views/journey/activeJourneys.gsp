@@ -64,7 +64,7 @@
 	            <g:if test="${journeyInstance.numberOfCopassengers > 0}">
 	            <div id="incoming-requests-${i}" class="incoming-requests">
                     <div class="well  well-sm">
-                   		<h4>Incoming Requests</h4>
+                   		<h4>Travel Buddies</h4>
                		</div>
 	                   
                     <g:each in="${journeyInstance.relatedJourneys}" status="k" var="matchedWorkflowInstance">

@@ -80,8 +80,8 @@
     
     <g:hiddenField name="existingJourneyId" value="${existingJourney.id}"/>
 	
-	<g:hiddenField name="toPlace" value="${currentJourney.to}"/>
-	<g:hiddenField name="fromPlace" value="${currentJourney.from}"/>
+	<g:hiddenField name="to" value="${currentJourney.to}"/>
+	<g:hiddenField name="from" value="${currentJourney.from}"/>
 	<g:hiddenField name="dateOfJourneyString" value="${currentJourney.dateOfJourneyString}"/>
 	<g:hiddenField name="user" value="${currentJourney.user}"/>
 	
