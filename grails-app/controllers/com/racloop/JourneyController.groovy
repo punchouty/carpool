@@ -51,6 +51,10 @@ class JourneyController {
 			if(currentJourney.validate()) {
 				session.currentJourney = currentJourney
 				def mobileResponse = journeySearchService.executeSearch(currentJourney)
+				def existingJourney = mobileResponse.data.get('existingJourney')
+				if(existingJourney) {
+					return new ModelAndView("existingJourney", ['currentJourney': currentJourney, 'existingJourney':existingJourney])
+				}
 				render(view: "results", model: ['searchResults': mobileResponse])
 			}
 			else {
@@ -384,7 +388,7 @@ class JourneyController {
 		def newJourney = params.newJourney
 		def currentJourney
 		if("newJourney".equals(newJourney)) {
-			journeyManagerService.deleteJourney(existingJourneyId)
+			workflowDataService.cancelMyJourney(existingJourneyId)
 			currentJourney = new JourneyRequestCommand()
 			bindData(currentJourney, params, [exclude: ['existingJourneyId', 'newJourney']])
 		}

@@ -196,6 +196,7 @@ class WorkflowDataService {
 		String otherJourneyId = null;
 		Journey myJourney = journeyDataService.findJourney(myJourneyId);
 		myJourney.setStatusAsParent(WorkflowStatus.CANCELLED.getStatus());
+		journeyDataService.makeJourneyNonSearchable(myJourneyId)
 		saveJourneys(myJourney);
 		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
 		for(JourneyPair pair : journeyPairs){
