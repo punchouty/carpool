@@ -47,7 +47,7 @@ class BootStrap {
 		Boolean createSampleUsers = grailsApplication.config.grails.startup.sampleUsers.create
 		if(createSampleUsers) {
 			log.info("Start creating initial users in database")
-			createUsers();
+			testDataService.createUsers();
 			log.info("Users created successfully in Elasticsearch")
 		}
 		//Initialising Elasticsearch
@@ -79,7 +79,7 @@ class BootStrap {
 			Boolean createSampleData = grailsApplication.config.grails.startup.sampleData.create
 			if(createSampleData) {
 				//sampleDataService.populateSampleData();
-				testDataService.generateDataForDev();
+				testDataService.generateDataForDev(3);
 			}
 			else {
 				testDataService.populateElasticSearch();
@@ -154,131 +154,6 @@ class BootStrap {
 			}
 
 			adminsService.add(admin)
-		}
-	}
-	
-	private def createUsers() {
-		String sampleUser = 'user@racloop.com'
-		String sampleDriver ='driver@racloop.com'
-		String sampleRider = 'rider@racloop.com'
-		//mail.live.com - user : sample.user@racloop.com, password : S@pient1
-		if(!UserBase.findByUsername(sampleUser)) {
-			// Create example User account
-			def user = InstanceGenerator.user(grailsApplication)
-			user.username = sampleUser
-			user.pass = 'qwert'
-			user.passConfirm = 'qwert'
-			user.enabled = true
-
-			def userProfile = InstanceGenerator.profile(grailsApplication)
-			userProfile.fullName = "Sample User"
-			userProfile.email = sampleUser
-			userProfile.owner = user
-			userProfile.isMale = true
-			userProfile.mobile = '7307392447'
-			user.profile = userProfile
-
-			log.info("Creating default user account with username: ${user.username}")
-
-			def savedUser = userService.createUser(user)
-			if (savedUser.hasErrors()) {
-				savedUser.errors.each { log.error(it) }
-				throw new RuntimeException("Error creating example ${user.username}")
-			}
-			else {
-				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
-				if(racloopUser == null) {
-					racloopUser = new RacloopUser();
-					racloopUser.setMobile(userProfile.mobile)
-					racloopUser.setEmail(userProfile.email);
-					racloopUser.setFullName(userProfile.fullName)
-					racloopUser.setEmailHash(userProfile.emailHash)
-					userDataService.saveUser(racloopUser)
-				}
-				else {
-					log.info("Username: ${user.username} already there in dynamodb")
-				}
-			}
-		}
-		
-		//mail.live.com - user : sample.driver@racloop.com, password : S@pient1
-		if(!UserBase.findByUsername(sampleDriver)) {
-			// Create example User account
-			def user = InstanceGenerator.user(grailsApplication)
-			user.username = sampleDriver
-			user.pass = 'qwert'
-			user.passConfirm = 'qwert'
-			user.enabled = true
-
-			def userProfile = InstanceGenerator.profile(grailsApplication)
-			userProfile.fullName = "Sample Driver"
-			userProfile.email = sampleDriver
-			userProfile.owner = user
-			userProfile.isMale = true
-			userProfile.mobile = '9646698749'
-			user.profile = userProfile
-
-			log.info("Creating default user account with username: ${user.username}")
-
-			def savedUser = userService.createUser(user)
-			if (savedUser.hasErrors()) {
-				savedUser.errors.each { log.error(it) }
-				throw new RuntimeException("Error creating example ${user.username}")
-			}
-			else {
-				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
-				if(racloopUser == null) {
-					racloopUser = new RacloopUser();
-					racloopUser.setMobile(userProfile.mobile)
-					racloopUser.setEmail(userProfile.email);
-					racloopUser.setFullName(userProfile.fullName)
-					racloopUser.setEmailHash(userProfile.emailHash)
-					userDataService.saveUser(racloopUser)
-				}
-				else {
-					log.info("Username: ${user.username} already there in dynamodb")
-				}
-			}
-		}
-		
-		//mail.live.com - user : sample.rider@racloop.com, password : S@pient1
-		if(!UserBase.findByUsername(sampleRider)) {
-			// Create example User account
-			def user = InstanceGenerator.user(grailsApplication)
-			user.username = sampleRider
-			user.pass = 'qwert'
-			user.passConfirm = 'qwert'
-			user.enabled = true
-
-			def userProfile = InstanceGenerator.profile(grailsApplication)
-			userProfile.fullName = "Sample Rider"
-			userProfile.email = sampleRider
-			userProfile.owner = user
-			userProfile.isMale = false
-			userProfile.mobile = '9646695649'
-			user.profile = userProfile
-
-			log.info("Creating default user account with username: ${user.username}")
-
-			def savedUser = userService.createUser(user)
-			if (savedUser.hasErrors()) {
-				savedUser.errors.each { log.error(it) }
-				throw new RuntimeException("Error creating example ${user.username}")
-			}
-			else {
-				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
-				if(racloopUser == null) {
-					racloopUser = new RacloopUser();
-					racloopUser.setMobile(userProfile.mobile)
-					racloopUser.setEmail(userProfile.email);
-					racloopUser.setFullName(userProfile.fullName)
-					racloopUser.setEmailHash(userProfile.emailHash)
-					userDataService.saveUser(racloopUser)
-				}
-				else {
-					log.info("Username: ${user.username} already there in dynamodb")
-				}
-			}
 		}
 	}
 	

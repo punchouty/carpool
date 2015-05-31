@@ -6,7 +6,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.racloop.DistanceUtil;
 import com.racloop.User;
 import com.racloop.domain.Journey;
+import com.racloop.domain.RacloopUser;
 
+import grails.plugin.nimble.InstanceGenerator;
+import grails.plugin.nimble.core.UserBase;
 import grails.transaction.Transactional
 
 @Transactional
@@ -15,6 +18,137 @@ class TestDataService {
 	def grailsApplication;
 	def journeyDataService;
 	def searchService;
+	def userDataService;
+	def userService;
+	def roleService;
+	def groupService;
+	
+	
+	
+	def createUsers() {
+		String sampleUser = 'user@racloop.com'
+		String sampleDriver ='driver@racloop.com'
+		String sampleRider = 'rider@racloop.com'
+		//mail.live.com - user : sample.user@racloop.com, password : S@pient1
+		if(!UserBase.findByUsername(sampleUser)) {
+			// Create example User account
+			def user = InstanceGenerator.user(grailsApplication)
+			user.username = sampleUser
+			user.pass = 'qwert'
+			user.passConfirm = 'qwert'
+			user.enabled = true
+
+			def userProfile = InstanceGenerator.profile(grailsApplication)
+			userProfile.fullName = "Sample User"
+			userProfile.email = sampleUser
+			userProfile.owner = user
+			userProfile.isMale = true
+			userProfile.mobile = '7307392447'
+			user.profile = userProfile
+
+			log.info("Creating default user account with username: ${user.username}")
+
+			def savedUser = userService.createUser(user)
+			if (savedUser.hasErrors()) {
+				savedUser.errors.each { log.error(it) }
+				throw new RuntimeException("Error creating example ${user.username}")
+			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
+			}
+		}
+		
+		//mail.live.com - user : sample.driver@racloop.com, password : S@pient1
+		if(!UserBase.findByUsername(sampleDriver)) {
+			// Create example User account
+			def user = InstanceGenerator.user(grailsApplication)
+			user.username = sampleDriver
+			user.pass = 'qwert'
+			user.passConfirm = 'qwert'
+			user.enabled = true
+
+			def userProfile = InstanceGenerator.profile(grailsApplication)
+			userProfile.fullName = "Sample Driver"
+			userProfile.email = sampleDriver
+			userProfile.owner = user
+			userProfile.isMale = true
+			userProfile.mobile = '9646698749'
+			user.profile = userProfile
+
+			log.info("Creating default user account with username: ${user.username}")
+
+			def savedUser = userService.createUser(user)
+			if (savedUser.hasErrors()) {
+				savedUser.errors.each { log.error(it) }
+				throw new RuntimeException("Error creating example ${user.username}")
+			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
+			}
+		}
+		
+		//mail.live.com - user : sample.rider@racloop.com, password : S@pient1
+		if(!UserBase.findByUsername(sampleRider)) {
+			// Create example User account
+			def user = InstanceGenerator.user(grailsApplication)
+			user.username = sampleRider
+			user.pass = 'qwert'
+			user.passConfirm = 'qwert'
+			user.enabled = true
+
+			def userProfile = InstanceGenerator.profile(grailsApplication)
+			userProfile.fullName = "Sample Rider"
+			userProfile.email = sampleRider
+			userProfile.owner = user
+			userProfile.isMale = false
+			userProfile.mobile = '9646695649'
+			user.profile = userProfile
+
+			log.info("Creating default user account with username: ${user.username}")
+
+			def savedUser = userService.createUser(user)
+			if (savedUser.hasErrors()) {
+				savedUser.errors.each { log.error(it) }
+				throw new RuntimeException("Error creating example ${user.username}")
+			}
+			else {
+				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
+				if(racloopUser == null) {
+					racloopUser = new RacloopUser();
+					racloopUser.setMobile(userProfile.mobile)
+					racloopUser.setEmail(userProfile.email);
+					racloopUser.setFullName(userProfile.fullName)
+					racloopUser.setEmailHash(userProfile.emailHash)
+					userDataService.saveUser(racloopUser)
+				}
+				else {
+					log.info("Username: ${user.username} already there in dynamodb")
+				}
+			}
+		}
+	}
 	
 	def generateDataForDev(int numberOfrecordsToGenerate) {
 		def outgoingRequest =[]
@@ -200,6 +334,75 @@ class TestDataService {
 		searchService.deleteAllDummyData();
 		
 		
+	}
+	
+	def deleteAll() {
+		User user1 = User.findByUsername('admin@racloop.com');
+		if(user1) {
+			journeyDataService.deleteJourneyForUser(user1.profile.mobile);
+			searchService.deleteAllJourneyDataForUser(user1.profile.mobile);
+		}
+		
+		User user2 = User.findByUsername('user@racloop.com');
+		if(user2) {
+			journeyDataService.deleteJourneyForUser(user2.profile.mobile);
+			searchService.deleteAllJourneyDataForUser(user2.profile.mobile);
+		}
+		
+		User user3 = User.findByUsername('driver@racloop.com');
+		if(user3) {
+			journeyDataService.deleteJourneyForUser(user3.profile.mobile);
+			searchService.deleteAllJourneyDataForUser(user3.profile.mobile);
+		}
+		
+		User user4 = User.findByUsername('rider@racloop.com');
+		if(user2) {
+			journeyDataService.deleteJourneyForUser(user4.profile.mobile);
+			searchService.deleteAllJourneyDataForUser(user4.profile.mobile);
+		}
+		searchService.deleteAllDummyData();
+		
+		if(user2) {
+			userDataService.deleteUserByMobile(user2.profile.mobile);//delete from dynamo db
+			user2.groups.each { group ->
+				groupService.deleteMember(user2, group)
+			}
+			user2.roles.each { role ->
+				roleService.deleteMember(user2, role)
+			}
+			user2.profile.delete();//delete from mysql
+			user2.delete(flush : true);//delete from mysql
+		}
+		
+		if(user3) {
+			userDataService.deleteUserByMobile(user3.profile.mobile);//delete from dynamo db
+			user3.groups.each { group ->
+				groupService.deleteMember(user3, group)
+			}
+			user3.roles.each { role ->
+				roleService.deleteMember(user3, role)
+			}
+			user3.profile.delete();//delete from mysql
+			user3.delete(flush : true);//delete from mysql
+		}
+		
+		if(user2) {
+			userDataService.deleteUserByMobile(user4.profile.mobile);//delete from dynamo db
+			user4.groups.each { group ->
+				groupService.deleteMember(user4, group)
+			}
+			user4.roles.each { role ->
+				roleService.deleteMember(user4, role)
+			}
+			user4.profile.delete();//delete from mysql
+			user4.delete(flush : true);//delete from mysql
+		}
+	}
+	
+	def refreshAll(int recordCount) {
+		deleteAll();
+		createUsers();
+		generateDataForDev(recordCount);
 	}
 	
 	def populateElasticSearch() {

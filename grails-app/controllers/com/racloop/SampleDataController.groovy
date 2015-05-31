@@ -7,95 +7,62 @@ import liquibase.util.csv.opencsv.CSVReader
 
 class SampleDataController {
 	
-	def sampleDataService
+	def testDataService
 	def smsService
 	def grailsApplication
-	def journeyDataService;
-	def roleService
-	def groupService
+	def journeyDataService
 
     def index() { 
 		render "Empty Implementation"
 	}
 	
-//	def delete() {		
-//		if(true) render "Delete is disable like this"
-//		Boolean deleteEnabled = grailsApplication.config.grails.enable.delete.all
-//		if(deleteEnabled) {
-//			def secret = params.secret
-//			if(secret.equals("cleanitup")) {
-//				sampleDataService.deleteSampleData();
-//				Journey.executeUpdate('delete from Journey');
-//				User.findAll ().each {
-//					it.activeJourneys.clear();
-//					it.save();
-//				}
-//				render "Delete Complete"
-//			}
-//			else {
-//				render "Wrong Password"
-//			}
-//		}
-//		else {
-//			render "Delete is disable like this"
-//		}		
-//	}
-	
 	/**
-	 * http://localhost:8080/app/sampleData/delete?secret=051525&mobile=9646695649
+	 * delete all test journey data 
+	 * http://localhost:8080/app/sampleData/delete or http://www.racloop.com/app/sampleData/delete
 	 * @return
 	 */
-	def delete() {
-		SimpleDateFormat sdf = new SimpleDateFormat("mmyydd");
-		String date = sdf.format(new Date());
-		def secret = params.secret
-		if(secret != date) {
-			String mobile = params.mobile
-			Profile profile = Profile.findByMobile(mobile);
-			if(profile != null) {
-				User user = profile.owner;
-				String message = journeyDataService.deleteAllDataForUser(mobile);
-//				Boolean deleteUser =params.deleteUser
-//				if(deleteUser == true) {
-//					def roles = user.roles;
-//					roles.each { role ->
-//						log.info("Removing role relationship : " + role.name)
-//						roleService.deleteMember(user, role);
-//					}
-//					def groups = user.groups
-//					groups.each { group ->
-//						log.info("Removing group relationship : " + group.name)
-//						groupService.deleteMember(user, group);
-//					}
-//					user.save(flush: true)
-//					profile.delete();
-//					user.delete();
-//					message = message + "User and Profile also deleted"
-//				}
-				render message;
-			}
-			else {
-				render "Invalid user mobile"
-			}
-		}
-		else {
-			render "Wrong Password"
-		}
+	def delete(){
+		testDataService.deleteDataForDev();
+		render "data deleted"
 	}
 	
-	def populate() {	
-		Environment.executeForCurrentEnvironment {
-			development {
-				sampleDataService.populateSampleData();
-				render "Population Complete"
-			}
-			test {
-				render "Empty Implementation"
-			}
-			production {
-				render "Empty Implementation"
-			}
-		}	
+	/**
+	 * delete all test journey data as well as three test users 
+	 * After that it recreate users as well as journey data
+	 * http://localhost:8080/app/sampleData/deleteAll or http://www.racloop.com/app/sampleData/deleteAll
+	 * @return
+	 */
+	def deleteAll(){
+		testDataService.deleteAll();
+		render "all data deleted"
+	}
+	
+	/**
+	 * delete all test journey data as well as three test users 
+	 * After that it recreate users as well as journey data
+	 * number represent how many journey per users wil be created
+	 * http://localhost:8080/app/sampleData/refresh?number=3 or http://www.racloop.com/app/sampleData/refresh?number=3
+	 * @return
+	 */
+	def refresh(){
+		log.info("Params : ${params}")
+		int number = 1
+		if(params.number != null) {
+			number = Integer.parseInt(params.number);
+		}
+		if(number <= 1) number = 1;
+		testDataService.refreshAll(number);
+		render "data refreshed"
+	}
+	
+	/**
+	 * count total number of journeys for today
+	 * http://localhost:8080/app/sampleData/count or http://www.racloop.com/app/sampleData/count
+	 * @return
+	 */
+	def count(){
+		def journeys = journeyDataService.findAllJourneysForADate(new Date());
+		render "number of journeys for today ${journeys?.size()}"
 	}
 	
 	def sendSms() {

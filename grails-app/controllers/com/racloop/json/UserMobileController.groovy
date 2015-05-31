@@ -608,29 +608,4 @@ class UserMobileController {
 		render mobileResponse as JSON
 	}
 	
-	def delete(){
-		if (Environment.current == Environment.DEVELOPMENT) {
-			testDataService.deleteDataForDev();
-			render "deleted data"
-		}
-		else {
-			render "unsupported operation"
-		}
-	}
-	
-	def generate(){
-		log.info("Params : ${params}")
-		int number = 1
-		if(params.number != null) {
-			number = Integer.parseInt(params.number);
-		}
-		if (Environment.current == Environment.DEVELOPMENT) {
-			testDataService.deleteDataForDev();
-			testDataService.generateDataForDev(number);
-			render "data refreshed"
-		}
-		else {
-			render "unsupported operation"
-		}
-	}
 }

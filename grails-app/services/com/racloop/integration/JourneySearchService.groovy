@@ -38,6 +38,9 @@ class JourneySearchService {
 					log.info("The journey serached is SAME as the one present in db. Search parameters are about same.");
 					mobileResponse = straightThruSearch(currentJourney, false);
 					mobileResponse.data['hideSaveButton'] = true;
+					if(existingJourney.numberOfCopassengers >= 2) {
+						mobileResponse.data['disableMoreRequests'] = true;
+					}
 				}
 				else {
 					log.info("The journey serached is SIMILAR as the one present in db. Search parameters are not same.");

@@ -37,7 +37,7 @@ class NimbleSecurityFilters extends NimbleFilterBase {
 		}
 
 		// This should be extended as the application adds more administrative functionality
-		administration(controller: "(admins|user|group|role|staticData|sampleData)") {
+		administration(controller: "(admins|user|group|role|staticData)") {
 			before = {
 				accessControl { role(AdminsService.ADMIN_ROLE) }
 			}

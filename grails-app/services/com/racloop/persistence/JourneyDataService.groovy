@@ -1,5 +1,11 @@
 package com.racloop.persistence
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.TimeZone;
+
 import grails.transaction.Transactional
 import grails.util.Environment
 
@@ -280,38 +286,26 @@ class JourneyDataService {
 	}
 	
 	/**
-	 * Search from elastic search
-	 */
-	def search() {
-		
-	}
-	
-	/**
 	 * Used in TestDataService only
 	 */
 	def deleteJourneyForUser(String mobile) {
-		if (Environment.current == Environment.DEVELOPMENT) {
-			log.info("deleteJourneyForUser Starting deleting all journey for user with mobile : ${mobile}");
-			Journey journeyKey = new Journey();
-			journeyKey.mobile = mobile
-			DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
-			List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
-			def journeyPairs = []
-			for (Journey dbJourney: journeys) {
-				Set pairIds = dbJourney.getJourneyPairIds()
-				pairIds.each {it ->
-					def pair = journeyPairDataService.findPairById(it)
-					if(pair != null) journeyPairs << pair
-				}
+		log.info("deleteJourneyForUser Starting deleting all journey for user with mobile : ${mobile}");
+		Journey journeyKey = new Journey();
+		journeyKey.mobile = mobile
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
+		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
+		def journeyPairs = []
+		for (Journey dbJourney: journeys) {
+			Set pairIds = dbJourney.getJourneyPairIds()
+			pairIds.each {it ->
+				def pair = journeyPairDataService.findPairById(it)
+				if(pair != null) journeyPairs << pair
 			}
-			if(journeyPairs){
-				awsService.dynamoDBMapper.batchDelete(journeyPairs);
-			}
-			awsService.dynamoDBMapper.batchDelete(journeys);
 		}
-		else {
-			log.warn("Cannot delete journey in non development enviornment");
+		if(journeyPairs){
+			awsService.dynamoDBMapper.batchDelete(journeyPairs);
 		}
+		awsService.dynamoDBMapper.batchDelete(journeys);
 	}
 	
 	def makeJourneyNonSearchable(String journeyId){
@@ -359,10 +353,17 @@ class JourneyDataService {
 	}
 	
 	def findAllJourneysForADate(Date inputDate) {
-		String inputDateString = GenericUtil.javaDateToDynamoDbDateString(inputDate)
+		SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+		Date dateKey = null;
+		try {
+			dateKey = dateFormat.parse(dateFormat.format(inputDate));
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
 		Journey journeyKey = new Journey();
-		journeyKey.dateOfJourney = inputDate
-		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(inputDate).withIndexName("DateOfJourney-Mobile-index").withConsistentRead(false);
+		journeyKey.setDateKey(dateKey);
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("DateKey-index").withConsistentRead(false);
 		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		return journeys;
 	}

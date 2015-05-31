@@ -1,15 +1,27 @@
 package com.racloop;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
+import java.util.TimeZone;
+
+import org.elasticsearch.common.joda.time.DateTime;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.TableCollection;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
+import com.amazonaws.services.dynamodbv2.model.AttributeValue;
+import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
+import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
@@ -18,6 +30,8 @@ import com.amazonaws.services.dynamodbv2.model.ListTablesResult;
 import com.amazonaws.services.dynamodbv2.model.Projection;
 import com.amazonaws.services.dynamodbv2.model.ProjectionType;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
+import com.racloop.domain.Journey;
+import com.racloop.journey.workkflow.WorkflowStatus;
 
 public class AwsUtil {
 
@@ -29,13 +43,13 @@ public class AwsUtil {
 	private static String userTable = "RacloopUser";
 	private static String ratingTable = "UserRating";
 
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, ParseException {
 		AWSCredentials credentials = new BasicAWSCredentials(accessKey,
 				secretKey);
 		AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials);
 		client.setEndpoint("http://localhost:8000");
 		client.setSignerRegionOverride("local");
-		dynamoDB = new DynamoDB(client);
+		dynamoDB = new DynamoDB(client);	
 		deleteAllTables();
 		createRacloopUseTable();
 		createJourneyPairTable();
@@ -93,23 +107,24 @@ public class AwsUtil {
 		attributeDefinitions.add(new AttributeDefinition().withAttributeName("Id").withAttributeType("S"));
 		attributeDefinitions.add(new AttributeDefinition().withAttributeName("Mobile").withAttributeType("S"));
 		attributeDefinitions.add(new AttributeDefinition().withAttributeName("DateOfJourney").withAttributeType("S"));
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("DateKey").withAttributeType("S"));
 
 		ArrayList<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
 		keySchema.add(new KeySchemaElement().withAttributeName("Id").withKeyType(KeyType.HASH));
 		
 		ArrayList<KeySchemaElement> indexKeySchema1 = new ArrayList<KeySchemaElement>();
-		indexKeySchema1.add(new KeySchemaElement().withAttributeName("DateOfJourney").withKeyType(KeyType.HASH));
-		indexKeySchema1.add(new KeySchemaElement().withAttributeName("Mobile").withKeyType(KeyType.RANGE));
+		indexKeySchema1.add(new KeySchemaElement().withAttributeName("DateKey").withKeyType(KeyType.HASH));
+		//indexKeySchema1.add(new KeySchemaElement().withAttributeName("Mobile").withKeyType(KeyType.RANGE));
 		
 		ArrayList<KeySchemaElement> indexKeySchema2 = new ArrayList<KeySchemaElement>();
 		indexKeySchema2.add(new KeySchemaElement().withAttributeName("Mobile").withKeyType(KeyType.HASH));
 		indexKeySchema2.add(new KeySchemaElement().withAttributeName("DateOfJourney").withKeyType(KeyType.RANGE));
 		
 		GlobalSecondaryIndex index1 = new GlobalSecondaryIndex()
-			.withIndexName("DateOfJourney-Mobile-index")
+			.withIndexName("DateKey-index")
 			.withKeySchema(indexKeySchema1)
 			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
-			.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(5L).withWriteCapacityUnits(5L));
+			.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(1L).withWriteCapacityUnits(1L));
 		
 		GlobalSecondaryIndex index2 = new GlobalSecondaryIndex()
 			.withIndexName("Mobile-DateOfJourney-index")
