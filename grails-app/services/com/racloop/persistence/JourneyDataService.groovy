@@ -138,7 +138,11 @@ class JourneyDataService {
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.GT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
-		return journeys;
+		def result =[]
+		for(Journey journey:journeys){
+			result << journey
+		}
+		return result;
 //		def returnJourneys = [];
 //		journeys.each { indexJourney ->
 //			Journey enrichedJourney = enrichJourney(indexJourney);

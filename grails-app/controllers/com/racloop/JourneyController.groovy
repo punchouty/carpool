@@ -255,8 +255,11 @@ class JourneyController {
 		int numberOfRecords = 0
 		def currentUser = getRacloopAuthenticatedUser()
 		if(currentUser) {
-			journeys =journeyDataService.findMyJourneys(currentUser.profile.mobile, new Date());
-			numberOfRecords = journeys?.size()
+			def result =journeyDataService.findMyJourneys(currentUser.profile.mobile, new Date())
+			result.each {it->
+				journeys << journeyDataService.findChildJourneys(it.getId())
+			}
+			numberOfRecords = result?.size()
 			
 		}
 		render(view: "activeJourneys", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords, workflows:workflows])

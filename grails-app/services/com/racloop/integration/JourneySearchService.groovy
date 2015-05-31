@@ -8,6 +8,7 @@ import org.elasticsearch.common.joda.time.DateTime
 import com.racloop.GenericUtil
 import com.racloop.JourneyRequestCommand
 import com.racloop.domain.Journey
+import com.racloop.domain.JourneyPair;
 import com.racloop.domain.UserJourney
 import com.racloop.elasticsearch.IndexMetadata
 import com.racloop.journey.workkflow.WorkflowStatus
@@ -18,7 +19,8 @@ class JourneySearchService {
 
     def awsService;
 	def searchService
-	def journeyDataService;
+	def journeyDataService
+	def journeyPairDataService
 	
 	def executeSearch(JourneyRequestCommand currentJourney){
 		Date timeOfJourney = currentJourney.dateOfJourney
@@ -62,7 +64,7 @@ class JourneySearchService {
 		return mobileResponse;
 	}
 	
-	def straightThruSearch(JourneyRequestCommand currentJourney, boolean searchFromDummy = false) {
+	def straightThruSearch(JourneyRequestCommand currentJourney, boolean searchFromDummy = true) {
 		Date timeOfJourney = currentJourney.dateOfJourney
 		Date validStartTime = currentJourney.validStartTime
 		String mobile = currentJourney.mobile
@@ -75,7 +77,7 @@ class JourneySearchService {
 		if(searchResults.size() > 0) {
 			def returnJourneys = []
 			for (Journey dbJourney: searchResults) {
-				returnJourneys << dbJourney.convert();
+				returnJourneys << dbJourney//dbJourney.convert();
 			}
 			int length = 0
 			if(returnJourneys !=  null) length = returnJourneys.size()
@@ -97,6 +99,9 @@ class JourneySearchService {
 			}
 		}
 		mobileResponse.currentJourney = currentJourney
+		if(currentJourney.id) {
+			enrichResultWithAction(mobileResponse.data.get('journeys'),currentJourney.id )
+		}
 		return mobileResponse;
 	}
 	
@@ -108,7 +113,7 @@ class JourneySearchService {
 		}
 		def returnJourneys = []
 		for (Journey dbJourney: dummyResults) {
-			returnJourneys << dbJourney.convert();
+			returnJourneys << dbJourney//dbJourney.convert();
 		}
 		mobileResponse.data = ['journeys': returnJourneys]
 		mobileResponse.success = true
@@ -166,4 +171,25 @@ class JourneySearchService {
 			return false;
 		}
 	}
+	
+	private enrichResultWithAction(List<Journey> journeyList, String myJourneyId ){
+		Journey myJourney = journeyDataService.findJourney(myJourneyId)
+		Set pairIds = myJourney.getJourneyPairIds()
+			pairIds.each {it->
+				JourneyPair pair = journeyPairDataService.findPairById(it)
+				Journey otherJourney = null
+				for (Journey journey : journeyList){
+					if(pair.getInitiatorJourneyId().equals(myJourneyId)&&pair.getRecieverJourneyId().equals(journey.getId())){
+						journey.getJourneyPairs().add(pair)
+						journey.setMyActions(pair.getInitiatorStatusAsEnum().getActions())
+					}
+					else if(pair.getRecieverJourneyId().equals(myJourneyId) && pair.getInitiatorJourneyId().equals(journey.getId())){
+						journey.getJourneyPairs().add(pair)
+						journey.setMyActions(pair.getRecieverStatusAsEnum().getActions())
+					}
+				}
+				
+			}
+		}
+	
 }
