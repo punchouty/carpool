@@ -282,8 +282,8 @@ class JourneyController {
 	 * @return
 	 */
 	def acceptIncomingRequest() {
-		def workflowId = params.workflowId
-		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.ACCEPTED.state)
+		def pairId = params.pairId
+		workflowDataService.acceptRequest(pairId)
 		if(params.redirectToSearch) {
 			//chain(action: 'findMatching', model: [currentJourney: session.currentJourney])
 			forward action: 'findMatching', model: [currentJourney: session.currentJourney]
@@ -298,8 +298,8 @@ class JourneyController {
 	 * @return
 	 */
 	def rejectIncomingRequest() {
-		def workflowId = params.workflowId
-		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.REJECTED.state)
+		def pairId = params.pairId
+		workflowDataService.rejectRequest(pairId)
 		if(params.redirectToSearch) {
 			//chain(action: 'findMatching', model: [currentJourney: session.currentJourney])
 			forward action: 'findMatching', model: [currentJourney: session.currentJourney]
@@ -355,14 +355,14 @@ class JourneyController {
 	 * @return
 	 */
 	def cancelOutgoingRequest() {
-		def workflowId = params.workflowId
-		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.CANCELLED_BY_REQUESTER.state)
+		def pairId = params.pairId
+		workflowDataService.cancelRequest(pairId)
 		redirect(action: "activeJourneys")
 	}
 	
 	def cancelIncomingRequest() {
-		def workflowId = params.workflowId
-		journeyWorkflowService.updateWorkflowState(workflowId, WorkflowState.CANCELLED.state)
+		def pairId = params.pairId
+		workflowDataService.cancelRequest(pairId)
 		redirect(action: "activeJourneys")
 	}
 	

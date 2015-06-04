@@ -86,20 +86,20 @@
 	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.to}</li>
 	                                <li>
 	                                	<g:if test = "${matchedWorkflowInstance.getMyStatus()=='Requested'}">
-	                                		<g:link action="cancelOutgoingRequest" id="cancelOutgoingRequest"  params="[workflowId: matchedWorkflowInstance.getMyPairId()]">
+	                                		<g:link action="cancelOutgoingRequest" id="cancelOutgoingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId()]">
 	   												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
 	   										</g:link>
 	                                	</g:if>
 	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Request Recieved'}">
-	                                		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest"  params="[workflowId: matchedWorkflowInstance.getMyPairId()]">
+	                                		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId()]">
 													<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept</button>
 											</g:link>
-											<g:link action="rejectIncomingRequest" id="rejectIncomingRequest"  params="[workflowId: matchedWorkflowInstance.getMyPairId()]">
+											<g:link action="rejectIncomingRequest" id="rejectIncomingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId()]">
 													<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
 											</g:link>
 	                                	</g:elseif>
 	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Accepted'}">
-	                                		<g:link action="cancelIncomingRequest" id="cancelIncomingRequest"  params="[workflowId: matchedWorkflowInstance.getMyPairId()]">
+	                                		<g:link action="cancelIncomingRequest" id="cancelIncomingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId()]">
 													<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel</button>
 											</g:link>
 	                                	</g:elseif>
