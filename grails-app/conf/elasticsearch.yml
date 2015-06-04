@@ -1,7 +1,14 @@
 cluster.name: racloop-cluster
-path.data: /var/racloop/es/data
-path.work: /var/racloop/es/work
-path.logs: /var/racloop/es/logs
-path.plugins: /var/racloop/es/plugins
+path.data: ${user.home}/racloop-data/es/data
+path.work: ${user.home}/racloop-data/es/work
+path.logs: ${user.home}/racloop-data/es/logs
+path.plugins: ${user.home}/racloop-data/es/plugins
 
+cloud:
+    aws:
+        access_key: AKIAIUM4DYNBTBBT3ZVA
+        secret_key: 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
+discovery:
+    type: ec2
+    
 bootstrap.mlockall: true

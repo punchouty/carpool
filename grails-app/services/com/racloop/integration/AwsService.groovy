@@ -388,8 +388,7 @@ class AwsService {
 			else if (awsConfig?.region) regionName = awsConfig.region
 			else regionName = DEFAULT_REGION
 		}
-		Boolean runLocal = grailsApplication.config.grails.aws.dynamodb.local
-		if (runLocal) {
+		if (Environment.current == Environment.DEVELOPMENT) {
 			def credentials = buildCredentials(awsConfig, awsConfig['dynamoDB']);
 			AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials);
 			client.setEndpoint("http://localhost:8000");

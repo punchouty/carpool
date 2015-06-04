@@ -41,11 +41,11 @@ environments {
     production {
         dataSource {
             dbCreate = "create-drop"
-            url = "jdbc:mysql://aa1uygrd2x7mv97.cpccscwblvwg.ap-southeast-1.rds.amazonaws.com:3306/ebdb?user=admin&password=Wellingt0n!"
+            url = "jdbc:mysql://aa1im8pg83n7rhm.cgz251990xxz.ap-southeast-1.rds.amazonaws.com:3306/ebdb?user=admin&password=MeeraRaadha"
 			driverClassName = "com.mysql.jdbc.Driver"
             pooled = true
 			username = "admin"
-			password = "Wellingt0n!"
+			password = "MeeraRaadha"
 			properties {
                maxActive = -1
                minEvictableIdleTimeMillis=1800000
