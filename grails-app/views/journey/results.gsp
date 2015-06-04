@@ -1,5 +1,6 @@
 <%@ page import="grails.converters.JSON" %>
 <%@ page import="com.racloop.journey.workkflow.WorkflowState" %>
+<%@ page import="com.racloop.journey.workkflow.WorkflowAction" %>
 <html>
 <head>
 <meta name="layout" content="dynamic" />
@@ -109,9 +110,30 @@
 	                <ul class="text-left">
 	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${matchedResult.from}</li>
 	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${matchedResult.to}</li>
-	                   
-						<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link></li>	
-	                    
+	                  
+						<g:if test = "${matchedResult.myActions}">
+							<li>
+								<g:each in="${matchedResult.myActions}" status="y" var="action">
+									<g:if test = "${action == WorkflowAction.CANCEL.getAction()}">
+										<g:link action="cancelOutgoingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId()]" class="btn btn-danger"><i class="fa fa-mail-reply"></i> Cancel</g:link>
+									</g:if>
+									<g:if test = "${action == WorkflowAction.ACCEPT.getAction()}">
+										<g:link action="acceptIncomingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId()]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Accept</g:link>
+									</g:if>
+									<g:if test = "${action == WorkflowAction.REJECT.getAction()}">
+										<g:link action="rejectIncomingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId()]" class="btn btn-warning"><i class="fa fa-mail-reply"></i> Reject</g:link>
+									</g:if>
+									<g:if test = "${action == WorkflowAction.NONE.getAction()}">
+									</g:if>
+									<g:if test = "${action == WorkflowAction.DELETE.getAction()}">
+									</g:if>
+								</g:each>
+							</li>
+						</g:if>
+						<g:else>
+							<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link></li>
+						</g:else>
+			            
 	                </ul>
 	            </div>
 	            <input type="hidden" id="${i}_from_lattitude" value="${journeyInstance.fromLatitude}">

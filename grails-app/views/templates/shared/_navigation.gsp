@@ -3,7 +3,7 @@
 		<%@ page import="org.apache.shiro.SecurityUtils"%>	
 		<g:set var="currentUser" value="${racloop.getUser()}" />	
 		<!-- STICKY NAVIGATION -->
-            <div <g:if test="${isLandingPage}">class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation appear-on-scroll"</g:if><g:else>class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation"</g:else> role="navigation">
+            <div <g:if test="${isLandingPage}">class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation"</g:if><g:else>class="navbar navbar-inverse bs-docs-nav navbar-fixed-top sticky-navigation"</g:else> role="navigation">
                 <div class="container">
                     <div class="navbar-header">
 
