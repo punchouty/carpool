@@ -100,7 +100,7 @@ class JourneySearchService {
 		}
 		mobileResponse.currentJourney = currentJourney
 		if(currentJourney.id) {
-			enrichResultWithAction(mobileResponse.data.get('journeys'),currentJourney.id )
+			enrichResult(mobileResponse,currentJourney.id )
 		}
 		return mobileResponse;
 	}
@@ -172,24 +172,22 @@ class JourneySearchService {
 		}
 	}
 	
-	private enrichResultWithAction(List<Journey> journeyList, String myJourneyId ){
-		Journey myJourney = journeyDataService.findJourney(myJourneyId)
-		Set pairIds = myJourney.getJourneyPairIds()
-			pairIds.each {it->
-				JourneyPair pair = journeyPairDataService.findPairById(it)
-				Journey otherJourney = null
-				for (Journey journey : journeyList){
-					if(pair.getInitiatorJourneyId().equals(myJourneyId)&&pair.getRecieverJourneyId().equals(journey.getId())){
-						journey.getJourneyPairs().add(pair)
-						journey.setMyActions(pair.getInitiatorStatusAsEnum().getActions())
-					}
-					else if(pair.getRecieverJourneyId().equals(myJourneyId) && pair.getInitiatorJourneyId().equals(journey.getId())){
-						journey.getJourneyPairs().add(pair)
-						journey.setMyActions(pair.getRecieverStatusAsEnum().getActions())
-					}
-				}
-				
+	
+	private enrichResult(MobileResponse mobileResponse, String currentJourneyId){
+		def returnList = []
+		Journey currentJourney = journeyDataService.findChildJourneys(currentJourneyId)
+		if(currentJourney.getRelatedJourneys()){
+			def result = mobileResponse.data.get('journeys')
+			currentJourney.getRelatedJourneys().each {it->
+				returnList << it
 			}
+			result.each {it ->
+				returnList << it
+			}
+			mobileResponse.data['journeys'] = returnList
 		}
+		
+		
+	}
 	
 }
