@@ -145,8 +145,8 @@ grails.max.active.requests = 5
 grails.approx.time.range= 45
 
 grails.aws.dynamodb.local = true
-grails.plugin.awssdk.accessKey = "AKIAIDCY5QLPSIUTWBNQ"
-grails.plugin.awssdk.secretKey = "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"
+grails.plugin.awssdk.accessKey = "AKIAIUM4DYNBTBBT3ZVA"
+grails.plugin.awssdk.secretKey = "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"
 grails.plugin.awssdk.region = 'ap-southeast-1'
 
 environments {
@@ -159,7 +159,7 @@ environments {
 	}
 	production {
 		grails.logging.jul.usebridge = false
-		grails.serverURL = "http://www.racloop.com"
+		//grails.serverURL = "http://awseb-e-r-AWSEBLoa-14MW1J02IWQX1-349308203.ap-southeast-1.elb.amazonaws.com"
 		grails.plugin.facebooksdk.app.id = 393926260773644
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
@@ -215,7 +215,7 @@ log4j = {
 
 	appenders {
 		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-		file name: 'file', file: '/var/racloop/log/tomcat-racloop.log'
+		file name: 'file', file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log"
 	}
 
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers

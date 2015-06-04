@@ -48,7 +48,7 @@ grails.project.dependency.resolution = {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
 
         runtime 'mysql:mysql-connector-java:5.1.30'
-		compile 'org.elasticsearch:elasticsearch:1.0.1'
+		compile 'org.elasticsearch:elasticsearch:1.5.2'
 		compile ('org.apache.activemq:activemq-core:5.7.0'){
 			excludes 'spring-context', 'slf4j-api'
 		}

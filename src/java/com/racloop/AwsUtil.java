@@ -1,27 +1,18 @@
 package com.racloop;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Iterator;
-import java.util.List;
-import java.util.TimeZone;
-
-import org.elasticsearch.common.joda.time.DateTime;
 
 import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.regions.Region;
+import com.amazonaws.regions.Regions;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 import com.amazonaws.services.dynamodbv2.document.Table;
 import com.amazonaws.services.dynamodbv2.document.TableCollection;
 import com.amazonaws.services.dynamodbv2.model.AttributeDefinition;
-import com.amazonaws.services.dynamodbv2.model.AttributeValue;
-import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
-import com.amazonaws.services.dynamodbv2.model.Condition;
 import com.amazonaws.services.dynamodbv2.model.CreateTableRequest;
 import com.amazonaws.services.dynamodbv2.model.GlobalSecondaryIndex;
 import com.amazonaws.services.dynamodbv2.model.KeySchemaElement;
@@ -30,13 +21,12 @@ import com.amazonaws.services.dynamodbv2.model.ListTablesResult;
 import com.amazonaws.services.dynamodbv2.model.Projection;
 import com.amazonaws.services.dynamodbv2.model.ProjectionType;
 import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
-import com.racloop.domain.Journey;
-import com.racloop.journey.workkflow.WorkflowStatus;
 
 public class AwsUtil {
 
-	private static String accessKey = "AKIAIDCY5QLPSIUTWBNQ";
-	private static String secretKey = "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";
+	private static String accessKey = "AKIAIUM4DYNBTBBT3ZVA";
+	private static String secretKey = "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";
+	private static AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 	private static DynamoDB dynamoDB = null;
 	private static String journeyPairTable = "JourneyPair";
 	private static String journeyTable = "Journey";
@@ -44,11 +34,15 @@ public class AwsUtil {
 	private static String ratingTable = "UserRating";
 
 	public static void main(String[] args) throws InterruptedException, ParseException {
-		AWSCredentials credentials = new BasicAWSCredentials(accessKey,
-				secretKey);
+		createTables();
+		
+	}
+	
+	public static void createTables() throws InterruptedException {
 		AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials);
-		client.setEndpoint("http://localhost:8000");
-		client.setSignerRegionOverride("local");
+//		client.setEndpoint("http://localhost:8000");
+//		client.setSignerRegionOverride("local");
+		client.setRegion(Region.getRegion(Regions.AP_SOUTHEAST_1));
 		dynamoDB = new DynamoDB(client);	
 		deleteAllTables();
 		createRacloopUseTable();
@@ -86,7 +80,7 @@ public class AwsUtil {
 			.withIndexName("Email-index")
 			.withKeySchema(indexKeySchema)
 			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
-			.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(5L).withWriteCapacityUnits(5L));
+			.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(2L).withWriteCapacityUnits(2L));
 		
 		CreateTableRequest request = new CreateTableRequest()
 				.withTableName(userTable)
@@ -94,8 +88,8 @@ public class AwsUtil {
 				.withGlobalSecondaryIndexes(emailIndex)
 				.withAttributeDefinitions(attributeDefinitions)
 				.withProvisionedThroughput(
-						new ProvisionedThroughput().withReadCapacityUnits(5L)
-								.withWriteCapacityUnits(5L));
+						new ProvisionedThroughput().withReadCapacityUnits(2L)
+								.withWriteCapacityUnits(2L));
 		System.out.println("Started creating table : " + userTable);
 		Table table = dynamoDB.createTable(request);
 		table.waitForActive();
@@ -177,8 +171,8 @@ public class AwsUtil {
 				.withKeySchema(keySchema)
 				.withAttributeDefinitions(attributeDefinitions)
 				.withProvisionedThroughput(
-						new ProvisionedThroughput().withReadCapacityUnits(5L)
-								.withWriteCapacityUnits(5L));
+						new ProvisionedThroughput().withReadCapacityUnits(2L)
+								.withWriteCapacityUnits(2L));
 		System.out.println("Started creating table : " + ratingTable);
 		Table table = dynamoDB.createTable(request);
 		table.waitForActive();

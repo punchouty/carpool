@@ -10,7 +10,7 @@
 	href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
 <link rel="apple-touch-icon" sizes="114x114"
 	href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-<link rel="icon" href="${resource(dir: 'images/favicons', file: 'favicon.ico')}">
+<link rel="icon" href="${resource(dir: 'images/favicons', file: 'icon.png')}">
 <link rel="apple-touch-icon-precomposed" sizes="152x152" href="${resource(dir: 'images/favicons', file: 'favicon-152.png')}">
 <link rel="apple-touch-icon-precomposed" sizes="120x120" href="${resource(dir: 'images/favicons', file: 'favicon-120.png')}">
 <link rel="apple-touch-icon-precomposed" sizes="72x72" href="${resource(dir: 'images/favicons', file: 'favicon-72.png')}">

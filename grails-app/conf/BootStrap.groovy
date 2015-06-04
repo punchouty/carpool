@@ -11,6 +11,7 @@ import org.elasticsearch.common.geo.GeoHashUtils;
 import org.elasticsearch.common.geo.GeoPoint
 import org.springframework.web.context.support.WebApplicationContextUtils
 
+import com.racloop.ElasticsearchUtil;
 import com.racloop.Place
 import com.racloop.domain.RacloopUser;
 import com.racloop.staticdata.StaticData
@@ -39,6 +40,7 @@ class BootStrap {
 		
 		injectAuthentication()
 		
+		ElasticsearchUtil.init();
 		//JSON marshallars
 		def springContext = WebApplicationContextUtils.getWebApplicationContext( servletContext )
 		springContext.getBean( "customObjectMarshallers" ).register()
