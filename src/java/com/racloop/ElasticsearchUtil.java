@@ -21,8 +21,9 @@ import org.elasticsearch.plugins.PluginManager.OutputMode;
 
 public class ElasticsearchUtil {
 
-	private static final String HQ_PLUGIN = "royrusso/elasticsearch-HQ";
+	//private static final String HQ_PLUGIN = "royrusso/elasticsearch-HQ";
 	private static final String AWS_PLUGIN = "elasticsearch/elasticsearch-cloud-aws/2.5.1";
+	private static final String KOPF_PLUGIN = "lmenezes/elasticsearch-kopf";
 	
 	public static void init() throws IOException {
 		Tuple<Settings, Environment> initialSettings = InternalSettingsPreparer.prepareSettings(EMPTY_SETTINGS, true);
@@ -33,7 +34,8 @@ public class ElasticsearchUtil {
 			Files.createDirectories(initialSettings.v2().pluginsFile().toPath(), fileAttributes);
 			PluginManager pluginManager = new PluginManager(initialSettings.v2(), null, OutputMode.DEFAULT, TimeValue.timeValueMillis(0));
 	        File [] pluginsPath = pluginManager.getListInstalledPlugins();
-	        installPlugin(HQ_PLUGIN, pluginManager, pluginsPath);
+	        //installPlugin(HQ_PLUGIN, pluginManager, pluginsPath);
+	        installPlugin(KOPF_PLUGIN, pluginManager, pluginsPath);
 	        if (grails.util.Environment.getCurrent() == grails.util.Environment.PRODUCTION) {
 	        	installPlugin(AWS_PLUGIN, pluginManager, pluginsPath);
 	        }
