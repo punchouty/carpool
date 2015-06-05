@@ -118,10 +118,10 @@
 										<g:link action="cancelOutgoingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId()]" class="btn btn-danger"><i class="fa fa-mail-reply"></i> Cancel</g:link>
 									</g:if>
 									<g:if test = "${action == WorkflowAction.ACCEPT.getAction()}">
-										<g:link action="acceptIncomingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId(), redirectToSearch: true]]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Accept</g:link>
+										<g:link action="acceptIncomingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId(), redirectToSearch: true]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Accept</g:link>
 									</g:if>
 									<g:if test = "${action == WorkflowAction.REJECT.getAction()}">
-										<g:link action="rejectIncomingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId(), redirectToSearch: true]]" class="btn btn-warning"><i class="fa fa-mail-reply"></i> Reject</g:link>
+										<g:link action="rejectIncomingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId(), redirectToSearch: true]" class="btn btn-warning"><i class="fa fa-mail-reply"></i> Reject</g:link>
 									</g:if>
 									<g:if test = "${action == WorkflowAction.NONE.getAction()}">
 									</g:if>
