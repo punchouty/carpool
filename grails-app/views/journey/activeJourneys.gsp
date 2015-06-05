@@ -79,7 +79,8 @@
 	                                	<g:else>
 	                                		<span class="label label-primary">Ride Seeker</span> 
 	                                	</g:else>
-	                                	<span class="label label-success">Status</span>
+	                                	<span class="${matchedWorkflowInstance.getMyStatus()=='Accepted'?'label label-success':(matchedWorkflowInstance.getMyStatus()=='Cancelled'?'label label-danger':(matchedWorkflowInstance.getMyStatus()=='Rejected'?'label label-info':'label label-info'))}">${matchedWorkflowInstance.getMyStatus()}</span>
+	                                	
 	                                </li>
 	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.dateOfJourney}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.dateOfJourney}"/></span></li>
 	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.from}</li>
