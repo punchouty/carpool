@@ -111,23 +111,35 @@
 	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${matchedResult.from}</li>
 	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${matchedResult.to}</li>
 	                  
-						<g:if test = "${matchedResult.myActions}">
+						<g:if test = "${matchedResult.getMyStatus()}">
 							<li>
-								<g:each in="${matchedResult.myActions}" status="y" var="action">
-									<g:if test = "${action == WorkflowAction.CANCEL.getAction()}">
-										<g:link action="cancelOutgoingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId()]" class="btn btn-danger"><i class="fa fa-mail-reply"></i> Cancel</g:link>
-									</g:if>
-									<g:if test = "${action == WorkflowAction.ACCEPT.getAction()}">
-										<g:link action="acceptIncomingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId(), redirectToSearch: true]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Accept</g:link>
-									</g:if>
-									<g:if test = "${action == WorkflowAction.REJECT.getAction()}">
-										<g:link action="rejectIncomingRequest" id="request_${i}"  params="[pairId: matchedResult.getMyPairId(), redirectToSearch: true]" class="btn btn-warning"><i class="fa fa-mail-reply"></i> Reject</g:link>
-									</g:if>
-									<g:if test = "${action == WorkflowAction.NONE.getAction()}">
-									</g:if>
-									<g:if test = "${action == WorkflowAction.DELETE.getAction()}">
-									</g:if>
-								</g:each>
+								<g:if test = "${matchedResult.getMyStatus()=='Requested'}">
+                               		<g:link action="cancelRequest" id="cancelOutgoingRequest_${i }"  params="[pairId: matchedResult.getMyPairId(), myJourneyId:currentJourney.id]">
+  												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Request</button>
+  									</g:link>
+                               	</g:if>
+                               	<g:elseif test = "${matchedResult.getMyStatus()=='Request Recieved'}">
+                               		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId()]">
+											<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept</button>
+									</g:link>
+									<g:link action="rejectIncomingRequest" id="rejectIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId()]">
+											<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
+									</g:link>
+                               	</g:elseif>
+                               	<g:elseif test = "${matchedResult.getMyStatus()=='Accepted'}">
+                               		<g:link action="cancelRequest" id="cancelRequest"  params="[pairId: matchedResult.getMyPairId(), myJourneyId:matchedResult.id]">
+											<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Request</button>
+									</g:link>
+                               	</g:elseif>
+                               	<g:elseif test = "${matchedResult.getMyStatus()=='Rejected'}">
+                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
+                               	</g:elseif>
+                               	<g:elseif test = "${matchedResult.getMyStatus()=='Cancelled'}">
+                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> Cancelled</button>
+                               	</g:elseif>
+                               	<g:elseif test = "${matchedResult.getMyStatus()=='Cancelled by Requester'}">
+                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> Cancelled by Requester</button>
+                               	</g:elseif>
 							</li>
 						</g:if>
 						<g:else>

@@ -190,6 +190,36 @@ class WorkflowDataService {
 		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeCancelled.getId(), WorkflowStatus.CANCELLED.getStatus())
 	}
 	
+	private cancelMyRequest(String journeyPairId, String myJourneyId){
+		boolean iAmRequesterForJourney = false
+		Journey journeyToBeCancelled = null
+		Journey myJourney = null
+		JourneyPair pairToBeCancelled = journeyPairDataService.findPairById(journeyPairId)
+		if (pairToBeCancelled.getInitiatorJourneyId().equals(myJourneyId)){
+			iAmRequesterForJourney = true
+			journeyToBeCancelled = journeyDataService.findJourney(pairToBeCancelled.getRecieverJourneyId())
+			myJourney = journeyDataService.findJourney(pairToBeCancelled.getInitiatorJourneyId())
+			pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
+			pairToBeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
+		}
+		else {
+			journeyToBeCancelled = journeyDataService.findJourney(pairToBeCancelled.getInitiatorJourneyId())
+			myJourney = journeyDataService.findJourney(pairToBeCancelled.getRecieverJourneyId())
+			pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
+			pairToBeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
+		}
+		
+		
+		journeyPairDataService.saveJourneyPair(pairToBeCancelled)
+		myJourney.decrementNumberOfCopassengers()
+		journeyToBeCancelled.decrementNumberOfCopassengers()
+		saveJourneys(myJourney,journeyToBeCancelled)
+		if(journeyToBeCancelled.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(journeyToBeCancelled)
+		}
+		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeCancelled.getId(), WorkflowStatus.CANCELLED.getStatus())
+	}
+	
 	
 	
 	def cancelMyJourney(String myJourneyId){

@@ -354,15 +354,23 @@ class JourneyController {
 	 * Cancel by owner - Work flow
 	 * @return
 	 */
+	@Deprecated
 	def cancelOutgoingRequest() {
 		def pairId = params.pairId
 		workflowDataService.cancelRequest(pairId)
 		redirect(action: "activeJourneys")
 	}
-	
+	@Deprecated
 	def cancelIncomingRequest() {
 		def pairId = params.pairId
 		workflowDataService.cancelRequest(pairId)
+		redirect(action: "activeJourneys")
+	}
+	
+	def cancelRequest(){
+		def pairId = params.pairId
+		def myJourneyId = params.myJourneyId
+		workflowDataService.cancelMyRequest(pairId, myJourneyId)
 		redirect(action: "activeJourneys")
 	}
 	

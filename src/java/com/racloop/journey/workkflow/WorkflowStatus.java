@@ -12,6 +12,7 @@ public enum WorkflowStatus {
 	ACCEPTED("Accepted"),
 	REJECTED("Rejected"),
 	CANCELLED("Cancelled"),
+	CANCELLED_BY_REQUESTER("Cancelled by Requester"),
 	INHERITED("Inherited"),
 	DELEGATED("Delegated");
 
@@ -22,6 +23,7 @@ public enum WorkflowStatus {
 	private static final String [] ACCEPTED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
 	private static final String [] REJECTED_ACTIONS = {};
 	private static final String [] CANCELLED_ACTIONS = {};
+	private static final String [] CANCELLED_BY_REQUESTER_ACTION = {};
 	private static final String [] INHERITED_ACTIONS = {WorkflowAction.REJECT.getAction()};
 	private static final String [] DELEGATED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
 	private static final HashMap<WorkflowStatus, String []> statusToActionMapping = new HashMap<WorkflowStatus, String []>();
@@ -35,6 +37,7 @@ public enum WorkflowStatus {
 		statusToActionMapping.put(WorkflowStatus.CANCELLED, CANCELLED_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.INHERITED, INHERITED_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.DELEGATED, DELEGATED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.CANCELLED_BY_REQUESTER, CANCELLED_BY_REQUESTER_ACTION);
 	}
 
 	WorkflowStatus(String status) {
@@ -78,6 +81,8 @@ public enum WorkflowStatus {
 				break;
 			case DELEGATED: canBeIgnored = false;
 				break;
+			case CANCELLED_BY_REQUESTER: canBeIgnored = true;
+			break;	
 
 			default : canBeIgnored = false;
 		}

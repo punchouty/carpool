@@ -64,7 +64,7 @@ class JourneySearchService {
 		return mobileResponse;
 	}
 	
-	def straightThruSearch(JourneyRequestCommand currentJourney, boolean searchFromDummy = true) {
+	def straightThruSearch(JourneyRequestCommand currentJourney, boolean searchFromDummy = false) {
 		Date timeOfJourney = currentJourney.dateOfJourney
 		Date validStartTime = currentJourney.validStartTime
 		String mobile = currentJourney.mobile
