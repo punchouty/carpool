@@ -74,14 +74,13 @@ class JourneySearchService {
 		Double toLon = currentJourney.toLongitude
 		MobileResponse mobileResponse = new MobileResponse();
 		List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+		if(currentJourney.id) {
+			searchResults = enrichResult(searchResults,currentJourney.id )
+		}
 		if(searchResults.size() > 0) {
-			def returnJourneys = []
-			for (Journey dbJourney: searchResults) {
-				returnJourneys << dbJourney//dbJourney.convert();
-			}
 			int length = 0
-			if(returnJourneys !=  null) length = returnJourneys.size()
-			mobileResponse.data = ['journeys': returnJourneys]
+			length = searchResults.size()
+			mobileResponse.data = ['journeys': searchResults]
 			mobileResponse.success = true
 			mobileResponse.total = length
 			mobileResponse.message = "${length} results found"
@@ -99,9 +98,6 @@ class JourneySearchService {
 			}
 		}
 		mobileResponse.currentJourney = currentJourney
-		if(currentJourney.id) {
-			enrichResult(mobileResponse,currentJourney.id )
-		}
 		return mobileResponse;
 	}
 	
@@ -173,21 +169,18 @@ class JourneySearchService {
 	}
 	
 	
-	private enrichResult(MobileResponse mobileResponse, String currentJourneyId){
-		def returnList = []
+	private List enrichResult(List searchResult, String currentJourneyId){
+		def returnSet = [] as Set	//Result coming from 2 different source, hence can be duplicate. Relying on equals of Journey object
 		Journey currentJourney = journeyDataService.findChildJourneys(currentJourneyId)
 		if(currentJourney.getRelatedJourneys()){
-			def result = mobileResponse.data.get('journeys')
 			currentJourney.getRelatedJourneys().each {it->
-				returnList << it
-			}
-			result.each {it ->
-				returnList << it
-			}
-			mobileResponse.data['journeys'] = returnList
+				returnSet << it
+				}
 		}
-		
-		
+		searchResult.each {it -> 
+			returnSet << it 
+			}
+		return new ArrayList(returnSet)
 	}
 	
 }

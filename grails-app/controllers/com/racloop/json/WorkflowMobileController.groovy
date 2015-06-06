@@ -128,10 +128,11 @@ class WorkflowMobileController {
 		def json = request.JSON
 		log.info("cancelJourneyRequest() json : ${json}");
 		def journeyPairId = json.journeyPairId;
+		def myJourneyId = json.journeyId;
 		def mobileResponse = new MobileResponse();
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			workflowDataService.cancelRequest(journeyPairId)
+			workflowDataService.cancelMyRequest(journeyPairId, myJourneyId)
 			mobileResponse.success = true
 			mobileResponse.message = "Successfully cancelled journey request"
 		}

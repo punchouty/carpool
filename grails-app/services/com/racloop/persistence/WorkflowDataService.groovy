@@ -217,6 +217,9 @@ class WorkflowDataService {
 		if(journeyToBeCancelled.getNumberOfCopassengers()<1){
 			journeyDataService.makeJourneySearchable(journeyToBeCancelled)
 		}
+		if(myJourney.getNumberOfCopassengers()<1){
+			journeyDataService.makeJourneySearchable(myJourney)
+		}
 		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeCancelled.getId(), WorkflowStatus.CANCELLED.getStatus())
 	}
 	
