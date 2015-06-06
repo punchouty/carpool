@@ -93,26 +93,29 @@
 	                                	</g:if>
 	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Request Recieved'}">
 	                                		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId()]">
-													<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept</button>
+													<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept Request</button>
 											</g:link>
 											<g:link action="rejectIncomingRequest" id="rejectIncomingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId()]">
-													<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
+													<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject Request</button>
 											</g:link>
 	                                	</g:elseif>
 	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Accepted'}">
 	                                		<g:link action="cancelRequest" id="cancelIncomingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId(), myJourneyId:journeyInstance.id]">
-													<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Request</button>
+													<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel accepted Request</button>
 											</g:link>
 	                                	</g:elseif>
 	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Rejected'}">
-	                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
+	                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> Rejected</button>
 	                                	</g:elseif>
 	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Cancelled'}">
 	                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> Cancelled</button>
 	                                	</g:elseif>
-	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Cancelled by Requester'}">
-	                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> Cancelled by Requester</button>
+	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus().startsWith('Cancelled')}">
+	                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> ${matchedWorkflowInstance.getMyStatus()}</button>
 	                                	</g:elseif>
+	                                	<g:else>
+	                                		<button class="btn btn-primary"><i class="fa fa-ban"></i> ${matchedWorkflowInstance.getMyStatus()}</button>
+	                                	</g:else>
 	                                	
 	                                </li>
 	                                

@@ -115,31 +115,31 @@
 							<li>
 								<g:if test = "${matchedResult.getMyStatus()=='Requested'}">
                                		<g:link action="cancelRequest" id="cancelOutgoingRequest_${i }"  params="[pairId: matchedResult.getMyPairId(), myJourneyId:currentJourney.id]">
-  												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Request</button>
+  												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Sent Request</button>
   									</g:link>
                                	</g:if>
                                	<g:elseif test = "${matchedResult.getMyStatus()=='Request Recieved'}">
                                		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId()]">
-											<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept</button>
+											<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept Request</button>
 									</g:link>
 									<g:link action="rejectIncomingRequest" id="rejectIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId()]">
-											<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
+											<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject Request</button>
 									</g:link>
                                	</g:elseif>
                                	<g:elseif test = "${matchedResult.getMyStatus()=='Accepted'}">
                                		<g:link action="cancelRequest" id="cancelRequest"  params="[pairId: matchedResult.getMyPairId(), myJourneyId:matchedResult.id]">
-											<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Request</button>
+											<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Accepted Request</button>
 									</g:link>
                                	</g:elseif>
                                	<g:elseif test = "${matchedResult.getMyStatus()=='Rejected'}">
-                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject</button>
+                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> Rejected</button>
                                	</g:elseif>
-                               	<g:elseif test = "${matchedResult.getMyStatus()=='Cancelled'}">
-                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> Cancelled</button>
+                               	<g:elseif test = "${matchedResult.getMyStatus().startsWith('Cancelled')}">
+                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> ${matchedResult.getMyStatus()}</button>
                                	</g:elseif>
-                               	<g:elseif test = "${matchedResult.getMyStatus()=='Cancelled by Requester'}">
-                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> Cancelled by Requester</button>
-                               	</g:elseif>
+                               	<g:else>
+                               		<button class="btn btn-primary"><i class="fa fa-ban"></i> ${matchedResult.getMyStatus()}</button>
+                               	</g:else>
 							</li>
 						</g:if>
 						<g:else>
