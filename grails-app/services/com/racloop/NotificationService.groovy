@@ -2,9 +2,8 @@ package com.racloop
 
 import grails.plugin.jms.Queue
 
-import com.racloop.domain.Journey;
-import com.racloop.journey.workkflow.WorkflowState;
-import com.racloop.journey.workkflow.WorkflowStatus;
+import com.racloop.domain.Journey
+import com.racloop.journey.workkflow.WorkflowStatus
 import com.racloop.workflow.JourneyWorkflow
 
 class NotificationService {
@@ -28,17 +27,17 @@ class NotificationService {
 			case WorkflowStatus.REQUESTED.status : // send request from search result - resultant user should receive email and sms and push
 				sendNotificationForNewRequest(sourceJourney,targetJourney)
 				break
-			case WorkflowState.ACCEPTED.state : // other user accepted request
+			case WorkflowStatus.ACCEPTED.status : // other user accepted request
 				sendNotificationForAcceptRequest(sourceJourney,targetJourney)
 				break
-			case WorkflowState.REJECTED.state : // other user rejected request
+			case WorkflowStatus.REJECTED.status : // other user rejected request
 				sendNotificationForRejectequest(sourceJourney,targetJourney)
 				break
-			case WorkflowState.CANCELLED.state : // i am canceling previous accepted request
-				//sendNotificationForCancelRequest(workflow)
+			case WorkflowStatus.CANCELLED.status : // i am canceling previous accepted request
+				sendNotificationForCancelRequest(sourceJourney,targetJourney)
 				break
-			case WorkflowState.CANCELLED_BY_REQUESTER.state : // i am canceling my own earlier request 
-				//sendNotificationForCancelRequestByRequester(workflow)
+			case WorkflowStatus.CANCELLED_BY_REQUESTER.status : // i am canceling my own earlier request 
+				sendNotificationForCancelRequestByRequester(sourceJourney,targetJourney)
 				break
 			default :
 				log.error "No state worklfow detected "
@@ -66,7 +65,7 @@ class NotificationService {
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
 				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
-				state: WorkflowState.INITIATED.state 
+				state: WorkflowStatus.REQUESTED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
@@ -103,7 +102,7 @@ class NotificationService {
 				to: requestIntiator.profile.mobile, 
 				name:requestTo.profile.fullName, 
 				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
-				state: WorkflowState.ACCEPTED.state,
+				state: WorkflowStatus.ACCEPTED.status,
 				mobile: requestTo.profile.mobile
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -122,15 +121,15 @@ class NotificationService {
 				to: requestIntiator.profile.mobile, 
 				name:requestTo.profile.fullName, 
 				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
-				state: WorkflowState.REJECTED.state
+				state: WorkflowStatus.REJECTED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
 
 	}
-	private sendNotificationForCancelRequest(JourneyWorkflow workflow) {
-		User requestIntiator = getUserDeatils(workflow.requestUser)
-		User requestTo = getUserDeatils(workflow.matchingUser)
+	private sendNotificationForCancelRequest(Journey sourceJourney, Journey targetJourney) {
+		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
+		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
 			String mailMessage = "Your journey request has been cancelled"
 			emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessage + " by ${requestTo?.profile?.fullName}")
@@ -139,17 +138,17 @@ class NotificationService {
 			def  messageMap =[
 				to: requestIntiator.profile.mobile, 
 				name:requestTo.profile.fullName, 
-				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
-				state: WorkflowState.CANCELLED.state
+				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
+				state: WorkflowStatus.CANCELLED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
 
 	}
 	
-	private sendNotificationForCancelRequestByRequester(JourneyWorkflow workflow) {
-		User requestIntiator = getUserDeatils(workflow.requestUser)
-		User requestTo = getUserDeatils(workflow.matchingUser)
+	private sendNotificationForCancelRequestByRequester(Journey sourceJourney, Journey targetJourney) {
+		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
+		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
 			String mailMessageForRequester = "Your journey request has been cancelled"
 			String mailMessage = mailMessageForRequester + " by ${requestIntiator?.profile?.fullName}"
@@ -159,8 +158,8 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
-				journeyDate: workflow.requestedDateTime.format('dd MMM yy HH:mm'), 
-				state: WorkflowState.CANCELLED_BY_REQUESTER.state
+				journeyDate:  sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
+				state: WorkflowStatus.CANCELLED_BY_REQUESTER.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}

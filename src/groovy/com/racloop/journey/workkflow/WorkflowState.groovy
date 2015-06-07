@@ -1,6 +1,6 @@
 package com.racloop.journey.workkflow
 
-
+@Deprecated
 enum WorkflowState {
 	INITIATED("New"),
 	ACCEPTED("Accepted"),

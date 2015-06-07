@@ -85,11 +85,17 @@ class SearchService {
 	}
 
 	def indexJourney(Journey journey, String id) {
-		def sourceBuilder = createJourneyJson(journey)
-		IndexRequest indexRequest = new IndexRequest(IndexMetadata.JOURNEY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, id).source(sourceBuilder);
-		IndexResponse indexResponse = node.client.index(indexRequest).actionGet();
-		log.info "Successfully indexed ${journey} with ${indexResponse.getId()}"
-		return indexResponse.getId();
+		Journey existingJourney = this.getJourney(id)
+		if(!existingJourney){
+			def sourceBuilder = createJourneyJson(journey)
+			IndexRequest indexRequest = new IndexRequest(IndexMetadata.JOURNEY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, id).source(sourceBuilder);
+			IndexResponse indexResponse = node.client.index(indexRequest).actionGet();
+			log.info "Successfully indexed ${journey} with ${indexResponse.getId()}"
+			return indexResponse.getId();
+		}
+		else {
+			return existingJourney.getId()
+		}
 	}
 
 	private def createJourneyJson(Journey journey) {
