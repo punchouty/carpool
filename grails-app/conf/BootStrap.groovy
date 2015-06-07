@@ -36,6 +36,13 @@ class BootStrap {
 	def testDataService
 	
     def init = { servletContext ->
+		log.info("Current User : " + System.getProperty("user.name"));
+		try {
+			java.net.InetAddress localMachine = java.net.InetAddress.getLocalHost();
+			log.info("Current Host : " + localMachine.getHostName());
+		} catch (Exception e) {
+			log.warn("Current Host");
+		}
 		internalBootStap(servletContext)
 		
 		injectAuthentication()
