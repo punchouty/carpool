@@ -215,7 +215,7 @@ log4j = {
 
 	appenders {
 		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-		file name: 'file', file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log"
+		file name: 'file', file: "/home/ec2-user/racloop-data/logs/tomcat-racloop.log"
 	}
 
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers
