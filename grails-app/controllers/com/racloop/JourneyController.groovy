@@ -350,22 +350,6 @@ class JourneyController {
 		forward action: 'findMatching', model: [currentJourney: journey.convert()]
 	}
 	
-	/**
-	 * Cancel by owner - Work flow
-	 * @return
-	 */
-	@Deprecated
-	def cancelOutgoingRequest() {
-		def pairId = params.pairId
-		workflowDataService.cancelRequest(pairId)
-		redirect(action: "activeJourneys")
-	}
-	@Deprecated
-	def cancelIncomingRequest() {
-		def pairId = params.pairId
-		workflowDataService.cancelRequest(pairId)
-		redirect(action: "activeJourneys")
-	}
 	
 	def cancelRequest(){
 		def pairId = params.pairId

@@ -173,27 +173,6 @@ class WorkflowDataService {
 		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeRejected.getId(), WorkflowStatus.REJECTED.getStatus())
 	}
 	
-	/**
-	 * DO NOT USE THIS. TO BE REMOVED
-	 * 
-	 */
-	@Deprecated
-	def cancelRequest(String journeyPairId){
-		JourneyPair pairToBeCancelled = journeyPairDataService.findPairById(journeyPairId)
-		Journey journeyToBeCancelled = journeyDataService.findJourney(pairToBeCancelled.getInitiatorJourneyId())
-		Journey myJourney = journeyDataService.findJourney(pairToBeCancelled.getRecieverJourneyId())
-		
-		pairToBeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED.getStatus())
-		pairToBeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED.getStatus())
-		journeyPairDataService.saveJourneyPair(pairToBeCancelled)
-		myJourney.decrementNumberOfCopassengers()
-		journeyToBeCancelled.decrementNumberOfCopassengers()
-		saveJourneys(myJourney,journeyToBeCancelled)
-		if(journeyToBeCancelled.getNumberOfCopassengers()<1){
-			journeyDataService.makeJourneySearchable(journeyToBeCancelled)
-		}
-		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeCancelled.getId(), WorkflowStatus.CANCELLED.getStatus())
-	}
 	
 	def cancelMyRequest(String journeyPairId, String myJourneyId){
 		boolean iAmRequesterForJourney = false
