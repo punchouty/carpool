@@ -173,8 +173,8 @@ class WorkflowDataService {
 		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeRejected.getId(), WorkflowStatus.REJECTED.getStatus())
 	}
 	
-	
-	def cancelMyRequest(String journeyPairId, String myJourneyId){
+	@Deprecated
+	def zzzcancelMyRequest(String journeyPairId, String myJourneyId){
 		boolean iAmRequesterForJourney = false
 		Journey journeyToBeCancelled = null
 		Journey myJourney = null
@@ -236,6 +236,37 @@ class WorkflowDataService {
 				journeyDataService.makeJourneySearchable(otherJourney)
 			}
 			sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
+		}
+	}
+	
+	def cancelMyRequest(String journeyPairId, String myJourneyId){
+		String otherJourneyId = null;
+		Journey myJourney = journeyDataService.findJourney(myJourneyId);
+		journeyDataService.makeJourneySearchable(myJourney)
+		myJourney.decrementNumberOfCopassengers()
+		saveJourneys(myJourney);
+		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
+		for(JourneyPair pair : journeyPairs){
+			if(pair.getInitiatorJourneyId().equals(myJourneyId)){
+				pair.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_ME.getStatus())
+				pair.setRecieverStatus(WorkflowStatus.CANCELLED_BY_OTHER.getStatus())
+				sendNotificationForWorkflowStateChange(myJourneyId, pair.getRecieverJourneyId(), WorkflowStatus.CANCELLED_BY_REQUESTER.getStatus())
+			}
+			else {
+				pair.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_OTHER.getStatus())
+				pair.setRecieverStatus(WorkflowStatus.CANCELLED_BY_ME.getStatus())
+				sendNotificationForWorkflowStateChange(pair.getInitiatorJourneyId(), myJourneyId, WorkflowStatus.CANCELLED.getStatus())
+			}
+			journeyPairDataService.saveJourneyPair(pair)
+			otherJourneyId = pair.getInitiatorJourneyId().equals(myJourneyId) ? pair.getRecieverJourneyId() : pair.getInitiatorJourneyId()
+			Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
+			otherJourney.decrementNumberOfCopassengers();
+			saveJourneys(otherJourney);
+			//saveJourneys(myJourney);
+			if(otherJourney.getNumberOfCopassengers()<1){
+				journeyDataService.makeJourneySearchable(otherJourney)
+			}
+			
 		}
 	}
 	
