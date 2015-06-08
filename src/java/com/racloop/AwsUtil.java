@@ -24,8 +24,8 @@ import com.amazonaws.services.dynamodbv2.model.ProvisionedThroughput;
 
 public class AwsUtil {
 
-	private static String accessKey = "AKIAIUM4DYNBTBBT3ZVA";
-	private static String secretKey = "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";
+	private static String accessKey = "AKIAJ74MXKGZZPYXKEWA";
+	private static String secretKey = "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";
 	private static AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 	private static DynamoDB dynamoDB = null;
 	private static String journeyPairTable = "JourneyPair";

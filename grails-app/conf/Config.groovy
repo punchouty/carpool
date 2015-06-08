@@ -145,8 +145,8 @@ grails.max.active.requests = 5
 grails.approx.time.range= 45
 
 grails.aws.dynamodb.local = true
-grails.plugin.awssdk.accessKey = "AKIAIUM4DYNBTBBT3ZVA"
-grails.plugin.awssdk.secretKey = "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"
+grails.plugin.awssdk.accessKey = "AKIAJ74MXKGZZPYXKEWA"
+grails.plugin.awssdk.secretKey = "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"
 grails.plugin.awssdk.region = 'ap-southeast-1'
 
 environments {
@@ -215,7 +215,7 @@ log4j = {
 
 	appenders {
 		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-		file name: 'file', file: "/home/ec2-user/racloop-data/logs/tomcat-racloop.log"
+		file name: 'file', file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log"
 	}
 
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers

@@ -12,7 +12,7 @@ beans = {
 
 	amq.broker(xmlns:"http://activemq.apache.org/schema/core",
 	brokerName:"localhost",
-	dataDirectory:"/home/ec2-user/racloop-data/activemq" ){
+	dataDirectory:"${System.getProperty('user.home')}/racloop-data/activemq" ){
 		amq.transportConnectors{
 			amq.transportConnector(name:"vm", uri:"vm://localhost" )
 		}
