@@ -1,0 +1,15 @@
+Configuration
+
+cluster.name: racloop-cluster
+cloud.aws.access_key: AKIAJ74MXKGZZPYXKEWA
+cloud.aws.secret_key: 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
+cloud.aws.region: ap-southeast-1
+discovery.type: ec2
+discovery.zen.ping.multicast.enabled: false
+discovery.ec2.groups: sg-13e86476
+http.cors.enabled: true
+http.cors.allow-origin: "*"
+
+Start
+
+sudo service elasticsearch start

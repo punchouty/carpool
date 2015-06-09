@@ -1,12 +1,7 @@
 package com.racloop.notification
 
-import grails.plugin.jms.Queue
-
 import com.racloop.Constant
-import com.racloop.User
-import com.racloop.journey.workkflow.WorkflowState
-import com.racloop.notification.model.EmailMessage;
-import com.racloop.workflow.JourneyWorkflow
+import com.racloop.notification.model.EmailMessage
 
 class EmailService {
 
@@ -34,6 +29,6 @@ class EmailService {
 	}
 	
 	private setEmailFrom(EmailMessage message) {
-		message.fromAddress = grailsApplication.config.grails.mail.username;
+		message.fromAddress = grailsApplication.config.grails.email.mail.from;
 	}
 }

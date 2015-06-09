@@ -30,24 +30,42 @@ public class ElasticsearchUtil {
 		}
 		PluginManager pluginManager = new PluginManager(env, null, OutputMode.DEFAULT, TimeValue.timeValueMillis(0));
 		File [] pluginsPath = pluginManager.getListInstalledPlugins();
+		boolean isPluginInstalled = false;
 		if (grails.util.Environment.getCurrent() == grails.util.Environment.DEVELOPMENT) {
-			installPlugin(HQ_PLUGIN, pluginManager, pluginsPath);
-			installPlugin(KOPF_PLUGIN, pluginManager, pluginsPath);
+			for (File file : pluginsPath) {
+				System.out.println("Plugin Path" + file.getAbsolutePath());
+				if(file.getAbsolutePath().contains("kopf")) {
+					isPluginInstalled = true;
+				}
+			}
+			if(isPluginInstalled == false) pluginManager.downloadAndExtract(KOPF_PLUGIN);
+			isPluginInstalled = false;
+			for (File file : pluginsPath) {
+				System.out.println("Plugin Path" + file.getAbsolutePath());
+				if(file.getAbsolutePath().contains("HQ")) {
+					isPluginInstalled = true;
+				}
+			}
+			if(isPluginInstalled == false) pluginManager.downloadAndExtract(HQ_PLUGIN);
+			isPluginInstalled = false;
+			for (File file : pluginsPath) {
+				System.out.println("Plugin Path" + file.getAbsolutePath());
+				if(file.getAbsolutePath().contains("aws")) {
+					isPluginInstalled = true;
+				}
+			}
+			if(isPluginInstalled == false) pluginManager.downloadAndExtract(AWS_PLUGIN);
 		}
 		else {
-			installPlugin(AWS_PLUGIN, pluginManager, pluginsPath);
-		}
-	}
-
-	private static void installPlugin(String pluginName, PluginManager pluginManager,
-			File[] pluginsPath) throws IOException {
-		boolean isPluginInstalled = false;
-		for (File file : pluginsPath) {
-			if(file.getAbsolutePath().contains(pluginName)) {
-				isPluginInstalled = true;
+			isPluginInstalled = false;
+			for (File file : pluginsPath) {
+				System.out.println("Plugin Path" + file.getAbsolutePath());
+				if(file.getAbsolutePath().contains("aws")) {
+					isPluginInstalled = true;
+				}
 			}
+			if(isPluginInstalled == false) pluginManager.downloadAndExtract(AWS_PLUGIN);
 		}
-		if(!isPluginInstalled) pluginManager.downloadAndExtract(pluginName);
 	}
 
 }

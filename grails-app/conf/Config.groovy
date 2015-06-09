@@ -132,8 +132,9 @@ grails.journeyIndexNameFormat = 'yy-MM-W'
 grails.startup.sampleData.file = "journey.csv"
 grails.startup.masterData.places.file = "all.csv"
 
+grails.email.mail.from="admin@racloop.com"
 grails.email.exception.one="rajan@racloop.com"
-grails.email.exception.two="rohit@racloop.com"
+grails.email.exception.two="admin@racloop.com"
 grails.sms.emergency.one="9810095625"
 grails.sms.emergency.two="7307392447"
 
@@ -205,12 +206,13 @@ auditLog {
 grails {
 	mail {
 		from = "raC looP <admin@racloop.com>"
-		host = "smtp.racloop.com"
+		host = "email-smtp.us-east-1.amazonaws.com"
 		port = 25
-		username = "admin@racloop.com"
-		password = "P@ssw0rd"
-//		props = ["mail.smtp.starttls.enable":"true", 
-//                  "mail.smtp.port":"587"]
+		username = "AKIAJ2SJXFADEBCKOW4A"
+		password = "AtvFEF3KuN8vbj5zGhLg1a/klfdLjPmTIlQOefnQSpRF"
+		props = ["mail.smtp.auth":"true", 
+                  "mail.smtp.starttls.enable":"true", 
+                  "mail.smtp.starttls.required":"true"]
 	}
 }
 
