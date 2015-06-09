@@ -40,7 +40,7 @@ environments {
     }
     production {
         dataSource {
-            dbCreate = "create-drop"
+            dbCreate = "update"
             url = "jdbc:mysql://aa1b7twfkrw9z38.cpccscwblvwg.ap-southeast-1.rds.amazonaws.com:3306/ebdb?user=admin&password=Well!ngt0n"
 			driverClassName = "com.mysql.jdbc.Driver"
             pooled = true
