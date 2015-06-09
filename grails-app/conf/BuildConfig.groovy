@@ -97,6 +97,6 @@ grails.project.dependency.resolution = {
 		
 		compile ":rest-client-builder:2.0.3"
 		
-		runtime ':aws-sdk:1.9.22'
+		runtime ':aws-sdk:1.9.40'
     }
 }

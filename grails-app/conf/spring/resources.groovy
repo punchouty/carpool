@@ -7,12 +7,12 @@ import com.racloop.marshaller.UserMarshaller
 import com.racloop.marshaller.WorkflowMarshaller
 
 beans = {
-
+	
 	xmlns amq:"http://activemq.apache.org/schema/core"
 
 	amq.broker(xmlns:"http://activemq.apache.org/schema/core",
 	brokerName:"localhost",
-	dataDirectory:"${System.getProperty('user.home')}/racloop-data/activemq" ){
+	dataDirectory: application.config.grails.activemq.data.dir ){
 		amq.transportConnectors{
 			amq.transportConnector(name:"vm", uri:"vm://localhost" )
 		}

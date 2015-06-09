@@ -1,0 +1,11 @@
+0. ssh to build machine on aws
+1. go to grails project folder
+2. edit application.properties and bump uo the version
+3. if required run "grails clean"
+4. grails prod war
+5. find replace version in below commans and run on command line
+
+aws s3 cp ./target/app-0.02.war s3://elasticbeanstalk-ap-southeast-1-261215224910/app-0.02.war
+aws elasticbeanstalk create-application-version --application-name racloop --version-label app-0.02 --source-bundle S3Bucket=elasticbeanstalk-ap-southeast-1-261215224910,S3Key=app-0.02.war
+aws elasticbeanstalk describe-environments --application-name racloop
+aws elasticbeanstalk update-environment --environment-name racloop-prod --version-label app-0.02

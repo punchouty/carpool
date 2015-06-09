@@ -47,7 +47,10 @@ class BootStrap {
 		
 		injectAuthentication()
 		
-		ElasticsearchUtil.init();
+		def settings = searchService.init();
+		ElasticsearchUtil.downloadPlugins(settings);
+		searchService.start();
+		
 		//JSON marshallars
 		def springContext = WebApplicationContextUtils.getWebApplicationContext( servletContext )
 		springContext.getBean( "customObjectMarshallers" ).register()
@@ -59,11 +62,7 @@ class BootStrap {
 			testDataService.createUsers();
 			log.info("Users created successfully in Elasticsearch")
 		}
-		//Initialising Elasticsearch
-//		node = NodeBuilder.nodeBuilder().node()
-//		elasticSearchService.init(node)
-//		searchService.init(node)
-		searchService.init();
+		
 		
 		smsService.init()
 		Boolean createIndex = grailsApplication.config.grails.startup.elasticsearch.index.create

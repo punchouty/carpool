@@ -19,6 +19,8 @@ import org.elasticsearch.action.search.SearchType;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.joda.time.DateTime
+import org.elasticsearch.common.settings.ImmutableSettings;
+import org.elasticsearch.common.settings.Settings
 import org.elasticsearch.common.unit.DistanceUnit;
 import org.elasticsearch.common.xcontent.XContentBuilder
 import org.elasticsearch.common.xcontent.XContentFactory
@@ -57,24 +59,47 @@ class SearchService {
 	private static final int DAYS_OF_WEEK = 7
 	private static final int WEEKS_IN_A_YEAR = 52
 	private Node node
+	private Settings settings
 	private IndexNameResolver indexNameResolver = new IndexNameResolver()
 	private DateTime FROM_DATE = new DateTime(2015,4,1,0,1)
 	private DateTime TO_DATE = new DateTime(2015,11,1,0,1)
 
-	def init(Node node) {
+	def init() {
 		log.info "Initialising elastic search client"
-//		if (Environment.current == Environment.DEVELOPMENT) {
-//			node = NodeBuilder.nodeBuilder().node();
-//		}
-//		else {
-//			node = NodeBuilder.nodeBuilder().client(true).node();
-//		}
-		this.node = NodeBuilder.nodeBuilder().node();
-		//this.node = node
+		
+		ImmutableSettings.Builder settingsBuilder = ImmutableSettings.settingsBuilder();
+		settingsBuilder.put("path.data", grailsApplication.config.grails.es.path.data);
+		settingsBuilder.put("path.work", grailsApplication.config.grails.es.path.work);
+		settingsBuilder.put("path.logs", grailsApplication.config.grails.es.path.logs);
+		settingsBuilder.put("path.plugins", grailsApplication.config.grails.es.path.plugin);
+		
+		if (Environment.current == Environment.PRODUCTION) {
+			println "Should not come here"
+			settingsBuilder.put("cloud.aws.access_key", grailsApplication.config.grails.plugin.awssdk.accessKey);
+			settingsBuilder.put("cloud.aws.secret_key", grailsApplication.config.grails.plugin.awssdk.secretKey);
+			settingsBuilder.put("cloud.aws.region", grailsApplication.config.grails.plugin.awssdk.region);
+			settingsBuilder.put("discovery.type", grailsApplication.config.grails.es.discovery.type);
+			settingsBuilder.put("discovery.zen.ping.multicast.enabled", grailsApplication.config.grails.es.discovery.zen.ping.multicast.enabled);
+			settingsBuilder.put("discovery.ec2.groups", grailsApplication.config.grails.es.discovery.ec2.groups);
+			settingsBuilder.put("http.cors.enabled", grailsApplication.config.grails.es.http.cors.enabled);
+			settingsBuilder.put("http.cors.allow-origin", grailsApplication.config.grails.es.http.cors.allow.origin);
+		}
+		this.settings = settingsBuilder.build();
+		return this.settings;
+	}
+	
+	def start() {
+		String clusterName = grailsApplication.config.grails.es.cluster.name
+		if (Environment.current == Environment.DEVELOPMENT) {
+			node = NodeBuilder.nodeBuilder().settings(settings).clusterName(clusterName).node();
+		}
+		else {
+			node = NodeBuilder.nodeBuilder().settings(settings).clusterName(clusterName).client(true).node();
+		}
 	}
 
 	def destroy() {
-		this.node.close()
+		node.close()
 	}
 
 	/**** Journey Handling START (Main Index) ****/

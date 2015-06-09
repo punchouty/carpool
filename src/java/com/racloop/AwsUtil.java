@@ -40,9 +40,9 @@ public class AwsUtil {
 	
 	public static void createTables() throws InterruptedException {
 		AmazonDynamoDBClient client = new AmazonDynamoDBClient(credentials);
-//		client.setEndpoint("http://localhost:8000");
-//		client.setSignerRegionOverride("local");
-		client.setRegion(Region.getRegion(Regions.AP_SOUTHEAST_1));
+		client.setEndpoint("http://localhost:8000");
+		client.setSignerRegionOverride("local");
+		//client.setRegion(Region.getRegion(Regions.AP_SOUTHEAST_1));
 		dynamoDB = new DynamoDB(client);	
 		deleteAllTables();
 		createRacloopUseTable();

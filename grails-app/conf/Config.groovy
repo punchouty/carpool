@@ -149,6 +149,7 @@ grails.plugin.awssdk.accessKey = "AKIAJ74MXKGZZPYXKEWA"
 grails.plugin.awssdk.secretKey = "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"
 grails.plugin.awssdk.region = 'ap-southeast-1'
 
+
 environments {
 	development {
 		grails.logging.jul.usebridge = true
@@ -156,14 +157,40 @@ environments {
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = '3461eaa74e391bb6add17f9b25a38355'
 		grails.sms.enable=false
+		
+		grails.activemq.data.dir = "${System.getProperty('user.home')}/racloop-data/activemq/data"
+		
+		grails.es.cluster.name = "racloop-cluster"
+		grails.es.path.data = "${System.getProperty('user.home')}/racloop-data/es/data"
+		grails.es.path.work = "${System.getProperty('user.home')}/racloop-data/es/work"
+		grails.es.path.logs = "${System.getProperty('user.home')}/racloop-data/es/logs"
+		grails.es.path.plugin = "${System.getProperty('user.home')}/racloop-data/es/plugin"
+		grails.es.discovery.type = "ec2"
+		grails.es.discovery.zen.ping.multicast.enabled = false
+		grails.es.discovery.ec2.groups = "sg-13e86476"
+		grails.es.http.cors.enabled = true
+		grails.es.http.cors.allow.origin = "*"
 	}
 	production {
-		grails.logging.jul.usebridge = false
 		//grails.serverURL = "http://awseb-e-r-AWSEBLoa-14MW1J02IWQX1-349308203.ap-southeast-1.elb.amazonaws.com"
 		grails.plugin.facebooksdk.app.id = 393926260773644
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
 		grails.sms.enable=true
+		
+		grails.activemq.data.dir = "/var/cache/tomcat7/activemq/data"
+		
+		grails.es.cluster.name = "racloop-cluster"
+		grails.es.client.mode = true
+		grails.es.path.data = "/var/cache/tomcat7/es/data"
+		grails.es.path.work = "/var/cache/tomcat7/es/work"
+		grails.es.path.logs = "/var/cache/tomcat7/es/logs"
+		grails.es.path.plugin = "/var/cache/tomcat7/es/plugin"
+		grails.es.discovery.type = "ec2"
+		grails.es.discovery.zen.ping.multicast.enabled = false
+		grails.es.discovery.ec2.groups = "sg-13e86476"
+		grails.es.http.cors.enabled = true
+		grails.es.http.cors.allow.origin = "*"
 	}
 }
 
