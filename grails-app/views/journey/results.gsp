@@ -131,8 +131,8 @@
 											<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Accepted Request</button>
 									</g:link>
                                	</g:elseif>
-                               	<g:elseif test = "${matchedResult.getMyStatus()=='Rejected'}">
-                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> Rejected</button>
+                               	<g:elseif test = "${matchedResult.getMyStatus().startsWith('Rejected')}">
+                               		<button class="btn btn-warning"><i class="fa fa-ban"></i> ${matchedResult.getMyStatus()}</button>
                                	</g:elseif>
                                	<g:elseif test = "${matchedResult.getMyStatus().startsWith('Cancelled')}">
                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> ${matchedResult.getMyStatus()}</button>

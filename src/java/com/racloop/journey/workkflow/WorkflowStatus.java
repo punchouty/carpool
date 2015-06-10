@@ -11,6 +11,7 @@ public enum WorkflowStatus {
 	REQUEST_RECIEVED("Request Recieved"),
 	ACCEPTED("Accepted"),
 	REJECTED("Rejected"),
+	REJECTED_BY_ME("Rejected by Me"),
 	CANCELLED("Cancelled"),
 	CANCELLED_BY_REQUESTER("Cancelled by Requester"),
 	INHERITED("Inherited"),
@@ -24,6 +25,7 @@ public enum WorkflowStatus {
 	private static final String [] REQUEST_RECIEVED_ACTIONS = {WorkflowAction.ACCEPT.getAction(), WorkflowAction.REJECT.getAction()};
 	private static final String [] ACCEPTED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
 	private static final String [] REJECTED_ACTIONS = {};
+	private static final String [] REJECTED_BY_ME_ACTIONS = {};
 	private static final String [] CANCELLED_ACTIONS = {};
 	private static final String [] CANCELLED_BY_REQUESTER_ACTION = {};
 	private static final String [] CANCELLED_BY_ME_ACTION = {};
@@ -38,6 +40,7 @@ public enum WorkflowStatus {
 		statusToActionMapping.put(WorkflowStatus.REQUEST_RECIEVED, REQUEST_RECIEVED_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.ACCEPTED, ACCEPTED_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.REJECTED, REJECTED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.REJECTED_BY_ME, REJECTED_BY_ME_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.CANCELLED, CANCELLED_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.INHERITED, INHERITED_ACTIONS);
 		statusToActionMapping.put(WorkflowStatus.DELEGATED, DELEGATED_ACTIONS);

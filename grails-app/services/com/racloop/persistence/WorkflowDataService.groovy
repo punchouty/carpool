@@ -133,12 +133,20 @@ class WorkflowDataService {
 		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
 		for (JourneyPair pair : journeyPairs){
 			if(pair.getRecieverJourneyId().equals(myJourney.getId())){
-				List actions= WorkflowStatus.fromString(pair.getRecieverStatus()).actions.toList()
-				if(actions.contains(WorkflowAction.ACCEPT.action)){
+				if(pair.getId().equals(journeyPairId)){
 					pair.setInitiatorStatus(WorkflowStatus.ACCEPTED.getStatus())
 					pair.setRecieverStatus(WorkflowStatus.ACCEPTED.getStatus())
 					journeyPairDataService.saveJourneyPair(pair)
 					sendNotificationForWorkflowStateChange(myJourney.getId(), pair.getInitiatorJourneyId(), WorkflowStatus.ACCEPTED.getStatus())
+				}
+				else {
+					/*List actions= WorkflowStatus.fromString(pair.getRecieverStatus()).actions.toList()
+					if(actions.contains(WorkflowAction.ACCEPT.action)){
+						pair.setInitiatorStatus(WorkflowStatus.ACCEPTED.getStatus())
+						pair.setRecieverStatus(WorkflowStatus.ACCEPTED.getStatus())
+						journeyPairDataService.saveJourneyPair(pair)
+						sendNotificationForWorkflowStateChange(myJourney.getId(), pair.getInitiatorJourneyId(), WorkflowStatus.ACCEPTED.getStatus())
+					}*/
 				}
 			}
 		}
@@ -151,27 +159,32 @@ class WorkflowDataService {
 		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
 		
 		pairToBeRejected.setInitiatorStatus(WorkflowStatus.REJECTED.getStatus())
-		pairToBeRejected.setRecieverStatus(WorkflowStatus.REJECTED.getStatus())
+		pairToBeRejected.setRecieverStatus(WorkflowStatus.REJECTED_BY_ME.getStatus())
 		journeyPairDataService.saveJourneyPair(pairToBeRejected)
 		myJourney.decrementNumberOfCopassengers()
 		journeyToBeRejected.decrementNumberOfCopassengers()
 		Journey thirdJourney = findThirdJourneyAvailableForPairing(myJourney)
 		if(thirdJourney){
+			pairToBeRejected = null
 			journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
 			pairToBeRejected = null
 			for(JourneyPair pair : journeyPairs){
-				if(pair.getInitiatorJourneyId().equals(thirdJourney.getId()) || pair.getRecieverJourneyId().equals(thirdJourney.getId())){
-					pairToBeRejected = pair;
-					break;
+				if(!pair.getId().equals(journeyPairId)){
+					if(pair.getRecieverJourneyId().equals(myJourney.getId()) && !pair.getRecieverStatus().equals(WorkflowStatus.REQUEST_RECIEVED.status)){
+						pairToBeRejected = pair;
+						break;
+					}
 				}
 			}
-			pairToBeRejected.setInitiatorStatus(WorkflowStatus.REJECTED.getStatus())
-			pairToBeRejected.setRecieverStatus(WorkflowStatus.REJECTED.getStatus())
-			journeyPairDataService.saveJourneyPair(pairToBeRejected)
-			thirdJourney.decrementNumberOfCopassengers()
-			myJourney.decrementNumberOfCopassengers()
-			saveJourneys(thirdJourney)
-			sendNotificationForWorkflowStateChange(myJourney.getId(), thirdJourney.getId(), WorkflowStatus.REJECTED.getStatus())
+			if(pairToBeRejected){
+				pairToBeRejected.setInitiatorStatus(WorkflowStatus.REJECTED.getStatus())
+				pairToBeRejected.setRecieverStatus(WorkflowStatus.REJECTED_BY_ME.getStatus())
+				journeyPairDataService.saveJourneyPair(pairToBeRejected)
+				thirdJourney.decrementNumberOfCopassengers()
+				myJourney.decrementNumberOfCopassengers()
+				saveJourneys(thirdJourney)
+				sendNotificationForWorkflowStateChange(myJourney.getId(), thirdJourney.getId(), WorkflowStatus.REJECTED.getStatus())
+			}
 		}
 		saveJourneys(myJourney,journeyToBeRejected)
 		if(journeyToBeRejected.getNumberOfCopassengers()<1){

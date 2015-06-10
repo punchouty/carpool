@@ -104,8 +104,8 @@
 													<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel accepted Request</button>
 											</g:link>
 	                                	</g:elseif>
-	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Rejected'}">
-	                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> Rejected</button>
+	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus().startsWith('Rejected')}">
+	                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> ${matchedWorkflowInstance.getMyStatus()}</button>
 	                                	</g:elseif>
 	                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Cancelled'}">
 	                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> Cancelled</button>
