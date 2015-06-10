@@ -142,15 +142,19 @@ class JourneyController {
 	 *  
 	 */
 	def history() {
+		def workflows =[]
 		def journeys =[]
 		int numberOfRecords = 0
 		def currentUser = getRacloopAuthenticatedUser()
 		if(currentUser) {
-			journeys = journeyService.findHistoricJourneyDetailsForUser(currentUser)
-			numberOfRecords = journeys?.size()
+			def result =journeyDataService.findMyHistory(currentUser.profile.mobile, new Date())
+			result.each {it->
+				journeys << journeyDataService.findChildJourneys(it.getId())
+			}
+			numberOfRecords = result?.size()
 			
 		}
-		render(view: "history", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords])
+		render(view: "history", model: [currentUser: currentUser, journeys:journeys, numberOfRecords : numberOfRecords, workflows:workflows])
 		
 	}
 	
@@ -212,7 +216,8 @@ class JourneyController {
 		}
 		log.info("Requesting service. currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + matchedJourneyId)
 		if(currentJourney.isNewJourney()) {
-			workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), matchedJourneyId);
+			Journey savedJourney = workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), matchedJourneyId);
+			currentJourney.id = savedJourney.getId()
 		}
 		else {
 			workflowDataService.requestJourney(currentJourney.id, matchedJourneyId);
