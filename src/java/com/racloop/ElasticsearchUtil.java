@@ -33,7 +33,6 @@ public class ElasticsearchUtil {
 		boolean isPluginInstalled = false;
 		if (grails.util.Environment.getCurrent() == grails.util.Environment.DEVELOPMENT) {
 			for (File file : pluginsPath) {
-				System.out.println("Plugin Path" + file.getAbsolutePath());
 				if(file.getAbsolutePath().contains("kopf")) {
 					isPluginInstalled = true;
 				}
@@ -41,7 +40,6 @@ public class ElasticsearchUtil {
 			if(isPluginInstalled == false) pluginManager.downloadAndExtract(KOPF_PLUGIN);
 			isPluginInstalled = false;
 			for (File file : pluginsPath) {
-				System.out.println("Plugin Path" + file.getAbsolutePath());
 				if(file.getAbsolutePath().contains("HQ")) {
 					isPluginInstalled = true;
 				}
@@ -49,7 +47,6 @@ public class ElasticsearchUtil {
 			if(isPluginInstalled == false) pluginManager.downloadAndExtract(HQ_PLUGIN);
 			isPluginInstalled = false;
 			for (File file : pluginsPath) {
-				System.out.println("Plugin Path" + file.getAbsolutePath());
 				if(file.getAbsolutePath().contains("aws")) {
 					isPluginInstalled = true;
 				}
@@ -59,7 +56,6 @@ public class ElasticsearchUtil {
 		else {
 			isPluginInstalled = false;
 			for (File file : pluginsPath) {
-				System.out.println("Plugin Path" + file.getAbsolutePath());
 				if(file.getAbsolutePath().contains("aws")) {
 					isPluginInstalled = true;
 				}

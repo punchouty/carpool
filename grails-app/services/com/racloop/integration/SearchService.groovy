@@ -74,7 +74,7 @@ class SearchService {
 		settingsBuilder.put("path.plugins", grailsApplication.config.grails.es.path.plugin);
 		
 		if (Environment.current == Environment.PRODUCTION) {
-			println "Should not come here"
+			log.info "Configuring elasticsearch for aws in production"
 			settingsBuilder.put("cloud.aws.access_key", grailsApplication.config.grails.plugin.awssdk.accessKey);
 			settingsBuilder.put("cloud.aws.secret_key", grailsApplication.config.grails.plugin.awssdk.secretKey);
 			settingsBuilder.put("cloud.aws.region", grailsApplication.config.grails.plugin.awssdk.region);
