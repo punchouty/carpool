@@ -155,9 +155,9 @@ class WorkflowDataService {
 		journeyPairDataService.saveJourneyPair(pairToBeRejected)
 		myJourney.decrementNumberOfCopassengers()
 		journeyToBeRejected.decrementNumberOfCopassengers()
-		Journey thirdJourney = findThirdJourneyAvailableForPairing(journeyToBeRejected)
+		Journey thirdJourney = findThirdJourneyAvailableForPairing(myJourney)
 		if(thirdJourney){
-			journeyPairs = journeyPairDataService.findPairsByIds(journeyToBeRejected.getJourneyPairIds())
+			journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
 			pairToBeRejected = null
 			for(JourneyPair pair : journeyPairs){
 				if(pair.getInitiatorJourneyId().equals(thirdJourney.getId()) || pair.getRecieverJourneyId().equals(thirdJourney.getId())){
@@ -169,13 +169,14 @@ class WorkflowDataService {
 			pairToBeRejected.setRecieverStatus(WorkflowStatus.REJECTED.getStatus())
 			journeyPairDataService.saveJourneyPair(pairToBeRejected)
 			thirdJourney.decrementNumberOfCopassengers()
-			journeyToBeRejected.decrementNumberOfCopassengers()
+			myJourney.decrementNumberOfCopassengers()
 			saveJourneys(thirdJourney)
 		}
 		saveJourneys(myJourney,journeyToBeRejected)
 		if(journeyToBeRejected.getNumberOfCopassengers()<1){
 			journeyDataService.makeJourneySearchable(journeyToBeRejected)
 		}
+		journeyDataService.makeJourneySearchable(myJourney)
 		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeRejected.getId(), WorkflowStatus.REJECTED.getStatus())
 	}
 	

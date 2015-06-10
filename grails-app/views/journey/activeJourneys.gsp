@@ -70,7 +70,7 @@
                     <g:each in="${journeyInstance.relatedJourneys}" status="k" var="matchedWorkflowInstance">
 	                    <div class="row">
 	                    	<div class="col-md-7 col-md-offset-2 text-left">
-	                    		<h5>${matchedWorkflowInstance?.name}</h5>
+	                    		<h5>${matchedWorkflowInstance?.name}<g:if test = "${matchedWorkflowInstance.getMyStatus()=='Accepted'}"> &nbsp;&nbsp; <i class="icon-icon-mobile"></i> ${matchedWorkflowInstance.mobile}</g:if></h5>
 	                    		<ul class="text-left">
 	                                <li>
 	                                	<g:if test = "${matchedWorkflowInstance?.isDriver== true}">
