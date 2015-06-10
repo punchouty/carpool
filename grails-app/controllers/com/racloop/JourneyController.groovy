@@ -212,7 +212,8 @@ class JourneyController {
 		}
 		log.info("Requesting service. currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + matchedJourneyId)
 		if(currentJourney.isNewJourney()) {
-			workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), matchedJourneyId);
+			Journey savedJourney = workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), matchedJourneyId);
+			currentJourney.id = savedJourney.getId()
 		}
 		else {
 			workflowDataService.requestJourney(currentJourney.id, matchedJourneyId);

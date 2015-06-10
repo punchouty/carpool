@@ -6,6 +6,7 @@ import com.racloop.domain.Journey
 import com.racloop.domain.JourneyPair
 import com.racloop.journey.workkflow.WorkflowDirection
 import com.racloop.journey.workkflow.WorkflowStatus
+import com.racloop.journey.workkflow.WorkflowAction
 import com.racloop.Constant
 
 @Transactional
@@ -18,6 +19,7 @@ class WorkflowDataService {
 	def requestJourneyAndSave(Journey unsavedJourney, String otherJourneyId) {
 		journeyDataService.saveJourney(unsavedJourney);
 		requestJourney(unsavedJourney.getId(), otherJourneyId);
+		unsavedJourney
 	}
 	
 	def requestJourney(String requesterJourneyId, String otherJourneyId) {
@@ -127,15 +129,19 @@ class WorkflowDataService {
 
 	def acceptRequest(String journeyPairId) {
 		JourneyPair pairToBeAccepted = journeyPairDataService.findPairById(journeyPairId)
-		Journey journeyToBeAccepted = journeyDataService.findJourney(pairToBeAccepted.getInitiatorJourneyId())
 		Journey myJourney = journeyDataService.findJourney(pairToBeAccepted.getRecieverJourneyId())
 		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
-		
-		pairToBeAccepted.setInitiatorStatus(WorkflowStatus.ACCEPTED.getStatus())
-		pairToBeAccepted.setRecieverStatus(WorkflowStatus.ACCEPTED.getStatus())
-		journeyPairDataService.saveJourneyPair(pairToBeAccepted)
-		
-		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeAccepted.getId(), WorkflowStatus.ACCEPTED.getStatus())
+		for (JourneyPair pair : journeyPairs){
+			if(pair.getRecieverJourneyId().equals(myJourney.getId())){
+				List actions= WorkflowStatus.fromString(pair.getRecieverStatus()).actions.toList()
+				if(actions.contains(WorkflowAction.ACCEPT.action)){
+					pair.setInitiatorStatus(WorkflowStatus.ACCEPTED.getStatus())
+					pair.setRecieverStatus(WorkflowStatus.ACCEPTED.getStatus())
+					journeyPairDataService.saveJourneyPair(pair)
+					sendNotificationForWorkflowStateChange(myJourney.getId(), pair.getInitiatorJourneyId(), WorkflowStatus.ACCEPTED.getStatus())
+				}
+			}
+		}
 	}
 
 	def rejectRequest(String journeyPairId){
