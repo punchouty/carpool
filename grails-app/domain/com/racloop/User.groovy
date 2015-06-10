@@ -4,8 +4,11 @@ package com.racloop
 import com.racloop.vechicle.Vehicle
 
 class User extends grails.plugin.nimble.core.UserBase {
+	@Deprecated
 	private static final String PENDING_REVIEW = "pending"
+	@Deprecated
 	private static final String REVIEW_COMPLETE = "completed"
+	@Deprecated
 	private static final String BLANK = null
 	//Integer asDriverTotalVotes = 0
 	//Integer asRiderTotalVotes = 0
@@ -15,7 +18,9 @@ class User extends grails.plugin.nimble.core.UserBase {
 	String facebookId
 	//http://graph.facebook.com/[UID]/picture
 	String getFacebookProfilePic() { Constant.FACEBOOK_URL + facebookId + Constant.PICTURE}
+	@Deprecated
 	String pendingReview
+	String journeyIdForReview
 	
 	static transients = ['facebookProfilePic']
 	

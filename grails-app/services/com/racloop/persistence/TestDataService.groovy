@@ -151,6 +151,7 @@ class TestDataService {
 	}
 	
 	def generateDataForDev(int numberOfrecordsToGenerate) {
+		boolean generateYesterdayData = false;
 		def outgoingRequest =[]
 		def incomingRequest = []
 		if(numberOfrecordsToGenerate < 1) numberOfrecordsToGenerate = 1;
@@ -170,6 +171,7 @@ class TestDataService {
 		time.set(Calendar.SECOND, 0);
 		time.set(Calendar.MILLISECOND, 0);
 		time.add(Calendar.MINUTE, -60);
+		if(generateYesterdayData) time.add(Calendar.HOUR, -22);
 		//Delhi to Chandigarh - sample.driver
 		User user = user1;
 		lines.each {  line ->
@@ -208,6 +210,7 @@ class TestDataService {
 		time.set(Calendar.SECOND, 0);
 		time.set(Calendar.MILLISECOND, 0);
 		time.add(Calendar.MINUTE, -90);
+		if(generateYesterdayData) time.add(Calendar.HOUR, -22);
 		user = user2;
 		lines.each {  line ->
 			i++;
@@ -245,6 +248,7 @@ class TestDataService {
 		time.set(Calendar.SECOND, 0);
 		time.set(Calendar.MILLISECOND, 0);
 		time.add(Calendar.MINUTE, -90);
+		if(generateYesterdayData) time.add(Calendar.HOUR, -22);
 		user = user3;
 		lines.each {  line ->
 			i++;
@@ -282,6 +286,7 @@ class TestDataService {
 		time.set(Calendar.SECOND, 0);
 		time.set(Calendar.MILLISECOND, 0);
 		time.add(Calendar.MINUTE, -90);
+		if(generateYesterdayData) time.add(Calendar.HOUR, -22);
 		user = user4;
 		lines.each {  line ->
 			i++;

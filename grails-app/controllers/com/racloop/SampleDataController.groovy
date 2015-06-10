@@ -11,6 +11,7 @@ class SampleDataController {
 	def smsService
 	def grailsApplication
 	def journeyDataService
+	def userReviewService
 
     def index() { 
 		render "Empty Implementation"
@@ -74,6 +75,16 @@ class SampleDataController {
 		}
 		else {
 			render "Fail"
+		}
+	}
+	
+	def runArchiveJob() {
+		if (Environment.current == Environment.DEVELOPMENT) {
+			userReviewService.markUsersForPendingReview();
+			render "Operation successful"
+		}
+		else {
+			render "Operation notsupported"
 		}
 	}
 }

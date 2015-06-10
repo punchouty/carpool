@@ -21,6 +21,7 @@ import com.racloop.domain.Journey
 import com.racloop.domain.JourneyPair;
 import com.racloop.domain.UserJourney;
 import com.racloop.journey.workkflow.WorkflowAction;
+import com.racloop.journey.workkflow.WorkflowStatus
 
 @Transactional
 class JourneyDataService {
@@ -67,6 +68,22 @@ class JourneyDataService {
 		}
 		UserJourney userJourney = new UserJourney(currentJourney, journeyPairs, allRelatedJourneysAsMap, ids);
 		return userJourney;
+	}
+	
+	def getJourneyForReview(String journeyId, String mobileOfReviewer) {
+		Journey currentJourney = awsService.dynamoDBMapper.load(journeyId);
+		Set<String> journeyPairIds = currentJourney.getJourneyPairIds();
+		journeyPairIds.each { pairId ->
+			JourneyPair journeyPair = journeyPairDataService.findPairById(pairId);
+			if(journeyPair.getInitiatorStatusAsEnum() == WorkflowStatus.ACCEPTED) {
+				String otherJourneyId = journeyPair.initiatorJourneyId;
+				if(journeyId.equals(otherJourneyId)) {
+					otherJourneyId = journeyPair.recieverJourneyId
+				}
+				Journey journeyOther = findJourney(otherJourneyId);
+				currentJourney.getRelatedJourneys().add(journeyOther);
+			}
+		}
 	}
 	
 	/**
