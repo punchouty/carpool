@@ -37,6 +37,7 @@ class User extends grails.plugin.nimble.core.UserBase {
 	static constraints = {
 		facebookId blank: true, nullable: true,  unique: true
 		pendingReview blank: true, nullable: true
+		journeyIdForReview blank: true, nullable: true
 	}
 	
 	public double getUserRating() {

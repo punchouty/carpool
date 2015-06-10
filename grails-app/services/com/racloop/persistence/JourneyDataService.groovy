@@ -70,7 +70,7 @@ class JourneyDataService {
 		return userJourney;
 	}
 	
-	def getJourneyForReview(String journeyId, String mobileOfReviewer) {
+	def getJourneyForReview(String journeyId) {
 		Journey currentJourney = awsService.dynamoDBMapper.load(journeyId);
 		Set<String> journeyPairIds = currentJourney.getJourneyPairIds();
 		journeyPairIds.each { pairId ->
