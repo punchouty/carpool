@@ -73,7 +73,17 @@ class UserMobileController {
 					SecurityUtils.subject.login(authToken)
 					userService.createLoginRecord(request)
 					authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
-					mobileResponse.data=authenticatedUser
+					mobileResponse.data = authenticatedUser
+					if(authenticatedUser.journeyIdForReview != null) {
+						Journey journeyForReview = journeyDataService.getJourneyForReview(authenticatedUser.journeyIdForReview, authenticatedUser.profile.mobile)
+						mobileResponse.currentJourney = currentJourney.convert();
+						mobileResponse.success = true
+					}
+					else {
+						Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
+						if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
+						mobileResponse.success = true
+					}
 					Journey journeyFeedback = getJourneyForFeedback();
 					if(journeyFeedback != null) {
 						mobileResponse.success = true
@@ -606,6 +616,10 @@ class UserMobileController {
 			mobileResponse.success = false
 		}
 		render mobileResponse as JSON
+	}
+
+	private getNimbleConfig() {
+		grailsApplication.config.nimble
 	}
 	
 }
