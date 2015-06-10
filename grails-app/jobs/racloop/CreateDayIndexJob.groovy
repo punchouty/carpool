@@ -1,5 +1,6 @@
 package racloop
 
+@Deprecated
 class CreateDayIndexJob {
 	
 	def elasticSearchService
@@ -10,8 +11,8 @@ class CreateDayIndexJob {
     }
 
     def execute() {
-		addIndexes();
-		closeIndexes();
+//		addIndexes();
+//		closeIndexes();
     }
 	
 	private void addIndexes() {

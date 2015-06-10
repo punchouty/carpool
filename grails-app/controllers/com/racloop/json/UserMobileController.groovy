@@ -73,7 +73,17 @@ class UserMobileController {
 					SecurityUtils.subject.login(authToken)
 					userService.createLoginRecord(request)
 					authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
-					mobileResponse.data=authenticatedUser
+					mobileResponse.data = authenticatedUser
+					if(authenticatedUser.journeyIdForReview != null) {
+						Journey journeyForReview = journeyDataService.getJourneyForReview(authenticatedUser.journeyIdForReview, authenticatedUser.profile.mobile)
+						mobileResponse.currentJourney = currentJourney.convert();
+						mobileResponse.success = true
+					}
+					else {
+						Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
+						if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
+						mobileResponse.success = true
+					}
 					Journey journeyFeedback = getJourneyForFeedback();
 					if(journeyFeedback != null) {
 						mobileResponse.success = true
@@ -245,10 +255,10 @@ class UserMobileController {
 					else {
 						//Saving user in DynamoDB
 						RacloopUser racloopUser = new RacloopUser();
-						racloopUser.setMobile(profile.mobile);
-						racloopUser.setEmail(profile.email);
-						racloopUser.setFullName(profile.fullName);
-						racloopUser.setEmailHash(profile.emailHash);
+						racloopUser.setMobile(savedUser.profile.mobile);
+						racloopUser.setEmail(savedUser.profile.email);
+						racloopUser.setFullName(savedUser.profile.fullName);
+						racloopUser.setEmailHash(savedUser.profile.emailHash);
 						//TODO take care for failure scenario
 						userDataService.saveUser(racloopUser);
 						log.info("Sending verification code to $user.profile.mobile");
@@ -606,6 +616,10 @@ class UserMobileController {
 			mobileResponse.success = false
 		}
 		render mobileResponse as JSON
+	}
+
+	private getNimbleConfig() {
+		grailsApplication.config.nimble
 	}
 	
 }
