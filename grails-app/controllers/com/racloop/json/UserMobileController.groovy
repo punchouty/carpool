@@ -255,10 +255,10 @@ class UserMobileController {
 					else {
 						//Saving user in DynamoDB
 						RacloopUser racloopUser = new RacloopUser();
-						racloopUser.setMobile(profile.mobile);
-						racloopUser.setEmail(profile.email);
-						racloopUser.setFullName(profile.fullName);
-						racloopUser.setEmailHash(profile.emailHash);
+						racloopUser.setMobile(savedUser.profile.mobile);
+						racloopUser.setEmail(savedUser.profile.email);
+						racloopUser.setFullName(savedUser.profile.fullName);
+						racloopUser.setEmailHash(savedUser.profile.emailHash);
 						//TODO take care for failure scenario
 						userDataService.saveUser(racloopUser);
 						log.info("Sending verification code to $user.profile.mobile");

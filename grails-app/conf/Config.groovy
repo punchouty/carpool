@@ -157,7 +157,7 @@ environments {
 		grails.plugin.facebooksdk.app.id = 417141881785415
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = '3461eaa74e391bb6add17f9b25a38355'
-		grails.sms.enable=false
+		grails.sms.enable=true
 		
 		grails.activemq.data.dir = "${System.getProperty('user.home')}/racloop-data/activemq/data"
 		
