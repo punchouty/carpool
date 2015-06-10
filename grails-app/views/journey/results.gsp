@@ -119,10 +119,10 @@
   									</g:link>
                                	</g:if>
                                	<g:elseif test = "${matchedResult.getMyStatus()=='Request Recieved'}">
-                               		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId()]">
+                               		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId(),redirectToSearch:true]">
 											<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept Request</button>
 									</g:link>
-									<g:link action="rejectIncomingRequest" id="rejectIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId()]">
+									<g:link action="rejectIncomingRequest" id="rejectIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId(),redirectToSearch:true]">
 											<button class="btn btn-warning"><i class="fa fa-ban"></i> Reject Request</button>
 									</g:link>
                                	</g:elseif>
