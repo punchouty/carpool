@@ -175,32 +175,61 @@ class WorkflowDataService {
 	
 	
 	def cancelMyJourney(String myJourneyId){
+		boolean isPrimary = true
 		String otherJourneyId = null;
+		Journey otherJourney = null
 		Journey myJourney = journeyDataService.findJourney(myJourneyId);
 		myJourney.setStatusAsParent(WorkflowStatus.CANCELLED.getStatus());
 		journeyDataService.makeJourneyNonSearchable(myJourneyId)
-		saveJourneys(myJourney);
 		List journeyPairs = journeyPairDataService.findPairsByIds(myJourney.getJourneyPairIds())
 		for(JourneyPair pair : journeyPairs){
-			
-			if(pair.getInitiatorJourneyId().equals(myJourneyId)){
-				pair.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_ME.getStatus())
-				pair.setRecieverStatus(WorkflowStatus.CANCELLED_BY_OTHER.getStatus())
+			if(!WorkflowStatus.canBeIgnored(pair.getRecieverStatus())) {
+				myJourney.decrementNumberOfCopassengers()
+				otherJourneyId = findTheOtherJourneyId(pair, myJourneyId)
+				otherJourney = journeyDataService.findJourney(otherJourneyId)
+				otherJourney.decrementNumberOfCopassengers();
+				if(WorkflowStatus.isIndirectStatus(pair.getRecieverStatus())){
+					isPrimary = false
+					pair.setInitiatorStatus(WorkflowStatus.FORCED_CANCELLED.getStatus())
+					pair.setRecieverStatus(WorkflowStatus.FORCED_CANCELLED.getStatus())
+					sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.FORCED_CANCELLED.getStatus())
+				}
+				else {
+					if(pair.getInitiatorJourneyId().equals(myJourneyId)){
+						pair.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_ME.getStatus())
+						pair.setRecieverStatus(WorkflowStatus.CANCELLED_BY_OTHER.getStatus())
+					}
+					else {
+						pair.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_OTHER.getStatus())
+						pair.setRecieverStatus(WorkflowStatus.CANCELLED_BY_ME.getStatus())
+					}
+
+					sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
+				}
+				journeyPairDataService.saveJourneyPair(pair)
+
+				saveJourneys(otherJourney);
+				//saveJourneys(myJourney);
+				if(otherJourney.getNumberOfCopassengers()<1){
+					journeyDataService.makeJourneySearchable(otherJourney)
+				}
+
 			}
-			else {
-				pair.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_OTHER.getStatus())
-				pair.setRecieverStatus(WorkflowStatus.CANCELLED_BY_ME.getStatus())
+		}
+		saveJourneys(myJourney);
+		if(otherJourneyId != null && isPrimary){
+			journeyPairs = journeyPairDataService.findPairsByIds(otherJourney.getJourneyPairIds())
+			for(JourneyPair pair : journeyPairs){
+				if(!WorkflowStatus.canBeIgnored(pair.getRecieverStatus())) {
+					updateThirdJourneyAsForceCancelled(pair,otherJourneyId)
+					otherJourney.decrementNumberOfCopassengers()
+					if(otherJourney.getNumberOfCopassengers() < 1){
+						journeyDataService.makeJourneySearchable(otherJourney)
+					}
+					saveJourneys(otherJourney)
+					
+				}
 			}
-			journeyPairDataService.saveJourneyPair(pair)
-			otherJourneyId = pair.getInitiatorJourneyId().equals(myJourneyId) ? pair.getRecieverJourneyId() : pair.getInitiatorJourneyId()
-			Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
-			otherJourney.decrementNumberOfCopassengers();
-			saveJourneys(otherJourney);
-			//saveJourneys(myJourney);
-			if(otherJourney.getNumberOfCopassengers()<1){
-				journeyDataService.makeJourneySearchable(otherJourney)
-			}
-			sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
 		}
 	}
 	

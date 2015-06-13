@@ -379,7 +379,7 @@ class JourneyController {
 	 */
 	def deleteJourney() {
 		def journeyId = params.journeyIdToBeDeleted
-		journeyManagerService.deleteJourney(journeyId)
+		workflowDataService.cancelMyJourney(journeyId)
 		redirect(action: "activeJourneys")
 	}
 	

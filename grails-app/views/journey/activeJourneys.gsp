@@ -1,4 +1,4 @@
-<%@ page import="com.racloop.journey.workkflow.WorkflowState" %>
+<%@ page import="com.racloop.journey.workkflow.WorkflowStatus" %>
 <html>
 <head>
 <meta name="layout" content="dynamic" />
@@ -47,13 +47,18 @@
 		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.from}</li>
 		                        <li><i class="icon-weather-wind-s"></i> <strong>To :</strong> ${journeyInstance.to}</li>
 		                        <li>
-		                        	<g:link action="searchAgain"id="searchAgain"  class="btn btn-warning" params="[journeyId: journeyInstance.id, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
-					       				<i class="fa fa-search"></i> Search Again
-					       			</g:link>&nbsp; 
-		                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Travel Buddies (${journeyInstance.numberOfCopassengers}) <span class="caret"></span></button> &nbsp; 
-		                        	<a name ="delete" id="delete${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
-					       				<button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
-					       			</a>
+		                        	<g:if test="${journeyInstance.getStatusAsParent() == WorkflowStatus.CANCELLED.getStatus()}">
+		                        		<button class="btn btn-danger"><i class="fa fa-trash"></i> Deleted</button>
+		                        	</g:if>
+		                        	<g:else>
+		                        		<g:link action="searchAgain"id="searchAgain"  class="btn btn-warning" params="[journeyId: journeyInstance.id, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
+					       					<i class="fa fa-search"></i> Search Again
+						       			</g:link>&nbsp; 
+			                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Travel Buddies (${journeyInstance.numberOfCopassengers}) <span class="caret"></span></button> &nbsp; 
+			                        	<a name ="delete" id="delete${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
+						       				<button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
+						       			</a>
+		                        	</g:else>
 		                        </li>
 		                        
 		                    </ul>
