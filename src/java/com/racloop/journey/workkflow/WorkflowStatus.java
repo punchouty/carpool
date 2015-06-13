@@ -1,6 +1,8 @@
 package com.racloop.journey.workkflow;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 
 
@@ -17,7 +19,8 @@ public enum WorkflowStatus {
 	INHERITED("Inherited"),
 	DELEGATED("Delegated"),
 	CANCELLED_BY_OTHER("Cancelled by Other"),
-	CANCELLED_BY_ME("Cancelled by Me");
+	CANCELLED_BY_ME("Cancelled by Me"),
+	FORCED_CANCELLED("Forced Cancelled");
 
 	private final String status;
 	private static final String [] NONE_ACTIONS = {};
@@ -30,9 +33,12 @@ public enum WorkflowStatus {
 	private static final String [] CANCELLED_BY_REQUESTER_ACTION = {};
 	private static final String [] CANCELLED_BY_ME_ACTION = {};
 	private static final String [] CANCELLED_BY_OTHER_ACTION = {};
-	private static final String [] INHERITED_ACTIONS = {WorkflowAction.REJECT.getAction()};
-	private static final String [] DELEGATED_ACTIONS = {WorkflowAction.CANCEL.getAction()};
+	private static final String [] INHERITED_ACTIONS = {};
+	private static final String [] DELEGATED_ACTIONS = {};
+	private static final String [] FORCED_CANCELLED_ACTIONS = {};
 	private static final HashMap<WorkflowStatus, String []> statusToActionMapping = new HashMap<WorkflowStatus, String []>();
+	private static final List<WorkflowStatus> ignoreableStatus = Arrays.asList(CANCELLED, CANCELLED_BY_ME, REJECTED, REJECTED_BY_ME, CANCELLED_BY_OTHER, FORCED_CANCELLED);
+	private static final List<WorkflowStatus> indirectStatus = Arrays.asList(DELEGATED, INHERITED);
 	
 	static {
 		statusToActionMapping.put(WorkflowStatus.NONE, NONE_ACTIONS);
@@ -47,6 +53,8 @@ public enum WorkflowStatus {
 		statusToActionMapping.put(WorkflowStatus.CANCELLED_BY_REQUESTER, CANCELLED_BY_REQUESTER_ACTION);
 		statusToActionMapping.put(WorkflowStatus.CANCELLED_BY_ME, CANCELLED_BY_ME_ACTION);
 		statusToActionMapping.put(WorkflowStatus.CANCELLED_BY_OTHER, CANCELLED_BY_OTHER_ACTION);
+		statusToActionMapping.put(WorkflowStatus.FORCED_CANCELLED, FORCED_CANCELLED_ACTIONS);
+		
 	}
 
 	WorkflowStatus(String status) {
@@ -73,32 +81,12 @@ public enum WorkflowStatus {
 	}
 
 	public static boolean canBeIgnored(String status){
-		boolean canBeIgnored = false;
 		WorkflowStatus workflowstate = fromString(status);
-		switch(workflowstate) {
-			case REQUESTED: canBeIgnored = false;
-				break;
-			case ACCEPTED: canBeIgnored = false;
-				break;
-			case CANCELLED: canBeIgnored = true;
-				break;
-			case REJECTED: canBeIgnored = true;
-				break;
-			case REQUEST_RECIEVED: canBeIgnored = false;
-				break;
-			case INHERITED: canBeIgnored = false;
-				break;
-			case DELEGATED: canBeIgnored = false;
-				break;
-			case CANCELLED_BY_REQUESTER: canBeIgnored = true;
-				break;
-			case CANCELLED_BY_OTHER: canBeIgnored = true;
-				break;
-			case CANCELLED_BY_ME: canBeIgnored = true;
-				break;	
-
-			default : canBeIgnored = false;
-		}
-		return canBeIgnored;
+		return ignoreableStatus.contains(workflowstate);
+	}
+	
+	public static boolean isIndirectStatus(String status){
+		WorkflowStatus workflowstate = fromString(status);
+		return indirectStatus.contains(workflowstate);
 	}
 }
