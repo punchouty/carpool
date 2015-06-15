@@ -116,8 +116,9 @@ grails.hibernate.cache.queries = false
 grails.startup.elasticsearch.index.create = true
 grails.startup.sampleUsers.create = true
 grails.startup.masterData.places.create = true
-grails.startup.sampleData.create = false
+grails.startup.sampleData.create = true
 grails.enable.delete.all = true
+grails.delete.user.password = s3cr3t
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
 //grails.startup.sampleUsers.create = false

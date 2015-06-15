@@ -4,6 +4,7 @@ import liquibase.util.csv.opencsv.CSVReader;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
 import com.racloop.DistanceUtil;
+import com.racloop.Profile;
 import com.racloop.User;
 import com.racloop.domain.Journey;
 import com.racloop.domain.RacloopUser;
@@ -339,6 +340,56 @@ class TestDataService {
 		searchService.deleteAllDummyData();
 		
 		
+	}
+	
+	def deleteDataForUser(String secret, String mobile) {
+		String deletePassword = grailsApplication.config.grails.delete.user.password
+		if(secret.equals(deletePassword)) {
+			Profile profile = Profile.findByMobile(mobile);
+			if(profile != null) {
+				User user = profile.owner;
+				journeyDataService.deleteJourneyForUser(mobile);
+				searchService.deleteAllJourneyDataForUser(mobile);
+				return "successfully deleted journey data for user"
+			}
+			else {
+				return "Unable to find user with mobile :  ${mobile}";
+			}
+		}
+		else {
+			return "Wrong password";
+		}
+	}
+	
+	def deleteUser(String secret, String mobile) {
+		String deletePassword = grailsApplication.config.grails.delete.user.password
+		if(secret.equals(deletePassword)) {
+			Profile profile = Profile.findByMobile(mobile);
+			if(profile.email.equals('admin@racloop.com')) {
+				return "You cannot remove admin from system";
+			}
+			if(profile != null) {
+				User user = profile.owner;
+				journeyDataService.deleteJourneyForUser(mobile);
+				searchService.deleteAllJourneyDataForUser(mobile);
+				userDataService.deleteUserByMobile(mobile);//delete from dynamo db
+				user.groups.each { group ->
+					groupService.deleteMember(user2, group)
+				}
+				user.roles.each { role ->
+					roleService.deleteMember(user2, role)
+				}
+				user.profile.delete();//delete from mysql
+				user.delete(flush : true);//delete from mysql
+				return "successfully deleted user and associated journeys"
+			}
+			else {
+				return "Unable to find user with mobile :  ${mobile}";
+			}
+		}
+		else {
+			return "Wrong password";
+		}
 	}
 	
 	def deleteAll() {
