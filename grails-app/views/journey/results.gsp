@@ -106,7 +106,7 @@
 	                </ul>
 	            </div>
 	            <div class="col-md-5 text-left">
-	                <h5>${matchedResult.name}</h5>
+	                <h5>${matchedResult.name}<g:if test = "${ matchedResult.getNumberOfCopassengers()>0}"> + ${ matchedResult.getNumberOfCopassengers()}</g:if> </h5>
 	                <ul class="text-left">
 	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${matchedResult.from}</li>
 	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${matchedResult.to}</li>
@@ -143,7 +143,13 @@
 							</li>
 						</g:if>
 						<g:else>
-							<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link></li>
+							<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link>
+								<g:if test = "${ matchedResult.getNumberOfCopassengers()>0}">
+									<a name ="additonal" id="additonal${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
+							       		<button class="btn btn-warning"> All users info</button>
+							       	</a>
+								</g:if>
+							</li> 			
 						</g:else>
 			            
 	                </ul>
@@ -185,5 +191,39 @@
         });
      </script>
     -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	  <div class="modal-dialog  modal-lg">
+	    <div class="modal-content">
+	      <div class="modal-header">
+          <h4 class="modal-title" id="gridSystemModalLabel">Buddy Information</h4>
+	       
+	      </div>
+	      <div class="modal-body">
+	      this is my body
+	      </div>
+	      <div class="modal-footer">
+ 	        <button class="btn btn-primary" data-dismiss="modal" id="Confirmed">OK</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<script type="text/javascript">
+		$(document).ready(function($){
+			$('a[name=additonal]').click(function(){
+		        var jourenyId = $(this).data('id');
+		        //alert(jourenyId);
+		        $.ajax({
+		              type: "POST",
+		              url: "${createLink(controller: 'journey', action: 'getSibling')}" ,
+		              data: { journeyId: $(this).data('id') }
+		            }).done(function(data) {
+		                $('.modal-body').html(data);
+		                $('#myModal').modal({show:true});
+		            });
+		        $("#journeyIdToBeDeleted").val(jourenyId);
+		    	
+		    });
+		});
+	</script>
 </body>
 </html>  

@@ -416,6 +416,12 @@ class JourneyController {
 		journey.dateOfJourney = null
 	}
 	
+	def getSibling(){
+		String journeyId = params.journeyId
+		List journeys = journeyDataService.findSiblingJourneys(journeyId)
+		render(view:'siblingJourney', model: [journeys: journeys])
+	}
+	
 }
 
 public class JourneyRequestCommand {
