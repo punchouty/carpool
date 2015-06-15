@@ -116,7 +116,7 @@ grails.hibernate.cache.queries = false
 grails.startup.elasticsearch.index.create = true
 grails.startup.sampleUsers.create = true
 grails.startup.masterData.places.create = true
-grails.startup.sampleData.create = true
+grails.startup.sampleData.create = false
 grails.enable.delete.all = true
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
@@ -157,7 +157,8 @@ environments {
 		grails.plugin.facebooksdk.app.id = 417141881785415
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = '3461eaa74e391bb6add17f9b25a38355'
-		grails.sms.enable=true
+		grails.sms.enable=false
+		grails.email.enable=false
 		
 		grails.activemq.data.dir = "${System.getProperty('user.home')}/racloop-data/activemq/data"
 		
@@ -178,6 +179,7 @@ environments {
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
 		grails.sms.enable=true
+		grails.email.enable=true
 		
 		grails.activemq.data.dir = "/var/cache/tomcat7/activemq/data"
 		

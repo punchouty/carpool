@@ -128,6 +128,13 @@ class JourneyDataService {
 		awsService.dynamoDBMapper.save(currentJourney, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
 	}
 	
+	def updateElasticsearchForPassangeCountIfRequired(String journeyId, int numberOfCopassengers) {
+		Journey journey = searchService.getJourney(journeyId);
+		if(journey != null && journey.numberOfCopassengers != numberOfCopassengers) {
+			searchService.updateJourneyForCopassangers(journeyId, numberOfCopassengers);
+		}
+	}
+	
 	/**
 	 * Current Journey is from Elastic Search
 	 */
@@ -226,6 +233,14 @@ class JourneyDataService {
 			}
 		}
 		return journey;
+	}
+	
+	def findSiblingJourneys(String journeyId) {
+		Journey journey = findJourney(journeyId);
+		enrichJourney(journey);
+		def siblingJourneys = journey.getRelatedJourneys();
+		siblingJourneys.add(journey);
+		return new ArrayList<?>(siblingJourneys);
 	}
 	
 	/**

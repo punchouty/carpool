@@ -16,6 +16,7 @@ import org.elasticsearch.action.index.IndexResponse
 import org.elasticsearch.action.search.SearchRequestBuilder;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.action.search.SearchType;
+import org.elasticsearch.action.update.UpdateRequest;
 import org.elasticsearch.common.geo.GeoDistance;
 import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.joda.time.DateTime
@@ -192,6 +193,19 @@ class SearchService {
 
 	def deleteJourneyForDate(Date date) {
 		// TODO - user delete by query API
+	}
+	
+	def updateJourneyForCopassangers(String journeyId, int numberOfCopassengers) {
+		UpdateRequest updateRequest = new UpdateRequest();
+		updateRequest.index(IndexMetadata.JOURNEY_INDEX_NAME);
+		updateRequest.type(IndexMetadata.DEFAULT_TYPE);
+		updateRequest.id(journeyId);
+		XContentBuilder builder = XContentFactory.jsonBuilder();
+		updateRequest.doc(builder
+				.startObject()
+					.field("numberOfCopassengers", numberOfCopassengers)
+				.endObject());
+		node.client.update(updateRequest).get();
 	}
 
 	/**

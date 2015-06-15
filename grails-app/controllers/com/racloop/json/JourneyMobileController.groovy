@@ -185,6 +185,24 @@ class JourneyMobileController {
 		}
 		render mobileResponse as JSON
 	}
+	
+	def passengers() {
+		def json = request.JSON
+		log.info("childJourneys json ${json} : ${params}")
+		def journeyId = params.journeyId
+		MobileResponse mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			def journeys = journeyDataService.findSiblingJourneys(journeyId);
+			mobileResponse.data = journeys;
+			mobileResponse.success = true
+			mobileResponse.total = journeys.size()
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform search"
+		}
+		render mobileResponse as JSON
+	}
 
     def myHistory() {				
 		def mobileResponse = new MobileResponse()

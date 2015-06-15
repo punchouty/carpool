@@ -2,6 +2,7 @@ package com.racloop
 
 import liquibase.util.csv.opencsv.CSVReader
 
+@Deprecated
 class SampleDataService {
 	
 	def grailsApplication

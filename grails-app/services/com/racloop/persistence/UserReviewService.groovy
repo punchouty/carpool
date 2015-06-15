@@ -15,6 +15,10 @@ class UserReviewService {
 	def journeyDataService
 	def journeyPairDataService
 	
+	/**
+	 * To test it use url- sampleData/runArchiveJob
+	 * @return
+	 */
     def markUsersForPendingReview(){
 		DateTime currentDate = new DateTime();
 		DateTime yesterday = currentDate.minusDays(1);

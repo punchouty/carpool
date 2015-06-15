@@ -59,6 +59,8 @@ class WorkflowDataService {
 				thirdJourney.addPairIdToJourney(thirdJourneyPair.getId())
 				thirdJourney.incrementNumberOfCopassengers()
 				journeyDataService.makeJourneyNonSearchable(otherJourney.getId())
+//				journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
+				journeyDataService.updateElasticsearchForPassangeCountIfRequired(thirdJourney.id, thirdJourney.numberOfCopassengers)
 			}
 			else {
 				thirdJourneyPair.setInitiatorJourneyId(requesterJourneyId)
@@ -76,6 +78,9 @@ class WorkflowDataService {
 				thirdJourney.addPairIdToJourney(thirdJourneyPair.getId())
 				thirdJourney.incrementNumberOfCopassengers()
 				journeyDataService.makeJourneyNonSearchable(requesterJourneyId)
+//				journeyDataService.updateElasticsearchForPassangeCountIfRequired(requesterJourney.id, requesterJourney.numberOfCopassengers)
+				journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
+				journeyDataService.updateElasticsearchForPassangeCountIfRequired(thirdJourney.id, thirdJourney.numberOfCopassengers)
 			}
 			saveJourneys(requesterJourney, otherJourney, thirdJourney)
 		}
@@ -85,6 +90,8 @@ class WorkflowDataService {
 			otherJourney.addPairIdToJourney(journeyPair.getId())
 			otherJourney.incrementNumberOfCopassengers()
 			journeyDataService.makeJourneyNonSearchable(requesterJourneyId)
+//			journeyDataService.updateElasticsearchForPassangeCountIfRequired(requesterJourney.id, requesterJourney.numberOfCopassengers)
+			journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
 			saveJourneys(requesterJourney, otherJourney)
 		}
 		
@@ -169,6 +176,7 @@ class WorkflowDataService {
 			journeyDataService.makeJourneySearchable(journeyToBeRejected)
 		}
 		journeyDataService.makeJourneySearchable(myJourney)
+		journeyDataService.updateElasticsearchForPassangeCountIfRequired(journeyToBeRejected.id, journeyToBeRejected.numberOfCopassengers)
 		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeRejected.getId(), WorkflowStatus.REJECTED.getStatus())
 	}
 	
@@ -200,6 +208,7 @@ class WorkflowDataService {
 			if(otherJourney.getNumberOfCopassengers()<1){
 				journeyDataService.makeJourneySearchable(otherJourney)
 			}
+			journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
 			sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
 		}
 	}
@@ -234,9 +243,11 @@ class WorkflowDataService {
 				if(otherJourney.getNumberOfCopassengers()<1){
 					journeyDataService.makeJourneySearchable(otherJourney)
 				}
+				journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
 			}
 
 		}
+		journeyDataService.updateElasticsearchForPassangeCountIfRequired(myJourney.id, myJourney.numberOfCopassengers)
 	}
 	
 	def cancelMyRequest(String journeyPairId, String myJourneyId){
@@ -286,7 +297,8 @@ class WorkflowDataService {
 		if(myJourney.getNumberOfCopassengers()<1){
 			journeyDataService.makeJourneySearchable(myJourney)
 		}
-		
+		journeyDataService.updateElasticsearchForPassangeCountIfRequired(myJourney.id, myJourney.numberOfCopassengers)
+		journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
 	}
 	
 	private void sendNotificationForWorkflowStateChange (String sourceId,String targetId, String state){
@@ -321,6 +333,7 @@ class WorkflowDataService {
 		if(thirdJourney.getNumberOfCopassengers()<1){
 			journeyDataService.makeJourneySearchable(thirdJourney)
 		}
+		journeyDataService.updateElasticsearchForPassangeCountIfRequired(thirdJourney.id, thirdJourney.numberOfCopassengers)
 		sendNotificationForWorkflowStateChange(journeyId, thirdJourneyId, WorkflowStatus.FORCED_CANCELLED.getStatus())
 	}
 }
