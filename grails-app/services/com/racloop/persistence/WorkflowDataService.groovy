@@ -104,14 +104,9 @@ class WorkflowDataService {
 		def Journey thirdJourney = null
 		if(journey.getJourneyPairIds()){
 			List journeyPairsFromRequest = journeyPairDataService.findPairsByIds(journey.getJourneyPairIds())
-			journeyPairsFromRequest.each {it->
-				if(shouldBeIncludedForPairing(it)){
-					if(it.initiatorJourneyId.equals(journey.getId())){
-						thirdJourneyId<<it.recieverJourneyId
-					}
-					else {
-						thirdJourneyId<<it.initiatorJourneyId
-					}
+			for (JourneyPair pair : journeyPairsFromRequest){
+				if(shouldBeIncludedForPairing(pair)) {
+					thirdJourneyId << findTheOtherJourneyId(pair,journey.getId())
 				}
 			}
 			if(thirdJourneyId.size()>1){

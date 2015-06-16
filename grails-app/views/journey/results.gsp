@@ -106,7 +106,7 @@
 	                </ul>
 	            </div>
 	            <div class="col-md-5 text-left">
-	                <h5>${matchedResult.name}<g:if test = "${ matchedResult.getNumberOfCopassengers()>0}"> + ${ matchedResult.getNumberOfCopassengers()}</g:if> </h5>
+	                <h5>${matchedResult.name}<g:if test = "${ matchedResult.getNumberOfCopassengers()>0 && !matchedResult.getMyStatus()}"> + ${ matchedResult.getNumberOfCopassengers()}</g:if> </h5>
 	                <ul class="text-left">
 	                    <li><i class="icon-icon-house-alt"></i> <strong>From :</strong> ${matchedResult.from}</li>
 	                    <li><i class="icon-basic-geolocalize-01"></i> <strong>To :</strong> ${matchedResult.to}</li>
@@ -143,12 +143,18 @@
 							</li>
 						</g:if>
 						<g:else>
-							<li><g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link>
-								<g:if test = "${ matchedResult.getNumberOfCopassengers()>0}">
-									<a name ="additonal" id="additonal${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
-							       		<button class="btn btn-warning"> All users info</button>
-							       	</a>
+							<li>
+								<g:if test= "${searchResults.data.get('hideSaveButton') == 'true'  }">
+									<button class="btn btn-primary"><i class="fa fa-ban"></i> Seats Full</button>
 								</g:if>
+								<g:else>
+									<g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link>
+									<g:if test = "${ matchedResult.getNumberOfCopassengers()>0}">
+										<a name ="additonal" id="additonal${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
+								       		<button class="btn btn-warning"> All users info</button>
+								       	</a>
+									</g:if>
+								</g:else>
 							</li> 			
 						</g:else>
 			            

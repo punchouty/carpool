@@ -182,6 +182,10 @@ class JourneyController {
 	def newJourney() {
 		def currentUser = getRacloopAuthenticatedUser();
 		def currentJourney = session.currentJourney
+		if(!currentJourney.user) {
+			setUserInformation(currentUser, currentJourney)
+			session.currentJourney = currentJourney
+		}
 		Journey journey = Journey.convert(currentJourney)
 		if(!journey.id) {
 			journeyDataService.createJourney(journey)
