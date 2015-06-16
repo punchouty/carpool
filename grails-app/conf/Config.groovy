@@ -215,7 +215,7 @@ grails {
 		password = "ArfdTbe4x9x2DwfDLm+5XsZV835E7/DBpuQednR2RbtR"
 		props = [
 				"mail.transport.protocol": "smtp",
-				"mail.smtp.port": 25,
+				"mail.smtp.port": 587,
 				"mail.smtp.auth":"true", 
                 "mail.smtp.starttls.enable":"true", 
                 "mail.smtp.starttls.required":"true"]
