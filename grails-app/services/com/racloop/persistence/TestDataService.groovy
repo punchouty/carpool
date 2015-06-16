@@ -374,10 +374,10 @@ class TestDataService {
 				searchService.deleteAllJourneyDataForUser(mobile);
 				userDataService.deleteUserByMobile(mobile);//delete from dynamo db
 				user.groups.each { group ->
-					groupService.deleteMember(user2, group)
+					groupService.deleteMember(user, group)
 				}
 				user.roles.each { role ->
-					roleService.deleteMember(user2, role)
+					roleService.deleteMember(user, role)
 				}
 				user.profile.delete();//delete from mysql
 				user.delete(flush : true);//delete from mysql

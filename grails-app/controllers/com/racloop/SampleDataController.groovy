@@ -113,4 +113,8 @@ class SampleDataController {
 			render "Operation notsupported"
 		}
 	}
+	
+	def testEmail() {
+		throw new Exception("Testing Email")
+	}
 }

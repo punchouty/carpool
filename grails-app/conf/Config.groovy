@@ -159,7 +159,7 @@ environments {
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
 		grails.plugin.facebooksdk.app.secret = '3461eaa74e391bb6add17f9b25a38355'
 		grails.sms.enable=false
-		grails.email.enable=false
+		grails.email.enable=true
 		
 		grails.activemq.data.dir = "${System.getProperty('user.home')}/racloop-data/activemq/data"
 		
@@ -211,11 +211,14 @@ grails {
 		from = "raC looP <admin@racloop.com>"
 		host = "email-smtp.us-east-1.amazonaws.com"
 		port = 25
-		username = "AKIAJ2SJXFADEBCKOW4A"
-		password = "AtvFEF3KuN8vbj5zGhLg1a/klfdLjPmTIlQOefnQSpRF"
-		props = ["mail.smtp.auth":"true", 
-                  "mail.smtp.starttls.enable":"true", 
-                  "mail.smtp.starttls.required":"true"]
+		username = "AKIAILEU3VLFSXHCEVDA"
+		password = "ArfdTbe4x9x2DwfDLm+5XsZV835E7/DBpuQednR2RbtR"
+		props = [
+				"mail.transport.protocol": "smtp",
+				"mail.smtp.port": 25,
+				"mail.smtp.auth":"true", 
+                "mail.smtp.starttls.enable":"true", 
+                "mail.smtp.starttls.required":"true"]
 	}
 }
 
