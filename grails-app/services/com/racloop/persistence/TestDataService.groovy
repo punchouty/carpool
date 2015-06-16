@@ -369,18 +369,22 @@ class TestDataService {
 				return "You cannot remove admin from system";
 			}
 			if(profile != null) {
-				User user = profile.owner;
-				journeyDataService.deleteJourneyForUser(mobile);
-				searchService.deleteAllJourneyDataForUser(mobile);
-				userDataService.deleteUserByMobile(mobile);//delete from dynamo db
-				user.groups.each { group ->
-					groupService.deleteMember(user, group)
+				User user = User.findByUsername(profile.email);
+				if(user) {
+					log.info("Deleting User : " + user.username)
+					journeyDataService.deleteJourneyForUser(user.profile.mobile);
+					searchService.deleteAllJourneyDataForUser(user.profile.mobile);
+					userDataService.deleteUserByMobile(user.profile.mobile);//delete from dynamo db
+					user.groups.each { group ->
+						groupService.deleteMember(user, group)
+					}
+					user.roles.each { role ->
+						roleService.deleteMember(user, role)
+					}
+					//user2.profile.delete();//delete from mysql
+					user.delete();//delete from mysql
 				}
-				user.roles.each { role ->
-					roleService.deleteMember(user, role)
-				}
-				user.profile.delete();//delete from mysql
-				user.delete(flush : true);//delete from mysql
+				
 				return "successfully deleted user and associated journeys"
 			}
 			else {

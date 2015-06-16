@@ -22,7 +22,7 @@ class UserDataService {
 	
 	def deleteUserByMobile(String mobile) {
 		RacloopUser user = awsService.dynamoDBMapper.load(RacloopUser.class, mobile, new DynamoDBMapperConfig(DynamoDBMapperConfig.ConsistentReads.CONSISTENT));
-		awsService.dynamoDBMapper.delete(user);
+		if(user) awsService.dynamoDBMapper.delete(user);
 		return user;
 	}
 }
