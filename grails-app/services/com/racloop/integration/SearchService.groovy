@@ -67,7 +67,6 @@ class SearchService {
 
 	def init() {
 		log.info "Initialising elastic search client"
-		
 		ImmutableSettings.Builder settingsBuilder = ImmutableSettings.settingsBuilder();
 		settingsBuilder.put("path.data", grailsApplication.config.grails.es.path.data);
 		settingsBuilder.put("path.work", grailsApplication.config.grails.es.path.work);
@@ -76,6 +75,10 @@ class SearchService {
 		
 		if (Environment.current == Environment.PRODUCTION) {
 			log.info "Configuring elasticsearch for aws in production"
+			SimpleDateFormat sdf = new SimpleDateFormat("yyMMddhhmm");
+			String name = InetAddress.getLocalHost().getHostName() + "_" + sdf.format(new Date());
+			settingsBuilder.put("node.name", name);
+			settingsBuilder.put("node.data", false);
 			settingsBuilder.put("cloud.aws.access_key", grailsApplication.config.grails.plugin.awssdk.accessKey);
 			settingsBuilder.put("cloud.aws.secret_key", grailsApplication.config.grails.plugin.awssdk.secretKey);
 			settingsBuilder.put("cloud.aws.region", grailsApplication.config.grails.plugin.awssdk.region);
