@@ -210,7 +210,7 @@ grails {
 	mail {
 		from = "raC looP <admin@racloop.com>"
 		host = "email-smtp.us-east-1.amazonaws.com"
-		port = 25
+		port = 587
 		username = "AKIAILEU3VLFSXHCEVDA"
 		password = "ArfdTbe4x9x2DwfDLm+5XsZV835E7/DBpuQednR2RbtR"
 		props = [

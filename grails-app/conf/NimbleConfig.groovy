@@ -47,13 +47,17 @@ nimble {
 		changeemail { subject = "Your email address has been changed" }
 		
 		mail {
-			host = "smtp.racloop.com"
-			port = 25
-			from = "raC looP <help@racloop.com>"
-			username = "help@racloop.com"
-			password = "P@ssw0rd"
-			/*props = ["mail.smtp.starttls.enable":"true", 
-                  "mail.smtp.port":"587"]*/
+			from = "raC looP <admin@racloop.com>"
+			host = "email-smtp.us-east-1.amazonaws.com"
+			port = 587
+			username = "AKIAILEU3VLFSXHCEVDA"
+			password = "ArfdTbe4x9x2DwfDLm+5XsZV835E7/DBpuQednR2RbtR"
+			props = [
+					"mail.transport.protocol": "smtp",
+					"mail.smtp.port": 587,
+					"mail.smtp.auth":"true", 
+	                "mail.smtp.starttls.enable":"true", 
+	                "mail.smtp.starttls.required":"true"]
 		}
 	}
 	
