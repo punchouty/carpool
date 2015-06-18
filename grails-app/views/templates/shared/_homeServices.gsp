@@ -12,7 +12,7 @@
                <div class="small-text-medium uppercase colored-text">
                    SERVICES
                </div>
-               <h2 class="dark-text">A <strong>Free</strong> Carpool Finder</h2>
+               <h2 class="dark-text">A <strong>Free</strong> Cab pool Finder</h2>
                <div class="colored-line">
                </div>
                <div class="sub-heading">
@@ -44,7 +44,7 @@
                        </div>
                        <h3 class="colored-text">Save Environment</h3>
                        <p>
-                           Having fewer cars on the road means <span class="green-text">less</span> air pollution. Benefits for generations to come.
+                           Having fewer cars on the road means <span class="green-text">less</span> air pollution and less commute time. Benefits for everyone.
                        </p>
                    </div>
                </div>
@@ -74,9 +74,9 @@
            <div class="container">
                <div class="section-header section-stats">
                    <div class="small-text-medium uppercase colored-text">
-                       Car pool on the move 
+                       Share cab on the move 
                    </div>
-                   <h2 class="white-text"><strong class="white-text">Racloop</strong> App on your Smart Phone</h2>
+                   <h2 class="white-text"><strong class="white-text">CabShare</strong> App on your Smart Phone</h2>
                    <div class="colored-line">
                    </div>
                    <div class="white-text sub-heading">
@@ -92,7 +92,7 @@
                        </div>
                        <h4 class="white-text">App Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           iOS 7+
+                           <a href="#">iOS 7+</a>
                        </p>
                    </div>
 
@@ -103,7 +103,7 @@
                        </div>
                        <h4 class="white-text">Play Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           Android 4+
+                           <a href="#">Android 4+</a>
                        </p>
                    </div>
 
@@ -114,7 +114,7 @@
                        </div>
                        <h4 class="white-text">Windows Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           Windows 7+
+                           Windows 7+ (Coming Soon)
                        </p>
                    </div>
                </div>
@@ -148,7 +148,7 @@
                </div>
                <div class="sub-heading">
                    You’re safety is extremely important to us. We are completely committed to your safe being. Our smart phone mobile application is equipped with below three safety features. Your smart phone should be equipped with GPS to use these features.
-                   We are building a community on the basis of mutual trust among the users of Racloop. Our mobile app safety features cannot protect you for some one wrong intention. Please use your judgment to accept any drive at first place. Any time you feel there is any suspicions either don’t accept the ride or in case you are on move get off the car immediately.
+                   We are building a community on the basis of mutual trust among the users of CabShare. Our mobile app safety features cannot protect you for some one wrong intention. Please use your judgment to accept any drive at first place. Any time you feel there is any suspicions either don’t accept the ride or in case you are on move get off the car immediately.
                </div>
            </div>
 
@@ -166,7 +166,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Clicking on <strong>SOS</strong> button will send SMS to a emergency contact every one minute telling that you need <strong>emergency assistance</strong> along with your smart phone GPS coordinate. During mobile app <strong>setup</strong> please provide us phone number of an emergency contacts (Your parents, friends or sibling) that Racloop should contact in case of emergency. 
+                               Clicking on <strong>SOS</strong> button will send SMS to a emergency contact every one minute telling that you need <strong>emergency assistance</strong> along with your smart phone GPS coordinate. During mobile app <strong>setup</strong> please provide us phone number of an emergency contacts (Your parents, friends or sibling) that CabShare should contact in case of emergency. 
                            </p>
                        </div>
                    </div>
@@ -177,11 +177,11 @@
                            <span class="icon-music-bell colored-text"></span>
                        </div>
                        <div class="description text-left">
-                           <h4 class="dark-text">Racloop Alert</h4>
+                           <h4 class="dark-text">CabShare Alert</h4>
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Along with your emergency contact <strong>Racloop</strong> will also start receiving your current location and information about possible threat. If needed, we will help your emergency contact in reaching out <strong>police</strong> explaining your location and giving them name and mobile number of all of your co-passangers.
+                               Along with your emergency contact <strong>CabShare</strong> will also start receiving your current location and information about possible threat. If needed, we will help your emergency contact in reaching out <strong>police</strong> explaining your location and giving them name and mobile number of all of your co-passangers.
                            </p>
                        </div>
                    </div>
@@ -362,10 +362,10 @@
                    <div class="colored-line-left">
                    </div>
                    <p class="text-left">
-                       We are bunch of techies who drive to work daily and there are some empty seats in our car. We drive every weekend back to our hometown to meet our family. We realized that there are lots of people like us who drive alone. We also believe that we need to do something to save environment and reduce traffic congestion on Indian roads. So we founded Racloop. 
+                       We are bunch of techies who drive to work daily and there are some empty seats in our car. We drive every weekend back to our hometown to meet our family. We realized that there are lots of people like us who drive alone. We also believe that we need to do something to save environment and reduce traffic congestion on Indian roads. So we founded CabShare. 
                    </p>
 					<p class="text-left">
-						It is a ride-sharing platform connecting regular people making similar trips so everyone benefits: the driver, the passenger, society and the environment. Racloop allows participants to reduce their travel costs, meet new friends and conveniently reach their destination, all in a super simple, cool, and environmentally friendly way. Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups.
+						It is a ride-sharing platform connecting regular people making similar trips so everyone benefits: the driver, the passenger, society and the environment. CabShare allows participants to reduce their travel costs, meet new friends and conveniently reach their destination, all in a super simple, cool, and environmentally friendly way. Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups.
 					</p>
                </div>
 
@@ -386,7 +386,7 @@
                    <div class="icon-container">
                        <span class="icon-basic-mail colored-text"></span>
                    </div>
-                   <a href="mailto:help@racloop.com" class="strong">help@racloop.com</a>
+                   <a href="mailto:admin@cabshare.in" class="strong">admin@cabshare.in</a>
                </div>
 
                <div class="col-sm-4">

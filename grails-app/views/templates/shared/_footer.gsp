@@ -32,7 +32,7 @@
         
         <!-- FOOTER -->
     <footer class="footer grey-bg">
-        ©2015 RACLOOP All Rights Reserved
+        ©2015 CABSHARE All Rights Reserved
 
         <!-- OPTIONAL FOOTER LINKS -->
         <ul class="footer-links small-text">

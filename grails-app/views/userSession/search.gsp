@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="layout" content="main" />
-<title>Welcome to RACLOOP | Share Car, Cab and Auto Rides, carpool</title>
+<title>Welcome to CabShare | Share Cab and Auto Rides</title>
 <r:require module="map" />
 </head>
 <body>
@@ -33,7 +33,7 @@
       <div class="only-logo">
           <div class="navbar">
               <div class="navbar-header">
-                  <h2 class="white-text racloop-heading-big">Racloop <span class="fa fa-leaf green-text"></span></h2>
+                  <h2 class="white-text racloop-heading-big">CabShare <span class="fa fa-leaf green-text"></span></h2>
               </div>
           </div>
       </div>
@@ -45,8 +45,8 @@
               <div class="intro-section">
 
                   <!-- WELCOM MESSAGE -->
-                  <h1 class="intro white-text">Share Car and Auto Rides Safely</h1>
-                  <h5 class="white-text">Offer a ride or Ask people for lift. Save money, Make friends and Contribute to <span class="green-text">Greener</span> Environment. </h5>
+                  <h1 class="intro white-text">Share Your Cab and Auto Rides</h1>
+                  <h5 class="white-text">Split your travel cost with others by sharing Uber, Ola or Meru cabs. It will make your city <span class="green-text">green</span> and congestion free.</h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">

@@ -1,6 +1,6 @@
 <meta charset="UTF-8">
-<meta name="description" content="Racloop brings an interesting platform for people who want to contribute in making their country GREEN. Sharing your car with the communities build on mutual trust is their major plus.">
-<meta name="keywords" content="racloop, carpool, car pool, carpool finder, carpool share, Cab Share, Ride Share, Ride Sharing App, Carpooling">
+<meta name="description" content="Cabshare is a platform to share cabs and auto to save money, save enviornment and reduce road congestion.">
+<meta name="keywords" content="cab share, share cab, auto share, carpool, car pool, carpool finder, carpool share, Ride Share, Ride Sharing App, Carpooling">
 <meta name="author" content="Rajan Punchouty">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">

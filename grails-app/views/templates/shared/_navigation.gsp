@@ -15,7 +15,7 @@
 
                         <!-- LOGO -->
                         <a id="logo-racloop" class="navbar-brand logo-racloop" href="${request.contextPath}/">
-                            RACLOOP
+                            CABSHARE
                             <!-- <img src="images/logo-nav.png" alt=""> -->
                         </a>
 

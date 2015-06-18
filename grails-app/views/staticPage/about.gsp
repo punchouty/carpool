@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta name="layout" content="static" />
-<title>About Racloop</title>
+<title>About Cab Share</title>
 <r:require module="core" />
 </head>
 
@@ -26,10 +26,10 @@
                    <div class="colored-line-left">
                    </div>
                    <p class="text-left">
-                       We are bunch of techies who drive to work daily and there are some empty seats in our car. We drive every weekend back to our hometown to meet our family. We realized that there are lots of people like us who drive alone. We also believe that we need to do something to save environment and reduce traffic congestion on Indian roads. So we founded Racloop. 
+                       We are bunch of techies who drive to work daily and there are some empty seats in our car. We drive every weekend back to our hometown to meet our family. We realized that there are lots of people like us who drive alone. We also believe that we need to do something to save environment and reduce traffic congestion on Indian roads. So we founded CabShare. 
                    </p>
 					<p class="text-left">
-						It is a ride-sharing platform connecting regular people making similar trips so everyone benefits: the driver, the passenger, society and the environment. Racloop allows participants to reduce their travel costs, meet new friends and conveniently reach their destination, all in a super simple, cool, and environmentally friendly way. Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups.
+						It is a ride-sharing platform connecting regular people making similar trips so everyone benefits: the driver, the passenger, society and the environment. CabShare allows participants to reduce their travel costs, meet new friends and conveniently reach their destination, all in a super simple, cool, and environmentally friendly way. Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups.
 					</p>
                </div>
 

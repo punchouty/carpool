@@ -22,7 +22,7 @@
 				<div class="intro-section intro-section-from">
 					<!-- WELCOM MESSAGE -->
 					<h1 class="intro white-text">Search, Connect and Carpool</h1>
-					<p class="transparent-text">Make new friends and transform a dull ride into an unforgettable journey. Better way to get Social. If you are not member of Racloop community, click below to Sign Up.</p>
+					<p class="transparent-text">Make new friends and transform a dull ride into an unforgettable journey. Better way to get Social. If you are not member of CabShare community, click below to Sign Up.</p>
 					<!-- BUTTON -->
 					<div class="button hidden-xs">
 		                <a href="${request.contextPath}/signup" class="btn btn-primary secondary-button">SIGN UP</a>
