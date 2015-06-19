@@ -21,7 +21,7 @@ class JourneyPairDataService {
 	}
 	
 	def findPairById(String id) {
-		log.info("findPairt - id : ${id}");
+		log.info("findPair - id : ${id}");
 		JourneyPair journeyPair = awsService.dynamoDBMapper.load(JourneyPair.class, id);
 		return journeyPair;
 	}

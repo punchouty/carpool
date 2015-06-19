@@ -22,9 +22,15 @@ class WorkflowDataService {
 		unsavedJourney
 	}
 	
+	
 	def requestJourney(String requesterJourneyId, String otherJourneyId) {
+		boolean isDummy = false
 		Journey requesterJourney = journeyDataService.findJourney(requesterJourneyId)
 		Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
+		if(!otherJourney){
+			otherJourney = saveDummyJounrney(otherJourneyId)
+			isDummy = true
+		}
 		boolean anotherRequestExistsForRequester = false
 		Journey thirdJourney = findThirdJourneyAvailableForPairing(requesterJourney)
 		if(thirdJourney){
@@ -37,9 +43,10 @@ class WorkflowDataService {
 		journeyPair.setInitiatorJourneyId(requesterJourneyId)
 		journeyPair.setInitiatorDirection(WorkflowDirection.OUTGOING.getDirection())
 		journeyPair.setInitiatorStatus(WorkflowStatus.REQUESTED.getStatus())
-		journeyPair.setRecieverJourneyId(otherJourneyId)
+		journeyPair.setRecieverJourneyId(otherJourney.getId())
 		journeyPair.setRecieverDirection(WorkflowDirection.INCOMING.getDirection())
 		journeyPair.setRecieverStatus(WorkflowStatus.REQUEST_RECIEVED.getStatus())
+		journeyPair.setIsDummy(isDummy)
 		
 		journeyPairDataService.createJourneyPair(journeyPair)
 		if(thirdJourney){
@@ -48,9 +55,10 @@ class WorkflowDataService {
 				thirdJourneyPair.setInitiatorJourneyId(thirdJourney.getId())
 				thirdJourneyPair.setInitiatorDirection(WorkflowDirection.FORCED_OUTGOING.getDirection())
 				thirdJourneyPair.setInitiatorStatus(WorkflowStatus.DELEGATED.getStatus())
-				thirdJourneyPair.setRecieverJourneyId(otherJourneyId)
+				thirdJourneyPair.setRecieverJourneyId(otherJourney.getId())
 				thirdJourneyPair.setRecieverDirection(WorkflowDirection.FORCED_INCOMING.getDirection())
 				thirdJourneyPair.setRecieverStatus(WorkflowStatus.INHERITED.getStatus())
+				thirdJourneyPair.setIsDummy(isDummy)
 				journeyPairDataService.createJourneyPair(thirdJourneyPair)
 				requesterJourney.addPairIdToJourney(journeyPair.getId())
 				requesterJourney.incrementNumberOfCopassengers();
@@ -69,6 +77,7 @@ class WorkflowDataService {
 				thirdJourneyPair.setRecieverJourneyId(thirdJourney.getId())
 				thirdJourneyPair.setRecieverDirection(WorkflowDirection.FORCED_INCOMING.getDirection())
 				thirdJourneyPair.setRecieverStatus(WorkflowStatus.INHERITED.getStatus())
+				thirdJourneyPair.setIsDummy(isDummy)
 				journeyPairDataService.createJourneyPair(thirdJourneyPair)
 				
 				requesterJourney.addPairIdToJourney(journeyPair.getId(), thirdJourneyPair.getId())
@@ -95,7 +104,7 @@ class WorkflowDataService {
 			saveJourneys(requesterJourney, otherJourney)
 		}
 		
-		sendNotificationForWorkflowStateChange(requesterJourneyId, otherJourneyId, WorkflowStatus.REQUESTED.getStatus())
+		sendNotificationForWorkflowStateChange(requesterJourneyId, otherJourney.getId(), WorkflowStatus.REQUESTED.getStatus())
 	}
 	
 	
@@ -360,5 +369,31 @@ class WorkflowDataService {
 		}
 		journeyDataService.updateElasticsearchForPassangeCountIfRequired(thirdJourney.id, thirdJourney.numberOfCopassengers)
 		sendNotificationForWorkflowStateChange(journeyId, thirdJourneyId, WorkflowStatus.FORCED_CANCELLED.getStatus())
+	}
+	
+	private Journey saveDummyJounrney(String dummyJourneyId){
+		Journey journey = journeyDataService.findJourneyFromElasticSearch(dummyJourneyId, true)
+		journey.setIsDummy(true)
+		journeyDataService.saveJourney(journey)
+		return journey
+	}
+	
+	def cancelAllAgedDummyJourneyRequest() {
+		Date currentDate = new Date()
+		List allJourneys = journeyDataService.findMyJourneys(Constant.DUMMY_USER_MOBILE, currentDate)
+		for(Journey journey: allJourneys){
+			if(!WorkflowStatus.CANCELLED.getStatus().equals(journey.getStatusAsParent())) {
+				if(journeyHasAgedEnough(journey.getCreatedDate(), currentDate)) {
+					this.cancelMyJourney(journey.getId())
+				}
+			}
+		}
+	}
+	
+	private boolean journeyHasAgedEnough(Date journeyDate, Date currentDate){
+		int minutesToBeAdded = 120
+		int millsInAMinute = 60*1000
+		Date dateAfterAdingNMinutes = new Date (journeyDate.getTime() + minutesToBeAdded*millsInAMinute)
+		return currentDate.after(dateAfterAdingNMinutes)
 	}
 }

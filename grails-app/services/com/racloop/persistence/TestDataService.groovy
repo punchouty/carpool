@@ -3,6 +3,7 @@ package com.racloop.persistence
 import liquibase.util.csv.opencsv.CSVReader;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression;
+import com.racloop.Constant;
 import com.racloop.DistanceUtil;
 import com.racloop.Profile;
 import com.racloop.User;
@@ -337,6 +338,7 @@ class TestDataService {
 		journeyDataService.deleteJourneyForUser(user4.profile.mobile);
 		searchService.deleteAllJourneyDataForUser(user4.profile.mobile);
 		
+		journeyDataService.deleteJourneyForUser(Constant.DUMMY_USER_MOBILE);
 		searchService.deleteAllDummyData();
 		
 		

@@ -1,13 +1,9 @@
 package com.racloop.persistence
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.TimeZone;
-
 import grails.transaction.Transactional
-import grails.util.Environment
+
+import java.text.ParseException
+import java.text.SimpleDateFormat
 
 import org.elasticsearch.common.joda.time.DateTime
 
@@ -16,11 +12,10 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator
 import com.amazonaws.services.dynamodbv2.model.Condition
-import com.racloop.GenericUtil;
+import com.racloop.GenericUtil
 import com.racloop.domain.Journey
-import com.racloop.domain.JourneyPair;
-import com.racloop.domain.UserJourney;
-import com.racloop.journey.workkflow.WorkflowAction;
+import com.racloop.domain.JourneyPair
+import com.racloop.domain.UserJourney
 import com.racloop.journey.workkflow.WorkflowStatus
 
 @Transactional
@@ -91,6 +86,11 @@ class JourneyDataService {
 	 */
 	def findJourney(String journeyId) {
 		Journey currentJourney = awsService.dynamoDBMapper.load(Journey.class, journeyId);
+		return currentJourney;
+	}
+	
+	def findJourneyFromElasticSearch(String journeyId, boolean isDummy = false) {
+		Journey currentJourney = searchService.getJourney(journeyId, isDummy)
 		return currentJourney;
 	}
 	
@@ -403,4 +403,5 @@ class JourneyDataService {
 		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		return journeys;
 	}
+	
 }

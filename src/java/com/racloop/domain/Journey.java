@@ -53,6 +53,7 @@ public class Journey {
 	private Set<Journey> relatedJourneys = new HashSet<Journey>();
 	private Set<JourneyPair> journeyPairs = new HashSet<JourneyPair>();
 	
+	
 	public JourneyRequestCommand convert() {
 		JourneyRequestCommand journeyCommand = new JourneyRequestCommand();
 		journeyCommand.setId(id);
@@ -144,6 +145,7 @@ public class Journey {
 		buffer.append("from : " + from + ", ");
 		buffer.append("to : " + to + ", ");
 		buffer.append("journeyPairIds : " + journeyPairIds + ", ");
+		buffer.append("isDummy : " + isDummy);
 		return buffer.toString();
 	}
 	

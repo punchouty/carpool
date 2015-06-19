@@ -239,6 +239,10 @@ class JourneyController {
 		def matchedJourneyId = params.matchedJourneyId
 		boolean isDummy =params.boolean('dummy')
 		def matchedJourney = journeyDataService.findJourney(matchedJourneyId)
+		if(!matchedJourney){
+			isDummy = true
+			matchedJourney = journeyDataService.findJourneyFromElasticSearch(matchedJourneyId, isDummy)
+		}
 		def matchedUser = User.findByUsername(matchedJourney.getEmail())
 		boolean isThresholdReached = false
 		/*int threshHold = Integer.valueOf(grailsApplication.config.grails.max.active.requests)

@@ -152,8 +152,9 @@ class SearchService {
 		return builder;
 	}
 
-	Journey getJourney(String journeyId) {
-		GetResponse getResponse = node.client.prepareGet(IndexMetadata.JOURNEY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, journeyId).execute().actionGet();
+	def Journey getJourney(String journeyId, boolean isDummy = false) {
+		String indexName = isDummy ? IndexMetadata.DUMMY_INDEX_NAME : IndexMetadata.JOURNEY_INDEX_NAME
+		GetResponse getResponse = node.client.prepareGet(indexName, IndexMetadata.DEFAULT_TYPE, journeyId).execute().actionGet();
 		Journey journey = null;
 		if(getResponse.isExists()) {
 			journey = parseJourneyFromGetResponse(getResponse);
@@ -176,6 +177,7 @@ class SearchService {
 		journey.setFromLatitude(fromGeoPoint.getLat());
 		journey.setFromLongitude(fromGeoPoint.getLon());
 		GeoPoint toGeoPoint = getResponse.getSource().get('toGeoPoint')
+		journey.setTo(getResponse.getSource().get('to'));
 		journey.setToLatitude(toGeoPoint.getLat());
 		journey.setToLongitude(toGeoPoint.getLon());
 		journey.setIsDriver(getResponse.getSource().get('isDriver'));
@@ -371,9 +373,10 @@ class SearchService {
 	}
 
 	def indexGeneratedJourney(Journey journey) {
+		String id = UUID.randomUUID().toString()
 		log.info "Adding record to elastic search ${journey}"
 		def sourceBuilder = createJourneyJson(journey)
-		IndexRequest indexRequest = new IndexRequest(IndexMetadata.DUMMY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE).source(sourceBuilder);
+		IndexRequest indexRequest = new IndexRequest(IndexMetadata.DUMMY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, id).source(sourceBuilder);
 		IndexResponse indexResponse = node.client.index(indexRequest).actionGet();
 		log.info "Successfully indexed ${journey} with ${indexResponse.getId()}"
 		return indexResponse.getId();
@@ -387,6 +390,8 @@ class SearchService {
 		Random randomGenerator = new Random();
 		Integer numberOfRecords = randomGenerator.nextInt(5);
 		if(numberOfRecords < 2) numberOfRecords = 2;//expecting 2,3,4 number of records
+		//Rohit - Since addition of  3 way search. we are fixing the dummy results to be 1
+		numberOfRecords = 1
 		def journeys = [];
 		def names = NamesUtil.getRandomBoyNames(numberOfRecords);
 		double tripDistance = DistanceUtil.distance(fromLat, fromLon, toLat, toLon);
@@ -405,9 +410,9 @@ class SearchService {
 				def fromPlace = it;
 				def toPlace = toPlaces[index]
 				Journey journey = new Journey();
-				journey.mobile = '9800000000';
+				journey.mobile = Constant.DUMMY_USER_MOBILE
 				journey.dateOfJourney = tempDate.toDate();
-				journey.email= 'dummy@racloop.com';
+				journey.email= Constant.DUMMY_USER_MAIL
 				journey.name= name;
 				journey.isDriver = false;
 				journey.fromLatitude = fromPlace.location.lat();
@@ -431,9 +436,9 @@ class SearchService {
 				def toPlace = it;
 				def fromPlace = fromPlaces[index]
 				Journey journey = new Journey();
-				journey.mobile = '9800000000';
+				journey.mobile = Constant.DUMMY_USER_MOBILE
 				journey.dateOfJourney = tempDate.toDate();
-				journey.email= 'dummy@racloop.com';
+				journey.email= Constant.DUMMY_USER_MAIL
 				journey.name= name;
 				journey.isDriver = false;
 				journey.fromLatitude = fromPlace.location.lat();
