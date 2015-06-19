@@ -12,7 +12,7 @@
                <div class="small-text-medium uppercase colored-text">
                    SERVICES
                </div>
-               <h2 class="dark-text">A <strong>Free</strong> Cab pool Finder</h2>
+               <h2 class="dark-text">A <strong>Free</strong> Cab and Auto Sharing Platform</h2>
                <div class="colored-line">
                </div>
                <div class="sub-heading">
@@ -74,7 +74,7 @@
            <div class="container">
                <div class="section-header section-stats">
                    <div class="small-text-medium uppercase colored-text">
-                       Share cab on the move 
+                       Cabs and Autos
                    </div>
                    <h2 class="white-text"><strong class="white-text">CabShare</strong> App on your Smart Phone</h2>
                    <div class="colored-line">
@@ -143,12 +143,11 @@
                <div class="small-text-medium uppercase colored-text">
                    Safety and Security
                </div>
-               <h2 class="dark-text">Your <strong>Safety</strong> Our <strong>Priority</strong></h2>
+               <h2 class="dark-text">Choosing <strong>Cabs</strong> And <strong>Autos</strong></h2>
                <div class="colored-line">
                </div>
                <div class="sub-heading">
-                   You’re safety is extremely important to us. We are completely committed to your safe being. Our smart phone mobile application is equipped with below three safety features. Your smart phone should be equipped with GPS to use these features.
-                   We are building a community on the basis of mutual trust among the users of CabShare. Our mobile app safety features cannot protect you for some one wrong intention. Please use your judgment to accept any drive at first place. Any time you feel there is any suspicions either don’t accept the ride or in case you are on move get off the car immediately.
+                   You’r safety is extremely important and we are completely committed to your safe being. Please use Goverment approved taxi and auto rikshaws only. <span class="dark-text">Uber, Ola, Meru and Taxi For Sure</span> are few of good taxi services you can use. 
                </div>
            </div>
 
@@ -159,14 +158,14 @@
                    <!-- SINGLE FEATURE -->
                    <div class="feature">
                        <div class="icon-container">
-                           <span class="icon-basic-bolt colored-text"></span>
+                           <span class="icon-music-bell colored-text"></span>
                        </div>
                        <div class="description text-left">
                            <h4 class="dark-text">SOS!</h4>
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Clicking on <strong>SOS</strong> button will send SMS to a emergency contact every one minute telling that you need <strong>emergency assistance</strong> along with your smart phone GPS coordinate. During mobile app <strong>setup</strong> please provide us phone number of an emergency contacts (Your parents, friends or sibling) that CabShare should contact in case of emergency. 
+                               Clicking on <strong>SOS</strong> button will send SMS to a emergency contact every one minute telling that you need <strong>emergency assistance</strong> along with your smart phone GPS coordinate. During mobile app <strong>setup</strong> please provide us phone number of an emergency contacts (Your parents, friends or sibling) that <strong>CabShare</strong> should contact in case of emergency. 
                            </p>
                        </div>
                    </div>
@@ -174,7 +173,7 @@
                    <!-- SINGLE FEATURE -->
                    <div class="feature">
                        <div class="icon-container">
-                           <span class="icon-music-bell colored-text"></span>
+                           <span class="icon-basic-bolt colored-text"></span>
                        </div>
                        <div class="description text-left">
                            <h4 class="dark-text">CabShare Alert</h4>
@@ -196,7 +195,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Activating this feature will start <strong>monitoring</strong> your journey. It will give real time status of route and possible <strong>deviation</strong> of standard route in term of red (danger), amber (use caution, there might be possible danger) or green (every thing is good). It will also tell how far is your destination and how much you already traveled. Any time driver will take any <strong>wrong</strong> route you will come to know immediately.
+                               While using cab you can also track your location on app. It will give real time status of route and possible <strong>deviation</strong> of standard route. It will also tell how far is your destination and how much you already traveled. Any time driver will take any <strong>wrong</strong> route you will come to know immediately.
                            </p>
                        </div>
                    </div>
@@ -242,7 +241,7 @@
                                <div class="panel-body">
                                    <h5>3 simple steps for ride sharing</h5>
                                    <ol class="simple-list">
-                                   	<li>Put in request when and where are you going and whether you are driving or need a ride. We’ll find other people who are going in same direction and around same time.</li>
+                                   	<li>Put in request when and where are you going. We’ll find matching people who are going in same direction and around same time. </li>
                                    	<li>Send you request to the person whom you think will make a good co-passenger. If the other person accepts your request then we’ll share the contact info with each other.</li>
                                    	<li> Simply call him/her and plan your journey.</li>
                                    </ol>
@@ -258,7 +257,7 @@
                            <div class="panel-heading" id="headingOne">
                                <h4 class="panel-title">
                                    <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">Why Free?</span>
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">Is use of CabShare Free?</span>
                                    </a>
                                </h4>
                            </div>
@@ -266,7 +265,7 @@
                            <!-- ACORDIION DESCRIPTION / TEXT -->
                            <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
                                <div class="panel-body">
-                                   It’s free because we are not actually providing the rides. We are simply connecting people who want to share their rides and help in contributing towards a greener environment. One less car on the road is worth millions for us.
+                                   Absolutely.
                                </div>
                            </div>
                        </div>
@@ -278,7 +277,7 @@
                            <div class="panel-heading" id="headingFour">
                                <h4 class="panel-title">
                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">I don’t have a car and no one is driving on my route. How can I share the ride?</span>
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">I have my own car and i am driving alone. Can I share the ride?</span>
                                    </a>
                                </h4>
                            </div>
@@ -286,7 +285,7 @@
                            <!-- ACORDIION DESCRIPTION / TEXT -->
                            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                                <div class="panel-body">
-                                   You can also serach for fellow passangers who are travelling in same directions as you. Connect with them, hire a cab, ride together and share the cab’s bill.
+                                   Yes - you can use cabshare.in as car pool platform.
                                </div>
                            </div>
                        </div>
@@ -318,7 +317,7 @@
                            <div class="panel-heading" id="headingThree">
                                <h4 class="panel-title">
                                    <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">Should I share the cost?</span>
+                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">How should I share the cost?</span>
                                    </a>
                                </h4>
                            </div>
@@ -326,7 +325,7 @@
                            <!-- ACORDIION DESCRIPTION / TEXT -->
                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                                <div class="panel-body">
-                                   Absolutely yes. It is highly recommended that all co-passengers should split the fuel/parking/toll charges. To avoid any unnecessary arguments it is recommended that you should decide on splitting the cost before the journey itself.
+                                   We try to match requests that have very near source and destination. So ideally fare should split evenly.
                                </div>
                            </div>
                        </div>
@@ -362,10 +361,10 @@
                    <div class="colored-line-left">
                    </div>
                    <p class="text-left">
-                       We are bunch of techies who drive to work daily and there are some empty seats in our car. We drive every weekend back to our hometown to meet our family. We realized that there are lots of people like us who drive alone. We also believe that we need to do something to save environment and reduce traffic congestion on Indian roads. So we founded CabShare. 
+                       We are bunch of techies who commute to work regularly. Every time we used cab and auto, we found an empty seat beside us. It was irrational and inefficient. We also believe that we need to do something to save environment and reduce traffic congestion on Indian roads. So we founded CabShare. 
                    </p>
 					<p class="text-left">
-						It is a ride-sharing platform connecting regular people making similar trips so everyone benefits: the driver, the passenger, society and the environment. CabShare allows participants to reduce their travel costs, meet new friends and conveniently reach their destination, all in a super simple, cool, and environmentally friendly way. Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups.
+						It is a cab-sharing platform connecting regular people making similar trips so everyone benefits: the commuters, the society and the environment. CabShare allows participants to reduce their travel costs, meet new friends and conveniently reach their destination, all in a super simple, cool, and environmentally friendly way. Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups.
 					</p>
                </div>
 
@@ -401,7 +400,7 @@
                    <div class="icon-container">
                        <span class="icon-basic-tablet colored-text"></span>
                    </div>
-                   <a href="tel:44-12-3456-7890" class="strong">+91 7307392447</a>
+                   <a href="tel:+91 9717744392" class="strong">+91 9717744392</a>
                </div>
            </div>
 

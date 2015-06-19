@@ -27,7 +27,7 @@
 	}
   </style>
 <![endif]-->
-<script src="http://ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script> 
+<script src="//ajax.aspnetcdn.com/ajax/modernizr/modernizr-2.7.1.js"></script> 
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-<link href='http://fonts.googleapis.com/css?family=Cabin:400,600|Open+Sans:300,600,400' rel='stylesheet'>
+<link href='//fonts.googleapis.com/css?family=Cabin:400,600|Open+Sans:300,600,400' rel='stylesheet'>

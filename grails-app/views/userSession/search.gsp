@@ -33,7 +33,7 @@
       <div class="only-logo">
           <div class="navbar">
               <div class="navbar-header">
-                  <h2 class="white-text racloop-heading-big">CabShare <span class="fa fa-leaf green-text"></span></h2>
+                  <h2 class="white-text racloop-heading-big">Share Your Cab</h2>
               </div>
           </div>
       </div>
@@ -45,8 +45,8 @@
               <div class="intro-section">
 
                   <!-- WELCOM MESSAGE -->
-                  <h1 class="intro white-text">Share Your Cab and Auto Rides</h1>
-                  <h5 class="white-text">Split your travel cost with others by sharing Uber, Ola or Meru cabs. It will make your city <span class="green-text">green</span> and congestion free.</h5>
+                  <h1 class="intro white-text">Search, Connect and Go</h1>
+                  <h5 class="white-text">Share Taxi and Auto rides. Split cost, Make friends and Contribute to <span class="fa fa-leaf green-text">Greener</span> Environment.</h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">
@@ -63,9 +63,11 @@
 								<g:hiddenField name="_hToPlace" value="${commandInstance?.to}" />
 								<g:hiddenField name="toLatitude" value="${commandInstance?.toLatitude}" />
 								<g:hiddenField name="toLongitude" value="${commandInstance?.toLongitude}" />
+								<%--
 								
-								<button type="button" id ="offer" value="offer" class="btn standard-button">Offer</button>
 							    <button type="button" id ="ask" value="ask"class="btn standard-button">Ask</button>
+							     --%>
+							     <button type="button" id ="offer" value="offer" class="btn standard-button">Search</button>
 							    <button type="button" id ="clear" value="clear"class="btn standard-button standard-red-button">Clear</button>
 								<g:hiddenField name="validStartTimeString" value="${commandInstance?.validStartTimeString}" />
 								<g:hiddenField name="tripDistance" value="${commandInstance?.tripDistance}" />
