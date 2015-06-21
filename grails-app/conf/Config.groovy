@@ -145,6 +145,7 @@ grails.approx.distance.to.match = 3.0
 grails.approx.time.to.match = 30
 grails.max.active.requests = 5
 grails.approx.time.range= 45
+grails.max.days.to.search= 7
 
 grails.aws.dynamodb.local = true
 grails.plugin.awssdk.accessKey = "AKIAJ74MXKGZZPYXKEWA"

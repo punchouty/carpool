@@ -19,6 +19,7 @@ class JourneyMobileController {
 	def journeyDataService
 	def workflowDataService
 	def journeySearchService
+	def grailsApplication
 	
 	def search() {
 		def json = request.JSON
@@ -48,7 +49,10 @@ class JourneyMobileController {
 			currentJourneyCommand.mobile = currentUser.profile.mobile
 			currentJourneyCommand.ip = request.remoteAddr
 			session.currentJourneyCommand = currentJourneyCommand
-			if(currentJourneyCommand.dateOfJourney.after(currentJourneyCommand.validStartTime)) {
+			if(isAfterUpperLimit(currentJourneyCommand.validStartTime, currentJourneyCommand.dateOfJourney)) {
+				mobileResponse.message = "You cannot search for more than 7 days in future"
+			}
+			else if(currentJourneyCommand.dateOfJourney.after(currentJourneyCommand.validStartTime)) {
 				mobileResponse = journeySearchService.executeSearch(currentJourneyCommand);
 			}
 			else {
@@ -59,6 +63,12 @@ class JourneyMobileController {
 			mobileResponse.message = "User is not logged in. Cannot fetch search results"
 		}
 		render mobileResponse as JSON
+	}
+	
+	private boolean isAfterUpperLimit(Date validStartDate, Date journeyDateTime){
+		Integer timeLimitInDays = Integer.valueOf(grailsApplication.config.grails.max.days.to.search)
+		Date validEndDate = new Date(validStartDate.getTime() + timeLimitInDays * 24 * 60 * 60000)
+		return journeyDateTime.after(validEndDate)
 	}
 	
 	/**
