@@ -37,6 +37,7 @@ class UserMobileController {
 	def journeyWorkflowService
 	def jmsService
 	def testDataService
+	def userReviewService
 	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST', forgotPassword : 'POST' ]
 
@@ -75,26 +76,17 @@ class UserMobileController {
 					authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
 					mobileResponse.data = authenticatedUser
 					if(authenticatedUser.journeyIdForReview != null) {
-						Journey journeyForReview = journeyDataService.getJourneyForReview(authenticatedUser.journeyIdForReview, authenticatedUser.profile.mobile)
-						mobileResponse.currentJourney = currentJourney.convert();
-						mobileResponse.success = true
-					}
-					else {
-						Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
-						if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
-						mobileResponse.success = true
-					}
-					Journey journeyFeedback = getJourneyForFeedback();
-					if(journeyFeedback != null) {
-						mobileResponse.success = true
+						Journey journeyForReview = userReviewService.findJourneysToBeReviewedForAUser(authenticatedUser)
+						mobileResponse.currentJourney = journeyForReview//currentJourney.convert();
 						mobileResponse.feedbackPending = true
-						mobileResponse.currentJourney = journeyFeedback
+						mobileResponse.success = true
 					}
 					else {
 						Journey currentJourney = journeyDataService.findCurrentJourney(authenticatedUser.profile.mobile, new DateTime(currentDate))
 						if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
 						mobileResponse.success = true
 					}
+					
 				}
 				catch (IncorrectCredentialsException e) {
 					log.info "Credentials failure for user '${email}'."

@@ -1,13 +1,14 @@
 package com.racloop.persistence
 
-import org.elasticsearch.common.joda.time.DateTime;
-
-import com.racloop.Profile;
-import com.racloop.User;
-import com.racloop.domain.JourneyPair;
-import com.racloop.journey.workkflow.WorkflowStatus;
-
 import grails.transaction.Transactional
+
+import org.elasticsearch.common.joda.time.DateTime
+
+import com.racloop.Profile
+import com.racloop.User
+import com.racloop.domain.Journey
+import com.racloop.domain.JourneyPair
+import com.racloop.journey.workkflow.WorkflowStatus
 
 @Transactional
 class UserReviewService {
@@ -52,9 +53,9 @@ class UserReviewService {
 		}
 	}
 	
-	def findJourneysToBeReviewdForAUser(){
-		//Find last journey for the user (use my history)
-		//Find all related journeys
+	def Journey findJourneysToBeReviewedForAUser(User currentUser){
+		Journey journeyForReview = journeyDataService.getJourneyForReview(currentUser.journeyIdForReview)
+		return journeyForReview
 	}
 	
 	def clearUserForReview(){

@@ -66,7 +66,7 @@ class JourneyDataService {
 	}
 	
 	def getJourneyForReview(String journeyId) {
-		Journey currentJourney = awsService.dynamoDBMapper.load(journeyId);
+		Journey currentJourney = findJourney(journeyId)//awsService.dynamoDBMapper.load(journeyId);
 		Set<String> journeyPairIds = currentJourney.getJourneyPairIds();
 		journeyPairIds.each { pairId ->
 			JourneyPair journeyPair = journeyPairDataService.findPairById(pairId);
@@ -79,6 +79,7 @@ class JourneyDataService {
 				currentJourney.getRelatedJourneys().add(journeyOther);
 			}
 		}
+		return currentJourney
 	}
 	
 	/**

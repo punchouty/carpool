@@ -8,7 +8,7 @@ class ArchiveJob {
 		cron name: 'userFeedback', cronExpression: "0 0 6 * * ?"
 	}
 
-    def markUsersForFeedback() {
+    def execute() {
         userReviewService.markUsersForPendingReview()
     }
 }
