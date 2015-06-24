@@ -97,7 +97,7 @@ class WorkflowMobileController {
 		def mobileResponse = new MobileResponse();
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			workflowDataService.acceptRequest(journeyPairId)
+			mobileResponse.data = workflowDataService.acceptRequest(journeyPairId)
 			mobileResponse.success = true
 			mobileResponse.message = "Successfully Accepted journey request"
 		}
@@ -114,7 +114,7 @@ class WorkflowMobileController {
 		def mobileResponse = new MobileResponse();
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			workflowDataService.rejectRequest(journeyPairId)
+			mobileResponse.data = workflowDataService.rejectRequest(journeyPairId)
 			mobileResponse.success = true
 			mobileResponse.message = "Successfully rccepted journey request"
 		}
@@ -132,7 +132,7 @@ class WorkflowMobileController {
 		def mobileResponse = new MobileResponse();
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			workflowDataService.cancelMyRequest(journeyPairId, myJourneyId)
+			mobileResponse.data = workflowDataService.cancelMyRequest(journeyPairId, myJourneyId, currentUser.getUsername())
 			mobileResponse.success = true
 			mobileResponse.message = "Successfully cancelled journey request"
 		}

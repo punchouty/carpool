@@ -76,6 +76,7 @@ class JourneyDataService {
 					otherJourneyId = journeyPair.recieverJourneyId
 				}
 				Journey journeyOther = findJourney(otherJourneyId);
+				journeyOther.setMyPairId(pairId)
 				currentJourney.getRelatedJourneys().add(journeyOther);
 			}
 		}

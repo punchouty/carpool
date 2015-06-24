@@ -367,7 +367,8 @@ class JourneyController {
 	def cancelRequest(){
 		def pairId = params.pairId
 		def myJourneyId = params.myJourneyId
-		workflowDataService.cancelMyRequest(pairId, myJourneyId)
+		def currentUser = getRacloopAuthenticatedUser();
+		workflowDataService.cancelMyRequest(pairId, myJourneyId, currentUser.getUsername())
 		redirect(action: "activeJourneys")
 	}
 	
