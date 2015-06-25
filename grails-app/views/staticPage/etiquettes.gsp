@@ -1,7 +1,10 @@
 <html>
 <head>
 <meta name="layout" content="static" />
-<title>Car pool Etiquettes</title>
+<meta name="description" content="Rules to make CabShare experience pleasent">
+<meta name="keywords" content="cabshare etiquettes, carpool etiquettes">
+
+<title>Cab Share Etiquettes</title>
 <r:require module="core" />
 </head>
 
