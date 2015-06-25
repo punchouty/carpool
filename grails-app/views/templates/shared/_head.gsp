@@ -1,5 +1,4 @@
 <meta charset="UTF-8">
-<meta name="google-site-verification" content="cbFFFHbq7aIR5U91Jm7yfK8h-r2ZDwC7ztrRSrP_8bs" />
 <meta name="description" content="Cabshare is a service to share cabs and auto rides. It also help in carpool">
 <meta name="keywords" content="cab share, shared cabs, auto share, carpool, car pool, carpool finder, carpool share, ride share, ride sharing app, carpooling">
 <meta name="author" content="Rajan Punchouty">
