@@ -1,7 +1,8 @@
 <html>
 <head>
 <meta name="layout" content="static" />
-<title>Terms and Conditions</title>
+<meta name="description" content="Terms and Conditions for using CabShare services">
+<title>Terms | Conditions</title>
 <r:require module="core" />
 </head>
 

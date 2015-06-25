@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="layout" content="main" />
-<title>Welcome to CabShare | Share Cab and Auto Rides</title>
+<title>CabShare - Free cab and auto sharing service</title>
 <r:require module="map" />
 </head>
 <body>

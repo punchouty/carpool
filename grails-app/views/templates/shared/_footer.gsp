@@ -48,9 +48,9 @@
 
         <!-- SOCIAL ICONS -->
         <ul class="social-icons">
-            <li><a href="https://www.facebook.com/games/racloop-india/" target="_blank"><span class="icon-social-facebook transparent-text-dark"></span></a>
+            <li><a href="https://www.facebook.com/cabshare.in" target="_blank"><span class="icon-social-facebook transparent-text-dark"></span></a>
             </li>
-            <li><a href="https://twitter.com/hashtag/racloopindia" target="_blank"><span class="icon-social-twitter transparent-text-dark"></span></a>
+            <li><a href="https://twitter.com/cabsharein" target="_blank"><span class="icon-social-twitter transparent-text-dark"></span></a>
             </li>
         </ul>
 

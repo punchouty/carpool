@@ -2,6 +2,7 @@
 <head>
 <meta name="layout" content="static" />
 <title>Privacy</title>
+<meta name="description" content="Privacy statement of CabShare services">
 <r:require module="core" />
 </head>
 
