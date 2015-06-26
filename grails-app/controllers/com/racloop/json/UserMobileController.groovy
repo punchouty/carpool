@@ -3,7 +3,6 @@ package com.racloop.json
 import grails.converters.JSON
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.ProfileBase
-import grails.util.Environment;
 
 import org.apache.shiro.SecurityUtils
 import org.apache.shiro.authc.AuthenticationException
@@ -16,8 +15,9 @@ import org.elasticsearch.common.joda.time.DateTime
 
 import com.racloop.Constant
 import com.racloop.GenericStatus
-import com.racloop.GenericUtil;
+import com.racloop.GenericUtil
 import com.racloop.Profile
+import com.racloop.Review
 import com.racloop.Sos
 import com.racloop.domain.Journey
 import com.racloop.domain.RacloopUser
@@ -145,17 +145,57 @@ class UserMobileController {
 		def json = request.JSON
 		log.info("sendUserRating() json : ${json}");
 		MobileResponse mobileResponse = new MobileResponse();
-		mobileResponse.message = "Successful"
-		mobileResponse.success = true
+		def currentUser = getAuthenticatedUser();
+		if(currentUser){
+			String journeyId = json.journeyId
+			String pairId = json.pairId1
+			String comments = json.comment1
+			String punctualty = json.punchuality1
+			String overall=json.overall1
+			Review review = new Review(journeyId:journeyId,comment:comments,punctualty:getActualRating(punctualty), overall:getActualRating(overall))
+			userReviewService.saveUserRating(currentUser, review, pairId)
+			if(json.pairId2){
+				pairId = json.pairId2
+				comments = json.comment2
+				punctualty = json.punchuality2
+				overall=json.overall2
+				Review review2 = new Review(journeyId:journeyId,comment:comments,punctualty:getActualRating(punctualty), overall:getActualRating(overall))
+				userReviewService.saveUserRating(currentUser, review2, pairId)
+			}
+			mobileResponse.message = "Successful"
+			mobileResponse.success = true
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to save user feedback"
+			mobileResponse.success = false
+		}
+		
 		render mobileResponse as JSON
+	}
+	
+	private Double getActualRating (String rating){
+		Double actualRating = null
+		if(rating){
+			actualRating = new Double(rating) + 1.0d
+		}
+		return actualRating
 	}
 	
 	def cancelUserRating() {
 		def json = request.JSON
 		log.info("cancelUserRating() json : ${json}");
 		MobileResponse mobileResponse = new MobileResponse();
-		mobileResponse.message = "Successful"
-		mobileResponse.success = true
+		def currentUser = getAuthenticatedUser();
+		if(currentUser){
+			userReviewService.clearUserForReview(currentUser)
+			mobileResponse.message = "Successful"
+			mobileResponse.success = true
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to cancel user feedback"
+			mobileResponse.success = false
+		}
+		
 		render mobileResponse as JSON
 	}
 	
