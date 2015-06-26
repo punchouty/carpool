@@ -1,11 +1,11 @@
 <meta charset="UTF-8">
-<meta name="description" content="Cabshare is a platform to share cabs and auto to save money, save enviornment and reduce road congestion.">
-<meta name="keywords" content="cab share, share cab, auto share, carpool, car pool, carpool finder, carpool share, Ride Share, Ride Sharing App, Carpooling">
+<meta name="description" content="Cabshare is a free service to share cabs and auto rides with other people. Save money, Make Friends and Contribute to Greener Tomorrow.">
+<meta name="keywords" content="share cab, cab share, taxi share, share taxi, shared taxi, shared cabs, auto share, carpool, car pool, carpool finder, carpool share, ride share, ride sharing app, carpooling">
 <meta name="author" content="Rajan Punchouty">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<title><g:layoutTitle default="raC looP - A carpool finder" /></title>
+<title><g:layoutTitle default="CabShare - Free cab and auto sharing service" /></title>
 <link rel="apple-touch-icon"
 	href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
 <link rel="apple-touch-icon" sizes="114x114"
