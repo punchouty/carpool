@@ -35,6 +35,7 @@ public class Journey {
 	private String to;
 	private Boolean isMale;
 	private Boolean isDriver;
+	private Boolean isTaxi;
 	private Double tripDistance;
 	private String tripUnit;
 	private String ip;
@@ -70,6 +71,7 @@ public class Journey {
 		journeyCommand.setToLatitude(toLatitude);
 		journeyCommand.setToLongitude(toLongitude);
 		journeyCommand.setIsDriver(isDriver);
+		journeyCommand.setIsTaxi(isTaxi);
 		journeyCommand.setTripDistance(tripDistance);
 		journeyCommand.setIp(ip);
 		journeyCommand.setCreatedDate(createdDate);
@@ -92,6 +94,7 @@ public class Journey {
 		journey.setToLongitude(requestCommand.getToLongitude());
 		journey.setIsMale(requestCommand.getIsMale());
 		journey.setIsDriver(requestCommand.getIsDriver());
+		journey.setIsTaxi(requestCommand.getIsTaxi());
 		journey.setTripDistance(requestCommand.getTripDistance());
 		journey.setIp(requestCommand.getIp());
 		journey.setCreatedDate(requestCommand.getCreatedDate());
@@ -146,6 +149,7 @@ public class Journey {
 		buffer.append("to : " + to + ", ");
 		buffer.append("journeyPairIds : " + journeyPairIds + ", ");
 		buffer.append("isDummy : " + isDummy);
+		buffer.append("isTaxi : " + isTaxi);
 		return buffer.toString();
 	}
 	
@@ -286,6 +290,15 @@ public class Journey {
 	}
 	public void setIsDriver(Boolean isDriver) {
 		this.isDriver = isDriver;
+	}
+	
+	@DynamoDBAttribute(attributeName="IsTaxi") 
+	public Boolean getIsTaxi() {
+		return isTaxi;
+	}
+
+	public void setIsTaxi(Boolean isTaxi) {
+		this.isTaxi = isTaxi;
 	}
 	
 	@DynamoDBAttribute(attributeName="TripDistance") 

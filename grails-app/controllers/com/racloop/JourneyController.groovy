@@ -452,6 +452,7 @@ public class JourneyRequestCommand {
 	Double toLatitude = -1;
 	Double toLongitude = -1;
 	Boolean isDriver;
+	Boolean isTaxi;
 	Double tripDistance;
 	String tripUnit;
 	String ip; //should get from request
@@ -467,7 +468,7 @@ public class JourneyRequestCommand {
 	}
 	
 	String toString(){
-		return "JourneyRequestCommand -> id : ${id} | name : ${name} | isDriver : ${isDriver} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${from} | toPlace : ${to}";
+		return "JourneyRequestCommand -> id : ${id} | name : ${name} | isTaxi : ${isTaxi} | dateOfJourneyString : ${dateOfJourneyString} | fromPlace : ${from} | toPlace : ${to}";
 	}
 	
 	boolean isNewJourney() {

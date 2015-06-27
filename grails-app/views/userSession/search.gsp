@@ -66,13 +66,16 @@
 								<%--
 								
 							    <button type="button" id ="ask" value="ask"class="btn standard-button">Ask</button>
-							     --%>
 							     <button type="button" id ="offer" value="offer" class="btn standard-button">Search</button>
+							     --%>
+							    <button type="button" id ="auto" value="auto" class="btn standard-button">Auto</button>
+							    <button type="button" id ="taxi" value="taxi" class="btn standard-button">Taxi</button>
 							    <button type="button" id ="clear" value="clear"class="btn standard-button standard-red-button">Clear</button>
 								<g:hiddenField name="validStartTimeString" value="${commandInstance?.validStartTimeString}" />
 								<g:hiddenField name="tripDistance" value="${commandInstance?.tripDistance}" />
 								<g:hiddenField name="tripUnit" value="${commandInstance?.tripUnit}" />
 								<g:hiddenField name="isDriver" value="${commandInstance?.isDriver}" />	
+								<g:hiddenField name="isTaxi" value="${commandInstance?.isTaxi}" />	
 							</g:form>
 							 <!-- SUCCESS AND ERROR MESSAGE -->
                               <p id="form-success" class="white-text"><span class="icon-check-alt2 colored-text"></span> <span id="success-message">Thanks!</span></p>

@@ -33,11 +33,18 @@
                 <div class="colored-line">
                 </div>
                 <div class="sub-heading ">
-                	<g:if test = "${currentJourney?.isDriver == true}">
+                	<%--<g:if test = "${currentJourney?.isDriver == true}">
                 		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
                 	</g:if>
                 	<g:else>
                 		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
+                	</g:else>
+                    --%>
+                    <g:if test = "${currentJourney?.isTaxi == true}">
+                		<span class="label label-primary">Taxi</span>
+                	</g:if>
+                	<g:else>
+                		<span class="label label-primary">Auto Rickshaw</span>
                 	</g:else>
                     <div>
                         <i class="icon-icon-house-alt"></i> <strong>From :</strong> ${currentJourney?.from}
@@ -70,18 +77,25 @@
 	        <article class="row white-bg-border racloop-search-fonts">
 	            <div class="col-md-2 col-md-offset-1">
 	                <span class="hidden-sm hidden-xs visible-lg visible-md">
-	                	<g:if test = "${matchedResult.isDriver == true}">
+	                	<%--<g:if test = "${matchedResult.isDriver == true}">
 	                    	<g:img dir="images" file="racloop/driver.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
 	                    </g:if>
 	                    <g:else>
 	                    	<g:img dir="images" file="racloop/rider.png" width="100" alt="Lorem ipsum" class="img-thumbnail"/>
+	                    </g:else>
+	                	--%>
+	                	<g:if test = "${matchedResult.isTaxi == true}">
+	                    	<g:img dir="images" file="racloop/taxi.png" width="100" alt="Taxi" class="img-thumbnail" style="margin-top: 10px;"/>
+	                    </g:if>
+	                    <g:else>
+	                    	<g:img dir="images" file="racloop/auto.png" width="100" alt="Auto" class="img-thumbnail" style="margin-top: 10px;"/>
 	                    </g:else>
 	                </span>
 	            </div>
 	            <div class="col-md-2">
 	                <ul class="feature-list text-left">
 	                    <li>
-	                        <g:if test = "${matchedResult.isDriver == true}">
+	                        <%--<g:if test = "${matchedResult.isDriver == true}">
 	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
 	                            	<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
 	                            <g:img dir="images" file="racloop/driver.png" width="100" alt="Car owner" class="img-thumbnail"/>
@@ -100,6 +114,25 @@
 		                        </span>
 	                        </g:else>
 	                        
+	                        --%>
+	                       <g:if test = "${matchedResult.isTaxi == true}">
+	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
+	                            	<span class="label label-primary">Taxi</span>
+	                            <g:img dir="images" file="racloop/cab.png" width="100" alt="Taxi" class="img-thumbnail" style="margin-top: 10px;"/>
+	                        	</span>
+		                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+		                            <span class="label label-primary">Taxi</span>
+		                        </span>
+	                        </g:if>
+	                        <g:else>
+	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
+	                            	<span class="label label-primary">Auto Rickshaw</span>
+	                            <g:img dir="images" file="racloop/auto.png" width="100" alt="Auto" class="img-thumbnail" style="margin-top: 10px;"/>
+	                        	</span>
+		                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+		                            <span class="label label-primary">Auto Rickshaw</span>
+		                        </span>
+	                        </g:else>
 	                    </li>
 	                    <li><i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedResult.dateOfJourney}"/></span></li>
 	                    <li><i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedResult.dateOfJourney}"/></span></li>
@@ -170,7 +203,7 @@
 	                		<img src="${journeyInstance?.photoUrl}" alt="profile image" class="img-thumbnail"> </img>
 	                	</g:if>
 	                	<g:else>
-	                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"> </img>
+	                		<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"  style="margin-top: 10px;"> </img>
 	                	</g:else>
 	                </div>
 	            </div>

@@ -143,6 +143,7 @@ class SearchService {
 				field("to", journey.getTo()).
 				field("toGeoPoint", toGeoPoint).
 				field("isDriver", journey.getIsDriver()).
+				field("isTaxi", journey.getIsTaxi()).
 				field("isMale", journey.getIsMale()).
 				field("tripDistance", journey.getTripDistance()).
 				field("photoUrl", journey.getPhotoUrl()).
@@ -181,6 +182,7 @@ class SearchService {
 		journey.setToLatitude(toGeoPoint.getLat());
 		journey.setToLongitude(toGeoPoint.getLon());
 		journey.setIsDriver(getResponse.getSource().get('isDriver'));
+		journey.setIsTaxi(getResponse.getSource().get('isTaxi'));
 		journey.setIsMale(getResponse.getSource().get('isMale'));
 		journey.setTripDistance(getResponse.getSource().get('tripDistance'));
 		journey.setPhotoUrl(getResponse.getSource().get('photoUrl'));
@@ -301,6 +303,7 @@ class SearchService {
 		journey.setToLatitude(toGeoPoint.getLat());
 		journey.setToLongitude(toGeoPoint.getLon());
 		journey.setIsDriver(searchHit.getSource().get('isDriver'));
+		journey.setIsTaxi(searchHit.getSource().get('isTaxi'));
 		journey.setIsMale(searchHit.getSource().get('isMale'));
 		journey.setTripDistance(searchHit.getSource().get('tripDistance'));
 		journey.setPhotoUrl(searchHit.getSource().get('photoUrl'));
@@ -415,6 +418,7 @@ class SearchService {
 				journey.email= Constant.DUMMY_USER_MAIL
 				journey.name= name;
 				journey.isDriver = false;
+				journey.isTaxi = false;
 				journey.fromLatitude = fromPlace.location.lat();
 				journey.fromLongitude = fromPlace.location.lon();
 				journey.from = fromPlace.name
@@ -441,6 +445,7 @@ class SearchService {
 				journey.email= Constant.DUMMY_USER_MAIL
 				journey.name= name;
 				journey.isDriver = false;
+				journey.isTaxi = false;
 				journey.fromLatitude = fromPlace.location.lat();
 				journey.fromLongitude = fromPlace.location.lon();
 				journey.from = fromPlace.name

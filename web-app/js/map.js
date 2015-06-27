@@ -248,6 +248,33 @@ $(function() {
 
 
 $(function() {
+	$('#auto').click(function() {	
+		var errorMessage = getErrorMessage();		
+		if(errorMessage){
+			$("#error-message").text(errorMessage);
+			$('#form-error').fadeIn(1000);
+            $('#form-success').fadeOut(500);
+		}
+		else {
+			$('#isDriver').val('true');
+			$('#isTaxi').val('false');
+			$('#search-form').submit();
+		}
+	});
+	$('#taxi').click(function() {
+		var errorMessage = getErrorMessage();
+		if(errorMessage){
+			$("#error-message").text(errorMessage);
+			$('#form-error').fadeIn(1000);
+            $('#form-success').fadeOut(500);
+		}
+		else {
+			$('#isDriver').val('false');
+			$('#isTaxi').val('true');
+			$('#search-form').submit();
+		}
+	});
+	/** DEPRECATED
 	$('#offer').click(function() {	
 		var errorMessage = getErrorMessage();		
 		if(errorMessage){
@@ -276,6 +303,7 @@ $(function() {
 			$('#search-form').submit();
 		}
 	});
+	**/
 	$('#clear').click(function() {
 		clearFields();
 	});

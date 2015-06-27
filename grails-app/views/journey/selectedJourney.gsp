@@ -31,7 +31,7 @@
             <div class="col-md-2 col-md-offset-2">
                 <ul class="feature-list text-left">
                     <li>
-                        <g:if test = "${matchedJourney.isDriver == true}">
+                        <%--<g:if test = "${matchedJourney.isDriver == true}">
                         	<span class="hidden-lg hidden-md visible-sm visible-xs">
                             	<span class="label label-primary">Car Owner</span>
                             	<g:img dir="images" file="racloop/driver.png"  alt="Ride Seeker" class="img-thumbnail"/>
@@ -50,6 +50,25 @@
 	                        </span>
                         </g:else>
                         
+                   		--%>
+                   		<g:if test = "${matchedJourney.isTaxi == true}">
+                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
+                            	<span class="label label-primary">Taxi</span>
+                            <g:img dir="images" file="racloop/cab.png" width="100" alt="Car owner" class="img-thumbnail"/>
+                        	</span>
+	                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                            <span class="label label-primary">Taxi</span>
+	                        </span>
+                        </g:if>
+                        <g:else>
+                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
+                            	<span class="label label-primary">Auto Rickshaw</span>
+                            <g:img dir="images" file="racloop/rider.png" width="100" alt="Ride Seeker" class="img-thumbnail"/>
+                        	</span>
+	                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                            <span class="label label-primary">Auto Rickshaw</span>
+	                        </span>
+                        </g:else>
                     </li>
                     <li><i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedJourney.dateOfJourney}"/></span></li>
                     <li><i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedJourney.dateOfJourney}"/></span></li>

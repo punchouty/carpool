@@ -49,6 +49,9 @@ class IndexMetadata {
 					startObject("isDriver").
 					field("type", "boolean").
 					endObject().
+					startObject("isTaxi").
+					field("type", "boolean").
+					endObject().
 					startObject("isMale").
 					field("type", "boolean").
 					endObject().
