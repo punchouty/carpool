@@ -66,7 +66,7 @@ class WorkflowDataService {
 				otherJourney.incrementNumberOfCopassengers(2)
 				thirdJourney.addPairIdToJourney(thirdJourneyPair.getId())
 				thirdJourney.incrementNumberOfCopassengers()
-				journeyDataService.makeJourneyNonSearchable(otherJourney.getId())
+				journeyDataService.makeJourneyNonSearchable(otherJourney.getId(), isDummy)
 //				journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
 				journeyDataService.updateElasticsearchForPassangeCountIfRequired(thirdJourney.id, thirdJourney.numberOfCopassengers)
 			}
@@ -86,7 +86,7 @@ class WorkflowDataService {
 				otherJourney.incrementNumberOfCopassengers()
 				thirdJourney.addPairIdToJourney(thirdJourneyPair.getId())
 				thirdJourney.incrementNumberOfCopassengers()
-				journeyDataService.makeJourneyNonSearchable(requesterJourneyId)
+				journeyDataService.makeJourneyNonSearchable(requesterJourneyId, isDummy)
 //				journeyDataService.updateElasticsearchForPassangeCountIfRequired(requesterJourney.id, requesterJourney.numberOfCopassengers)
 				journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
 				journeyDataService.updateElasticsearchForPassangeCountIfRequired(thirdJourney.id, thirdJourney.numberOfCopassengers)
@@ -98,7 +98,13 @@ class WorkflowDataService {
 			requesterJourney.incrementNumberOfCopassengers()
 			otherJourney.addPairIdToJourney(journeyPair.getId())
 			otherJourney.incrementNumberOfCopassengers()
-			journeyDataService.makeJourneyNonSearchable(requesterJourneyId)
+			if(isDummy){
+				journeyDataService.makeJourneyNonSearchable(otherJourneyId, isDummy)
+				journeyDataService.makeJourneySearchable(requesterJourney)
+			}
+			else {
+				journeyDataService.makeJourneyNonSearchable(requesterJourneyId, isDummy)
+			}
 //			journeyDataService.updateElasticsearchForPassangeCountIfRequired(requesterJourney.id, requesterJourney.numberOfCopassengers)
 			journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
 			saveJourneys(requesterJourney, otherJourney)
