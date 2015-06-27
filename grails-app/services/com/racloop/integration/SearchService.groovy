@@ -381,7 +381,7 @@ class SearchService {
 		def sourceBuilder = createJourneyJson(journey)
 		IndexRequest indexRequest = new IndexRequest(IndexMetadata.DUMMY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, id).source(sourceBuilder);
 		IndexResponse indexResponse = node.client.index(indexRequest).actionGet();
-		log.info "Successfully indexed ${journey} with ${indexResponse.getId()}"
+		log.info "Successfully indexed dummy journey ${journey} with ${indexResponse.getId()}"
 		return indexResponse.getId();
 	}
 	

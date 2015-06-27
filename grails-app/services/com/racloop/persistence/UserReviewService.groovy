@@ -5,6 +5,7 @@ import grails.transaction.Transactional
 import org.elasticsearch.common.joda.time.DateTime
 
 import com.racloop.Profile
+import com.racloop.Review
 import com.racloop.User
 import com.racloop.domain.Journey
 import com.racloop.domain.JourneyPair
@@ -44,8 +45,10 @@ class UserReviewService {
 				if(isMarkedForReview) {
 					Profile profile = Profile.findByMobile(mobile);
 					User owner = profile.owner
-					owner.journeyIdForReview = journey.id
-					owner.save();
+					if(!owner.journeyIdForReview){
+						owner.journeyIdForReview = journey.id
+						owner.save();
+					}
 					mobileProcessed.add(mobile);
 				}
 			}
@@ -58,8 +61,28 @@ class UserReviewService {
 		return journeyForReview
 	}
 	
-	def clearUserForReview(){
-		
+	def clearUserForReview(User currentUser){
+		currentUser.journeyIdForReview = null
+		currentUser.save()
+	}
+	
+	def saveUserRating(User currentUser, Review review, String pairId){
+		JourneyPair pair = journeyPairDataService.findPairById(pairId)
+		String otherJourneyId = findTheOtherJourneyId(pair, review.journeyId)
+		Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
+		String otherUserName = otherJourney.user
+		User otherUser = User.findByUsername(otherUserName)
+		review.setReviewer(currentUser)
+		review.setReviewee(otherUser)
+		if(!review.save()) {
+			log.error ("Something went wrong while saving the review.")
+		}
+		clearUserForReview(currentUser)
+	}
+	
+	private String findTheOtherJourneyId(JourneyPair pair, String myJourneyId){
+		String otherJourneyId = pair.getInitiatorJourneyId().equals(myJourneyId) ? pair.getRecieverJourneyId() : pair.getInitiatorJourneyId()
+		return otherJourneyId
 	}
 	
 }

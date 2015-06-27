@@ -86,7 +86,7 @@ class JourneyMobileController {
 			if(currentJourney != null) {
 				JourneyRequestCommand currentJourneyCommand = currentJourney.convert();
 				//no need to search dummy records
-				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand, false);
+				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand, true);
 				mobileResponse.data['hideSaveButton'] = true;
 				session.currentJourneyCommand = currentJourneyCommand
 			}
@@ -140,7 +140,7 @@ class JourneyMobileController {
 				journey.id = null;
 				journeyDataService.createJourney(journey);
 				currentJourneyCommand.id = journey.id;
-				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand, false);
+				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand, true);
 				mobileResponse.message = "Journey replaced successfully"
 				mobileResponse.data['hideSaveButton'] = true;
 				session.currentJourneyCommand = currentJourneyCommand

@@ -346,8 +346,13 @@ class JourneyDataService {
 		awsService.dynamoDBMapper.batchDelete(journeys);
 	}
 	
-	def makeJourneyNonSearchable(String journeyId){
-		searchService.deleteJourney(journeyId)
+	def makeJourneyNonSearchable(String journeyId, boolean isDummy = false){
+		if(isDummy){
+			searchService.deleteDummyJourney(journeyId)
+		}
+		else {
+			searchService.deleteJourney(journeyId)
+		}
 	}
 	
 	def makeJourneySearchable (Journey journey){

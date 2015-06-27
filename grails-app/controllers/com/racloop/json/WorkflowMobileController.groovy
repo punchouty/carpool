@@ -22,7 +22,7 @@ class WorkflowMobileController {
 				Journey journey = Journey.convert(currentJourney);
 				journeyDataService.createJourney(journey);
 				session.currentJourneyCommand = null;
-				mobileResponse = journeySearchService.straightThruSearch(currentJourney, false);
+				mobileResponse = journeySearchService.straightThruSearch(currentJourney, true);
 				mobileResponse.data['hideSaveButton'] = true;
 				mobileResponse.message = "Journey saved successfully"
 			}

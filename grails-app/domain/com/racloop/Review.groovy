@@ -5,11 +5,11 @@ class Review {
 	User reviewer
 	User reviewee
 	String comment
-	String workflowId
-	boolean isReviewerADriver
+	String journeyId
+	boolean isReviewerADriver = false
 	
-	private transient final double  w_safety = 1d
-	private transient final double  w_comfort = 1d
+	private transient final double  w_safety = 0d
+	private transient final double  w_comfort = 0d
 	private transient final double  w_punctualty = 1d
 	private transient final double  w_overall = 1d
 	
@@ -18,8 +18,8 @@ class Review {
 	//double loud
 	
 	//for riders
-	Double safety // 1-5 scale
-	Double comfort // 1-5 scale
+	Double safety =0D// 1-5 scale
+	Double comfort = 0D// 1-5 scale
 	
 	// for both driver and rider
 	Double punctualty // 1-5 scale
