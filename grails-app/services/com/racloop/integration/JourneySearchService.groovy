@@ -172,11 +172,14 @@ class JourneySearchService {
 	private List enrichResult(List searchResult, String currentJourneyId){
 		def returnSet = [] as Set	//Result coming from 2 different source, hence can be duplicate. Relying on equals of Journey object
 		Journey currentJourney = journeyDataService.findChildJourneys(currentJourneyId)
-		if(currentJourney.getRelatedJourneys()){
+		/*if(currentJourney.getRelatedJourneys()){
 			currentJourney.getRelatedJourneys().each {it->
-				returnSet << it
+				if(!WorkflowStatus.isIndirectStatus(it.myStatus)){
+					returnSet << it
 				}
-		}
+
+			}
+		}*/
 		searchResult.each {it -> 
 			returnSet << it 
 			}

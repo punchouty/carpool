@@ -21,6 +21,8 @@
 	<div class="container-fluid">
 	 	<g:each in="${journeys}" status="i" var="result">
 			<g:set var="journeyInstance" value="${result}"/>
+			<g:if test = "${journeyInstance.getMyStatus() == null || (journeyInstance.getMyStatus()?.startsWith('Cancelled') == false && journeyInstance.getMyStatus()?.startsWith('Rejected') == false)}">
+			
 			<article id="request-${i}" class="row <g:if test="${i%2 == 0}">grey-bg</g:if><g:else>white-bg</g:else>">
  				<div class="row">
  				
@@ -52,6 +54,7 @@
 	            </div>
 	             
     		</article>
+    		</g:if>
 		</g:each>	
      </div>
 </body>
