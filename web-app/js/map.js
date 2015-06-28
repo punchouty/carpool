@@ -248,7 +248,8 @@ $(function() {
 
 
 $(function() {
-	$('#auto').click(function() {	
+	$('#auto').click(function() {
+		$('#isTaxi').val('false');
 		var errorMessage = getErrorMessage();		
 		if(errorMessage){
 			$("#error-message").text(errorMessage);
@@ -262,6 +263,7 @@ $(function() {
 		}
 	});
 	$('#taxi').click(function() {
+		$('#isTaxi').val('true');
 		var errorMessage = getErrorMessage();
 		if(errorMessage){
 			$("#error-message").text(errorMessage);
@@ -419,6 +421,14 @@ function getErrorMessage() {
 			}
 			else {
 				errorMessage = "Distance you want to travel is very less"
+			}
+		}
+		if(tripDistanceInKm > 75 && $('#isTaxi').val() == 'false') {
+			if(errorMessage) {
+				errorMessage = errorMessage + ", We don't allow journeys over 75KM by Auto. Please use taxi as transport mode."
+			}
+			else {
+				errorMessage = "We don't allow journeys over 75KM by Auto. Please use taxi as transport mode."
 			}
 		}
 	}
