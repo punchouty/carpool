@@ -78,19 +78,28 @@
                 <h5>
 	                <g:if test="${matchedUser}">
 	                    <strong>${matchedUser.profile.fullName}</strong><br>
-	                    Rating ${matchedUser.getUserRating()}
-	                    <i class="icon-star-alt"></i> <i class="icon-star-alt"></i> <i class="icon-star-half-alt"></i> &nbsp; <small>${matchedUser.getIncomingReviews().size()} <a href ="#" data-target="#reviews" role="button" data-toggle="modal">Reviews</a>  available</small>
+	                    Rating 
+	                    <g:set var="counter" value="${1}"/>
+						<g:while test = "${counter<= matchedUser.getUserRating() }">
+							<i class="icon-star-alt"></i> 
+							<g:set var="counter" value="${counter+1}"/>
+						</g:while>
+						<g:if test = "${ matchedUser.getUserRating() -Math.floor(matchedUser.getUserRating()) >0.5}">
+							<i class="icon-star-half-alt"></i> 
+							
+						</g:if>
+	                    &nbsp; <small>${matchedUser.getIncomingReviews().size()} <a href ="#" data-target="#reviews" role="button" data-toggle="modal">Reviews</a>  available</small>
 	                </g:if>
 	               	<g:else>
 	               		<strong>${matchedJourney.name}</strong><br>
-	               		<i class="icon-star-alt"></i> <i class="icon-star-alt"></i> <i class="icon-star-half-alt"></i> &nbsp; <small>4 <a href="#">Reviews</a> available</small>
+	               		&nbsp; <small>0 <a href="#">Reviews</a> available</small>
 	               	</g:else>
 					
 				</h5>
                 <ul class="text-left">
                     <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedJourney.from}</li>
                     <li><i class="icon-basic-geolocalize-05"></i> <strong>To :</strong>${matchedJourney.to}</li>
-                    <li><i class="icon-ecommerce-dollar"></i> <strong>Approximate Cost :</strong> 250/150/100 INR for 2/3/4 Passengers (By Car)</li>
+                    <!-- <li><i class="icon-ecommerce-dollar"></i> <strong>Approximate Cost :</strong> 250/150/100 INR for 2/3/4 Passengers (By Car)</li>  -->
                     <li>
                     	<g:if test = "${showRequestButton}">
                     		<g:link action="requestService" id="requestService"  params="[matchedJourneyId: matchedJourney.id, dummy:isDummy]">

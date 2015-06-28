@@ -48,10 +48,21 @@ class User extends grails.plugin.nimble.core.UserBase {
 		}
 		int count = reviewList.size()
 		if(count>0){
-			return rating/count
+			return trimRating(rating/count)
 		}
 		else {
 			return 0.0d
+		}
+	}
+	
+	private trimRating(Double inputRating){
+		double ratingAsWholeNumber = Math.floor(inputRating)
+		double remainder = inputRating % ratingAsWholeNumber
+		if(remainder<0.5d) {
+			return ratingAsWholeNumber
+		}
+		else {
+			return ratingAsWholeNumber + 0.5d
 		}
 	}
 	
