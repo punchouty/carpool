@@ -8,10 +8,17 @@ import grails.plugin.nimble.core.ProfileBase
 import grails.plugin.nimble.core.UserBase
 
 import org.apache.shiro.SecurityUtils
+
 import org.apache.shiro.crypto.hash.Sha256Hash
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 
 import com.restfb.exception.FacebookOAuthException
+
+import org.apache.shiro.SecurityUtils
+import org.apache.shiro.authc.AuthenticationException
+import org.apache.shiro.authc.DisabledAccountException
+import org.apache.shiro.authc.IncorrectCredentialsException
+import org.apache.shiro.authc.UsernamePasswordToken
 
 class UserSessionController {
 
@@ -22,6 +29,7 @@ class UserSessionController {
 	def userManagerService
 	FacebookContext facebookContext
 	def jmsService
+	def userDataService
 
 	def search() {
 		
@@ -58,6 +66,50 @@ class UserSessionController {
 		}
 
 		model: [local: local, registration: registration, username: username, rememberMe: (rememberMe != null), targetUri: targetUri, facebookContext:facebookContext]
+	}
+	
+	def login(String username, String password, String rememberme) {
+		def authToken = new UsernamePasswordToken(username, password)
+
+		if (rememberme) {
+			authToken.rememberMe = true
+		}
+
+		log.info("Attempting to authenticate user, $username. RememberMe is $authToken.rememberMe")
+
+		try {
+			SecurityUtils.subject.login(authToken)
+			userDataService.createLoginRecord(request)
+
+			def targetUri = session.getAttribute(AuthController.TARGET) ?: nimbleConfig.localusers.authentication.postLoginUrl
+			session.removeAttribute(AuthController.TARGET)
+			log.info("Directing to content $targetUri")
+			redirect(uri: targetUri)
+			return
+		}
+		catch (IncorrectCredentialsException e) {
+			log.info "Credentials failure for user '${username}'."
+			log.debug(e)
+
+			flash.type = 'error'
+			flash.message = message(code: "nimble.login.failed.credentials")
+		}
+		catch (DisabledAccountException e) {
+			log.info "Attempt to login to disabled account for user '${username}'."
+			log.debug(e)
+
+			flash.type = 'error'
+			flash.message = message(code: "nimble.login.failed.disabled")
+		}
+		catch (AuthenticationException e) {
+			log.info "General authentication failure for user '${username}'."
+			log.debug(e)
+
+			flash.type = 'error'
+			flash.message = message(code: "nimble.login.failed.general")
+		}
+		redirect(action: 'signin')
+		
 	}
 	
 	def signinUsingFacebook() {

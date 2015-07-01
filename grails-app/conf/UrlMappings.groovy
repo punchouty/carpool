@@ -23,6 +23,11 @@ class UrlMappings {
 			action = "signin"
 		}
 
+		"/login"{
+			controller = "userSession"
+			action = "login"
+		}
+
 		"/auth/login"{
 			controller = "userSession"
 			action = "signin"

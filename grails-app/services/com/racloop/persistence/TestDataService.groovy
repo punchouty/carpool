@@ -192,6 +192,7 @@ class TestDataService {
 				journey.toLongitude = Double.parseDouble(line[10])
 				journey.isMale = true
 				journey.isDriver = true
+				journey.isTaxi = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = false;
@@ -230,6 +231,7 @@ class TestDataService {
 				journey.toLongitude = Double.parseDouble(line[10])
 				journey.isMale = true
 				journey.isDriver = true
+				journey.isTaxi = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;
@@ -268,6 +270,7 @@ class TestDataService {
 				journey.toLongitude = Double.parseDouble(line[10])
 				journey.isMale = true
 				journey.isDriver = true
+				journey.isTaxi = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;
@@ -306,6 +309,7 @@ class TestDataService {
 				journey.toLongitude = Double.parseDouble(line[10])
 				journey.isMale = true
 				journey.isDriver = true
+				journey.isTaxi = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;

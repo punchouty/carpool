@@ -34,6 +34,7 @@ class MobileController {
 
 	def shiroSecurityManager
 	def userService
+	def userDataService
 	def userManagerService
 	def journeyManagerService
 	def journeyService
@@ -66,7 +67,7 @@ class MobileController {
 			try {				
 				//TODO - do we need this event mechanism below. See AuthController
 				SecurityUtils.subject.login(authToken)
-				userService.createLoginRecord(request)
+				userDataService.createLoginRecord(request)
 				authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
 				mobileResponse.data=authenticatedUser
 				def journeys = journeyService.findCurrentJourneyForUser(authenticatedUser, currentDate)

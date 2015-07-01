@@ -30,6 +30,7 @@ public class AwsUtil {
 	private static String journeyTable = "Journey";
 	private static String userTable = "RacloopUser";
 	private static String ratingTable = "UserRating";
+	private static String loginDetailsTable = "LoginDetail";
 
 	public static void main(String[] args) throws InterruptedException, ParseException {
 		createTables();
@@ -47,6 +48,7 @@ public class AwsUtil {
 		createJourneyPairTable();
 		createRatingTable();
 		createJourneyTable();
+		createLoginDetailsTable();
 	}
 
 	public static void deleteAllTables() throws InterruptedException {
@@ -175,6 +177,38 @@ public class AwsUtil {
 		Table table = dynamoDB.createTable(request);
 		table.waitForActive();
 		System.out.println("Created successfully : " + ratingTable);
+	}
+
+	public static void createLoginDetailsTable() throws InterruptedException {
+		ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("Id").withAttributeType("S"));
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("DateCreated").withAttributeType("S"));
+		
+		ArrayList<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
+		keySchema.add(new KeySchemaElement().withAttributeName("Id").withKeyType(KeyType.HASH));
+		
+		ArrayList<KeySchemaElement> indexKeySchema = new ArrayList<KeySchemaElement>();
+		indexKeySchema.add(new KeySchemaElement().withAttributeName("DateCreated").withKeyType(KeyType.HASH));
+		
+		GlobalSecondaryIndex index = new GlobalSecondaryIndex()
+		.withIndexName("DateCreated-index")
+		.withKeySchema(indexKeySchema)
+		.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
+		.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(5L).withWriteCapacityUnits(5L));
+		
+		ArrayList<GlobalSecondaryIndex> indexes = new ArrayList<GlobalSecondaryIndex>();
+		indexes.add(index);
+		
+		CreateTableRequest request = new CreateTableRequest()
+				.withTableName(loginDetailsTable)
+				.withKeySchema(keySchema)
+				.withGlobalSecondaryIndexes(indexes)
+				.withAttributeDefinitions(attributeDefinitions)
+				.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(5L).withWriteCapacityUnits(5L));
+		System.out.println("Started creating table : " + loginDetailsTable);
+		Table table = dynamoDB.createTable(request);
+		table.waitForActive();
+		System.out.println("Created successfully : " + loginDetailsTable);
 	}
 
 }

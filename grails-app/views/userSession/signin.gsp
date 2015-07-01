@@ -32,7 +32,7 @@
 			</div>
 			<div class="col-md-5 pull-right">
 				<div class="vertical-registration-form">                   
-		        <g:form action="signin"  controller="auth" name="login-form" method="post" class="registration-form" id="login-form">
+		        <g:form action="login"  controller="userSession" name="login-form" method="post" class="registration-form" id="login-form">
 					<input type="hidden" name="targetUri" value="${targetUri}" />
 			        <input type="email" id="cf-email" name="username"  class="form-control input-box" placeholder="Email" value="${user?.profile?.email?.encodeAsHTML()}" data-validation-required-message="Email is required field" required>
 					<input type="password" name="password" id="cf-password" class="form-control input-box" placeholder="Password" data-validation-required-message="Password is required field"  required />
