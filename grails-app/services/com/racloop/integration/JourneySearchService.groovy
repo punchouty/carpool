@@ -72,26 +72,33 @@ class JourneySearchService {
 		Double fromLon = currentJourney.fromLongitude
 		Double toLat = currentJourney.toLatitude
 		Double toLon = currentJourney.toLongitude
+		Integer noOfExistingPassanger = 0
+		boolean disableMoreRequests = false
 		MobileResponse mobileResponse = new MobileResponse();
 		List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 		if(currentJourney.id) {
+			Journey journey = journeyDataService.findJourney(currentJourney.id)
+			noOfExistingPassanger = journey.getNumberOfCopassengers()
+			if(noOfExistingPassanger>=2){
+				disableMoreRequests = true
+			}
 			searchResults = enrichResult(searchResults,currentJourney.id )
 		}
 		if(searchResults.size() > 0) {
 			int length = 0
 			length = searchResults.size()
-			mobileResponse.data = ['journeys': searchResults]
+			mobileResponse.data = ['journeys': searchResults, 'disableMoreRequests':disableMoreRequests]
 			mobileResponse.success = true
 			mobileResponse.total = length
 			mobileResponse.message = "${length} results found"
 		}
 		else {
-			if(searchFromDummy) {
+			if(searchFromDummy && noOfExistingPassanger<1) {
 				mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 			}
 			else {
 				def emptyResults = []
-				mobileResponse.data = ['journeys': emptyResults]
+				mobileResponse.data = ['journeys': emptyResults, 'disableMoreRequests':disableMoreRequests]
 				mobileResponse.success = true
 				mobileResponse.total = 0
 				mobileResponse.message = "No matching results found"

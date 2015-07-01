@@ -177,7 +177,7 @@
 						</g:if>
 						<g:else>
 							<li>
-								<g:if test= "${searchResults.data.get('hideSaveButton') == 'true'  }">
+								<g:if test= "${searchResults.data.get('disableMoreRequests') == true  }">
 									<button class="btn btn-primary"><i class="fa fa-ban"></i> Seats Full</button>
 								</g:if>
 								<g:else>

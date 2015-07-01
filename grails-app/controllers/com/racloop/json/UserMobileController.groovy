@@ -513,13 +513,14 @@ class UserMobileController {
 		}
 		def user = getAuthenticatedUser()
 		if(user) {
+			String oldMobile = user.profile.mobile
 			user.profile.fullName = fullName
 			user.profile.email = email
 			user.profile.mobile = mobile
 			user.profile.isMale = isMale
 			if (user.validate()) {
 				def updatedUser = userService.updateUser(user)
-				RacloopUser racloopUser = new RacloopUser();
+				RacloopUser racloopUser = userDataService.findUserByMobile(oldMobile)
 				racloopUser.setMobile(user.profile.mobile);
 				racloopUser.setEmail(user.profile.email);
 				racloopUser.setFullName(user.profile.fullName);

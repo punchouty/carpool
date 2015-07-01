@@ -418,7 +418,7 @@ class SearchService {
 				journey.email= Constant.DUMMY_USER_MAIL
 				journey.name= name;
 				journey.isDriver = false;
-				journey.isTaxi = false;
+				journey.isTaxi = true;
 				journey.fromLatitude = fromPlace.location.lat();
 				journey.fromLongitude = fromPlace.location.lon();
 				journey.from = fromPlace.name
@@ -445,7 +445,7 @@ class SearchService {
 				journey.email= Constant.DUMMY_USER_MAIL
 				journey.name= name;
 				journey.isDriver = false;
-				journey.isTaxi = false;
+				journey.isTaxi = true;
 				journey.fromLatitude = fromPlace.location.lat();
 				journey.fromLongitude = fromPlace.location.lon();
 				journey.from = fromPlace.name
