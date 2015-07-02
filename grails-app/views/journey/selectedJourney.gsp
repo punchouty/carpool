@@ -52,20 +52,18 @@
                         
                    		--%>
                    		<g:if test = "${matchedJourney.isTaxi == true}">
-                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
-                            	<span class="label label-primary">Taxi</span>
-                            <g:img dir="images" file="racloop/cab.png" width="100" alt="Car owner" class="img-thumbnail"/>
+                        	<span class="hidden-sm hidden-xs visible-lg visible-md">
+                        		 <g:img dir="images" file="racloop/taxi.png" width="100" alt="Taxi" class="img-thumbnail"/>
                         	</span>
-	                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                        <span class="hidden-lg hidden-md visible-sm visible-xs">
 	                            <span class="label label-primary">Taxi</span>
 	                        </span>
                         </g:if>
                         <g:else>
-                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
-                            	<span class="label label-primary">Auto Rickshaw</span>
-                            <g:img dir="images" file="racloop/rider.png" width="100" alt="Ride Seeker" class="img-thumbnail"/>
+                        	 <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                            <g:img dir="images" file="racloop/auto.png" width="100" alt="Auto Rickshaw" class="img-thumbnail"/>
                         	</span>
-	                        <span class="hidden-sm hidden-xs visible-lg visible-md">
+	                       <span class="hidden-lg hidden-md visible-sm visible-xs">
 	                            <span class="label label-primary">Auto Rickshaw</span>
 	                        </span>
                         </g:else>

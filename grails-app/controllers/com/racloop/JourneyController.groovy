@@ -226,7 +226,7 @@ class JourneyController {
 		else {
 			workflowDataService.requestJourney(currentJourney.id, matchedJourneyId);
 		}
-		forward action: 'findMatching', model: [currentJourney: currentJourney]
+		forward action: 'activeJourneys'
 	}
 	
 	/**

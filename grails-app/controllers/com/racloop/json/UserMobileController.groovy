@@ -286,13 +286,13 @@ class UserMobileController {
 					}
 					else {
 						//Saving user in DynamoDB
-						RacloopUser racloopUser = new RacloopUser();
+						/*RacloopUser racloopUser = new RacloopUser();
 						racloopUser.setMobile(savedUser.profile.mobile);
 						racloopUser.setEmail(savedUser.profile.email);
 						racloopUser.setFullName(savedUser.profile.fullName);
 						racloopUser.setEmailHash(savedUser.profile.emailHash);
 						//TODO take care for failure scenario
-						userDataService.saveUser(racloopUser);
+						userDataService.saveUser(racloopUser);*/
 						log.info("Sending verification code to $user.profile.mobile");
 						userManagerService.setUpMobileVerificationDuringSignUp(savedUser.profile)
 						mobileResponse.success=true
@@ -520,13 +520,13 @@ class UserMobileController {
 			user.profile.isMale = isMale
 			if (user.validate()) {
 				def updatedUser = userService.updateUser(user)
-				RacloopUser racloopUser = userDataService.findUserByMobile(oldMobile)
+				/*RacloopUser racloopUser = userDataService.findUserByMobile(oldMobile)
 				racloopUser.setMobile(user.profile.mobile);
 				racloopUser.setEmail(user.profile.email);
 				racloopUser.setFullName(user.profile.fullName);
 				racloopUser.setEmailHash(user.profile.emailHash);
 				//TODO take care for failure scenario
-				userDataService.saveUser(racloopUser);
+				userDataService.saveUser(racloopUser);*/
 				mobileResponse.success = true
 				mobileResponse.message = "Profile updated successfully"
 			}

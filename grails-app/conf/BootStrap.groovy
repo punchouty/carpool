@@ -147,7 +147,7 @@ class BootStrap {
 				throw new RuntimeException("Error creating administrator")
 			}
 			else {
-				RacloopUser racloopUser = userDataService.findUserByMobile(adminProfile.mobile)
+				/*RacloopUser racloopUser = userDataService.findUserByMobile(adminProfile.mobile)
 				if(racloopUser == null) {
 					racloopUser = new RacloopUser();
 					racloopUser.setMobile(adminProfile.mobile)
@@ -158,7 +158,7 @@ class BootStrap {
 				}
 				else {
 					log.info("Username: ${admin.username} already there in dynamodb")
-				}
+				}*/
 			}
 
 			adminsService.add(admin)

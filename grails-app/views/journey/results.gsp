@@ -85,7 +85,7 @@
 	                    </g:else>
 	                	--%>
 	                	<g:if test = "${matchedResult.isTaxi == true}">
-	                    	<g:img dir="images" file="racloop/cab.png" width="100" alt="Taxi" class="img-thumbnail" style="margin-top: 10px;"/>
+	                    	<g:img dir="images" file="racloop/taxi.png" width="100" alt="Taxi" class="img-thumbnail" style="margin-top: 10px;"/>
 	                    </g:if>
 	                    <g:else>
 	                    	<g:img dir="images" file="racloop/auto.png" width="100" alt="Auto" class="img-thumbnail" style="margin-top: 10px;"/>
@@ -118,7 +118,7 @@
 	                       <g:if test = "${matchedResult.isTaxi == true}">
 	                        	<span class="hidden-lg hidden-md visible-sm visible-xs">
 	                            	<span class="label label-primary">Taxi</span>
-	                            <g:img dir="images" file="racloop/cab.png" width="100" alt="Taxi" class="img-thumbnail" style="margin-top: 10px;"/>
+	                            <g:img dir="images" file="racloop/taxi.png" width="100" alt="Taxi" class="img-thumbnail" style="margin-top: 10px;"/>
 	                        	</span>
 		                        <span class="hidden-sm hidden-xs visible-lg visible-md">
 		                            <span class="label label-primary">Taxi</span>
