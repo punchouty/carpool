@@ -99,7 +99,7 @@
 	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.to}</li>
 	                                <g:if test = "${matchedWorkflowInstance.getMyStatus()=='Accepted'}">
 		                                <li>
-											<g:link action="loadReviewPage" controller ="review" params="[workflowId: matchedWorkflowInstance.id]">
+											<g:link action="loadReviewPage" controller ="review" params="[pairId: matchedWorkflowInstance.getMyPairId(), journeyId:journeyInstance.id]">
 						       					<button class="btn btn-primary">Review</button>
 						       				</g:link>
 		                                </li>

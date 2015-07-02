@@ -55,7 +55,7 @@ class TestDataService {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
 			}
-			else {
+			/*else {
 				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
 				if(racloopUser == null) {
 					racloopUser = new RacloopUser();
@@ -68,7 +68,7 @@ class TestDataService {
 				else {
 					log.info("Username: ${user.username} already there in dynamodb")
 				}
-			}
+			}*/
 		}
 		
 		//mail.live.com - user : sample.driver@racloop.com, password : S@pient1
@@ -95,7 +95,7 @@ class TestDataService {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
 			}
-			else {
+			/*else {
 				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
 				if(racloopUser == null) {
 					racloopUser = new RacloopUser();
@@ -108,7 +108,7 @@ class TestDataService {
 				else {
 					log.info("Username: ${user.username} already there in dynamodb")
 				}
-			}
+			}*/
 		}
 		
 		//mail.live.com - user : sample.rider@racloop.com, password : S@pient1
@@ -135,7 +135,7 @@ class TestDataService {
 				savedUser.errors.each { log.error(it) }
 				throw new RuntimeException("Error creating example ${user.username}")
 			}
-			else {
+			/*else {
 				RacloopUser racloopUser = userDataService.findUserByMobile(userProfile.mobile)
 				if(racloopUser == null) {
 					racloopUser = new RacloopUser();
@@ -148,7 +148,7 @@ class TestDataService {
 				else {
 					log.info("Username: ${user.username} already there in dynamodb")
 				}
-			}
+			}*/
 		}
 	}
 	
@@ -380,7 +380,7 @@ class TestDataService {
 					log.info("Deleting User : " + user.username)
 					journeyDataService.deleteJourneyForUser(user.profile.mobile);
 					searchService.deleteAllJourneyDataForUser(user.profile.mobile);
-					userDataService.deleteUserByMobile(user.profile.mobile);//delete from dynamo db
+					//userDataService.deleteUserByMobile(user.profile.mobile);//delete from dynamo db
 					user.groups.each { group ->
 						groupService.deleteMember(user, group)
 					}
@@ -429,7 +429,7 @@ class TestDataService {
 		searchService.deleteAllDummyData();
 		
 		if(user2) {
-			userDataService.deleteUserByMobile(user2.profile.mobile);//delete from dynamo db
+			//userDataService.deleteUserByMobile(user2.profile.mobile);//delete from dynamo db
 			user2.groups.each { group ->
 				groupService.deleteMember(user2, group)
 			}
@@ -441,7 +441,7 @@ class TestDataService {
 		}
 		
 		if(user3) {
-			userDataService.deleteUserByMobile(user3.profile.mobile);//delete from dynamo db
+			//userDataService.deleteUserByMobile(user3.profile.mobile);//delete from dynamo db
 			user3.groups.each { group ->
 				groupService.deleteMember(user3, group)
 			}
@@ -453,7 +453,7 @@ class TestDataService {
 		}
 		
 		if(user2) {
-			userDataService.deleteUserByMobile(user4.profile.mobile);//delete from dynamo db
+			//userDataService.deleteUserByMobile(user4.profile.mobile);//delete from dynamo db
 			user4.groups.each { group ->
 				groupService.deleteMember(user4, group)
 			}

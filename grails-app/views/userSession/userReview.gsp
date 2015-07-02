@@ -40,18 +40,8 @@
 					</g:hasErrors>
         		</div>
 	            <!-- VERTICAL REGISTRATION FORM -->
-	            <div>
+	            <div> 
 	            	<g:form name="userReview" controller="review" action="saveUserReview">
-	            		<g:if test="${isReviewForDriver == true}">
-		            		<div class="form-group">
-			            		<label for="safety">Safety</label>
-			            		<g:select name="safety" required class="form-control" from="${1..5}" value="${age}"noSelection="['':'-Please Select-']"/> 
-			            	</div>
-			            	<div class="form-group">
-			            		<label for="comfort">Comfort</label>
-			            		<g:select name="comfort" required class="form-control" from="${1..5}" value="${age}"noSelection="['':'-Please Select-']"/> 
-			            	</div>
-		            	</g:if>
 		            	<div class="form-group">
 		            		<label for="punctualty">Punctualty</label>
 		            		<g:select name="punctualty" required class="form-control input-box" from="${1..5}" value="${age}"noSelection="['':'-Please Select-']"/> 
@@ -65,7 +55,8 @@
 						    <textarea name ="comments" id ="comments" required class="form-control" rows="3" maxlength="3000"></textarea>
 						</div>
 		            	<button id="submit" type="submit" value="Submit"  class="btn btn-primary">Submit</button>
-		            	<g:hiddenField name="workflowId" value="${workflowId}"/>
+		            	<g:hiddenField name="pairId" value="${pairId}"/>
+		            	<g:hiddenField name="journeyId" value="${journeyId}"/>
 	            	</g:form>
             	</div>
         	</div>
