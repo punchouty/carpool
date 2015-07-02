@@ -402,13 +402,14 @@ class JourneyController {
 			bindData(currentJourney, params, [exclude: ['existingJourneyId', 'newJourney']])
 		}
 		else {
-			currentJourney = journeyService.findJourneyById(existingJourneyId, false)
+			Journey journey = journeyDataService.findJourney(existingJourneyId)
+			currentJourney = journey.convert()
 		}
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
 		forward action: 'findMatching', model: [currentJourney: currentJourney]
 		
 	}
-	
+	@Deprecated
 	def searchRouteAgain(){
 		String journeyId = params.journeyId
 		JourneyRequestCommand journey = journeyService.findJourneyById(journeyId, false)

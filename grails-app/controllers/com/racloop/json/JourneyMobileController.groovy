@@ -102,12 +102,17 @@ class JourneyMobileController {
 	}
 	
 	def keepOriginalAndSearch() {
+		def json = request.JSON
+		log.info("keepOriginalAndSearch json ${json}")
+		def existingJourneyId = json?.existingJourneyId
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
-			JourneyRequestCommand currentJourney = session.currentJourneyCommand
-			if(currentJourney != null) {
-				mobileResponse = journeySearchService.straightThruSearch(currentJourney);
+			Journey existingJourney = journeyDataService.findJourney(existingJourneyId)
+			if(existingJourney != null) {
+				def currentJourneyCommand = existingJourney.convert()
+				session.currentJourneyCommand = currentJourneyCommand
+				mobileResponse = journeySearchService.straightThruSearch(currentJourneyCommand);
 				mobileResponse.data['hideSaveButton'] = true;
 			}
 			else {
