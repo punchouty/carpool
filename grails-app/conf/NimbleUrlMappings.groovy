@@ -85,25 +85,25 @@ class NimbleUrlMappings {
 			action = "forgottenpasswordexternal"
 		}
 
-		"/login" {
-//			controller = "auth" //changed by rajan
-//			action = "login"
-			controller = "userSession"
-			action = "signin"
-		}
-
-		"/logout" {
-			controller = "auth"
-			action = "logout"
-		}
+//		"/login" {
+////			controller = "auth" //changed by rajan
+////			action = "login"
+//			controller = "userSession"
+//			action = "signin"
+//		}
+//
+//		"/logout" {
+//			controller = "auth"
+//			action = "logout"
+//		}
 
 		"/unauthorized" {
 			controller = "auth"
 			action = "unauthorized"
 		}
 
-		"/auth/$action" {
-			controller = "auth"
-		}
+//		"/auth/$action" {
+//			controller = "auth"
+//		}
 	}
 }
