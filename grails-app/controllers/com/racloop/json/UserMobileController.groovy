@@ -161,8 +161,12 @@ class UserMobileController {
 				Review review2 = new Review(journeyId:journeyId,comment:comments,punctualty:getActualRating(punctualty), overall:getActualRating(overall))
 				userReviewService.saveUserRating(currentUser, review2, pairId)
 			}
-			mobileResponse.message = "Successful"
+			def currentDateString = json.currentDateString
+			def currentDate = GenericUtil.uiDateStringToJavaDateForSearch(currentDateString);
+			Journey currentJourney = journeyDataService.findCurrentJourney(currentUser.profile.mobile, new DateTime(currentDate))
+			if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
 			mobileResponse.success = true
+			mobileResponse.message = "User review saved"
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Unable to save user feedback"
@@ -187,7 +191,11 @@ class UserMobileController {
 		def currentUser = getAuthenticatedUser();
 		if(currentUser){
 			userReviewService.clearUserForReview(currentUser)
-			mobileResponse.message = "Successful"
+			def currentDateString = json.currentDateString
+			def currentDate = GenericUtil.uiDateStringToJavaDateForSearch(currentDateString);
+			Journey currentJourney = journeyDataService.findCurrentJourney(currentUser.profile.mobile, new DateTime(currentDate))
+			if(currentJourney != null) mobileResponse.currentJourney = currentJourney.convert();
+			mobileResponse.message = "User review cancelled"
 			mobileResponse.success = true
 		}
 		else {
