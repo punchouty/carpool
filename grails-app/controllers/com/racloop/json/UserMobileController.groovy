@@ -90,18 +90,17 @@ class UserMobileController {
 				}
 				catch (IncorrectCredentialsException e) {
 					log.info "Credentials failure for user '${email}'."
-					mobileResponse.message="Wrong Username/Password combination"
+					mobileResponse.message=message(code: "nimble.login.failed.credentials");
 					mobileResponse.success=false
 				}
 				catch (DisabledAccountException e) {
 					log.info "Attempt to login to disabled account for user '${email}'."
-					mobileResponse.message="Mobile number is not verified or Acount is disabled"
+					mobileResponse.message=message(code: "nimble.login.failed.credentials");
 					mobileResponse.success=false
 				}
 				catch (AuthenticationException e) {
 					log.info "General authentication failure for user '${email}'."
-					mobileResponse.message="Authentication Failure"
-					mobileResponse.total=0
+					mobileResponse.message=message(code: "nimble.login.failed.credentials");
 					mobileResponse.success=false
 				}
 			}

@@ -33,6 +33,11 @@ class UrlMappings {
 			action = "signin"
 		}
 
+		"/logout" {
+			controller = "auth"
+			action = "logout"
+		}
+
 		"/signup"{
 			controller = "userSession"
 			action = "signup"
@@ -111,57 +116,6 @@ class UrlMappings {
 		"/requests"{
 			controller = "journey"
 			action = "myJourneys"
-		}
-		
-		"/mlogin"{
-			controller = "mobile"
-			action = "login"
-			parseRequest = true
-		}
-		"/mlogout"{
-			controller = "mobile"
-			action = "logout"
-			parseRequest = true
-		}
-		"/msignup"{
-			controller = "mobile"
-			action = "signup"
-			parseRequest = true
-		}
-		"/mverifymobile"{
-			controller = "mobile"
-			action = "verifyMobile"
-			parseRequest = true
-		}
-		"/mresendsms"{
-			controller = "mobile"
-			action = "resendSms"
-			parseRequest = true
-		}
-		"/mpassword"{
-			controller = "mobile"
-			action = "changePassword"
-			parseRequest = true
-		}
-		"/mforgot"{
-			controller = "mobile"
-			action = "forgotPassword"
-			parseRequest = true
-		}
-		"/mprofile"{
-			controller = "mobile"
-			action = "getProfile"
-			parseRequest = true
-		}
-		"/meditprofile"{
-			controller = "mobile"
-			action = "editProfile"
-			parseRequest = true
-		}
-		"/msearch"{
-			controller = "journey"
-			action = "mobileFindMatching"
-			parseRequest = true
 		}
 		
 		"/health"(view:"/health")

@@ -69,6 +69,14 @@ class UserSessionController {
 	}
 	
 	def login(String username, String password, String rememberme) {
+		if(!username || !password) {
+			log.info "User name or password not there'."
+			
+			flash.type = 'error'
+			flash.message = "User name and password are required field"
+			redirect(action: 'signin')
+			return
+		}
 		def authToken = new UsernamePasswordToken(username, password)
 
 		if (rememberme) {
