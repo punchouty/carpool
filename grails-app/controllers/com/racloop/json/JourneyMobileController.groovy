@@ -57,7 +57,7 @@ class JourneyMobileController {
 				mobileResponse = journeySearchService.executeSearch(currentJourneyCommand);
 			}
 			else {
-				mobileResponse.message = "Invalid travel date and time"
+				mobileResponse.message = "Journey date cannot be in past."
 			}
 		}
 		else {
@@ -153,7 +153,7 @@ class JourneyMobileController {
 				session.currentJourneyCommand = currentJourneyCommand
 			}
 			else {
-				mobileResponse.message = "Invalida date"
+				mobileResponse.message = "Journey date cannot be in past."
 			}
 		}
 		else {
