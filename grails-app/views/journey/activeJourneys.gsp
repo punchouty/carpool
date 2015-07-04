@@ -143,8 +143,12 @@
 	                            </ul>
 	                         </div> 
 	                         <div class="col-md-1">
-	                         	
-	                			<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"  style="margin-top: 10px;"> </img>
+	                         	<g:if test = "${matchedWorkflowInstance?.photoUrl}">
+	                				<img src="${matchedWorkflowInstance?.photoUrl}" alt="profile image" class="img-thumbnail" style="margin-top: 10px;"> </img>
+	                			</g:if>
+	                			<g:else>
+	                				<img src="http://www.gravatar.com/avatar/205e460b479c07710c08d50?s=64&d=mm" alt="profile image" class="img-thumbnail"  style="margin-top: 10px;"> </img>
+	                			</g:else>	
 	                        </div>  
 	                   	</div>     
                     </g:each>
