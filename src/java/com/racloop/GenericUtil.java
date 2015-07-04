@@ -6,8 +6,11 @@ import java.util.Date;
 import java.util.TimeZone;
 
 import org.elasticsearch.common.joda.time.DateTime;
+import org.joda.time.DateTimeZone;
 
 public class GenericUtil {
+	
+	private static DateTimeZone IST_TIME_ZONE = DateTimeZone.forID("Asia/Kolkata");
 	
 	public static Date uiDateStringToJavaDate(String source) throws ParseException {
 		SimpleDateFormat uiFormatter = new SimpleDateFormat(Constant.DATE_FORMAT_UI);
@@ -39,6 +42,11 @@ public class GenericUtil {
 		else {
 			return false;
 		}
+	}
+	
+	public static Date getCurrentDateInIST(){
+		org.joda.time.DateTime dateTime = new org.joda.time.DateTime(IST_TIME_ZONE);
+		return dateTime.toDate();
 	}
 
 }

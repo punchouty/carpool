@@ -8,6 +8,7 @@ import com.racloop.journey.workkflow.WorkflowDirection
 import com.racloop.journey.workkflow.WorkflowStatus
 import com.racloop.journey.workkflow.WorkflowAction
 import com.racloop.Constant
+import com.racloop.GenericUtil;
 
 @Transactional
 class WorkflowDataService {
@@ -359,7 +360,7 @@ class WorkflowDataService {
 	}
 	
 	def cancelAllAgedDummyJourneyRequest() {
-		Date currentDate = new Date()
+		Date currentDate = GenericUtil.getCurrentDateInIST()
 		List allJourneys = journeyDataService.findMyJourneys(Constant.DUMMY_USER_MOBILE, currentDate)
 		for(Journey journey: allJourneys){
 			if(!WorkflowStatus.CANCELLED.getStatus().equals(journey.getStatusAsParent())) {
