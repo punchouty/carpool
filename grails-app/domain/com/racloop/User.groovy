@@ -79,7 +79,7 @@ class User extends grails.plugin.nimble.core.UserBase {
 	}
 	
 	public String getPhotoUrl() {
-		return (this.facebookId ? getFacebookProfilePic(): profile.getGravatarUri())
+		return (this.facebookId ? getFacebookProfilePic(): profile?.getGravatarUri())
 	}
 	
 }

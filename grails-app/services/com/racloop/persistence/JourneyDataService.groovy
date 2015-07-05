@@ -131,7 +131,9 @@ class JourneyDataService {
 		if(!currentJourney.photoUrl){
 			log.warn "Photo URL not present in journey. Going to DB to fetch it. Journey is: ${currentJourney}"
 			User user = User.findByUsername(currentJourney.getUser())
-			currentJourney.photoUrl = user.profile.getGravatarUri()
+			if(user) {
+				currentJourney.photoUrl = user?.profile?.getGravatarUri()
+			}
 		}
 		awsService.dynamoDBMapper.save(currentJourney, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
 	}
