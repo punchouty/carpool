@@ -256,6 +256,7 @@ class JourneyMobileController {
 		currentJourney.toLatitude = convertToDouble(json?.toLatitude)
 		currentJourney.toLongitude = convertToDouble(json?.toLongitude)
 		currentJourney.isDriver = json?.isDriver?.toBoolean()
+		currentJourney.isTaxi = json?.isTaxi?.toBoolean()
 		currentJourney.tripDistance = convertToDouble(json?.tripDistance)
 		currentJourney.tripUnit = json?.tripUnit;
 		currentJourney.ip = request.remoteAddr;
