@@ -48,6 +48,7 @@ class JourneyMobileController {
 			currentJourneyCommand.isMale = currentUser.profile.isMale
 			currentJourneyCommand.mobile = currentUser.profile.mobile
 			currentJourneyCommand.ip = request.remoteAddr
+			currentJourneyCommand.photoUrl = currentUser.getPhotoUrl()
 			session.currentJourneyCommand = currentJourneyCommand
 			if(isAfterUpperLimit(currentJourneyCommand.validStartTime, currentJourneyCommand.dateOfJourney)) {
 				mobileResponse.message = "You cannot search for more than 7 days in future"
@@ -56,7 +57,7 @@ class JourneyMobileController {
 				mobileResponse = journeySearchService.executeSearch(currentJourneyCommand);
 			}
 			else {
-				mobileResponse.message = "Invalid travel date and time"
+				mobileResponse.message = "Journey date cannot be in past."
 			}
 		}
 		else {
@@ -139,6 +140,7 @@ class JourneyMobileController {
 			currentJourneyCommand.isMale = currentUser.profile.isMale
 			currentJourneyCommand.mobile = currentUser.profile.mobile
 			currentJourneyCommand.ip = request.remoteAddr
+			currentJourneyCommand.photoUrl = currentUser.getPhotoUrl()
 			if(currentJourneyCommand.dateOfJourney.after(currentJourneyCommand.validStartTime)) {
 				workflowDataService.cancelMyJourney(existingJourneyId);
 				Journey journey = Journey.convert(currentJourneyCommand);
@@ -151,7 +153,7 @@ class JourneyMobileController {
 				session.currentJourneyCommand = currentJourneyCommand
 			}
 			else {
-				mobileResponse.message = "Invalida date"
+				mobileResponse.message = "Journey date cannot be in past."
 			}
 		}
 		else {

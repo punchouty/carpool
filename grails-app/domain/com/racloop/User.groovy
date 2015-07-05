@@ -78,4 +78,8 @@ class User extends grails.plugin.nimble.core.UserBase {
 		this.pendingReview = BLANK
 	}
 	
+	public String getPhotoUrl() {
+		return (this.facebookId ? getFacebookProfilePic(): profile.getGravatarUri())
+	}
+	
 }

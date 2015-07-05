@@ -1,12 +1,11 @@
 package com.racloop
 
 import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
-import grails.converters.JSON
 
 import org.elasticsearch.common.joda.time.DateTime
 import org.springframework.web.servlet.ModelAndView
 
-import com.racloop.domain.Journey;
+import com.racloop.domain.Journey
 import com.racloop.journey.workkflow.WorkflowState
 
 class JourneyController {
@@ -87,6 +86,7 @@ class JourneyController {
 			currentJourney.name = currentUser.profile.fullName
 			currentJourney.isMale = currentUser.profile.isMale
 			currentJourney.mobile = currentUser.profile.mobile
+			currentJourney.photoUrl = currentUser.getPhotoUrl()
 		}
 	}
 	
@@ -147,7 +147,7 @@ class JourneyController {
 		int numberOfRecords = 0
 		def currentUser = getRacloopAuthenticatedUser()
 		if(currentUser) {
-			def result =journeyDataService.findMyHistory(currentUser.profile.mobile, new Date())
+			def result =journeyDataService.findMyHistory(currentUser.profile.mobile, GenericUtil.getCurrentDateInIST())
 			result.each {it->
 				journeys << journeyDataService.findChildJourneys(it.getId())
 			}
@@ -268,7 +268,7 @@ class JourneyController {
 		int numberOfRecords = 0
 		def currentUser = getRacloopAuthenticatedUser()
 		if(currentUser) {
-			def result =journeyDataService.findMyJourneys(currentUser.profile.mobile, new Date())
+			def result =journeyDataService.findMyJourneys(currentUser.profile.mobile, GenericUtil.getCurrentDateInIST())
 			result.each {it->
 				journeys << journeyDataService.findChildJourneys(it.getId())
 			}

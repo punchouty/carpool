@@ -13,6 +13,7 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator
 import com.amazonaws.services.dynamodbv2.model.Condition
 import com.racloop.GenericUtil
+import com.racloop.User
 import com.racloop.domain.Journey
 import com.racloop.domain.JourneyPair
 import com.racloop.domain.UserJourney
@@ -28,7 +29,7 @@ class JourneyDataService {
 	def journeyPairDataService
 
 	def createJourney(Journey journey) {
-		awsService.dynamoDBMapper.save(journey);
+		this.saveJourney(journey)
 		log.info("createJourney - ${journey}");
 		searchService.indexJourney(journey, journey.getId());
 	}
@@ -127,6 +128,11 @@ class JourneyDataService {
 	 * Find Journey from Dynamo DB
 	 */
 	def saveJourney(Journey currentJourney) {
+		if(!currentJourney.photoUrl){
+			log.warn "Photo URL not present in journey. Going to DB to fetch it. Journey is: ${currentJourney}"
+			User user = User.findByUsername(currentJourney.getUser())
+			currentJourney.photoUrl = user.profile.getGravatarUri()
+		}
 		awsService.dynamoDBMapper.save(currentJourney, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
 	}
 	
