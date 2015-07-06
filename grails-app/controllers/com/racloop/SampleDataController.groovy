@@ -26,8 +26,16 @@ class SampleDataController {
 		log.info("Params : ${params}");
 		def mobile = params.mobile
 		def secret = params.secret
-		def successMessage = testDataService.deleteDataForUser(secret, mobile);
-		render "Operation results : ${successMessage}"
+		def message = null;
+		String deletePassword = grailsApplication.config.grails.delete.user.password
+		if(secret.equals(deletePassword)) {
+			def successMessage = testDataService.deleteDataForUser(secret, mobile);
+			message = "Operation results : ${successMessage}"
+		}
+		else {
+			message = "Wrong Password"
+		}
+		render message
 	}
 	
 	/**
@@ -39,8 +47,16 @@ class SampleDataController {
 		log.info("Params : ${params}");
 		def mobile = params.mobile
 		def secret = params.secret
-		def successMessage = testDataService.deleteUser(secret, mobile);
-		render "Operation results : ${successMessage}"
+		def message = null;
+		String deletePassword = grailsApplication.config.grails.delete.user.password
+		if(secret.equals(deletePassword)) {
+			def successMessage = testDataService.deleteUser(secret, mobile);
+			message = "Operation results : ${successMessage}"
+		}
+		else {
+			message = "Wrong Password"
+		}
+		render message
 	}
 	
 //	/**
@@ -56,11 +72,24 @@ class SampleDataController {
 	/**
 	 * delete all test journey data as well as three test users 
 	 * After that it recreate users as well as journey data
-	 * http://localhost:8080/app/sampleData/deleteAll or http://www.racloop.com/sampleData/deleteAll
+	 * http://localhost:8080/app/sampleData/deleteAll?secret=s3cr3t or http://www.racloop.com/sampleData/deleteAll?secret=s3cr3t
 	 * @return
 	 */
 	def deleteAll(){
-		testDataService.deleteAll();
+		log.info("Params : ${params}");
+		def secret = params.secret
+		def message = null;
+		String deletePassword = grailsApplication.config.grails.delete.user.password
+		if(secret.equals(deletePassword)) {
+			testDataService.deleteAll();
+			def successMessage = "Successfully deleted all data";
+			message = "Operation results : ${successMessage}"
+		}
+		else {
+			message = "Wrong Password"
+		}
+		render message
+		
 		render "all data deleted"
 	}
 	
@@ -68,18 +97,28 @@ class SampleDataController {
 	 * delete all test journey data as well as three test users 
 	 * After that it recreate users as well as journey data
 	 * number represent how many journey per users wil be created
-	 * http://localhost:8080/app/sampleData/refresh?number=3 or http://www.racloop.com/sampleData/refresh?number=3
+	 * http://localhost:8080/app/sampleData/refresh?number=3&secret=s3cr3t or http://www.racloop.com/sampleData/refresh?number=3&secret=s3cr3t
 	 * @return
 	 */
 	def refresh(){
-		log.info("Params : ${params}")
+		log.info("Params : ${params}");
+		def secret = params.secret
+		def message = null;
 		int number = 1
 		if(params.number != null) {
 			number = Integer.parseInt(params.number);
 		}
 		if(number <= 1) number = 1;
-		testDataService.refreshAll(number);
-		render "data refreshed"
+		String deletePassword = grailsApplication.config.grails.delete.user.password
+		if(secret.equals(deletePassword)) {
+			testDataService.refreshAll(number);
+			def successMessage = "Successfully refreshed all data";
+			message = "Operation results : ${successMessage}"
+		}
+		else {
+			message = "Wrong Password"
+		}
+		render message
 	}
 	
 	/**
@@ -93,8 +132,10 @@ class SampleDataController {
 	}
 	
 	def sendSms() {
+		log.info("Params : ${params}")
 		def mobile = params.mobile
 		def message = params.message
+		def secret = params.secret
 		boolean success = smsService.sendSms(mobile, message)
 		if(success) {
 			render "Success"

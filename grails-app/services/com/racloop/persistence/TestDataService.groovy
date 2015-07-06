@@ -327,20 +327,20 @@ class TestDataService {
 	def deleteDataForDev() {
 		//searchService.deleteAllJourneyData();
 		User user1 = User.findByUsername('admin@racloop.com');
-		journeyDataService.deleteJourneyForUser(user1.profile.mobile);
-		searchService.deleteAllJourneyDataForUser(user1.profile.mobile);
+		journeyDataService.deleteJourneyForUser(user1?.profile?.mobile);
+		searchService.deleteAllJourneyDataForUser(user1?.profile?.mobile);
 		
 		User user2 = User.findByUsername('user@racloop.com');
-		journeyDataService.deleteJourneyForUser(user2.profile.mobile);
-		searchService.deleteAllJourneyDataForUser(user2.profile.mobile);
+		journeyDataService.deleteJourneyForUser(user2?.profile?.mobile);
+		searchService.deleteAllJourneyDataForUser(user2.profile?.mobile);
 		
 		User user3 = User.findByUsername('driver@racloop.com');
-		journeyDataService.deleteJourneyForUser(user3.profile.mobile);
-		searchService.deleteAllJourneyDataForUser(user3.profile.mobile);
+		journeyDataService.deleteJourneyForUser(user3?.profile?.mobile);
+		searchService.deleteAllJourneyDataForUser(user3?.profile?.mobile);
 		
 		User user4 = User.findByUsername('rider@racloop.com');
-		journeyDataService.deleteJourneyForUser(user4.profile.mobile);
-		searchService.deleteAllJourneyDataForUser(user4.profile.mobile);
+		journeyDataService.deleteJourneyForUser(user4?.profile?.mobile);
+		searchService.deleteAllJourneyDataForUser(user4?.profile?.mobile);
 		
 		journeyDataService.deleteJourneyForUser(Constant.DUMMY_USER_MOBILE);
 		searchService.deleteAllDummyData();
@@ -378,8 +378,8 @@ class TestDataService {
 				User user = User.findByUsername(profile.email);
 				if(user) {
 					log.info("Deleting User : " + user.username)
-					journeyDataService.deleteJourneyForUser(user.profile.mobile);
-					searchService.deleteAllJourneyDataForUser(user.profile.mobile);
+					journeyDataService.deleteJourneyForUser(user?.profile?.mobile);
+					searchService.deleteAllJourneyDataForUser(user?.profile?.mobile);
 					//userDataService.deleteUserByMobile(user.profile.mobile);//delete from dynamo db
 					user.groups.each { group ->
 						groupService.deleteMember(user, group)
@@ -405,26 +405,26 @@ class TestDataService {
 	def deleteAll() {
 		User user1 = User.findByUsername('admin@racloop.com');
 		if(user1) {
-			journeyDataService.deleteJourneyForUser(user1.profile.mobile);
-			searchService.deleteAllJourneyDataForUser(user1.profile.mobile);
+			journeyDataService.deleteJourneyForUser(user1?.profile?.mobile);
+			searchService.deleteAllJourneyDataForUser(user1?.profile?.mobile);
 		}
 		
 		User user2 = User.findByUsername('user@racloop.com');
 		if(user2) {
-			journeyDataService.deleteJourneyForUser(user2.profile.mobile);
-			searchService.deleteAllJourneyDataForUser(user2.profile.mobile);
+			journeyDataService.deleteJourneyForUser(user2?.profile?.mobile);
+			searchService.deleteAllJourneyDataForUser(user2?.profile?.mobile);
 		}
 		
 		User user3 = User.findByUsername('driver@racloop.com');
 		if(user3) {
-			journeyDataService.deleteJourneyForUser(user3.profile.mobile);
-			searchService.deleteAllJourneyDataForUser(user3.profile.mobile);
+			journeyDataService.deleteJourneyForUser(user3?.profile?.mobile);
+			searchService.deleteAllJourneyDataForUser(user3?.profile?.mobile);
 		}
 		
 		User user4 = User.findByUsername('rider@racloop.com');
 		if(user2) {
-			journeyDataService.deleteJourneyForUser(user4.profile.mobile);
-			searchService.deleteAllJourneyDataForUser(user4.profile.mobile);
+			journeyDataService.deleteJourneyForUser(user4?.profile?.mobile);
+			searchService.deleteAllJourneyDataForUser(user4?.profile?.mobile);
 		}
 		searchService.deleteAllDummyData();
 		
@@ -475,7 +475,7 @@ class TestDataService {
 		searchService.deleteAllJourneyData();
 		User user1 = User.findByUsername('admin@racloop.com');
 		User user = user1;
-		List<Journey> journeys = journeyDataService.findAllJourneyForUser(user.profile.mobile);
+		List<Journey> journeys = journeyDataService.findAllJourneyForUser(user?.profile?.mobile);
 		for (Journey dbJourney: journeys) {
 			Journey esJourney = searchService.getJourney(dbJourney.getId());
 			if(esJourney == null) {
@@ -488,7 +488,7 @@ class TestDataService {
 		}
 		User user2 = User.findByUsername('user@racloop.com');
 		user = user2;
-		journeys = journeyDataService.findAllJourneyForUser(user.profile.mobile);
+		journeys = journeyDataService.findAllJourneyForUser(user?.profile?.mobile);
 		for (Journey dbJourney: journeys) {
 			Journey esJourney = searchService.getJourney(dbJourney.getId());
 			if(esJourney == null) {
@@ -501,7 +501,7 @@ class TestDataService {
 		}
 		User user3 = User.findByUsername('driver@racloop.com');
 		user = user3;
-		journeys = journeyDataService.findAllJourneyForUser(user.profile.mobile);
+		journeys = journeyDataService.findAllJourneyForUser(user?.profile?.mobile);
 		for (Journey dbJourney: journeys) {
 			Journey esJourney = searchService.getJourney(dbJourney.getId());
 			if(esJourney == null) {
@@ -514,7 +514,7 @@ class TestDataService {
 		}
 		User user4 = User.findByUsername('rider@racloop.com');
 		user = user4;
-		journeys = journeyDataService.findAllJourneyForUser(user.profile.mobile);
+		journeys = journeyDataService.findAllJourneyForUser(user?.profile?.mobile);
 		for (Journey dbJourney: journeys) {
 			Journey esJourney = searchService.getJourney(dbJourney.getId());
 			if(esJourney == null) {
