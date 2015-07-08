@@ -64,7 +64,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
-				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
+				journeyDate: targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
 				state: WorkflowStatus.REQUESTED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -101,7 +101,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
-				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
+				journeyDate: targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
 				state: WorkflowStatus.ACCEPTED.status,
 				mobile: requestIntiator.profile.mobile
 				]
@@ -120,7 +120,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
-				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
+				journeyDate: targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
 				state: WorkflowStatus.REJECTED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -138,7 +138,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
-				journeyDate: sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
+				journeyDate: targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
 				state: WorkflowStatus.CANCELLED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -158,7 +158,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator.profile.fullName, 
-				journeyDate:  sourceJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
+				journeyDate:  targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
 				state: WorkflowStatus.CANCELLED_BY_REQUESTER.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);

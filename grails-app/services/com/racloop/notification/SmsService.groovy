@@ -1,18 +1,12 @@
 package com.racloop.notification
 
-import java.util.HashMap;
-import java.util.Map;
-
-import com.racloop.Constant;
-import com.racloop.SmsFailure;
-import com.racloop.journey.workkflow.WorkflowState;
-
-import grails.plugin.jms.Queue;
+import grails.plugin.jms.Queue
 import grails.transaction.Transactional
-import grails.util.GrailsUtil;
-import groovy.text.Template;
+import groovy.text.Template
 
-import org.springframework.web.util.UriUtils;
+import com.racloop.Constant
+import com.racloop.SmsFailure
+import com.racloop.journey.workkflow.WorkflowStatus
 
 
 @Transactional
@@ -32,11 +26,11 @@ class SmsService {
 	def init() {// Initialized in Bootstrap.groovy
 		def engine = new groovy.text.SimpleTemplateEngine()
 		templates.put(VERIFICATOIN_KEY, engine.createTemplate(grailsApplication.config.sms.templates.verification));
-		templates.put(WorkflowState.INITIATED.state, engine.createTemplate(grailsApplication.config.sms.templates.newRequest));
-		templates.put(WorkflowState.ACCEPTED.state, engine.createTemplate(grailsApplication.config.sms.templates.acceptRequest));
-		templates.put(WorkflowState.REJECTED.state, engine.createTemplate(grailsApplication.config.sms.templates.rejectRequest));
-		templates.put(WorkflowState.CANCELLED.state, engine.createTemplate(grailsApplication.config.sms.templates.cancelRequest));
-		templates.put(WorkflowState.CANCELLED_BY_REQUESTER.state, engine.createTemplate(grailsApplication.config.sms.templates.cancelRequest));
+		templates.put(WorkflowStatus.REQUESTED.status, engine.createTemplate(grailsApplication.config.sms.templates.newRequest));
+		templates.put(WorkflowStatus.ACCEPTED.status, engine.createTemplate(grailsApplication.config.sms.templates.acceptRequest));
+		templates.put(WorkflowStatus.REJECTED.status, engine.createTemplate(grailsApplication.config.sms.templates.rejectRequest));
+		templates.put(WorkflowStatus.CANCELLED.status, engine.createTemplate(grailsApplication.config.sms.templates.cancelRequest));
+		templates.put(WorkflowStatus.CANCELLED_BY_REQUESTER.status, engine.createTemplate(grailsApplication.config.sms.templates.cancelRequest));
 		templates.put(Constant.SOS_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sos));
 		templates.put(Constant.SOS_USER_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosUser));
 		templates.put(Constant.SOS_ADMIN_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosAdmin));
@@ -53,20 +47,20 @@ class SmsService {
 		String to = messageMap['to'] 
 		String state = messageMap['state']
 		switch(state) {
-			case WorkflowState.INITIATED.state : // send request from search result - resultant user should receive email and sms and push
-				message = templates.get(WorkflowState.INITIATED.state).make(messageMap).toString();
+			case WorkflowStatus.REQUESTED.status : // send request from search result - resultant user should receive email and sms and push
+				message = templates.get(WorkflowStatus.REQUESTED.status).make(messageMap).toString();
 				break
-			case WorkflowState.ACCEPTED.state : // other user accepted request
-				message = templates.get(WorkflowState.ACCEPTED.state).make(messageMap).toString();
+			case WorkflowStatus.ACCEPTED.status : // other user accepted request
+				message = templates.get(WorkflowStatus.ACCEPTED.status).make(messageMap).toString();
 				break
-			case WorkflowState.REJECTED.state : // other user rejected request
-				message = templates.get(WorkflowState.REJECTED.state).make(messageMap).toString();
+			case WorkflowStatus.REJECTED.status : // other user rejected request
+				message = templates.get(WorkflowStatus.REJECTED.status).make(messageMap).toString();
 				break
-			case WorkflowState.CANCELLED.state : // i am canceling previous accepted request
-				message = templates.get(WorkflowState.CANCELLED.state).make(messageMap).toString();
+			case WorkflowStatus.CANCELLED.status : // i am canceling previous accepted request
+				message = templates.get(WorkflowStatus.CANCELLED.status).make(messageMap).toString();
 				break
-			case WorkflowState.CANCELLED_BY_REQUESTER.state : // i am canceling my own earlier request 
-				message = templates.get(WorkflowState.CANCELLED_BY_REQUESTER.state).make(messageMap).toString();
+			case WorkflowStatus.CANCELLED_BY_REQUESTER.status : // i am canceling my own earlier request 
+				message = templates.get(WorkflowStatus.CANCELLED_BY_REQUESTER.status).make(messageMap).toString();
 				break
 			default :
 				log.error "No state worklfow detected $state"
