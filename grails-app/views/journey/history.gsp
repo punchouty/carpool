@@ -1,4 +1,3 @@
-<%@ page import="com.racloop.journey.workkflow.WorkflowState" %>
 <html>
 <head>
 <meta name="layout" content="dynamic" />

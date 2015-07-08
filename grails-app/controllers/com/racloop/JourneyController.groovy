@@ -326,6 +326,7 @@ class JourneyController {
 	 * Cancel from other user - Work flow
 	 * @return
 	 */
+	@Deprecated
 	def cancelJourneyRequest() {
 		def workflowId
 		def currentJourney = session.currentJourney

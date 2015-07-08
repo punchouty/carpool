@@ -1,5 +1,4 @@
 <%@ page import="grails.converters.JSON" %>
-<%@ page import="com.racloop.journey.workkflow.WorkflowState" %>
 <%@ page import="com.racloop.journey.workkflow.WorkflowAction" %>
 <html>
 <head>

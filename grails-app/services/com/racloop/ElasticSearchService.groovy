@@ -39,7 +39,7 @@ import static com.racloop.elasticsearch.WorkflowIndexFields.*
 import static com.racloop.util.date.DateUtil.convertElasticSearchDateToDateTime
 
 
-
+@Deprecated
 class ElasticSearchService {
 
 	def grailsApplication

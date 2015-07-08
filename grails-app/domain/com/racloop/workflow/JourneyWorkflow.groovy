@@ -2,7 +2,7 @@ package com.racloop.workflow
 
 import com.racloop.journey.workkflow.WorkflowState;
 
-
+@Deprecated
 class JourneyWorkflow {
 	
 	String id
