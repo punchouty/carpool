@@ -190,53 +190,59 @@ class JourneyDataService {
 //		return returnJourneys;
 	}
 	
-	def findChildJourneys(String journeyId) {
+	def findChildJourneys(String journeyId , boolean includeAllPairs = true) {
 		Journey journey = findJourney(journeyId);
 		Set<String> pairIds = journey.journeyPairIds
 		pairIds.each { id ->
 			JourneyPair journeyPair = journeyPairDataService.findPairById(id);
 			if(journeyPair != null) {
-				journey.getJourneyPairs().add(journeyPair);
-				Journey otherJourney = null;
-				if(journey.id == journeyPair.initiatorJourneyId) {
-					String otherJourneyId = journeyPair.recieverJourneyId;
-					otherJourney = findJourney(otherJourneyId);
-					if(otherJourney != null) {
-						journeyPair.initiatorJourney = journey;
-						journeyPair.recieverJourney = otherJourney;
-						
-						otherJourney.setMyStatus(journeyPair.getInitiatorStatus());
-						otherJourney.setMyDirection(journeyPair.getInitiatorDirection());
-						otherJourney.setMyPairId(journeyPair.getId());
-						otherJourney.setMyActions(journeyPair.getInitiatorStatusAsEnum().getActions());
-						
-						journey.getRelatedJourneys().add(otherJourney);
+				if(shouldIncludeJourneyPair(journeyPair, includeAllPairs)){
+					journey.getJourneyPairs().add(journeyPair);
+					Journey otherJourney = null;
+					if(journey.id == journeyPair.initiatorJourneyId) {
+						String otherJourneyId = journeyPair.recieverJourneyId;
+						otherJourney = findJourney(otherJourneyId);
+						if(otherJourney != null) {
+							journeyPair.initiatorJourney = journey;
+							journeyPair.recieverJourney = otherJourney;
+							
+							otherJourney.setMyStatus(journeyPair.getInitiatorStatus());
+							otherJourney.setMyDirection(journeyPair.getInitiatorDirection());
+							otherJourney.setMyPairId(journeyPair.getId());
+							otherJourney.setMyActions(journeyPair.getInitiatorStatusAsEnum().getActions());
+							
+							journey.getRelatedJourneys().add(otherJourney);
+						}
+						else {
+							log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
+						}
+					}
+					else if(journey.id == journeyPair.recieverJourneyId) {
+						String otherJourneyId = journeyPair.initiatorJourneyId;
+						otherJourney = findJourney(otherJourneyId);
+						if(otherJourney != null) {
+							journeyPair.initiatorJourney = otherJourney;
+							journeyPair.recieverJourney = journey;
+							
+							otherJourney.setMyStatus(journeyPair.getRecieverStatus());
+							otherJourney.setMyDirection(journeyPair.getRecieverDirection());
+							otherJourney.setMyPairId(journeyPair.getId());
+							otherJourney.setMyActions(journeyPair.getRecieverStatusAsEnum().getActions());
+							
+							journey.getRelatedJourneys().add(otherJourney);
+						}
+						else {
+							log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
+						}
 					}
 					else {
-						log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
-					}
-				}
-				else if(journey.id == journeyPair.recieverJourneyId) {
-					String otherJourneyId = journeyPair.initiatorJourneyId;
-					otherJourney = findJourney(otherJourneyId);
-					if(otherJourney != null) {
-						journeyPair.initiatorJourney = otherJourney;
-						journeyPair.recieverJourney = journey;
-						
-						otherJourney.setMyStatus(journeyPair.getRecieverStatus());
-						otherJourney.setMyDirection(journeyPair.getRecieverDirection());
-						otherJourney.setMyPairId(journeyPair.getId());
-						otherJourney.setMyActions(journeyPair.getRecieverStatusAsEnum().getActions());
-						
-						journey.getRelatedJourneys().add(otherJourney);
-					}
-					else {
-						log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
+						log.error("Invalid state for journey : ${journey}. \nNone of the ids in pair are related to current journey");
 					}
 				}
 				else {
-					log.error("Invalid state for journey : ${journey}. \nNone of the ids in pair are related to current journey");
+					log.info("Not including journey pair in the result. Jounrey pair is ${journeyPair}")
 				}
+				
 			}
 			else {
 				log.error("Invalid state for journey : ${journey}. \n JourneyPair provided for id does not exists ${id}");
@@ -245,9 +251,26 @@ class JourneyDataService {
 		return journey;
 	}
 	
+	private boolean shouldIncludeJourneyPair(JourneyPair pair, boolean includeAllPairs){
+		boolean shouldInclude = true
+		if(includeAllPairs){
+			return true
+		}
+		else {
+			if(WorkflowStatus.canBeIgnored(pair.getInitiatorStatus())) {
+				shouldInclude = false
+			}
+			else {
+				shouldInclude = true
+			}
+			
+		}
+		
+		return shouldInclude
+	}
+	
 	def findSiblingJourneys(String journeyId) {
-		Journey journey = findJourney(journeyId);
-		enrichJourney(journey);
+		Journey journey = this.findChildJourneys(journeyId, false)
 		def siblingJourneys = journey.getRelatedJourneys();
 		siblingJourneys.add(journey);
 		return new ArrayList<?>(siblingJourneys);
@@ -265,7 +288,10 @@ class JourneyDataService {
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		def returnJourneys = [];
-		journeys.each { indexJourney ->
+		for(Journey journey:journeys){
+			returnJourneys << journey
+		}
+		/*journeys.each { indexJourney ->
 			Journey enrichedJourney = enrichJourney(indexJourney);
 			if(enrichedJourney != null) {
 				returnJourneys << enrichedJourney
@@ -273,63 +299,10 @@ class JourneyDataService {
 			else {
 				log.error("Invalid Journey : ${indexJourney}")
 			}
-		}
+		}*/
 		return returnJourneys;
 	}
 	
-	def enrichJourney(Journey journey) {
-		Set<String> pairIds = journey.journeyPairIds
-		pairIds.each { id ->
-			JourneyPair journeyPair = journeyPairDataService.findPairById(id);
-			if(journeyPair != null) {
-				journey.getJourneyPairs().add(journeyPair);
-				Journey otherJourney = null;
-				if(journey.id == journeyPair.initiatorJourneyId) {
-					String otherJourneyId = journeyPair.recieverJourneyId;
-					otherJourney = findJourney(otherJourneyId);
-					if(otherJourney != null) {
-						journeyPair.initiatorJourney = journey;
-						journeyPair.recieverJourney = otherJourney;
-						
-						otherJourney.setMyStatus(journeyPair.getInitiatorStatus());
-						otherJourney.setMyDirection(journeyPair.getInitiatorDirection());
-						otherJourney.setMyPairId(journeyPair.getId());
-						otherJourney.setMyActions(journeyPair.getInitiatorStatusAsEnum().getActions());
-						
-						journey.getRelatedJourneys().add(otherJourney);
-					}
-					else {
-						log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
-					}
-				}
-				else if(journey.id == journeyPair.recieverJourneyId) {
-					String otherJourneyId = journeyPair.initiatorJourneyId;
-					otherJourney = findJourney(otherJourneyId);
-					if(otherJourney != null) {
-						journeyPair.initiatorJourney = otherJourney;
-						journeyPair.recieverJourney = journey;
-						
-						otherJourney.setMyStatus(journeyPair.getRecieverStatus());
-						otherJourney.setMyDirection(journeyPair.getRecieverDirection());
-						otherJourney.setMyPairId(journeyPair.getId());
-						otherJourney.setMyActions(journeyPair.getRecieverStatusAsEnum().getActions());
-						
-						journey.getRelatedJourneys().add(otherJourney);
-					}
-					else {
-						log.error("Invalid state for journey : ${journey}. \nOther Journey id not valid ${otherJourneyId}");
-					}
-				}
-				else {
-					log.error("Invalid state for journey : ${journey}. \nNone of the ids in pair are related to current journey");
-				}
-			}
-			else {
-				log.error("Invalid state for journey : ${journey}. \n JourneyPair provided for id does not exists ${id}");
-			}
-		}
-		return journey;
-	}
 	
 	/**
 	 * Used in TestDataService only

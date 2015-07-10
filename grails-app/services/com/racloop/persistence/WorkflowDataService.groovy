@@ -188,6 +188,7 @@ class WorkflowDataService {
 			journeyDataService.makeJourneySearchable(journeyToBeRejected)
 		}
 		journeyDataService.makeJourneySearchable(myJourney)
+		journeyDataService.updateElasticsearchForPassangeCountIfRequired(myJourney.id, myJourney.numberOfCopassengers)
 		journeyDataService.updateElasticsearchForPassangeCountIfRequired(journeyToBeRejected.id, journeyToBeRejected.numberOfCopassengers)
 		sendNotificationForWorkflowStateChange(myJourney.getId(), journeyToBeRejected.getId(), WorkflowStatus.REJECTED.getStatus())
 		myJourney.getId()
