@@ -9,12 +9,18 @@
 	<!-- CONTAINER -->
     <div class="container">
 		<div class="row">
-			<g:if test="${flash.message != null && flash.message.length() > 0}">
-				<div class="alert alert-danger alert-dismissible" role="alert">
-	            	<button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-	                <n:flashembed/>
-	            </div>		
-	        </g:if>
+			<g:if test="${flash.message}">
+				<div class="alert alert-success">			
+				  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				  <n:flashembed/>
+				</div>
+			</g:if>
+			<g:if test="${flash.error}">
+				<div class="alert alert-danger">			
+				  <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				  <n:flashembed/>
+				</div>
+			</g:if>
 		</div>
 		<div class="row">
 			<div class="col-md-7 text-left">

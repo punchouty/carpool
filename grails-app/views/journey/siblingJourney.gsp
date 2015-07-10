@@ -29,12 +29,18 @@
 		             <div class="col-md-8 col-md-offset-2 text-left">
 		                <div>
 		                    <ul class="active-journey-list text-left">
-		                    	<li>
+		                    	<li><%-- 
 		                        	<g:if test = "${journeyInstance.isDriver == true}">
 		                        		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span> 
 		                        	</g:if>
 		                        	<g:else>
 		                        		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span> 
+		                        	</g:else>--%>
+		                        	<g:if test = "${journeyInstance.isTaxi == true}">
+		                        		<span class="label label-primary">Taxi</span> 
+		                        	</g:if>
+		                        	<g:else>
+		                        		<span class="label label-primary">Auto Rickshaw</span> 
 		                        	</g:else> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span><strong>${journeyInstance.name} </strong></span>
 		                        </li>
 		                        <li>	

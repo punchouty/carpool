@@ -33,12 +33,20 @@
                     <div>
                         <ul class="text-left">
                             <li>
+	                            <%-- 
 	                            <g:if test = "${existingJourney.isDriver == true}">
 			                		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
 			                	</g:if>
 			                	<g:else>
 			                		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
 			                	</g:else> 
+			                	--%>
+			                	<g:if test = "${journeyInstance.isTaxi == true}">
+		                        		<span class="label label-primary">Taxi</span> 
+		                        	</g:if>
+		                        	<g:else>
+		                        		<span class="label label-primary">Auto Rickshaw</span> 
+		                        </g:else>
 	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${existingJourney.dateOfJourney}"/></span>
 	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${existingJourney.dateOfJourney}"/></span>
                             </li>
