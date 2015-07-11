@@ -402,7 +402,7 @@ class UserMobileController {
 				def pwEnc = new Sha256Hash(currentPassword)
 				def crypt = pwEnc.toHex()
 				if(!crypt.equals(user.passwordHash)) {
-					mobileResponse.message = "Wrong supplied password"
+					mobileResponse.message = "Incorrect old password"
 				}
 				else {
 					user.pass = pass
