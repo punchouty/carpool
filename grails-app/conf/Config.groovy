@@ -113,12 +113,7 @@ grails.hibernate.cache.queries = false
 //******************************************************************************************//
 
 // Below configuration after cleaning c:\\data
-grails.startup.elasticsearch.index.create = false
-grails.startup.sampleUsers.create = false
-grails.startup.masterData.places.create = false
-grails.startup.sampleData.create = false
-grails.enable.delete.all = true
-grails.delete.user.password = "s3cr3t"
+
 //Below configuration will not refresh data
 //grails.startup.elasticsearch.index.create = false
 //grails.startup.sampleUsers.create = false
@@ -155,6 +150,12 @@ grails.plugin.awssdk.region = 'ap-southeast-1'
 
 environments {
 	development {
+		grails.startup.elasticsearch.index.create = true
+		grails.startup.sampleUsers.create = true
+		grails.startup.masterData.places.create = true
+		grails.startup.sampleData.create = true
+		grails.enable.delete.all = true
+		grails.delete.user.password = "s3cr3t"
 		grails.logging.jul.usebridge = true
 		grails.plugin.facebooksdk.app.id = 417141881785415
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
@@ -176,6 +177,13 @@ environments {
 		grails.es.http.cors.allow.origin = "*"
 	}
 	production {
+		grails.startup.elasticsearch.index.create = false
+		grails.startup.sampleUsers.create = false
+		grails.startup.masterData.places.create = false
+		grails.startup.sampleData.create = false
+		grails.enable.delete.all = true
+		grails.delete.user.password = "s3cr3t"
+		
 		//grails.serverURL = "http://awseb-e-r-AWSEBLoa-14MW1J02IWQX1-349308203.ap-southeast-1.elb.amazonaws.com"
 		grails.plugin.facebooksdk.app.id = 393926260773644
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
