@@ -11,7 +11,7 @@ var map;
 var marker;
 var geocoder;
 function init() {
-	clearFields();
+	//clearFields();
 //	rendererOptions = {
 //		draggable : true
 //	};

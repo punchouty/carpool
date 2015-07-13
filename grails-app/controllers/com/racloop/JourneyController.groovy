@@ -410,21 +410,22 @@ class JourneyController {
 		forward action: 'findMatching', model: [currentJourney: currentJourney]
 		
 	}
-	@Deprecated
+	
 	def searchRouteAgain(){
 		String journeyId = params.journeyId
-		JourneyRequestCommand journey = journeyService.findJourneyById(journeyId, false)
+		Journey journey = journeyDataService.findJourney(journeyId)
 		if(journey){
 			resetJourney(journey)
 		}
-		forward controller: 'userSession', action: 'search', model: [journeyInstance: journey]
+		
+		forward controller: 'userSession', action: 'search', model: [journeyInstance: journey?.convert()]
 	}
 	
 	
-	private void resetJourney(JourneyRequestCommand journey) {
+	private void resetJourney(Journey journey) {
 		journey.id = null
-		journey.dateOfJourneyString = null
-		journey.dateOfJourney = null
+		//journey.dateOfJourneyString = null
+		//journey.dateOfJourney = null
 	}
 	
 	def getSibling(){
