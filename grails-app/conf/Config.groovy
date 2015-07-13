@@ -61,7 +61,7 @@ grails.resources.adhoc.patterns = [
 // Legacy setting for codec used to encode data with ${}
 grails.views.default.codec = "html"
 
-grails.resources.debug = false
+grails.resources.debug = true
 
 // The default scope for controllers. May be prototype, session or singleton.
 // If unspecified, controllers are prototype scoped.
@@ -238,11 +238,11 @@ sms {
 	username = "mcs47chd"
 	password = "MCS47CHD?123"
 	templates {
-		verification = 'Your verification code for www.racloop.com code is $verificationCode'
-		newRequest = 'There is new car pool request against your journey on $journeyDate'
-		acceptRequest = 'Your car pool request for journey on $journeyDate is ACCEPTED by user $name. Mobile : $mobile'
-		rejectRequest = 'Your car pool request for journey on $journeyDate is REJECTED by user $name.'
-		cancelRequest = 'User $name has CANCELLED his journey on $journeyDate'
+		verification = 'Your verification code for www.cabshare.in is $verificationCode'
+		newRequest = 'There is new cab share request against your journey on $journeyDate by user $name'
+		acceptRequest = 'Your cab share request for journey on $journeyDate has been ACCEPTED by user $name. Mobile : $mobile'
+		rejectRequest = 'Your cab share request for journey on $journeyDate has been REJECTED by user $name.'
+		cancelRequest = 'Your cab share request for journey on $journeyDate has been CANCELLED by user $name.'
 		sos = '${name} is in danger. Please contact immediately. If unreachable please call police. Location: ${lat}, ${lng}'
 		sosUser = 'You have raised SOS alert. If you dont need emergency assistance, Please cancel it on app home screen.'
 		sosAdmin = '${name} | ${mobile} | ${email} | ${emergencyContactOne} | ${emergencyContactTwo} | ${lat} | ${lng} | ${journeyIds}'
