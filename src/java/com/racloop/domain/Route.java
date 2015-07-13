@@ -8,7 +8,7 @@ import com.racloop.domain.WayPoint.WayPointType;
 
 public class Route {
 	
-	private List<WayPoint> wayPoints = new ArrayList<>();
+	private List<WayPoint> wayPoints = new ArrayList<WayPoint>();
 
 	public Route(Journey journey1, Journey journey2) {
 		populateWayPoints(journey1, journey2);
