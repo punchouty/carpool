@@ -463,6 +463,7 @@ public class JourneyRequestCommand {
 	Boolean isSaved = false
 	String photoUrl
 	String actionOnSearchUi = "SEARCH"
+	Integer tripTimeInSeconds
 	
 	static constraints = {
 		id nullable : true

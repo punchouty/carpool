@@ -258,6 +258,7 @@ class JourneyMobileController {
 		currentJourney.isDriver = json?.isDriver?.toBoolean()
 		currentJourney.isTaxi = json?.isTaxi?.toBoolean()
 		currentJourney.tripDistance = convertToDouble(json?.tripDistance)
+		currentJourney.tripTimeInSeconds = converToInteger(json?.tripTimeInSeconds)
 		currentJourney.tripUnit = json?.tripUnit;
 		currentJourney.ip = request.remoteAddr;
 		currentJourney.user = json?.user
@@ -268,6 +269,13 @@ class JourneyMobileController {
 	private Double convertToDouble(Object input) {
 		if(input){
 			 return Double.valueOf(input)
+		}
+		return null
+	}
+	
+	private Integer converToInteger(Object input){
+		if(input){
+			 return Integer.valueOf(input)
 		}
 		return null
 	}

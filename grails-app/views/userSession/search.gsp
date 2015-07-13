@@ -76,6 +76,7 @@
 								<g:hiddenField name="tripUnit" value="${commandInstance?.tripUnit}" />
 								<g:hiddenField name="isDriver" value="${commandInstance?.isDriver}" />	
 								<g:hiddenField name="isTaxi" value="${commandInstance?.isTaxi}" />	
+								<g:hiddenField name="tripTimeInSeconds" value="${commandInstance?.tripTimeInSeconds}" />
 							</g:form>
 							 <!-- SUCCESS AND ERROR MESSAGE -->
                               <p id="form-success" class="white-text"><span class="icon-check-alt2 colored-text"></span> <span id="success-message">Thanks!</span></p>

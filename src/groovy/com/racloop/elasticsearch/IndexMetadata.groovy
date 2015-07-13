@@ -79,6 +79,9 @@ class IndexMetadata {
 					startObject("numberOfCopassengers").
 					field("type", "integer").
 					endObject().
+					startObject("tripTimeInSeconds").
+					field("type", "integer").
+					endObject().
 				endObject().
 			endObject().
 		endObject();

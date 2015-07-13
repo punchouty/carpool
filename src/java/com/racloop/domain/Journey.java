@@ -53,6 +53,7 @@ public class Journey {
 	private String[] myActions; 
 	private Set<Journey> relatedJourneys = new HashSet<Journey>();
 	private Set<JourneyPair> journeyPairs = new HashSet<JourneyPair>();
+	private Integer tripTimeInSeconds;
 	
 	
 	public JourneyRequestCommand convert() {
@@ -76,6 +77,7 @@ public class Journey {
 		journeyCommand.setIp(ip);
 		journeyCommand.setCreatedDate(createdDate);
 		journeyCommand.setPhotoUrl(photoUrl);
+		journeyCommand.setTripTimeInSeconds(tripTimeInSeconds);
 		return journeyCommand;
 	}
 	
@@ -99,6 +101,7 @@ public class Journey {
 		journey.setIp(requestCommand.getIp());
 		journey.setCreatedDate(requestCommand.getCreatedDate());
 		journey.setPhotoUrl(requestCommand.getPhotoUrl());
+		journey.setTripTimeInSeconds(requestCommand.getTripTimeInSeconds());
 		return journey;
 	}
 	
@@ -452,5 +455,13 @@ public class Journey {
 	@DynamoDBIgnore
 	public String getUser() {
 		return email;
+	}
+	
+	@DynamoDBAttribute(attributeName="TripTime") 
+	public Integer getTripTimeInSeconds() {
+		return tripTimeInSeconds;
+	}
+	public void setTripTimeInSeconds(Integer tripTimeInSeconds) {
+		this.tripTimeInSeconds = tripTimeInSeconds;
 	}
 }
