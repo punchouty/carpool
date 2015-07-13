@@ -79,9 +79,10 @@ grails.project.dependency.resolution = {
 		runtime ':facebook-sdk:2.2.1'
 
         // Uncomment these (or add new ones) to enable additional resources capabilities
-		//runtime ":zipped-resources:1.0.1"
-		//runtime ":cached-resources:1.1"
-		//runtime ":yui-minify-resources:0.1.5"
+		runtime ":zipped-resources:1.0"
+		runtime ":cached-resources:1.0"
+		runtime ":yui-minify-resources:0.1.5"
+		compile ":cache-headers:1.0.4"
         
 		compile (":nimble:0.7") {
 			excludes 'resources', 'jquery', 'hibernate', 'servlet-api'
@@ -98,5 +99,6 @@ grails.project.dependency.resolution = {
 		compile ":rest-client-builder:2.0.3"
 		
 		runtime ':aws-sdk:1.9.40'
+		
     }
 }
