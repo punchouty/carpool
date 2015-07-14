@@ -20,6 +20,7 @@ import grails.plugin.nimble.security.NimbleFilterBase
 
 import org.codehaus.groovy.grails.web.util.WebUtils
 
+import com.racloop.Constant
 import com.racloop.User
 
 /**
@@ -75,6 +76,7 @@ class SecurityFilters extends NimbleFilterBase {
 		// request is the HttpServletRequest
 		def flash = grailsWebRequest.attributes.getFlashScope(filter.request)
 		flash.message = "Please sign in to continue."
+		grailsWebRequest.getSession().setAttribute(Constant.LOGIN_ON_FLY, "true")
 		super.onNotAuthenticated(subject, filter)
 	}
 }

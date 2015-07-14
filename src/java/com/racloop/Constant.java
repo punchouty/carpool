@@ -44,4 +44,6 @@ public interface Constant {
 	
 	public static final String DUMMY_USER_MOBILE = "9800000000";
 	public static final String DUMMY_USER_MAIL = "dummy@racloop.com";
+	
+	public static final String LOGIN_ON_FLY = "LoginOnFly";
 }

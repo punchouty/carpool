@@ -180,23 +180,32 @@ class JourneyController {
 	 * @return
 	 */
 	def newJourney() {
+		String isNewLogin = session.getAttribute(Constant.LOGIN_ON_FLY)
 		def currentUser = getRacloopAuthenticatedUser();
 		def currentJourney = session.currentJourney
 		if(!currentJourney.user) {
 			setUserInformation(currentUser, currentJourney)
 			session.currentJourney = currentJourney
 		}
-		Journey journey = Journey.convert(currentJourney)
-		if(!journey.id) {
-			journeyDataService.createJourney(journey)
-		}
-		if(journey.id){
-			session.currentJourney.isSaved = true
-			session.currentJourney.id = journey.getId()
-			flash.message ="Successfully saved your request"
+		if(isNewLogin && Boolean.valueOf(isNewLogin) == true) {
+			// Request coming from login page. Not saving the request. Redirect to search result page first as ask to save again.
+			log.info "Save journey requested coming from login screen. Journey is ${currentJourney}"
+			flash.message ="Please save your request"
+			session.setAttribute(Constant.LOGIN_ON_FLY, null)
 		}
 		else {
-			flash.message ="Some problem in saving your request"
+			Journey journey = Journey.convert(currentJourney)
+			if(!journey.id) {
+				journeyDataService.createJourney(journey)
+			}
+			if(journey.id){
+				session.currentJourney.isSaved = true
+				session.currentJourney.id = journey.getId()
+				flash.message ="Successfully saved your request"
+			}
+			else {
+				flash.message ="Some problem in saving your request"
+			}
 		}
 		//redirect(controller: 'staticPage', action: "search")
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney])
