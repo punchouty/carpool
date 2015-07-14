@@ -209,7 +209,7 @@ class JourneyController {
 	 * @param myJourney
 	 * @return
 	 */
-	def requestService(JourneyRequestCommand myJourney) {
+	def requestService() {
 		def currentJourney = session.currentJourney
 		def currentUser = getRacloopAuthenticatedUser()
 		def matchedJourneyId = params.matchedJourneyId
@@ -218,13 +218,19 @@ class JourneyController {
 			setUserInformation(currentUser, currentJourney)
 			session.currentJourney = currentJourney
 		}
-		log.info("Requesting service. currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + matchedJourneyId)
-		if(currentJourney.isNewJourney()) {
-			Journey savedJourney = workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), matchedJourneyId);
-			currentJourney.id = savedJourney.getId()
+		Journey myJourney = Journey.convert(currentJourney)
+		if(workflowDataService.validateInvitationRequest(myJourney, matchedJourneyId)) {
+			log.info("Requesting service. currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + matchedJourneyId)
+			if(currentJourney.isNewJourney()) {
+				Journey savedJourney = workflowDataService.requestJourneyAndSave(myJourney, matchedJourneyId);
+				currentJourney.id = savedJourney.getId()
+			}
+			else {
+				workflowDataService.requestJourney(currentJourney.id, matchedJourneyId);
+			}
 		}
 		else {
-			workflowDataService.requestJourney(currentJourney.id, matchedJourneyId);
+			flash.error = "Sorry, you cannot invite yourself."
 		}
 		forward action: 'activeJourneys'
 	}

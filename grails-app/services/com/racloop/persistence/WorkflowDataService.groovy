@@ -378,4 +378,15 @@ class WorkflowDataService {
 		Date dateAfterAdingNMinutes = new Date (journeyDate.getTime() + minutesToBeAdded*millsInAMinute)
 		return currentDate.after(dateAfterAdingNMinutes)
 	}
+	
+	def boolean validateInvitationRequest(Journey currentJourney, String otherJourneyId) {
+		boolean isValidRequest = true
+		Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
+		if(otherJourney) {
+			if(otherJourney.getUser().equals(currentJourney.getUser())){
+				isValidRequest = false;
+			}
+		}
+		return isValidRequest
+	}
 }
