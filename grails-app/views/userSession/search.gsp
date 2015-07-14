@@ -30,10 +30,13 @@
 	</g:hasErrors>
 	
 	<!-- ONLY LOGO ON HEADER -->
+      
       <div class="only-logo">
           <div class="navbar">
               <div class="navbar-header">
+              <%-- 
                   <h2 class="white-text racloop-heading-big">Share Your Cab</h2>
+              --%>
               </div>
           </div>
       </div>
@@ -46,7 +49,7 @@
 
                   <!-- WELCOM MESSAGE -->
                   <h1 class="intro white-text">Search, Connect and Go</h1>
-                  <h5 class="white-text">Share Taxi and Auto rides. Split cost, Make friends and Contribute to <span class="fa fa-leaf green-text">Greener</span> Environment.</h5>
+                  <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to a <span class="fa fa-leaf green-text">Greener</span> Tomorrow.</h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">

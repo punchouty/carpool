@@ -348,7 +348,7 @@
                <!-- BRIEF IMAGE -->
                <div class="col-md-6 pull-right wow fadeInLeft" data-wow-offset="20" data-wow-duration="1.75s">
                    <div class="brief-image-right">
-                       <img src="images/about.jpg" alt="">
+                       <img src="images/logo.jpg" alt="">
                    </div>
                </div>
 
@@ -400,7 +400,7 @@
                    <div class="icon-container">
                        <span class="icon-basic-tablet colored-text"></span>
                    </div>
-                   <a href="tel:+91 9717744392" class="strong">+91 9717744392</a>
+                   <a href="tel:+91 9717744392" class="strong">+91 9780242630</a>
                </div>
            </div>
 

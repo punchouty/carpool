@@ -150,6 +150,7 @@ grails.plugin.awssdk.region = 'ap-southeast-1'
 
 environments {
 	development {
+		grails.serverURL="http://localhost:8080/app"
 		grails.startup.elasticsearch.index.create = true
 		grails.startup.sampleUsers.create = true
 		grails.startup.masterData.places.create = true
@@ -177,6 +178,7 @@ environments {
 		grails.es.http.cors.allow.origin = "*"
 	}
 	production {
+		grails.serverURL="http://www.cabshare.in"
 		grails.startup.elasticsearch.index.create = false
 		grails.startup.sampleUsers.create = false
 		grails.startup.masterData.places.create = false
@@ -234,9 +236,9 @@ grails {
 // Login to account - http://www.smsgatewaycenter.com/login
 sms {
 	url = "http://www.smsgatewaycenter.com/library/send_sms_2.php"
-	mask = "RACLOP"
-	username = "mcs47chd"
-	password = "MCS47CHD?123"
+	mask = "CABSHR"
+	username = "cabshare"
+	password = "eC4yrnzu"
 	templates {
 		verification = 'Your verification code for www.racloop.com code is $verificationCode'
 		newRequest = 'There is new car pool request against your journey on $journeyDate'

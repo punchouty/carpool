@@ -555,6 +555,12 @@ class UserMobileController {
 		render mobileResponse as JSON
 	}
 	
+	def savePreferences() {
+		def mobileResponse = new MobileResponse()
+		
+		render mobileResponse as JSON
+	}
+	
 	def privacy() {
 		def mobileResponse = new MobileResponse()
 		def html = StaticData.findByStaticDataKey("privacy").pageData;

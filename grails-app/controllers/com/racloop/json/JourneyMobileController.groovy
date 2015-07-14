@@ -13,6 +13,7 @@ import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.domain.Journey
 import com.racloop.mobile.data.response.MobileResponse
+import grails.gsp.PageRenderer
 
 class JourneyMobileController {
 	
@@ -20,6 +21,7 @@ class JourneyMobileController {
 	def workflowDataService
 	def journeySearchService
 	def grailsApplication
+	PageRenderer groovyPageRenderer
 	
 	def search() {
 		def json = request.JSON
@@ -159,6 +161,15 @@ class JourneyMobileController {
 		else {
 			mobileResponse.message = "User is not logged in. Unable to perform search"
 		}
+		render mobileResponse as JSON
+	}
+	
+	def journeyDetails(String journeyId) {
+		def currentUser = getAuthenticatedUser();
+		String html = groovyPageRenderer.render template: '/templates/misc/journeyDetails', model: [id: journeyId]
+		MobileResponse mobileResponse = new MobileResponse();
+		mobileResponse.success = true;
+		mobileResponse.message = html;
 		render mobileResponse as JSON
 	}
 
