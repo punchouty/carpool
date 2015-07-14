@@ -149,6 +149,7 @@ class SearchService {
 				field("photoUrl", journey.getPhotoUrl()).
 				field("isDummy", journey.getIsDummy()).
 				field("numberOfCopassengers", journey.getNumberOfCopassengers()).
+				field("tripTimeInSeconds", journey.getTripTimeInSeconds()).
 			endObject();
 		return builder;
 	}
@@ -187,6 +188,7 @@ class SearchService {
 		journey.setTripDistance(getResponse.getSource().get('tripDistance'));
 		journey.setPhotoUrl(getResponse.getSource().get('photoUrl'));
 		journey.setNumberOfCopassengers(getResponse.getSource().get('numberOfCopassengers'));
+		journey.setTripTimeInSeconds(getResponse.getSource().get('tripTimeInSeconds'));
 		return journey;
 	}
 
@@ -308,6 +310,7 @@ class SearchService {
 		journey.setTripDistance(searchHit.getSource().get('tripDistance'));
 		journey.setPhotoUrl(searchHit.getSource().get('photoUrl'));
 		journey.setNumberOfCopassengers(searchHit.getSource().get('numberOfCopassengers'));
+		journey.setTripTimeInSeconds(searchHit.getSource().get('tripTimeInSeconds'))//
 		return journey;
 	}
 	

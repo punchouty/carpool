@@ -388,8 +388,18 @@ jQuery(window).load(function() {
     {
       // at least one number, one lowercase and one uppercase letter
       // at least six characters
-      var re = /{5,20}$/;
-      return re.test(str);
+      //var re = /{5,20}$/;
+      //return re.test(str);
+    	//alert(str);
+    	if(!str){
+    		return false;
+    	}
+//    	else if (str.length<5 || str.length >20) {
+//    		return false;
+//    	}
+    	else {
+    		return true;
+    	}
     }
      
     $("#login-form").submit(function(e) {

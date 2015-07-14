@@ -180,23 +180,32 @@ class JourneyController {
 	 * @return
 	 */
 	def newJourney() {
+		String isNewLogin = session.getAttribute(Constant.LOGIN_ON_FLY)
 		def currentUser = getRacloopAuthenticatedUser();
 		def currentJourney = session.currentJourney
 		if(!currentJourney.user) {
 			setUserInformation(currentUser, currentJourney)
 			session.currentJourney = currentJourney
 		}
-		Journey journey = Journey.convert(currentJourney)
-		if(!journey.id) {
-			journeyDataService.createJourney(journey)
-		}
-		if(journey.id){
-			session.currentJourney.isSaved = true
-			session.currentJourney.id = journey.getId()
-			flash.message ="Successfully saved your request"
+		if(isNewLogin && Boolean.valueOf(isNewLogin) == true) {
+			// Request coming from login page. Not saving the request. Redirect to search result page first as ask to save again.
+			log.info "Save journey requested coming from login screen. Journey is ${currentJourney}"
+			flash.message ="Please save your request"
+			session.setAttribute(Constant.LOGIN_ON_FLY, null)
 		}
 		else {
-			flash.message ="Some problem in saving your request"
+			Journey journey = Journey.convert(currentJourney)
+			if(!journey.id) {
+				journeyDataService.createJourney(journey)
+			}
+			if(journey.id){
+				session.currentJourney.isSaved = true
+				session.currentJourney.id = journey.getId()
+				flash.message ="Successfully saved your request"
+			}
+			else {
+				flash.message ="Some problem in saving your request"
+			}
 		}
 		//redirect(controller: 'staticPage', action: "search")
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney])
@@ -209,7 +218,7 @@ class JourneyController {
 	 * @param myJourney
 	 * @return
 	 */
-	def requestService(JourneyRequestCommand myJourney) {
+	def requestService() {
 		def currentJourney = session.currentJourney
 		def currentUser = getRacloopAuthenticatedUser()
 		def matchedJourneyId = params.matchedJourneyId
@@ -218,13 +227,19 @@ class JourneyController {
 			setUserInformation(currentUser, currentJourney)
 			session.currentJourney = currentJourney
 		}
-		log.info("Requesting service. currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + matchedJourneyId)
-		if(currentJourney.isNewJourney()) {
-			Journey savedJourney = workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), matchedJourneyId);
-			currentJourney.id = savedJourney.getId()
+		Journey myJourney = Journey.convert(currentJourney)
+		if(workflowDataService.validateInvitationRequest(myJourney, matchedJourneyId)) {
+			log.info("Requesting service. currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + matchedJourneyId)
+			if(currentJourney.isNewJourney()) {
+				Journey savedJourney = workflowDataService.requestJourneyAndSave(myJourney, matchedJourneyId);
+				currentJourney.id = savedJourney.getId()
+			}
+			else {
+				workflowDataService.requestJourney(currentJourney.id, matchedJourneyId);
+			}
 		}
 		else {
-			workflowDataService.requestJourney(currentJourney.id, matchedJourneyId);
+			flash.error = "Sorry, you cannot invite yourself."
 		}
 		forward action: 'activeJourneys'
 	}
@@ -410,21 +425,22 @@ class JourneyController {
 		forward action: 'findMatching', model: [currentJourney: currentJourney]
 		
 	}
-	@Deprecated
+	
 	def searchRouteAgain(){
 		String journeyId = params.journeyId
-		JourneyRequestCommand journey = journeyService.findJourneyById(journeyId, false)
+		Journey journey = journeyDataService.findJourney(journeyId)
 		if(journey){
 			resetJourney(journey)
 		}
-		forward controller: 'userSession', action: 'search', model: [journeyInstance: journey]
+		
+		forward controller: 'userSession', action: 'search', model: [journeyInstance: journey?.convert()]
 	}
 	
 	
-	private void resetJourney(JourneyRequestCommand journey) {
+	private void resetJourney(Journey journey) {
 		journey.id = null
-		journey.dateOfJourneyString = null
-		journey.dateOfJourney = null
+		//journey.dateOfJourneyString = null
+		//journey.dateOfJourney = null
 	}
 	
 	def getSibling(){
@@ -462,6 +478,7 @@ public class JourneyRequestCommand {
 	Boolean isSaved = false
 	String photoUrl
 	String actionOnSearchUi = "SEARCH"
+	Integer tripTimeInSeconds
 	
 	static constraints = {
 		id nullable : true

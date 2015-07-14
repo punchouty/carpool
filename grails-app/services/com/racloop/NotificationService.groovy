@@ -55,16 +55,17 @@ class NotificationService {
 		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)) {
+			def dateOfJourneyString = getFormattedDate(targetJourney.dateOfJourney)
 			String mailToRequester = "Your request to share a ride has been sent to ${requestTo?.profile?.fullName?.capitalize()}"
 			emailService.sendMail(requestIntiator.profile.email, "Your request has been sent", mailToRequester) 
 			
-			String mailToReciever = "You have received a request to share a ride with ${requestIntiator?.profile?.fullName.capitalize()}"
+			String mailToReciever = "You have received a request to share a ride with ${requestIntiator?.profile?.fullName.capitalize()}, for your jounrey to ${targetJourney.to} starting at ${dateOfJourneyString}"
 			emailService.sendMail(requestTo.profile.email, "Your have received a new request", mailToReciever)
 			
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator?.profile?.fullName?.capitalize(), 
-				journeyDate: targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
+				journeyDate: dateOfJourneyString, 
 				state: WorkflowStatus.REQUESTED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -101,7 +102,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator?.profile?.fullName?.capitalize(), 
-				journeyDate: targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
+				journeyDate: getFormattedDate(targetJourney.dateOfJourney), 
 				state: WorkflowStatus.ACCEPTED.status,
 				mobile: requestIntiator.profile.mobile
 				]
@@ -120,7 +121,7 @@ class NotificationService {
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator?.profile?.fullName?.capitalize(), 
-				journeyDate: targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), , 
+				journeyDate: getFormattedDate(targetJourney.dateOfJourney), 
 				state: WorkflowStatus.REJECTED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -131,14 +132,14 @@ class NotificationService {
 		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
-			String mailMessage = "Your journey request has been cancelled"
+			String mailMessage = "Your journey request for ${getFormattedDate(targetJourney.dateOfJourney)} has been cancelled"
 			emailService.sendMail(requestTo.profile.email, "Your request has been cancelled", mailMessage + " by ${requestIntiator?.profile?.fullName?.capitalize()}")
-			emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessage)
+			//emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessage)
 			
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator?.profile?.fullName?.capitalize(),
-				journeyDate: targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
+				journeyDate: getFormattedDate(targetJourney.dateOfJourney), 
 				state: WorkflowStatus.CANCELLED.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -150,15 +151,15 @@ class NotificationService {
 		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
-			String mailMessageForRequester = "Your journey request has been cancelled"
+			String mailMessageForRequester = "Your journey request for ${getFormattedDate(targetJourney.dateOfJourney)} has been cancelled"
 			String mailMessage = mailMessageForRequester + " by ${requestIntiator?.profile?.fullName?.capitalize()}"
-			emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessageForRequester)
+			//emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessageForRequester)
 			emailService.sendMail(requestTo.profile.email, "Your request has been cancelled", mailMessage)
 			
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
 				name:requestIntiator?.profile?.fullName?.capitalize(), 
-				journeyDate:  targetJourney.dateOfJourney.format('dd MMM yy HH:mm'), 
+				journeyDate:  getFormattedDate(targetJourney.dateOfJourney), 
 				state: WorkflowStatus.CANCELLED_BY_REQUESTER.status
 				]
 			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
@@ -168,6 +169,10 @@ class NotificationService {
 	
 	private validateUser(User user) {
 		return user && user.profile && user.profile.fullName && user.profile.email
+	}
+	
+	private String getFormattedDate(Date inputDate){
+		return inputDate.format('dd MMM yy HH:mm')
 	}
 
 

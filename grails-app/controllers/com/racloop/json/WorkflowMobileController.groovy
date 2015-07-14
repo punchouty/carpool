@@ -46,16 +46,23 @@ class WorkflowMobileController {
 		if(currentUser) {
 			JourneyRequestCommand currentJourney = session.currentJourneyCommand
 			if(currentJourney != null) {
-				log.info("currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + otherJourneyId)
-				if(currentJourney.isNewJourney()) {
-					workflowDataService.requestJourneyAndSave(Journey.convert(currentJourney), otherJourneyId);
+				Journey myJourney = Journey.convert(currentJourney)
+				if(workflowDataService.validateInvitationRequest(myJourney, otherJourneyId)){
+					log.info("currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + otherJourneyId)
+					if(currentJourney.isNewJourney()) {
+						workflowDataService.requestJourneyAndSave(myJourney, otherJourneyId);
+					}
+					else {
+						workflowDataService.requestJourney(currentJourney.id, otherJourneyId);
+					}
+					session.currentJourneyCommand = null;
+					mobileResponse.success = true;
+					mobileResponse.message = "Request Sent to user";
 				}
 				else {
-					workflowDataService.requestJourney(currentJourney.id, otherJourneyId);
+					mobileResponse.success = false;
+					mobileResponse.message = "Sorry, you cannot invite yourself.";
 				}
-				session.currentJourneyCommand = null;
-				mobileResponse.success = true;
-				mobileResponse.message = "Request Sent to user";
 			}
 			else {
 				mobileResponse.message = "Error : No journey in session"

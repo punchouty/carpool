@@ -28,7 +28,7 @@ class ReviewController {
 	
 	def loadReviewPage() {
 		def pairId = params.pairId
-		
-		render(view: "/userSession/userReview", model: ['pairId': pairId])
+		def journeyId = params.journeyId
+		render(view: "/userSession/userReview", model: ['pairId': pairId, 'journeyId':journeyId])
 	}
 }

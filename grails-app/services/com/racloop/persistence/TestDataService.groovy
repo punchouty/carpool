@@ -194,6 +194,7 @@ class TestDataService {
 				journey.isDriver = true
 				journey.isTaxi = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
+				journey.tripTimeInSeconds= 16600;
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = false;
 				journey.createdDate = new Date();
@@ -233,6 +234,7 @@ class TestDataService {
 				journey.isDriver = true
 				journey.isTaxi = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
+				journey.tripTimeInSeconds= 16600;
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;
 				journey.createdDate = new Date();
@@ -272,6 +274,7 @@ class TestDataService {
 				journey.isDriver = true
 				journey.isTaxi = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
+				journey.tripTimeInSeconds= 16600;
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;
 				journey.createdDate = new Date();
@@ -311,6 +314,7 @@ class TestDataService {
 				journey.isDriver = true
 				journey.isTaxi = true
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
+				journey.tripTimeInSeconds= 16600;
 				journey.photoUrl = user.profile.getGravatarUri()
 				journey.isDummy = true;
 				journey.createdDate = new Date();

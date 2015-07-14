@@ -41,7 +41,7 @@
 			                		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
 			                	</g:else> 
 			                	--%>
-			                	<g:if test = "${journeyInstance.isTaxi == true}">
+			                	<g:if test = "${existingJourney.isTaxi == true}">
 		                        		<span class="label label-primary">Taxi</span> 
 		                        	</g:if>
 		                        	<g:else>

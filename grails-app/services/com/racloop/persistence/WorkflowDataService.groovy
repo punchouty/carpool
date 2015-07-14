@@ -253,7 +253,7 @@ class WorkflowDataService {
 				}
 			}
 			journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
-			sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
+			//sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
 		}
 	}
 	
@@ -377,5 +377,16 @@ class WorkflowDataService {
 		int millsInAMinute = 60*1000
 		Date dateAfterAdingNMinutes = new Date (journeyDate.getTime() + minutesToBeAdded*millsInAMinute)
 		return currentDate.after(dateAfterAdingNMinutes)
+	}
+	
+	def boolean validateInvitationRequest(Journey currentJourney, String otherJourneyId) {
+		boolean isValidRequest = true
+		Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
+		if(otherJourney) {
+			if(otherJourney.getUser().equals(currentJourney.getUser())){
+				isValidRequest = false;
+			}
+		}
+		return isValidRequest
 	}
 }

@@ -11,7 +11,7 @@ var map;
 var marker;
 var geocoder;
 function init() {
-	clearFields();
+	//clearFields();
 //	rendererOptions = {
 //		draggable : true
 //	};
@@ -147,10 +147,12 @@ function calcRoute(from, to) {
 
 function computeTotalDistance(result) {
 	var total = 0;
+	var totalTimeInSeconds = 0;
 	var myroute = result.routes[0];
 	var numberOfLegs = 0;
 	for ( var i = 0; i < myroute.legs.length; i++) {
 		total += myroute.legs[i].distance.value;
+		totalTimeInSeconds += myroute.legs[i].duration.value;
 		var sla = $('#fromLatitude').val();
 		var slo = $('#fromLongitude').val();
 		var ela = $('#toLatitude').val();
@@ -168,16 +170,19 @@ function computeTotalDistance(result) {
 	total = total / 1000.
 	$('#tripUnit').val('KM');
 	$('#tripDistance').val(total + '');
+	$('#tripTimeInSeconds').val(totalTimeInSeconds + '');
 }
 
 function changeDirections(result) {
 	var resultString = JSON.stringify(result);
 	console.log("result : " + resultString);
 	var total = 0;
+	var totalTimeInSeconds = 0;
 	var myroute = result.routes[0];
 	var numberOfLegs = 0;
 	for ( var i = 0; i < myroute.legs.length; i++) {
 		total += myroute.legs[i].distance.value;
+		totalTimeInSeconds += myroute.legs[i].duration.value;
 		var sla = $('#fromLatitude').val();
 		var slo = $('#fromLongitude').val();
 		var ela = $('#toLatitude').val();
@@ -201,6 +206,7 @@ function changeDirections(result) {
 	total = total / 1000.
 	$('#tripUnit').val('KM');
 	$('#tripDistance').val(total + '');
+	$('#tripTimeInSeconds').val(totalTimeInSeconds + '');
 }
 
 function setMapHelp() {
@@ -324,6 +330,7 @@ function clearFields() {
 	$('#tripDistance').val("");
 	$('#_hFromPlace').val("");
 	$('#_hToPlace').val("");
+	$('#tripTimeInSeconds').val("");
 }
 
 $( ".input-append" ).change(function() {
