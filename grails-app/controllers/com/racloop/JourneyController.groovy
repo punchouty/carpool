@@ -54,7 +54,7 @@ class JourneyController {
 				if(existingJourney) {
 					return new ModelAndView("existingJourney", ['currentJourney': currentJourney, 'existingJourney':existingJourney])
 				}
-				render(view: "results", model: ['searchResults': mobileResponse])
+				render(view: "results", model: ['searchResults': mobileResponse, 'currentUser': currentUser])
 			}
 			else {
 				log.warn 'Error in command : ' + params
@@ -180,33 +180,34 @@ class JourneyController {
 	 * @return
 	 */
 	def newJourney() {
-		String isNewLogin = session.getAttribute(Constant.LOGIN_ON_FLY)
+		def userId = params.currentUser
 		def currentUser = getRacloopAuthenticatedUser();
 		def currentJourney = session.currentJourney
 		if(!currentJourney.user) {
 			setUserInformation(currentUser, currentJourney)
 			session.currentJourney = currentJourney
 		}
-		if(isNewLogin && Boolean.valueOf(isNewLogin) == true) {
-			// Request coming from login page. Not saving the request. Redirect to search result page first as ask to save again.
-			log.info "Save journey requested coming from login screen. Journey is ${currentJourney}"
-			flash.message ="Please save your request"
-			session.setAttribute(Constant.LOGIN_ON_FLY, null)
+		if(!userId) {
+			def mobileResponse = journeySearchService.executeSearch(currentJourney)
+			def existingJourney = mobileResponse.data.get('existingJourney')
+			if(existingJourney) {
+				forward action: 'findMatching', model: [currentJourney: currentJourney]
+				return
+			}
+		}
+		Journey journey = Journey.convert(currentJourney)
+		if(!journey.id) {
+			journeyDataService.createJourney(journey)
+		}
+		if(journey.id){
+			session.currentJourney.isSaved = true
+			session.currentJourney.id = journey.getId()
+			flash.message ="Successfully saved your request"
 		}
 		else {
-			Journey journey = Journey.convert(currentJourney)
-			if(!journey.id) {
-				journeyDataService.createJourney(journey)
-			}
-			if(journey.id){
-				session.currentJourney.isSaved = true
-				session.currentJourney.id = journey.getId()
-				flash.message ="Successfully saved your request"
-			}
-			else {
-				flash.message ="Some problem in saving your request"
-			}
+			flash.message ="Some problem in saving your request"
 		}
+		
 		//redirect(controller: 'staticPage', action: "search")
 		//render(view: "results", model: [currentUser: currentUser, currentJourney: currentJourney])
 		//chain(action: 'findMatching', model: [currentJourney: currentJourney])
@@ -412,10 +413,17 @@ class JourneyController {
 		def existingJourneyId = params.existingJourneyId
 		def newJourney = params.newJourney
 		def currentJourney
+		def currentUser= getRacloopAuthenticatedUser()
 		if("newJourney".equals(newJourney)) {
 			workflowDataService.cancelMyJourney(existingJourneyId)
 			currentJourney = new JourneyRequestCommand()
 			bindData(currentJourney, params, [exclude: ['existingJourneyId', 'newJourney']])
+			setDates(currentJourney)
+			setUserInformation(currentUser, currentJourney)
+			Journey journey = Journey.convert(currentJourney);
+			journey.id = null;
+			journeyDataService.createJourney(journey);
+			currentJourney.id = journey.id;
 		}
 		else {
 			Journey journey = journeyDataService.findJourney(existingJourneyId)

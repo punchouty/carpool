@@ -402,7 +402,7 @@ class UserSessionController {
 
 			//redirect(action: "forgotPasswordComplete", validFlow: true)
 			flash.type = "message"
-			flash.message = "Your new password has been sent to your registerd mobile."
+			flash.message = "Your new password has been sent to your registered mobile."
 			redirect(action: "search")
 			return
 		}
