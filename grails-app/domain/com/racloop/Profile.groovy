@@ -13,7 +13,7 @@ class Profile extends grails.plugin.nimble.core.ProfileBase {
 	Boolean isPushEnabled = false;
 	Boolean showReviewPopup = false;
 	String getGravatarUri() { Constant.GRAVATAR_URL + emailHash + Constant.GRAVATAR_URL_SUFFIX}
-	String travelMode
+	String travelModePreference
 	String paymentPreference
 	String cabPreference
 	
@@ -24,7 +24,7 @@ class Profile extends grails.plugin.nimble.core.ProfileBase {
 		emergencyContactOne blank: true, nullable: true
 		emergencyContactTwo blank: true, nullable: true
 		verificationCode blank: true, nullable: true
-		travelMode blank: true, nullable: true
+		travelModePreference blank: true, nullable: true
 		paymentPreference blank: true, nullable: true
 		cabPreference blank: true, nullable: true
 	}

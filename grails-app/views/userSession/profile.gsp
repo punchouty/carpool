@@ -161,8 +161,8 @@
               		</div>
                    
                    <div class="text-left form-group">
-	            		<label for="travelMode">Travel Mode:</label>
-	            		<g:select name="travelMode"  class="form-control input-box zero-margin" from="${['Auto','Taxi']}" value="${user.profile?.travelMode}"noSelection="['':'-Please Select-']"/> 
+	            		<label for="travelModePreference">Travel Mode Preference:</label>
+	            		<g:select name="travelModePreference"  class="form-control input-box zero-margin" from="${['Auto','Taxi']}" value="${user.profile?.travelModePreference}"noSelection="['':'-Please Select-']"/> 
 	            	</div>
 	            	
 	            	<div class="text-left form-group">

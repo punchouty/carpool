@@ -494,7 +494,7 @@ class UserSessionController {
 		user.profile.isMale = isMale
 		user.profile.emergencyContactOne = emergencyContactOne
 		user.profile.emergencyContactTwo = emergencyContactTwo
-		user.profile.travelMode=params.travelMode
+		user.profile.travelModePreference=params.travelModePreference
 		user.profile.paymentPreference= params.paymentPreference
 		user.profile.cabPreference= params.cabPreference
 		
