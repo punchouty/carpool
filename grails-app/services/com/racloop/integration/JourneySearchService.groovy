@@ -93,7 +93,7 @@ class JourneySearchService {
 			mobileResponse.message = "${length} results found"
 		}
 		else {
-			if(searchFromDummy && noOfExistingPassanger<1) {
+			if(searchFromDummy && noOfExistingPassanger<1 && currentJourney.tripDistance<=40) {
 				mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 			}
 			else {
