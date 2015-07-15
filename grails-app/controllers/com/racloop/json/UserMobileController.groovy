@@ -556,7 +556,63 @@ class UserMobileController {
 	}
 	
 	def savePreferences() {
+		def json = request.JSON
 		def mobileResponse = new MobileResponse()
+		String jsonMessage = null
+		String jsonResponse = "error"
+		def errors = null
+		String fullName = json?.fullName
+		String sex = json?.sex
+		String email = json?.email
+		String mobile = json?.mobile
+		String contactOne = json?.contactOne
+		String contactTwo = json?.contactTwo
+		String travelModePreference = json?.travelModePreference
+		String paymentPreference = json?.paymentPreference
+		String cabServicePreference = json?.cabServicePreference
+		
+		boolean isMale = true
+		if(sex != 'male') {
+			isMale = false
+		}
+		def user = getAuthenticatedUser()
+		if(user) {
+			String oldMobile = user.profile.mobile
+			user.profile.fullName = fullName
+			user.profile.email = email
+			user.profile.mobile = mobile
+			user.profile.isMale = isMale
+			user.profile.emergencyContactOne = contactOne
+			user.profile.emergencyContactTwo = contactTwo
+			user.profile.travelModePreference=travelModePreference
+			user.profile.paymentPreference= paymentPreference
+			user.profile.cabPreference= cabServicePreference
+			if (user.validate()) {
+				def updatedUser = userService.updateUser(user)
+				/*RacloopUser racloopUser = userDataService.findUserByMobile(oldMobile)
+				racloopUser.setMobile(user.profile.mobile);
+				racloopUser.setEmail(user.profile.email);
+				racloopUser.setFullName(user.profile.fullName);
+				racloopUser.setEmailHash(user.profile.emailHash);
+				//TODO take care for failure scenario
+				userDataService.saveUser(racloopUser);*/
+				mobileResponse.success = true
+				mobileResponse.message = "Preferences updated successfully"
+			}
+			else {
+				errors = user.errors
+				mobileResponse.success = false
+				def errorMessage = ""
+				errors.allErrors.each {
+					errorMessage = errorMessage + g.message(code: it.getCodes()[0], args: []) + "</br>"
+				}
+				mobileResponse.message = errorMessage
+			}
+		}
+		else {
+			mobileResponse.success = false
+			mobileResponse.message = "User is not logged in. Cannot change user preferences"
+		}
 		
 		render mobileResponse as JSON
 	}
