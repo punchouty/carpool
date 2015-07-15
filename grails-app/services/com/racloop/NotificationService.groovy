@@ -59,7 +59,7 @@ class NotificationService {
 			String mailToRequester = "Your request to share a ride has been sent to ${requestTo?.profile?.fullName?.capitalize()}"
 			emailService.sendMail(requestIntiator.profile.email, "Your request has been sent", mailToRequester) 
 			
-			String mailToReciever = "You have received a request to share a ride with ${requestIntiator?.profile?.fullName.capitalize()}, for your jounrey to ${targetJourney.to} starting at ${dateOfJourneyString}"
+			String mailToReciever = "You have received a request to share a ride with ${requestIntiator?.profile?.fullName.capitalize()}, for your journey to ${targetJourney.to} starting at ${dateOfJourneyString}"
 			emailService.sendMail(requestTo.profile.email, "Your have received a new request", mailToReciever)
 			
 			def  messageMap =[
