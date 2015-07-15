@@ -478,21 +478,27 @@ class UserSessionController {
 		[user: user]
 	}
 	
-	def editProfile(String fullName, String sex, String mobile, String emergencyContactOne, String emergencyContactTwo) {
-		def user = getRacloopAuthenticatedUser()
-		def newMobile = mobile
+	def editProfile() {
+		def user = getAuthenticatedUser()
+		//user  = User.findByUsername(user.username)
+		def newMobile = params.mobile
 		def oldMobile = user.profile.mobile
+		def emergencyContactOne = params.emergencyContactOne
+		def emergencyContactTwo = params.emergencyContactTwo
 		boolean isMale = true
-		if(sex != 'male') {
+		if(params.sex != 'male') {
 			isMale = false
 		}
-		user.profile.fullName = fullName
-		user.profile.mobile = mobile
+		user.profile.fullName = params.fullName
+		user.profile.mobile = params.mobile
 		user.profile.isMale = isMale
 		user.profile.emergencyContactOne = emergencyContactOne
 		user.profile.emergencyContactTwo = emergencyContactTwo
+		user.profile.travelMode=params.travelMode
+		user.profile.paymentPreference= params.paymentPreference
+		user.profile.cabPreference= params.cabPreference
 		
-		if(mobile == emergencyContactOne || mobile == emergencyContactTwo) {
+		if(newMobile == emergencyContactOne || newMobile == emergencyContactTwo) {
 			flash.type = "error"
 			flash.message = "Emergency contact cannot be same as your mobile number"
 			render view: 'profile', model: [user: user]

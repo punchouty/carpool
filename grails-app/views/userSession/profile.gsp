@@ -160,6 +160,21 @@
 						<input type="text" id="cf-emergencyContactTwo" name="emergencyContactTwo" class="form-control input-box zero-margin" placeholder="Emergency Contact 2" value="${user.profile?.emergencyContactTwo}" pattern="^[6789]\d{9}$" data-validation-pattern-message="Invalid Phone Number">
               		</div>
                    
+                   <div class="text-left form-group">
+	            		<label for="travelMode">Travel Mode:</label>
+	            		<g:select name="travelMode"  class="form-control input-box zero-margin" from="${['Auto','Taxi']}" value="${user.profile?.travelMode}"noSelection="['':'-Please Select-']"/> 
+	            	</div>
+	            	
+	            	<div class="text-left form-group">
+	            		<label for="paymentPreference">Payment Preference:</label>
+	            		<g:select name="paymentPreference" class="form-control input-box zero-margin" from="${['Cash','PayTM','Other mobile wallets']}" value="${user.profile?.paymentPreference}"noSelection="['':'-Please Select-']"/> 
+	            	</div>
+	            	
+	            	<div class="text-left form-group">
+	            		<label for="cabPreference">Cab Preference:</label>
+	            		<g:select name="cabPreference"  class="form-control input-box zero-margin" from="${['Ola','Uber', 'Meru Cabs', 'Easy Cabs','Mega Cabs', 'Others']}" value="${user.profile?.cabPreference}"noSelection="['':'-Please Select-']"/> 
+	            	</div>
+	            	
               		<div class=" text-left">
                         <label class="radio-inline">
                             <input type="radio" name="sex" id="inlineRadio1" value="male" <g:if test="${user?.profile?.isMale}">checked</g:if>> Male
@@ -168,6 +183,8 @@
                             <input type="radio" name="sex" id="inlineRadio2" value="female" <g:if test="${!user?.profile?.isMale}">checked</g:if> /> Female
                         </label>
                     </div>
+                    
+                    
                     <button id="edit-profile-button" type="submit" value="Update Profile"  class="btn btn-primary standard-button">UPDATE</button>
                 </g:form>
             </div>
