@@ -48,12 +48,13 @@ class JourneyController {
 		}
 		if(currentJourney.dateOfJourney && currentJourney.validStartTime && currentJourney.dateOfJourney.after(currentJourney.validStartTime)) {
 			if(currentJourney.validate()) {
-				session.currentJourney = currentJourney
 				def mobileResponse = journeySearchService.executeSearch(currentJourney)
 				def existingJourney = mobileResponse.data.get('existingJourney')
 				if(existingJourney) {
+					session.currentJourney = currentJourney
 					return new ModelAndView("existingJourney", ['currentJourney': currentJourney, 'existingJourney':existingJourney])
 				}
+				session.currentJourney = mobileResponse.currentJourney
 				render(view: "results", model: ['searchResults': mobileResponse, 'currentUser': currentUser])
 			}
 			else {
