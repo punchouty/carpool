@@ -561,27 +561,14 @@ class UserMobileController {
 		String jsonMessage = null
 		String jsonResponse = "error"
 		def errors = null
-		String fullName = json?.fullName
-		String sex = json?.sex
-		String email = json?.email
-		String mobile = json?.mobile
 		String contactOne = json?.contactOne
 		String contactTwo = json?.contactTwo
 		String travelModePreference = json?.travelModePreference
 		String paymentPreference = json?.paymentPreference
 		String cabServicePreference = json?.cabServicePreference
 		
-		boolean isMale = true
-		if(sex != 'male') {
-			isMale = false
-		}
 		def user = getAuthenticatedUser()
 		if(user) {
-			String oldMobile = user.profile.mobile
-			user.profile.fullName = fullName
-			user.profile.email = email
-			user.profile.mobile = mobile
-			user.profile.isMale = isMale
 			user.profile.emergencyContactOne = contactOne
 			user.profile.emergencyContactTwo = contactTwo
 			user.profile.travelModePreference=travelModePreference
