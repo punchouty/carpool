@@ -9,9 +9,7 @@
            <!-- SECTION HEADER -->
            <div class="section-header">
 
-               <div class="small-text-medium uppercase colored-text">
-                   SERVICES
-               </div>
+               
                <h2 class="dark-text">A <strong>Free</strong> Cab and Auto Sharing Platform</h2>
                <div class="colored-line">
                </div>
@@ -31,7 +29,7 @@
                        </div>
                        <h3 class="colored-text">Save Money</h3>
                        <p>
-                           Nothing better than some one sharing your commute cost to office, to home town or to airport.
+                           Find other taxi or auto riders to travel with on your commute to office, home, or airport and share the journey cost
                        </p>
                    </div>
                </div>
@@ -44,7 +42,7 @@
                        </div>
                        <h3 class="colored-text">Save Environment</h3>
                        <p>
-                           Having fewer cars on the road means <span class="green-text">less</span> air pollution and less commute time. Benefits for everyone.
+                           Fewer vehicles on the road benefits every-one through reduced air and noise pollution
                        </p>
                    </div>
                </div>
@@ -55,9 +53,9 @@
                        <div class="service-icon colored-text">
                            <span class="fa fa-group"></span>
                        </div>
-                       <h3 class="colored-text">Get Social</h3>
+                       <h3 class="colored-text">Improve the Economy</h3>
                        <p>
-                           Drive together to meet new people and make new friends. Better way to get Social with world around you.
+                           Reduce our fuel import bill through lesser energy consumption. Increase your productivity and leisure time by spending less time on the road
                        </p>
                    </div>
                </div>
@@ -74,13 +72,13 @@
            <div class="container">
                <div class="section-header section-stats">
                    <div class="small-text-medium uppercase colored-text">
-                       Cabs and Autos
+                       Sign Up Today 
                    </div>
-                   <h2 class="white-text"><strong class="white-text">CabShare</strong> App on your Smart Phone</h2>
+                   <h2 class="white-text">Download the <strong class="white-text">CabShare</strong> App on your Smart Phone</h2>
                    <div class="colored-line">
                    </div>
                    <div class="white-text sub-heading">
-                       Share rides on the go.
+                       Find and Connect with Others Quickly and Conveniently from your Mobile Device to Share your Cab ride
                    </div>
                </div>
                <div class="row no-gutters">
@@ -143,11 +141,15 @@
                <div class="small-text-medium uppercase colored-text">
                    Safety and Security
                </div>
-               <h2 class="dark-text">Choosing <strong>Cabs</strong> And <strong>Autos</strong></h2>
+               <h2 class="dark-text">Being <strong>Safe</strong> and <strong>Secure</strong> on your shared journey</h2>
                <div class="colored-line">
                </div>
-               <div class="sub-heading">
-                   You’r safety is extremely important and we are completely committed to your safe being. Please use Goverment approved taxi and auto rikshaws only. <span class="dark-text">Uber, Ola, Meru and Taxi For Sure</span> are few of good taxi services you can use. 
+               <div class="sub-heading text-left">
+                   Your safety and security are extremely important to us and we are completely committed to a comfortable hassle-free journey with your co-passengers. 
+Before accepting or rejecting a cabshare request, please review the user profile and ensure you are comfortable with this person as a co-passenger. 
+When selecting a cab vendor, use cab aggregator platforms or radio-taxi operators that you are satisfied with or Government-approved taxis and auto rickshaws. 
+During the ride, you can track your real-time location on the CabShare app along with how far you have travelled and how much further your destination is. The app will also notify you if there is a possible deviation from the standard route.
+ 
                </div>
            </div>
 
@@ -165,13 +167,15 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Clicking on <strong>SOS</strong> button will send SMS to a emergency contact every one minute telling that you need <strong>emergency assistance</strong> along with your smart phone GPS coordinate. During mobile app <strong>setup</strong> please provide us phone number of an emergency contacts (Your parents, friends or sibling) that <strong>CabShare</strong> should contact in case of emergency. 
+                               Clicking the <strong>SOS</strong> button will send an SMS to your emergency contacts every one minute along with your smart phone GPS coordinates. CabShare will also start receiving your current location and, if required, help your emergency contacts in reaching out to the police and sharing with them the contact details of your co-passengers. 
+During mobile app setup, please provide the phone numbers of your emergency contacts that CabShare should contact in case of an emergency.
+                               
                            </p>
                        </div>
                    </div>
                    
                    <!-- SINGLE FEATURE -->
-                   <div class="feature">
+                   <!--  <div class="feature">
                        <div class="icon-container">
                            <span class="icon-basic-bolt colored-text"></span>
                        </div>
@@ -185,7 +189,7 @@
                        </div>
                    </div>
 
-                   <!-- SINGLE FEATURE -->
+                  
                    <div class="feature">
                        <div class="icon-container">
                            <span class="icon-basic-compass colored-text"></span>
@@ -198,7 +202,7 @@
                                While using cab you can also track your location on app. It will give real time status of route and possible <strong>deviation</strong> of standard route. It will also tell how far is your destination and how much you already traveled. Any time driver will take any <strong>wrong</strong> route you will come to know immediately.
                            </p>
                        </div>
-                   </div>
+                   </div> -->
 
                </div>
            </div>
@@ -361,10 +365,16 @@
                    <div class="colored-line-left">
                    </div>
                    <p class="text-left">
-                       We are bunch of techies who commute to work regularly. Every time we used cab and auto, we found an empty seat beside us. It was irrational and inefficient. We also believe that we need to do something to save environment and reduce traffic congestion on Indian roads. So we founded CabShare. 
+                       We are a bunch of techies who commute to office regularly as well as to airports and train stations. Over the past decade, these rides have become a lot more convenient and reliable, thanks to the radio-taxi fleets and cab aggregator platforms. However, even today, whenever we use a taxi or an auto, there is an empty seat (or two) beside us and that just doesn’t feel right! If we can sit next to strangers when using public transportation, why can’t we do the same when using taxis and autos?  
                    </p>
 					<p class="text-left">
-						It is a cab-sharing platform connecting regular people making similar trips so everyone benefits: the commuters, the society and the environment. CabShare allows participants to reduce their travel costs, meet new friends and conveniently reach their destination, all in a super simple, cool, and environmentally friendly way. Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups.
+						Interestingly enough, on a weekday morning, you can find several people doing so at VT station in Mumbai or at Huda City metro station in Gurgaon where it is relatively easy to find co-passengers travelling in the same direction – sharing a cab saves money & time and helps reduce traffic congestion, pollution & energy consumption! Very rational, efficient, benefitting the individual commuters, society as well as future generations… but then what prevents others from doing the same elsewhere? That’s when it struck us – discovery of co-travelers was the main challenge in other locations… and that was the genesis of CabShare!
+					</p>
+					<p class="text-left">
+						CabShare is a mobile app platform that allows regular folk like us to conveniently and quickly find and connect with others who have similar travel plans. The co-travelers can then arrange to share a cab reducing their journey costs and making new friends all in a super simple, cool, and environmentally friendly way. 
+					</p>
+					<p class="text-left">
+						Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups. 
 					</p>
                </div>
 
