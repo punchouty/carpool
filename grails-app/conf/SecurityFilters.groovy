@@ -33,7 +33,7 @@ class SecurityFilters extends NimbleFilterBase {
 
 	def filters = {	
 		def clos = { true}
-		journeysecure(controller: "journey", action: "(newJourney|requestService|getWorkflow|history|activeJourneys)") {
+		journeysecure(controller: "journey", action: "(newJourney|requestService|searchWithExistingJourney|history|activeJourneys)") {
 			before = { 
 				if (facebookContextProxy.app.id && facebookContextProxy.authenticated) {
 					User user  = User.findByFacebookId(facebookContextProxy.user.id.toString())
@@ -76,7 +76,9 @@ class SecurityFilters extends NimbleFilterBase {
 		// request is the HttpServletRequest
 		def flash = grailsWebRequest.attributes.getFlashScope(filter.request)
 		flash.message = "Please sign in to continue."
-		grailsWebRequest.getSession().setAttribute(Constant.LOGIN_ON_FLY, "true")
+		if(grailsWebRequest.getControllerName()=="journey" && grailsWebRequest.getActionName()=="newJourney") {
+			grailsWebRequest.getRequest()
+		}
 		super.onNotAuthenticated(subject, filter)
 	}
 }

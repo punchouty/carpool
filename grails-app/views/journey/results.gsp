@@ -55,11 +55,11 @@
                         <i class="icon-basic-calendar"></i> <strong>On :</strong> <g:formatDate format="dd MMMM yyyy hh:mm a" date="${currentJourney?.dateOfJourney}"/>
                     </div>
                     <div>
-                        <g:if test ="${session?.currentJourney?.id }">
+                        <g:if test ="${searchResults.data.get('hideSaveButton') == true}">
 							<g:link controller="journey" action="redoSearch" class="btn btn-info"><i class="fa fa-refresh"></i> Search Again</g:link>
 						</g:if>
 						<g:else>
-							<g:link controller="journey" action="newJourney" class="btn btn-info"><i class="fa fa-save"></i> Save Request</g:link>
+							<g:link controller="journey" action="newJourney" params="[currentUser: currentUser?.id]" class="btn btn-info"><i class="fa fa-save"></i> Save Request</g:link>
 						</g:else>
 						<g:link controller="userSession" action="search" class="btn btn-warning"><i class="fa fa-search"></i> Back to Search</g:link>
 		             </div>

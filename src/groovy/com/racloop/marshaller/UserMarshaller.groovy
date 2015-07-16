@@ -16,7 +16,10 @@ class UserMarshaller {
 				isMale : user.profile.isMale,
 				emergencyContactOne: user.profile.emergencyContactOne,
 				emergencyContactTwo: user.profile.emergencyContactTwo,
-				isVerified: user.profile.isVerified
+				isVerified: user.profile.isVerified,
+				travelModePreference:user.profile.travelModePreference,
+				paymentPreference:user.profile.paymentPreference,
+				cabServicePreference:user.profile.cabPreference
 			]
 		}
 		

@@ -48,8 +48,8 @@
 		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
 		                        </li>
 		                       
-		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong> ${journeyInstance.from}</li>
-		                        <li><i class="icon-weather-wind-s"></i> <strong>To :</strong> ${journeyInstance.to}</li>
+		                        <li><i class="icon-basic-geolocalize-01"></i> <strong>From : </strong> ${journeyInstance.from}</li>
+		                        <li><i class="icon-weather-wind-s"></i> <strong>To : </strong> ${journeyInstance.to}</li>
 		                        <li>
 		                        	
 		                        </li>

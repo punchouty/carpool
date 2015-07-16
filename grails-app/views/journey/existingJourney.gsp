@@ -50,8 +50,8 @@
 	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${existingJourney.dateOfJourney}"/></span>
 	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${existingJourney.dateOfJourney}"/></span>
                             </li>
-                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${existingJourney.from}</li>
-                            <li><i class="icon-basic-map"></i> <strong>To :</strong>${existingJourney.to}</li>
+                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From : </strong>${existingJourney.from}</li>
+                            <li><i class="icon-basic-map"></i> <strong>To : </strong>${existingJourney.to}</li>
                         </ul>
                     </div>
                 </div>
@@ -60,17 +60,25 @@
                     <div>
                         <ul class="text-left">
                             <li>
+	                             <%--
 	                            <g:if test = "${currentJourney.isDriver == true}">
 			                		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span>
 			                	</g:if>
 			                	<g:else>
 			                		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span>
 			                	</g:else>
+			                	--%>
+			                	<g:if test = "${currentJourney.isTaxi == true}">
+	                        		<span class="label label-primary">Taxi</span> 
+		                        </g:if>
+		                        <g:else>
+	                        		<span class="label label-primary">Auto Rickshaw</span> 
+		                        </g:else>
 	                            <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${currentJourney.dateOfJourney}"/></span>
 	                            <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${currentJourney.dateOfJourney}"/></span>
                             </li>
-                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${currentJourney.from}</li>
-                            <li><i class="icon-basic-map"></i> <strong>To :</strong>${currentJourney.to}</li>
+                            <li><i class="icon-basic-geolocalize-01"></i> <strong>From : </strong>${currentJourney.from}</li>
+                            <li><i class="icon-basic-map"></i> <strong>To : </strong>${currentJourney.to}</li>
                         </ul>
                     </div>
                 </div>
@@ -102,6 +110,10 @@
 	<g:hiddenField name="isDriver" value="${currentJourney.isDriver}"/>
 	<g:hiddenField name="tripDistance" value="${currentJourney.tripDistance}"/>
 	<g:hiddenField name="tripUnit" value="${currentJourney.tripUnit}"/>
+	<g:hiddenField name="tripTimeInSeconds" value="${currentJourney.tripTimeInSeconds}"/>
+	<g:hiddenField name="isTaxi" value="${currentJourney.isTaxi}"/>
+	<g:hiddenField name="ip" value="${currentJourney.ip}"/>
+	
 	<g:hiddenField name="newJourney"/>
 	
 	</g:form>
