@@ -9,6 +9,8 @@ class ArchiveJob {
 	}
 
     def execute() {
+		log.info "Starting Archive job"
         userReviewService.markUsersForPendingReview()
+		log.info "Sucessfully completed Archive job"
     }
 }
