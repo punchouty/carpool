@@ -20,7 +20,7 @@ class JourneyController {
 	def journeySearchService
 	def journeyDataService
 	def workflowDataService
-	
+	def cabDetailsService
 
 	/**
 	 * Main Search from web front end
@@ -443,6 +443,22 @@ class JourneyController {
 		}
 		
 		forward controller: 'userSession', action: 'search', model: [journeyInstance: journey?.convert()]
+	}
+	
+	def routeDetails() {
+		String matchedJourneyId = params.matchedJourneyId
+		String myJourneyId = params.myJourneyId
+		Journey journey = null 
+		if(myJourneyId){
+			journey = journeyDataService.findJourney(myJourneyId)
+		}
+		else {
+			JourneyRequestCommand currentJourneyCommand =  session.currentJourney
+			journey = Journey.convert(currentJourneyCommand) 
+		}
+		Map priceMap = cabDetailsService.getDelhiCabPrices(journey.getTripDistance(),journey.getTripTimeInSeconds())
+		List wayPoints = journeyDataService.getRouteWayPoint(journey, matchedJourneyId)
+		render(view:'routeDetails', model: [id: matchedJourneyId, wayPoints:wayPoints, priceMap:priceMap])
 	}
 	
 	

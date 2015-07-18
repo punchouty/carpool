@@ -34,6 +34,7 @@ class BootStrap {
 	def searchService	
 	def userDataService
 	def testDataService
+	def cabDetailsService
 	
     def init = { servletContext ->
 		log.info("Current User : " + System.getProperty("user.name"));
@@ -79,6 +80,8 @@ class BootStrap {
 		}
 		
 		intializeStaticData();
+		
+		intializeCabPriceData();
 		
 		if (Environment.current == Environment.DEVELOPMENT) {
 			log.info("Deleting test data");
@@ -229,6 +232,13 @@ class BootStrap {
 			StaticData etiquettes = [staticDataKey:'emergencyContacts', pageData :'9717744392']
 			etiquettes.save()
 		}
+	}
+	
+	private void intializeCabPriceData() {
+		log.info("Loading cab price tempalate")
+		cabDetailsService.populateCityViseCabPriceTemplate()
+		log.info("Sucessfully loaded cab price tempalates")
+		
 	}
 	
 	private injectAuthentication() {

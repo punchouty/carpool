@@ -9,6 +9,10 @@ import com.racloop.domain.WayPoint.WayPointType;
 public class Route {
 	
 	private List<WayPoint> wayPoints = new ArrayList<WayPoint>();
+	
+	public List<WayPoint> getWayPoints() {
+		return wayPoints;
+	}
 
 	public Route(Journey journey1, Journey journey2) {
 		populateWayPoints(journey1, journey2);
@@ -42,8 +46,8 @@ public class Route {
 		if(shortestLeg.equals(journeyOneLeg)) { //Journey 1 is shortest
 			one = new WayPoint(journey2.getFromLatitude(), journey2.getFromLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.SOURCE);
 			two = new WayPoint(journey1.getFromLatitude(), journey1.getFromLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.PICKUP);
-			three = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DROP);
-			four = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DESTINATION);
+			three = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DROP);
+			four = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DESTINATION);
 //			RouteLeg oneTwo = new RouteLeg(journey2.getFromLatitude(), journey2.getFromLongitude(), journey1.getFromLatitude(), journey1.getFromLongitude());
 //			double totalDistance = shortestLeg.getLength() + oneTwo.getLength();
 //			double percentFare = shortestLeg.getLength()/totalDistance;
@@ -54,8 +58,8 @@ public class Route {
 		else if(shortestLeg.equals(journeyTwoLeg)) { //Journey 2 is shortest
 			one = new WayPoint(journey1.getFromLatitude(), journey1.getFromLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.SOURCE);
 			two = new WayPoint(journey2.getFromLatitude(), journey2.getFromLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.PICKUP);
-			three = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DROP);
-			four = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DESTINATION);
+			three = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DROP);
+			four = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DESTINATION);
 //			RouteLeg oneTwo = new RouteLeg(journey1.getFromLatitude(), journey1.getFromLongitude(), journey2.getFromLatitude(), journey2.getFromLongitude());
 //			double totalDistance = shortestLeg.getLength() + oneTwo.getLength();
 //			double percentFare = shortestLeg.getLength()/totalDistance;
@@ -67,8 +71,8 @@ public class Route {
 		else if(shortestLeg.equals(journeyOneStartJourneyTwoEndLeg)) { // overlap
 			one = new WayPoint(journey2.getFromLatitude(), journey2.getFromLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.SOURCE);
 			two = new WayPoint(journey1.getFromLatitude(), journey1.getFromLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.PICKUP);
-			three = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DROP);
-			four = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DESTINATION);
+			three = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DROP);
+			four = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DESTINATION);
 //			RouteLeg oneTwo = new RouteLeg(journey2.getFromLatitude(), journey2.getFromLongitude(), journey1.getFromLatitude(), journey1.getFromLongitude());
 //			double totalDistance = shortestLeg.getLength() + oneTwo.getLength();
 //			double percentFare = journeyTwoLeg.getLength()/totalDistance;
@@ -79,8 +83,8 @@ public class Route {
 		else if(shortestLeg.equals(journeyTwoStartJourneyOneEndLeg)) { // overlap
 			one = new WayPoint(journey1.getFromLatitude(), journey1.getFromLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.SOURCE);
 			two = new WayPoint(journey2.getFromLatitude(), journey2.getFromLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.PICKUP);
-			three = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DROP);
-			four = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DESTINATION);
+			three = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DROP);
+			four = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DESTINATION);
 //			RouteLeg oneTwo = new RouteLeg(journey1.getFromLatitude(), journey1.getFromLongitude(), journey2.getFromLatitude(), journey2.getFromLongitude());
 //			double totalDistance = shortestLeg.getLength() + oneTwo.getLength();
 //			double percentFare = journeyOneLeg.getLength()/totalDistance;
@@ -171,16 +175,16 @@ public class Route {
 			double j1j2j3To = j1j2To.getLength() + j2j3To.getLength();
 			double j1j3j2To = j1j3To.getLength() + j2j3To.getLength();
 			if(j1j2j3To < j1j3j2To) {
-				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DROP);
-				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DROP);
+				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey3.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey3.getName());
 			}
 			else {
-				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DROP);
-				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DROP);
+				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey2.getName());
 				five.setPercentFare(percentFare);
@@ -213,16 +217,16 @@ public class Route {
 			double j2j1j3To = j2j1To.getLength() + j2j3To.getLength();
 			double j2j3j1To = j2j3To.getLength() + j1j3To.getLength();
 			if(j2j1j3To < j2j3j1To) {
-				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DROP);
-				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DROP);
+				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey3.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey3.getName());
 			}
 			else {
-				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DROP);
-				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DROP);
+				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey1.getName());
 				five.setPercentFare(percentFare);
@@ -256,16 +260,16 @@ public class Route {
 			double j3j1j2To = j3j1To.getLength() + j2j1To.getLength();
 			double j3j2j1To = j3j2To.getLength() + j2j1To.getLength();
 			if(j3j1j2To < j3j2j1To) {
-				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DROP);
-				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DROP);
+				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey2.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey2.getName());
 			}
 			else {
-				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DROP);
-				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DROP);
+				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey1.getName());
 				five.setPercentFare(percentFare);
@@ -299,16 +303,16 @@ public class Route {
 			double j2j1j3To = j2j1To.getLength() + j2j3To.getLength();
 			double j2j3j1To = j2j3To.getLength() + j1j3To.getLength();
 			if(j2j1j3To < j2j3j1To) {
-				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DROP);
-				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DROP);
+				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey3.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey3.getName());
 			}
 			else {
-				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DROP);
-				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DROP);
+				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey1.getName());
 				five.setPercentFare(percentFare);
@@ -342,16 +346,16 @@ public class Route {
 			double j3j1j2To = j3j1To.getLength() + j2j1To.getLength();
 			double j3j2j1To = j3j2To.getLength() + j2j1To.getLength();
 			if(j3j1j2To < j3j2j1To) {
-				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DROP);
-				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DROP);
+				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey2.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey2.getName());
 			}
 			else {
-				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DROP);
-				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DROP);
+				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey1.getName());
 				five.setPercentFare(percentFare);
@@ -385,16 +389,16 @@ public class Route {
 			double j1j2j3To = j1j2To.getLength() + j2j3To.getLength();
 			double j1j3j2To = j1j3To.getLength() + j2j3To.getLength();
 			if(j1j2j3To < j1j3j2To) {
-				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DROP);
-				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DROP);
+				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey3.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey3.getName());
 			}
 			else {
-				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DROP);
-				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DROP);
+				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey2.getName());
 				five.setPercentFare(percentFare);
@@ -428,16 +432,16 @@ public class Route {
 			double j3j1j2To = j3j1To.getLength() + j2j1To.getLength();
 			double j3j2j1To = j3j2To.getLength() + j2j1To.getLength();
 			if(j3j1j2To < j3j2j1To) {
-				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DROP);
-				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DROP);
+				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey2.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey2.getName());
 			}
 			else {
-				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DROP);
-				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DROP);
+				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey1.getName());
 				five.setPercentFare(percentFare);
@@ -471,16 +475,16 @@ public class Route {
 			double j1j2j3To = j1j2To.getLength() + j2j3To.getLength();
 			double j1j3j2To = j1j3To.getLength() + j2j3To.getLength();
 			if(j1j2j3To < j1j3j2To) {
-				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DROP);
-				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DROP);
+				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey3.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey3.getName());
 			}
 			else {
-				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DROP);
-				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getFrom(), journey2.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DROP);
+				six = new WayPoint(journey2.getToLatitude(), journey2.getToLongitude(), journey2.getTo(), journey2.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey2.getName());
 				five.setPercentFare(percentFare);
@@ -514,16 +518,16 @@ public class Route {
 			double j2j1j3To = j2j1To.getLength() + j2j3To.getLength();
 			double j2j3j1To = j2j3To.getLength() + j1j3To.getLength();
 			if(j2j1j3To < j2j3j1To) {
-				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DROP);
-				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DROP);
+				six = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey3.getName());
 				five.setPercentFare(percentFare);
 				five.setRecipient(journey3.getName());
 			}
 			else {
-				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getFrom(), journey3.getName(), WayPointType.DROP);
-				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getFrom(), journey1.getName(), WayPointType.DESTINATION);
+				five = new WayPoint(journey3.getToLatitude(), journey3.getToLongitude(), journey3.getTo(), journey3.getName(), WayPointType.DROP);
+				six = new WayPoint(journey1.getToLatitude(), journey1.getToLongitude(), journey1.getTo(), journey1.getName(), WayPointType.DESTINATION);
 				four.setPercentFare(percentFare);
 				four.setRecipient(journey1.getName());
 				five.setPercentFare(percentFare);

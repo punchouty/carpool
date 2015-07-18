@@ -6,14 +6,14 @@
 				<div class="timeline-content">
                     <h2>Start Ride</h2>
                     <table border="0">
-                    	<tr><td colspan="2"><i>Rajan Punchouty will hire a cab</i></td></tr>
-                        <tr>
+                    	<tr><td colspan="2"><i>${wayPoints.get(0).user} will hire a cab</i></td></tr>
+                        <!--  <tr>
                             <td><strong>Time:</strong></td>
                             <td>10:20 AM</td>
-                        </tr>
+                        </tr> -->
                         <tr>
                             <td><strong>Location:</strong></td>
-                            <td>IFFCO Chowk Metro Station, Sushant Lok I, Gurgaon, Haryana</td>
+                            <td>${wayPoints.get(0).place}</td>
                         </tr>
                     </table>
 				</div>
@@ -26,91 +26,229 @@
 				<div class="timeline-content right">
 					<h2>Pick Up</h2>
 					<table border="0">
-						<tr><td colspan="2"><i>Pickup Nitin Bhatnagar</i></td></tr>
+						<tr><td colspan="2"><i>Pickup ${wayPoints.get(1).user}</i></td></tr>
                         <tr>
                             <td><strong>Location:</strong></td>
-                            <td>Springdales School, Benito Juarez Marg, New Delhi, Delhi</td>
+                            <td>${wayPoints.get(1).place}</td>
                         </tr>
                     </table>
 				</div>
 			</div>
-
-			<div class="timeline-item">
-				<div class="timeline-icon">
-					<img src="/resources/icons/marker.svg" alt="">
+			<g:if test ="${wayPoints.size()==4}">
+				<div class="timeline-item">
+					<div class="timeline-icon">
+						<img src="/resources/icons/marker.svg" alt="">
+					</div>
+					<div class="timeline-content">
+						<h2>Drop</h2>
+						<table border="0">
+							<tr><td colspan="2"><i>Drop ${wayPoints.get(2).user} here. ${wayPoints.get(2).user} will pay 50% of current fare to ${wayPoints.get(3).user}</i></td></tr>
+	                        <tr>
+	                            <td><strong>Location:</strong></td>
+	                            <td>${wayPoints.get(2).place}</td>
+	                        </tr>
+	                        <tr>
+	                        	<td colspan="2">
+	                        		<table class="ctable">
+	                        			<tr>
+				                            <th>Approx. Fare</th>
+				                            <th>UberGo</th>
+				                            <th>Ola Mini</th>
+				                            <th>Meru Cab</th>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Individual</i></td>
+				                            <td><g:formatNumber number="${priceMap.UberGo}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.olaMini}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.meruCab}" format="#.##" /></td>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Shared</i></td>
+				                            <td><g:formatNumber number="${(priceMap.UberGo)/2}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.olaMini)/2}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.meruCab)/2}" format="#.##" /></td>
+				                        </tr>
+	                        		</table>
+	                        	</td>
+	                        </tr>
+	                    </table>
+					</div>
 				</div>
-				<div class="timeline-content">
-					<h2>Drop</h2>
-					<table border="0">
-						<tr><td colspan="2"><i>Drop Nitin here. Nitin will pay 50% of current fare to Rajan Punchouty</i></td></tr>
-                        <tr>
-                            <td><strong>Location:</strong></td>
-                            <td>Kalkaji Extension, Kalkaji Extension, Block A 12, New Delhi, Delhi</td>
-                        </tr>
-                        <tr>
-                        	<td colspan="2">
-                        		<table class="ctable">
-                        			<tr>
-			                            <th>Approx. Fare</th>
-			                            <th>UberGo</th>
-			                            <th>Ola</th>
-			                            <th>EasyCab</th>
-			                        </tr>
-			                        <tr>
-			                            <td><i>Individual</i></td>
-			                            <td>200</td>
-			                            <td>220</td>
-			                            <td>230</td>
-			                        </tr>
-			                        <tr>
-			                            <td><i>Shared</i></td>
-			                            <td>100</td>
-			                            <td>110</td>
-			                            <td>115</td>
-			                        </tr>
-                        		</table>
-                        	</td>
-                        </tr>
-                    </table>
+	            <div class="timeline-item">
+					<div class="timeline-icon">
+						<img src="/resources/icons/star.svg" alt="">
+					</div>
+					<div class="timeline-content right">
+						<h2>Pay and End Ride</h2>
+						<table border="0">
+							<tr><td colspan="2"><i>${wayPoints.get(3).user} will pay to cab driver and complete the ride</i></td></tr>
+	                        <tr>
+	                            <td><strong>Location:</strong></td>
+	                            <td>${wayPoints.get(3).place}</td>
+	                        </tr>
+	                        <tr>
+	                        	<td colspan="2">
+	                        		<table class="ctable">
+	                        			<tr>
+				                            <th>Approx. Fare</th>
+				                            <th>UberGo</th>
+				                            <th>Ola Mini</th>
+				                            <th>Meru Cab</th>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Individual</i></td>
+				                            <td><g:formatNumber number="${priceMap.UberGo}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.olaMini}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.meruCab}" format="#.##" /></td>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Shared</i></td>
+				                            <td><g:formatNumber number="${(priceMap.UberGo)/2}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.olaMini)/2}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.meruCab)/2}" format="#.##" /></td>
+				                        </tr>
+	                        		</table>
+	                        	</td>
+	                        </tr>
+	                    </table>
+					</div>
 				</div>
-			</div>
-            <div class="timeline-item">
-				<div class="timeline-icon">
-					<img src="/resources/icons/star.svg" alt="">
+			</g:if>
+			<g:elseif test ="${wayPoints.size()==6}">
+				<div class="timeline-item">
+					<div class="timeline-icon">
+						<img src="/resources/icons/marker.svg" alt="">
+					</div>
+					<div class="timeline-content right">
+						<h2>Pick Up</h2>
+						<table border="0">
+							<tr><td colspan="2"><i>Pickup ${wayPoints.get(2).user}</i></td></tr>
+	                        <tr>
+	                            <td><strong>Location:</strong></td>
+	                            <td>${wayPoints.get(2).place}</td>
+	                        </tr>
+	                    </table>
+					</div>
 				</div>
-				<div class="timeline-content right">
-					<h2>Pay and End Ride</h2>
-					<table border="0">
-						<tr><td colspan="2"><i>Rajan Punchouty will pay to cab driver and complete the ride</i></td></tr>
-                        <tr>
-                            <td><strong>Location:</strong></td>
-                            <td>Red Fort, Netaji Subhash Marg, Chandni Chowk, New Delhi, Delhi</td>
-                        </tr>
-                        <tr>
-                        	<td colspan="2">
-                        		<table class="ctable">
-                        			<tr>
-			                            <th>Approx. Fare</th>
-			                            <th>UberBlack</th>
-			                            <th>OlaPrime</th>
-			                            <th>EasyCab</th>
-			                        </tr>
-			                        <tr>
-			                            <td><i>Individual</i></td>
-			                            <td>220</td>
-			                            <td>230</td>
-			                            <td>240</td>
-			                        </tr>
-			                        <tr>
-			                            <td><i>Shared</i></td>
-			                            <td>110</td>
-			                            <td>115</td>
-			                            <td>120</td>
-			                        </tr>
-                        		</table>
-                        	</td>
-                        </tr>
-                    </table>
+				<div class="timeline-item">
+					<div class="timeline-icon">
+						<img src="/resources/icons/marker.svg" alt="">
+					</div>
+					<div class="timeline-content">
+						<h2>Drop</h2>
+						<table border="0">
+							<tr><td colspan="2"><i>Drop ${wayPoints.get(3).user} here. ${wayPoints.get(3).user} will pay 33% of current fare to ${wayPoints.get(5).user}</i></td></tr>
+	                        <tr>
+	                            <td><strong>Location:</strong></td>
+	                            <td>${wayPoints.get(3).place}</td>
+	                        </tr>
+	                        <tr>
+	                        	<td colspan="2">
+	                        		<table class="ctable">
+	                        			<tr>
+				                            <th>Approx. Fare</th>
+				                            <th>UberGo</th>
+				                            <th>Ola Mini</th>
+				                            <th>Meru Cab</th>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Individual</i></td>
+				                            <td><g:formatNumber number="${priceMap.UberGo}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.olaMini}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.meruCab}" format="#.##" /></td>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Shared</i></td>
+				                            <td><g:formatNumber number="${(priceMap.UberGo)/3}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.olaMini)/3}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.meruCab)/3}" format="#.##" /></td>
+				                        </tr>
+	                        		</table>
+	                        	</td>
+	                        </tr>
+	                    </table>
+					</div>
+				</div>			
+				<div class="timeline-item">
+					<div class="timeline-icon">
+						<img src="/resources/icons/marker.svg" alt="">
+					</div>
+					<div class="timeline-content">
+						<h2>Drop</h2>
+						<table border="0">
+							<tr><td colspan="2"><i>Drop ${wayPoints.get(4).user} here. ${wayPoints.get(4).user} will pay 33% of current fare to ${wayPoints.get(5).user}</i></td></tr>
+	                        <tr>
+	                            <td><strong>Location:</strong></td>
+	                            <td>${wayPoints.get(4).place}</td>
+	                        </tr>
+	                        <tr>
+	                        	<td colspan="2">
+	                        		<table class="ctable">
+	                        			<tr>
+				                            <th>Approx. Fare</th>
+				                            <th>UberGo</th>
+				                            <th>Ola Mini</th>
+				                            <th>Meru Cab</th>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Individual</i></td>
+				                            <td><g:formatNumber number="${priceMap.UberGo}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.olaMini}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.meruCab}" format="#.##" /></td>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Shared</i></td>
+				                            <td><g:formatNumber number="${(priceMap.UberGo)/3}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.olaMini)/3}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.meruCab)/3}" format="#.##" /></td>
+				                        </tr>
+	                        		</table>
+	                        	</td>
+	                        </tr>
+	                    </table>
+					</div>
 				</div>
-			</div>
+	            <div class="timeline-item">
+					<div class="timeline-icon">
+						<img src="/resources/icons/star.svg" alt="">
+					</div>
+					<div class="timeline-content right">
+						<h2>Pay and End Ride</h2>
+						<table border="0">
+							<tr><td colspan="2"><i>${wayPoints.get(5).user} will pay to cab driver and complete the ride</i></td></tr>
+	                        <tr>
+	                            <td><strong>Location:</strong></td>
+	                            <td>${wayPoints.get(5).place}</td>
+	                        </tr>
+	                        <tr>
+	                        	<td colspan="2">
+	                        		<table class="ctable">
+	                        			<tr>
+				                            <th>Approx. Fare</th>
+				                            <th>UberGo</th>
+				                            <th>Ola Mini</th>
+				                            <th>Meru Cab</th>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Individual</i></td>
+				                            <td><g:formatNumber number="${priceMap.UberGo}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.olaMini}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${priceMap.meruCab}" format="#.##" /></td>
+				                        </tr>
+				                        <tr>
+				                            <td><i>Shared</i></td>
+				                            <td><g:formatNumber number="${(priceMap.UberGo)/3}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.olaMini)/3}" format="#.##" /></td>
+				                            <td><g:formatNumber number="${(priceMap.meruCab)/3}" format="#.##" /></td>
+				                        </tr>
+	                        		</table>
+	                        	</td>
+	                        </tr>
+	                    </table>
+					</div>
+				</div>			
+			</g:elseif>
+			<g:else>
+				Sorry, Unable to display route details.
+			</g:else>
 		</div>

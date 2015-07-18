@@ -2,6 +2,7 @@ package com.racloop.json
 
 import static com.racloop.util.date.DateUtil.convertUIDateToElasticSearchDate
 import grails.converters.JSON
+import grails.gsp.PageRenderer
 
 import java.text.SimpleDateFormat
 
@@ -12,8 +13,8 @@ import com.racloop.GenericUtil
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.domain.Journey
+import com.racloop.domain.WayPoint
 import com.racloop.mobile.data.response.MobileResponse
-import grails.gsp.PageRenderer
 
 class JourneyMobileController {
 	
@@ -22,6 +23,7 @@ class JourneyMobileController {
 	def journeySearchService
 	def grailsApplication
 	PageRenderer groovyPageRenderer
+	def cabDetailsService
 	
 	def search() {
 		def json = request.JSON
@@ -165,11 +167,20 @@ class JourneyMobileController {
 	}
 	
 	def journeyDetails(String journeyId) {
-		def currentUser = getAuthenticatedUser();
-		String html = groovyPageRenderer.render template: '/templates/misc/journeyDetails', model: [id: journeyId]
-		MobileResponse mobileResponse = new MobileResponse();
-		mobileResponse.success = true;
-		mobileResponse.message = html;
+		MobileResponse mobileResponse = new MobileResponse()
+		JourneyRequestCommand currentJourneyCommand = session.currentJourneyCommand
+		List<WayPoint> wayPoints= journeyDataService.getRouteWayPoint(Journey.convert(currentJourneyCommand), journeyId)
+		if(wayPoints){
+			Map priceMap = cabDetailsService.getDelhiCabPrices(currentJourneyCommand.getTripDistance(),currentJourneyCommand.getTripTimeInSeconds())
+			String html = groovyPageRenderer.render template: '/templates/misc/journeyDetails', model: [id: journeyId, wayPoints:wayPoints, priceMap:priceMap]
+			mobileResponse.success = true;
+			mobileResponse.message = html;
+		}
+		else {
+			mobileResponse.success = false;
+			mobileResponse.message = "Sorry, unable to find route details"
+		}
+		
 		render mobileResponse as JSON
 	}
 

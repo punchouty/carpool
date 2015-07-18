@@ -181,6 +181,7 @@
 								</g:if>
 								<g:else>
 									<g:link action="selectedJourney" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Request</g:link>
+									<g:link action="routeDetails" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-cog"></i> Details</g:link>
 									<g:if test = "${ matchedResult.getNumberOfCopassengers()>0}">
 										<a name ="additonal" id="additonal${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
 								       		<button class="btn btn-warning"> All users info</button>
