@@ -12,6 +12,7 @@ class SampleDataController {
 	def grailsApplication
 	def journeyDataService
 	def userReviewService
+	def cabDetailsService
 
     def index() { 
 		render "Empty Implementation"
@@ -157,5 +158,10 @@ class SampleDataController {
 	
 	def testEmail() {
 		throw new Exception("Testing Email")
+	}
+	
+	def resetCabPriceMap(){
+		cabDetailsService.resetCabPriceMap()
+		render "Cab Price Map cleared"
 	}
 }

@@ -1,23 +1,20 @@
+import grails.gsp.PageRenderer
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.AdminsService
 import grails.plugin.nimble.core.Role
 import grails.plugin.nimble.core.UserBase
 import grails.util.Environment
-import grails.gsp.PageRenderer
 import liquibase.util.csv.opencsv.CSVReader
 
 import org.apache.shiro.SecurityUtils
-import org.elasticsearch.common.geo.GeoHashUtils;
+import org.elasticsearch.common.geo.GeoHashUtils
 import org.elasticsearch.common.geo.GeoPoint
 import org.springframework.web.context.support.WebApplicationContextUtils
 
-import com.racloop.ElasticsearchUtil;
+import com.racloop.ElasticsearchUtil
 import com.racloop.Place
-import com.racloop.domain.RacloopUser;
+import com.racloop.integration.CabDetailsService
 import com.racloop.staticdata.StaticData
-
-import org.elasticsearch.node.Node
-import org.elasticsearch.node.NodeBuilder
 class BootStrap {
 	
 	def grailsApplication
@@ -235,9 +232,12 @@ class BootStrap {
 	}
 	
 	private void intializeCabPriceData() {
-		log.info("Loading cab price tempalate")
-		cabDetailsService.populateCityViseCabPriceTemplate()
-		log.info("Sucessfully loaded cab price tempalates")
+		def cabPrice = cabDetailsService.findCabPriceTemplateForACity(CabDetailsService.DELHI)
+		if(!cabPrice){
+			log.info("Loading cab price tempalate")
+			cabDetailsService.populateCityViseCabPriceTemplateFromFile()
+			log.info("Sucessfully loaded cab price tempalates")
+		}
 		
 	}
 	

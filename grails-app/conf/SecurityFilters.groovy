@@ -69,6 +69,12 @@ class SecurityFilters extends NimbleFilterBase {
 				accessControl { role(AdminsService.ADMIN_ROLE) }
 			}
 		}
+		
+		supportUtils(controller: "sampleData", action: "(resetCabPriceMap)") {
+			before ={
+				accessControl { role(AdminsService.ADMIN_ROLE) }
+			}
+		}
 	}
 	
 	def onNotAuthenticated(subject, filter) {
