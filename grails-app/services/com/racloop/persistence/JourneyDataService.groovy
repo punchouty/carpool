@@ -16,7 +16,9 @@ import com.racloop.GenericUtil
 import com.racloop.User
 import com.racloop.domain.Journey
 import com.racloop.domain.JourneyPair
+import com.racloop.domain.Route
 import com.racloop.domain.UserJourney
+import com.racloop.domain.WayPoint
 import com.racloop.journey.workkflow.WorkflowStatus
 
 @Transactional
@@ -390,6 +392,36 @@ class JourneyDataService {
 		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withIndexName("DateKey-index").withConsistentRead(false);
 		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		return journeys;
+	}
+	
+	def List<WayPoint> getRouteWayPoint(Journey currentJourney, String matchedJourneyId){
+		currentJourney.setName("You")
+		Route route = null
+		List matchedJourenys = this.findJourneyForRouteDetail(matchedJourneyId)
+		if(matchedJourenys?.size()==1) {
+			route = new Route(currentJourney, matchedJourenys.get(0))
+		}
+		else if(matchedJourenys?.size()==2){
+			route = new Route(currentJourney, matchedJourenys.get(0), matchedJourenys.get(1))
+		}
+		if(route){
+			return route.getWayPoints()
+		}
+		return null
+		
+	}
+	
+	private List findJourneyForRouteDetail(String journeyId) {
+		Journey journey = this.findJourney(journeyId)
+		if(journey) {
+			return this.findSiblingJourneys(journeyId)
+		}
+		else {
+			journey = this.findJourneyFromElasticSearch(journeyId, true)
+			def returnList = [journey]
+			return returnList
+		}
+		return null
 	}
 	
 }
