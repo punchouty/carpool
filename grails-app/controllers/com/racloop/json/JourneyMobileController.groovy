@@ -65,7 +65,17 @@ class JourneyMobileController {
 			}
 		}
 		else {
-			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			currentJourneyCommand.ip = request.remoteAddr
+			if(isAfterUpperLimit(currentJourneyCommand.validStartTime, currentJourneyCommand.dateOfJourney)) {
+				mobileResponse.message = "You cannot search for more than 7 days in future"
+			}
+			else if(currentJourneyCommand.dateOfJourney.after(currentJourneyCommand.validStartTime)) {
+				mobileResponse = journeySearchService.executeSearch(currentJourneyCommand);
+			}
+			else {
+				mobileResponse.message = "Journey date cannot be in past."
+			}
+			//mobileResponse.message = "User is not logged in. Cannot fetch search results"
 		}
 		render mobileResponse as JSON
 	}
