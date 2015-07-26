@@ -14,6 +14,7 @@ class UserMarshaller {
 				photoUrl : user.profile.getGravatarUri(),
 				mobile : user.profile.mobile,
 				isMale : user.profile.isMale,
+				facebookId: user.facebookId,
 				emergencyContactOne: user.profile.emergencyContactOne,
 				emergencyContactTwo: user.profile.emergencyContactTwo,
 				isVerified: user.profile.isVerified,
