@@ -95,12 +95,12 @@ class UserMobileController {
 				}
 				catch (DisabledAccountException e) {
 					log.info "Attempt to login to disabled account for user '${email}'."
-					mobileResponse.message=message(code: "nimble.login.failed.credentials");
+					mobileResponse.message=message(code: "nimble.login.failed.disabled");
 					mobileResponse.success=false
 				}
 				catch (AuthenticationException e) {
 					log.info "General authentication failure for user '${email}'."
-					mobileResponse.message=message(code: "nimble.login.failed.credentials");
+					mobileResponse.message=message(code: "nimble.login.failed.general");
 					mobileResponse.success=false
 				}
 			}

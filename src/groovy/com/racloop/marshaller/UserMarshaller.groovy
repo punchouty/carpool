@@ -11,7 +11,7 @@ class UserMarshaller {
 				fullName : user.profile.fullName,
 				email : user.profile.email,
 				password : user.pass,
-				photoUrl : user.profile.getGravatarUri(),
+				photoUrl : user.getPhotoUrl(),
 				mobile : user.profile.mobile,
 				isMale : user.profile.isMale,
 				facebookId: user.facebookId,
