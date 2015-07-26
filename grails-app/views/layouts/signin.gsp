@@ -9,9 +9,9 @@
 	<g:layoutHead />
 	<r:layoutResources />
 </head>
-<!-- ####### Disable Facebook login for time being##########
+
 <facebook:initJS appId="${racloop.getAppId()}" />	
--->
+
 <body>
 	<%--
 	<div class="preloader">
@@ -39,7 +39,7 @@
 			${params }
 		</div>
 	</g:if>
-   	<%--
+   	
       <script>
        /* PRE LOADER */
        jQuery(window).load(function () {
@@ -48,7 +48,7 @@
            jQuery(".preloader").delay(1000).fadeOut("slow");
        })
    	</script>
-   	 --%>
+   	 
 	<r:layoutResources />
 </body>
 </html>

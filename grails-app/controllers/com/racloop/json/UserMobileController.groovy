@@ -40,7 +40,7 @@ class UserMobileController {
 	def userReviewService
 	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST', forgotPassword : 'POST' ]
-	private static final String DEFAULT_PASSWORD ="P@ssword"
+	
     /**
 	 * curl -X POST -H "Content-Type: application/json" -d '{ "email": "sample.user@racloop.com", "password": "P@ssw0rd", "rememberMe": "true" }' http://localhost:8080/app/mlogin
 	 * @param user
@@ -264,8 +264,8 @@ class UserMobileController {
 			user.profile.owner = user
 			user.username = json?.email
 			if(json?.facebookId) {
-				user.pass = DEFAULT_PASSWORD
-				user.passConfirm = DEFAULT_PASSWORD
+				user.pass = Constant.DEFAULT_PASSWORD
+				user.passConfirm = Constant.DEFAULT_PASSWORD
 			}
 			else {
 				user.pass = json?.password
@@ -739,7 +739,7 @@ class UserMobileController {
 					user.facebookId = facebookId
 					user.save()
 				}
-				user.pass = DEFAULT_PASSWORD
+				user.pass = Constant.DEFAULT_PASSWORD
 				mobileResponse.data = user
 				mobileResponse.success = true
 			}

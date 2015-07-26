@@ -41,11 +41,12 @@ class RacloopTagLib {
 	}
 	
 	private boolean getFBUser(){
-		def User user
+		/*def User user
 		if (facebookContextProxy.app.id && facebookContextProxy.authenticated) {
 			user  = User.findByFacebookId(facebookContextProxy.user.id.toString())
 		}
-		return user && user.profile.isVerified?true:false
+		return user && user.profile.isVerified?true:false*/
+		return false //Disabaling FB login. Using FB user to sign in using nimble
 	}
 	
 	def getAppId = {attrs, body ->

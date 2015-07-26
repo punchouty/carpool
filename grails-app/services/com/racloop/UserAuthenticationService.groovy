@@ -23,11 +23,12 @@ class UserAuthenticationService {
 	}
 	
 	private User getFBUser(){
-		def User user
+		/*def User user
 		if (facebookContextProxy.app.id && facebookContextProxy.authenticated) {
 			user  = User.findByFacebookId(facebookContextProxy.user.id.toString())
 		}
-		return user
+		return user*/
+		return null //Disabaling FB login. Using FB user to sign in using nimble
 	}
 	
 }
