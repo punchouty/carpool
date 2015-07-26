@@ -312,6 +312,7 @@ class UserMobileController {
 						log.info("Sending verification code to $user.profile.mobile");
 						userManagerService.setUpMobileVerificationDuringSignUp(savedUser.profile)
 						mobileResponse.success=true
+						mobileResponse.data = savedUser
 						mobileResponse.message = "User sign up sucessfully. Check SMS for verificaton code."
 					}
 				}
