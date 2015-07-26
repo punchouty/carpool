@@ -319,8 +319,8 @@ $(function() {
 
 function clearFields() {
 	$('#dateOfJourneyString').val("");
-	$('#fromPlace').val("");
-	$('#toPlace').val("");
+	$('#from').val("");
+	$('#to').val("");
 	$('#fromLatitude').val("");
 	$('#fromLongitude').val("");
 	$('#toLatitude').val("");
