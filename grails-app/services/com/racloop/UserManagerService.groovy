@@ -2,6 +2,8 @@ package com.racloop
 
 import grails.transaction.Transactional
 
+import org.apache.shiro.crypto.hash.Sha256Hash
+
 @Transactional
 class UserManagerService {
 	
@@ -97,5 +99,24 @@ class UserManagerService {
 		}
 		
 		return profile
+	}
+	
+	
+	def updateUserDetailsIfRequired(User user, String facebookId) {
+		boolean updateUser = false
+		def pwEnc = new Sha256Hash(Constant.DEFAULT_PASSWORD)
+		def crypt = pwEnc.toHex()
+		if(!user.facebookId) {
+			user.facebookId = facebookId
+			updateUser = true
+		}
+		if(!crypt.equals(user.passwordHash)) {
+			user.passwordHash = crypt
+			updateUser = true
+		}
+		if(updateUser) {
+			userService.updateUser(user)
+		}
+		user.pass= Constant.DEFAULT_PASSWORD
 	}
 }

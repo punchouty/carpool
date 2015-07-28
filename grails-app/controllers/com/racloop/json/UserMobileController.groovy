@@ -72,7 +72,7 @@ class UserMobileController {
 				try {
 					//TODO - do we need this event mechanism below. See AuthController
 					SecurityUtils.subject.login(authToken)
-					userService.createLoginRecord(request)
+					userDataService.createLoginRecord(request)
 					authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
 					mobileResponse.data = authenticatedUser
 					if(authenticatedUser.journeyIdForReview != null) {
@@ -735,10 +735,7 @@ class UserMobileController {
 			//Check if user exists. If yes then login
 			User user = User.findByUsername(email)
 			if(user){
-				if(!user.facebookId) {
-					user.facebookId = facebookId
-					user.save()
-				}
+				userManagerService.updateUserDetailsIfRequired(user, facebookId)
 				user.pass = Constant.DEFAULT_PASSWORD
 				mobileResponse.data = user
 				mobileResponse.success = true

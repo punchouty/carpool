@@ -125,10 +125,7 @@ class UserSessionController {
 		if(isAuthenticatedFromFacebook()){
 			user = getUserFromFacebook()
 			if(user){
-				if(!user.facebookId) {
-					user.facebookId = facebookContext?.user?.id?.toString()
-					userService.updateUser(user)
-				}
+				userManagerService.updateUserDetailsIfRequired(user, facebookContext?.user?.id?.toString())
 				if(targetURL && !"null".equalsIgnoreCase(targetURL)) {
 					session.setAttribute(AuthController.TARGET, targetURL)
 				}
@@ -600,4 +597,5 @@ class UserSessionController {
 		userMap.facebookId= params.facebookId
 		forward action: 'saveuser', model: [userMap: userMap]
 	}
+	
 }
