@@ -257,11 +257,16 @@ log4j = {
 	// Example of changing the log pattern for the default console appender:
 	//
 
-	info "grails.app"
+	//info "grails.app"
+	
+    root {
+        info 'stdout', 'myAppender'
+    }
 
 	appenders {
-		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-		file name: 'file', file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log"
+		console name:'stdout', layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
+		file name: 'file', file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log", layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
+		rollingFile name: "myAppender",	maxFileSize: 1024, file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log", layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
 	}
 
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers

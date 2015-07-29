@@ -411,6 +411,29 @@ class JourneyDataService {
 		
 	}
 	
+	
+	
+	def List<WayPoint> getRouteWayPointForMyJourney(String journeyId){
+		Journey currentJourney = this.findJourney(journeyId)
+		currentJourney.setName("You")
+		Route route = null
+		List matchedJourenys = this.findJourneyForRouteDetail(journeyId)
+		if(matchedJourenys?.size() == 1) {
+			route = new Route(matchedJourenys.get(0))
+		}
+		else if(matchedJourenys?.size()==2){
+			route = new Route(matchedJourenys.get(0), matchedJourenys.get(1))
+		}
+		else if(matchedJourenys?.size()==3){
+			route = new Route(matchedJourenys.get(0), matchedJourenys.get(1), matchedJourenys.get(2))
+		}
+		if(route){
+			return route.getWayPoints()
+		}
+		return null
+		
+	}
+	
 	private List findJourneyForRouteDetail(String journeyId) {
 		Journey journey = this.findJourney(journeyId)
 		if(journey) {
