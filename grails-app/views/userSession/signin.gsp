@@ -51,12 +51,12 @@
 				</g:form>
 				   
 				<p>
-				<!-- ####### Disable Facebook login for time being##########
+				
 				<br>
 				<label>OR Sign in with</label><br> 
 				<facebook:loginLink appPermissions="${facebookContext.app.permissions}" returnUrl="${request.contextPath}/userSession/signinUsingFacebook?targetUri=${targetUri}" elementClass="btn standard-button btn-primary"><span class="icon-social-facebook"></span>Facebook</facebook:loginLink>
 				<br>
-				-->
+				
 				<br>
 				 	
 				<a href="${request.contextPath}/password/forgot" >Forgot Password</a> <br><a href="${request.contextPath}/verifyMobile"  class="red-text">Verify Mobile</a> 

@@ -19,8 +19,8 @@ import com.racloop.GenericUtil
 import com.racloop.Profile
 import com.racloop.Review
 import com.racloop.Sos
+import com.racloop.User
 import com.racloop.domain.Journey
-import com.racloop.domain.RacloopUser
 import com.racloop.mobile.data.response.MobileResponse
 import com.racloop.staticdata.StaticData
 
@@ -40,7 +40,7 @@ class UserMobileController {
 	def userReviewService
 	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST', forgotPassword : 'POST' ]
-
+	
     /**
 	 * curl -X POST -H "Content-Type: application/json" -d '{ "email": "sample.user@racloop.com", "password": "P@ssw0rd", "rememberMe": "true" }' http://localhost:8080/app/mlogin
 	 * @param user
@@ -72,7 +72,7 @@ class UserMobileController {
 				try {
 					//TODO - do we need this event mechanism below. See AuthController
 					SecurityUtils.subject.login(authToken)
-					userService.createLoginRecord(request)
+					userDataService.createLoginRecord(request)
 					authenticatedUser.pass = password //TODO need to remove storing of password. Potential security threat
 					mobileResponse.data = authenticatedUser
 					if(authenticatedUser.journeyIdForReview != null) {
@@ -95,12 +95,12 @@ class UserMobileController {
 				}
 				catch (DisabledAccountException e) {
 					log.info "Attempt to login to disabled account for user '${email}'."
-					mobileResponse.message=message(code: "nimble.login.failed.credentials");
+					mobileResponse.message=message(code: "nimble.login.failed.disabled");
 					mobileResponse.success=false
 				}
 				catch (AuthenticationException e) {
 					log.info "General authentication failure for user '${email}'."
-					mobileResponse.message=message(code: "nimble.login.failed.credentials");
+					mobileResponse.message=message(code: "nimble.login.failed.general");
 					mobileResponse.success=false
 				}
 			}
@@ -251,24 +251,33 @@ class UserMobileController {
 		MobileResponse mobileResponse = new MobileResponse();
 		def json = request.JSON
 		def errors = null
+		log.info("signup() json : ${json}");
 		if(json) {
 			def gender = json?.gender
 			boolean isMale = true
 			if(gender != 'male') {
 				isMale = false
 			}
+			
 			def user = InstanceGenerator.user(grailsApplication)
 			user.profile = InstanceGenerator.profile(grailsApplication)
 			user.profile.owner = user
 			user.username = json?.email
-			user.pass = json?.password
-			user.passConfirm = json?.passwordConfirm
+			if(json?.facebookId) {
+				user.pass = Constant.DEFAULT_PASSWORD
+				user.passConfirm = Constant.DEFAULT_PASSWORD
+			}
+			else {
+				user.pass = json?.password
+				user.passConfirm = json?.passwordConfirm
+			}
 			user.profile.fullName = json?.fullName
 			user.profile.email = json?.email
 			user.profile.mobile = json?.mobile
 			user.profile.isMale = isMale
 			user.enabled = nimbleConfig.localusers.provision.active
 			user.external = false
+			user.facebookId = json?.facebookId
 			
 			
 			def profile = ProfileBase.findByEmail(json?.email)
@@ -303,6 +312,7 @@ class UserMobileController {
 						log.info("Sending verification code to $user.profile.mobile");
 						userManagerService.setUpMobileVerificationDuringSignUp(savedUser.profile)
 						mobileResponse.success=true
+						mobileResponse.data = savedUser
 						mobileResponse.message = "User sign up sucessfully. Check SMS for verificaton code."
 					}
 				}
@@ -711,4 +721,32 @@ class UserMobileController {
 		grailsApplication.config.nimble
 	}
 	
+	def loginFromFacebook(){
+		def json = request.JSON
+		log.info("loginFromFacebook() json : ${json}");
+		def jsonResponse = null
+		MobileResponse mobileResponse = new MobileResponse()
+		
+		if(json) {
+			def email = json.email
+			def facebookId = json.facebookId
+			def gender = json.gender
+			def name = json.name
+			//Check if user exists. If yes then login
+			User user = User.findByUsername(email)
+			if(user){
+				userManagerService.updateUserDetailsIfRequired(user, facebookId)
+				user.pass = Constant.DEFAULT_PASSWORD
+				mobileResponse.data = user
+				mobileResponse.success = true
+			}
+			else {
+				mobileResponse.data = null
+				mobileResponse.success = true
+			}
+		}
+		
+		render mobileResponse as JSON
+	}
+		
 }
