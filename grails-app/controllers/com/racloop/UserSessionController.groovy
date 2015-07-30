@@ -177,6 +177,7 @@ class UserSessionController {
 			user.profile.fullName = userMap.fullName
 			user.profile.email = userMap.email
 			user.profile.mobile = userMap.mobile
+			user.facebookId = userMap.facebookId
 			def gender = userMap.gender 
 			if(gender != 'male') {
 				user.profile.isMale  = false
@@ -401,7 +402,8 @@ class UserSessionController {
 
 			//redirect(action: "forgotPasswordComplete", validFlow: true)
 			flash.type = "message"
-			flash.message = "Your new password has been sent to your registered mobile."
+			flash.message = "Your new password has been sent to your registered mobile ending with ${user.profile.mobile[-4..-1]}."
+			
 			redirect(action: "search")
 			return
 		}

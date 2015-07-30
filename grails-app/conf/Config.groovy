@@ -248,7 +248,7 @@ sms {
 		sos = '${name} is in danger. Please contact immediately. If unreachable please call police. Location: ${lat}, ${lng}'
 		sosUser = 'You have raised SOS alert. If you dont need emergency assistance, Please cancel it on app home screen.'
 		sosAdmin = '${name} | ${mobile} | ${email} | ${emergencyContactOne} | ${emergencyContactTwo} | ${lat} | ${lng} | ${journeyIds}'
-		newPassword = 'Your new password for www.racloop.com is ${newPassword}'
+		newPassword = 'Your new password for www.cabshare.in is ${newPassword}'
 	}
 }
 
