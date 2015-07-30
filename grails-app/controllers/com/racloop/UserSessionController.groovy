@@ -573,7 +573,7 @@ class UserSessionController {
 			}*/
 			FacebookGraphClient facebookGraphClient = new FacebookGraphClient(token)
 			try {
-				fbUser = facebookGraphClient.fetchObject(facebookContext.user.id.toString())
+				fbUser = facebookGraphClient.fetchObject(facebookContext.user.id.toString(),[fields:"id, name,email,gender"])
 
 			} catch (FacebookOAuthException exception) {
 				facebookContext.user.invalidate()
