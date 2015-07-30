@@ -100,5 +100,7 @@ grails.project.dependency.resolution = {
 		
 		runtime ':aws-sdk:1.9.40'
 		
+		compile ":spring-mobile:1.1.3"
+		
     }
 }

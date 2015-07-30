@@ -3,7 +3,7 @@
 			<g:if test ="${wayPoints?.size()==2}">
 			<div class="timeline-item">
 				<div class="timeline-icon">
-					<img src="/resources/icons/home.svg" alt="">
+					<img src="${request.contextPath}/images/icons/home.svg" alt="">
 				</div>
 				<div class="timeline-content">
                     <h2>Start Ride</h2>
@@ -23,7 +23,7 @@
 
 			<div class="timeline-item">
 				<div class="timeline-icon">
-					<img src="/resources/icons/marker.svg" alt="">
+					<img src="${request.contextPath}/images/icons/marker.svg" alt="">
 				</div>
 				<div class="timeline-content right">
 					<h2>Destination</h2>
@@ -60,7 +60,7 @@
 			<g:elseif test ="${wayPoints?.size()==4}">
 				<div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/home.svg" alt="">
+						<img src="${request.contextPath}/images/icons/home.svg" alt="">
 					</div>
 					<div class="timeline-content">
 	                    <h2>Start Ride</h2>
@@ -80,7 +80,7 @@
 	
 				<div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/marker.svg" alt="">
+						<img src="${request.contextPath}/images/icons/marker.svg" alt="">
 					</div>
 					<div class="timeline-content right">
 						<h2>Pick Up Point</h2>
@@ -95,7 +95,7 @@
 				</div>
 				<div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/marker.svg" alt="">
+						<img src="${request.contextPath}/images/icons/marker.svg" alt="">
 					</div>
 					<div class="timeline-content">
 						<h2>Drop Point</h2>
@@ -136,7 +136,7 @@
 				</div>
 	            <div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/star.svg" alt="">
+						<img src="${request.contextPath}/images/icons/star.svg" alt="">
 					</div>
 					<div class="timeline-content right">
 						<h2>Pay and End Ride</h2>
@@ -153,7 +153,7 @@
 			<g:elseif test ="${wayPoints?.size()==6}">
 				<div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/home.svg" alt="">
+						<img src="${request.contextPath}/images/icons/home.svg" alt="">
 					</div>
 					<div class="timeline-content">
 	                    <h2>Start Ride</h2>
@@ -173,7 +173,7 @@
 	
 				<div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/marker.svg" alt="">
+						<img src="${request.contextPath}/images/icons/marker.svg" alt="">
 					</div>
 					<div class="timeline-content right">
 						<h2>Pick Up</h2>
@@ -188,7 +188,7 @@
 				</div>
 				<div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/marker.svg" alt="">
+						<img src="${request.contextPath}/images/icons/marker.svg" alt="">
 					</div>
 					<div class="timeline-content right">
 						<h2>Pick Up</h2>
@@ -203,7 +203,7 @@
 				</div>
 				<div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/marker.svg" alt="">
+						<img src="${request.contextPath}/images/icons/marker.svg" alt="">
 					</div>
 					<div class="timeline-content">
 						<h2>Drop</h2>
@@ -244,7 +244,7 @@
 				</div>			
 				<div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/marker.svg" alt="">
+						<img src="${request.contextPath}/images/icons/marker.svg" alt="">
 					</div>
 					<div class="timeline-content">
 						<h2>Drop</h2>
@@ -285,7 +285,7 @@
 				</div>
 	            <div class="timeline-item">
 					<div class="timeline-icon">
-						<img src="/resources/icons/star.svg" alt="">
+						<img src="${request.contextPath}/images/icons/star.svg" alt="">
 					</div>
 					<div class="timeline-content right">
 						<h2>Pay and End Ride</h2>

@@ -187,9 +187,9 @@ environments {
 		grails.delete.user.password = "s3cr3t"
 		
 		//grails.serverURL = "http://awseb-e-r-AWSEBLoa-14MW1J02IWQX1-349308203.ap-southeast-1.elb.amazonaws.com"
-		grails.plugin.facebooksdk.app.id = 393926260773644
+		grails.plugin.facebooksdk.app.id = 827335057382382
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
-		grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
+		grails.plugin.facebooksdk.app.secret = '02063ce45ea0d452fb12b756495ce787'
 		grails.sms.enable=true
 		grails.email.enable=true
 		
