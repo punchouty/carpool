@@ -471,7 +471,7 @@ class UserMobileController {
 							html g.render(template: "/templates/nimble/mail/forgottenpassword_email", model: [user: user, baseUrl: grailsLinkGenerator.serverBaseURL]).toString()
 						}*/
 						mobileResponse.success = true
-						mobileResponse.message = "Password retrieve successfully. Please check your SMS"
+						mobileResponse.message = "Password sent successfully to your mobile number ending with ${user.profile.mobile[-4..-1]}. Please check your SMS"
 						
 					}
 					else {

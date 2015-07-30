@@ -8,6 +8,7 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 class UserManagerService {
 	
 	def jmsService
+	def userService
 
 	/**
 	 * Verification during signup
