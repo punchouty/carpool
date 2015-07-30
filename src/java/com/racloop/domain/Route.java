@@ -2,6 +2,7 @@ package com.racloop.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import com.racloop.domain.Journey;
 
 import com.racloop.domain.WayPoint.WayPointType;
 
@@ -14,12 +15,25 @@ public class Route {
 		return wayPoints;
 	}
 
+	public Route(Journey currentJourney) {
+		populateWayPoints(currentJourney);
+	}
+
 	public Route(Journey journey1, Journey journey2) {
 		populateWayPoints(journey1, journey2);
 	}
 	
 	public Route(Journey journey1, Journey journey2, Journey journey3) {
 		populateWayPoints(journey1, journey2, journey3);
+	}
+	
+	private void populateWayPoints(Journey singleJourney) {
+		WayPoint one = new WayPoint(singleJourney.getFromLatitude(), singleJourney.getFromLongitude(), singleJourney.getFrom(), singleJourney.getName(), WayPointType.SOURCE);
+		WayPoint two = new WayPoint(singleJourney.getToLatitude(), singleJourney.getToLongitude(), singleJourney.getTo(), singleJourney.getName(), WayPointType.DESTINATION);
+		double percentFare = 1;
+		two.setPercentFare(percentFare);
+		wayPoints.add(one);
+		wayPoints.add(two);
 	}
 
 	private void populateWayPoints(Journey journey1, Journey journey2) {

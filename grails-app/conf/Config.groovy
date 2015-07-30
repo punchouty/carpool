@@ -187,9 +187,9 @@ environments {
 		grails.delete.user.password = "s3cr3t"
 		
 		//grails.serverURL = "http://awseb-e-r-AWSEBLoa-14MW1J02IWQX1-349308203.ap-southeast-1.elb.amazonaws.com"
-		grails.plugin.facebooksdk.app.id = 393926260773644
+		grails.plugin.facebooksdk.app.id = 827335057382382
 		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
-		grails.plugin.facebooksdk.app.secret = 'ac2825df67c12aaf2f0d0816e958c60b'
+		grails.plugin.facebooksdk.app.secret = '02063ce45ea0d452fb12b756495ce787'
 		grails.sms.enable=true
 		grails.email.enable=true
 		
@@ -257,11 +257,16 @@ log4j = {
 	// Example of changing the log pattern for the default console appender:
 	//
 
-	info "grails.app"
+	//info "grails.app"
+	
+    root {
+        info 'stdout', 'myAppender'
+    }
 
 	appenders {
-		console name:'stdout', layout:pattern(conversionPattern: '%c{2} %m%n')
-		file name: 'file', file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log"
+		console name:'stdout', layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
+		file name: 'file', file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log", layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
+		rollingFile name: "myAppender",	maxFileSize: 1024, file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log", layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
 	}
 
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers

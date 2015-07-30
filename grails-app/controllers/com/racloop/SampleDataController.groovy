@@ -51,7 +51,10 @@ class SampleDataController {
 		def message = null;
 		String deletePassword = grailsApplication.config.grails.delete.user.password
 		if(secret.equals(deletePassword)) {
-			def successMessage = testDataService.deleteUser(secret, mobile);
+			def successMessage = testDataService.deleteDataForUser(secret, mobile);
+			if(successMessage.equals("success")) {
+				successMessage = testDataService.deleteUser(secret, mobile);
+			}
 			message = "Operation results : ${successMessage}"
 		}
 		else {

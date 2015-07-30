@@ -176,12 +176,26 @@ class JourneyMobileController {
 		render mobileResponse as JSON
 	}
 	
-	def journeyDetails(String journeyId) {
+	def journeyDetails(String journeyId, boolean isMyJourney, boolean isDummy) {
+		log.info("journeyId : ${journeyId}, isMyJourney : ${isMyJourney}, isDummy : ${isDummy}")
+		Journey journey = journeyDataService.findJourney(journeyId)
 		MobileResponse mobileResponse = new MobileResponse()
-		JourneyRequestCommand currentJourneyCommand = session.currentJourneyCommand
-		List<WayPoint> wayPoints= journeyDataService.getRouteWayPoint(Journey.convert(currentJourneyCommand), journeyId)
+		List<WayPoint> wayPoints = null;
+		Map priceMap = [:];
+		if(isMyJourney) {
+			wayPoints = journeyDataService.getRouteWayPointForMyJourney(journeyId)
+			if(journey.getTripDistance() <= 50) priceMap = cabDetailsService.getDelhiCabPrices(journey.getTripDistance(), journey.getTripTimeInSeconds())
+		}
+		else {
+			if(isDummy) {
+				journey = journeyDataService.findJourneyFromElasticSearch(journeyId, true);
+			}
+			JourneyRequestCommand currentJourneyCommand = session.currentJourneyCommand
+			wayPoints = journeyDataService.getRouteWayPoint(Journey.convert(currentJourneyCommand), journeyId)
+			if(journey.getTripDistance() <= 50) priceMap = cabDetailsService.getDelhiCabPrices(currentJourneyCommand.getTripDistance(),currentJourneyCommand.getTripTimeInSeconds())
+		}
+		
 		if(wayPoints){
-			Map priceMap = cabDetailsService.getDelhiCabPrices(currentJourneyCommand.getTripDistance(),currentJourneyCommand.getTripTimeInSeconds())
 			String html = groovyPageRenderer.render template: '/templates/misc/journeyDetails', model: [id: journeyId, wayPoints:wayPoints, priceMap:priceMap]
 			mobileResponse.success = true;
 			mobileResponse.message = html;

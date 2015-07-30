@@ -360,7 +360,7 @@ class TestDataService {
 				User user = profile.owner;
 				journeyDataService.deleteJourneyForUser(mobile);
 				searchService.deleteAllJourneyDataForUser(mobile);
-				return "successfully deleted journey data for user"
+				return "success"
 			}
 			else {
 				return "Unable to find user with mobile :  ${mobile}";
@@ -384,18 +384,16 @@ class TestDataService {
 					log.info("Deleting User : " + user.username)
 					journeyDataService.deleteJourneyForUser(user?.profile?.mobile);
 					searchService.deleteAllJourneyDataForUser(user?.profile?.mobile);
-					//userDataService.deleteUserByMobile(user.profile.mobile);//delete from dynamo db
 					user.groups.each { group ->
 						groupService.deleteMember(user, group)
 					}
 					user.roles.each { role ->
 						roleService.deleteMember(user, role)
 					}
-					//user2.profile.delete();//delete from mysql
 					user.delete();//delete from mysql
 				}
 				
-				return "successfully deleted user and associated journeys"
+				return "success"
 			}
 			else {
 				return "Unable to find user with mobile :  ${mobile}";

@@ -87,7 +87,7 @@ class BootStrap {
 			Boolean createSampleData = grailsApplication.config.grails.startup.sampleData.create
 			if(createSampleData) {
 				//sampleDataService.populateSampleData();
-				testDataService.generateDataForDev(3);
+				testDataService.generateDataForDev(5);
 			}
 			else {
 				testDataService.populateElasticSearch();
