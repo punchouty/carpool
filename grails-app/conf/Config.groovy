@@ -159,7 +159,7 @@ environments {
 		grails.delete.user.password = "s3cr3t"
 		grails.logging.jul.usebridge = true
 		grails.plugin.facebooksdk.app.id = 417141881785415
-		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
+		grails.plugin.facebooksdk.app.permissions = ['email']
 		grails.plugin.facebooksdk.app.secret = '3461eaa74e391bb6add17f9b25a38355'
 		grails.sms.enable=false
 		grails.email.enable=true
@@ -188,7 +188,7 @@ environments {
 		
 		//grails.serverURL = "http://awseb-e-r-AWSEBLoa-14MW1J02IWQX1-349308203.ap-southeast-1.elb.amazonaws.com"
 		grails.plugin.facebooksdk.app.id = 827335057382382
-		grails.plugin.facebooksdk.app.permissions = ['email','read_stream','user_birthday']
+		grails.plugin.facebooksdk.app.permissions = ['email']
 		grails.plugin.facebooksdk.app.secret = '02063ce45ea0d452fb12b756495ce787'
 		grails.sms.enable=true
 		grails.email.enable=true

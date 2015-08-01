@@ -53,6 +53,13 @@
             <li><a href="https://twitter.com/cabsharein" target="_blank"><span class="icon-social-twitter transparent-text-dark"></span></a>
             </li>
         </ul>
+        
+         <ul class="social-icons">
+         	<li>
+         		<div class="fb-like" data-href="https://www.cabshare.in/" data-colorscheme ="light" data-layout="standard" data-action="like" data-share="true" ></div>
+            </li>
+         </ul>
+        
 
     </footer>
         

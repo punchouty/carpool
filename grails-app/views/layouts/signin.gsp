@@ -10,7 +10,7 @@
 	<r:layoutResources />
 </head>
 
-<facebook:initJS appId="${racloop.getAppId()}" />	
+<facebook:initJS appId="${racloop.getAppId()}"  xfbml="true", version="2.4"/>
 
 <body>
 	<%--

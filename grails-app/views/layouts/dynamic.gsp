@@ -8,9 +8,9 @@
 	<g:layoutHead />
 	<r:layoutResources />
 </head>
-<!-- ####### Disable Facebook login for time being##########
-<facebook:initJS appId="${racloop.getAppId()}" />
- -->	
+
+<facebook:initJS appId="${racloop.getAppId()}"  xfbml="true", version="2.4"/>
+	
 <body>
 	<header class="header-racloop" data-stellar-background-ratio="0.5">
         <!-- COLOR OVER IMAGE -->
