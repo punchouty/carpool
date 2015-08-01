@@ -21,6 +21,7 @@ class User extends grails.plugin.nimble.core.UserBase {
 	@Deprecated
 	String pendingReview
 	String journeyIdForReview
+	String userCode
 	
 	static transients = ['facebookProfilePic']
 	
@@ -38,6 +39,7 @@ class User extends grails.plugin.nimble.core.UserBase {
 		facebookId blank: true, nullable: true,  unique: true
 		pendingReview blank: true, nullable: true
 		journeyIdForReview blank: true, nullable: true
+		userCode blank: true, nullable: true
 	}
 	
 	public double getUserRating() {

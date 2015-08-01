@@ -278,7 +278,7 @@ class UserMobileController {
 			user.enabled = nimbleConfig.localusers.provision.active
 			user.external = false
 			user.facebookId = json?.facebookId
-			
+			user.userCode = userManagerService.generateUserCode(user.profile.fullName)
 			
 			def profile = ProfileBase.findByEmail(json?.email)
 			if(profile) {
@@ -535,6 +535,9 @@ class UserMobileController {
 			user.profile.email = email
 			user.profile.mobile = mobile
 			user.profile.isMale = isMale
+			if(!user.userCode) {
+				user.userCode = userManagerService.generateUserCode(user.profile.fullName)
+			}
 			if (user.validate()) {
 				def updatedUser = userService.updateUser(user)
 				/*RacloopUser racloopUser = userDataService.findUserByMobile(oldMobile)

@@ -149,6 +149,11 @@
 					    </g:else>
 						
               		</div>
+              		
+              		<div class="text-left form-group">
+					    <label for="cf-email">User Code :</label>
+						<input type="text" id="userCode" name="userCode" class="form-control input-box zero-margin" placeholder="User Code" type="text" value="${user.userCode}" readonly />
+  					</div>
                    
               		<div class="text-left form-group">
 					    <label for="cf-emergencyContact">Emergency Contact 1 :</label>

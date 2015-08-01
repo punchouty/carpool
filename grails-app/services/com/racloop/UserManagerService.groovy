@@ -120,4 +120,38 @@ class UserManagerService {
 		}
 		user.pass= Constant.DEFAULT_PASSWORD
 	}
+	
+	def String generateUserCode(String fullName) {
+		if(fullName){
+			StringBuffer userCode  = new StringBuffer()
+			String[] nameTokens = fullName.split(" ")
+			int numberOftoken = nameTokens.length
+			String firstName = nameTokens[0].trim().toUpperCase()
+			userCode.append(firstName.substring(0, Math.min(firstName.length(), 3)).padRight(3,'X'))
+			if(numberOftoken>=2) {
+				String lastName = nameTokens[1].trim().toUpperCase()
+				if(lastName){
+					userCode.append(lastName.substring(0, Math.min(firstName.length(), 1)))
+				} 
+				else {
+					userCode.append("Z")
+				}
+			}
+			else {
+				userCode.append("Z")
+			}
+			
+			userCode.append(generateThreeDigitCode())
+			return userCode.toString() 
+		}
+		else {
+			return null
+		}
+	}
+	
+	private int generateThreeDigitCode() {
+		Random rnd = new Random();
+		int n = 100 + rnd.nextInt(900);
+		return n;
+	}
 }

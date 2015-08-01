@@ -201,7 +201,7 @@ class UserSessionController {
 		}
 		user.enabled = nimbleConfig.localusers.provision.active
 		user.external = false
-		
+		user.userCode = userManagerService.generateUserCode(user.profile.fullName)
 		user.validate()
 
 		log.debug("Attempting to create new user account identified as $user.username")
@@ -498,6 +498,9 @@ class UserSessionController {
 		user.profile.travelModePreference=params.travelModePreference
 		user.profile.paymentPreference= params.paymentPreference
 		user.profile.cabPreference= params.cabPreference
+		if(!user.userCode) {
+			user.userCode = userManagerService.generateUserCode(user.profile.fullName)
+		}
 		
 		if(newMobile == emergencyContactOne || newMobile == emergencyContactTwo) {
 			flash.type = "error"

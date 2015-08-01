@@ -10,13 +10,20 @@ import spock.lang.Specification
  */
 @TestFor(UserManagerService)
 class UserManagerServiceSpec extends Specification {
-
-    def setup() {
-    }
-
-    def cleanup() {
-    }
-
-    void "test something"() {
+    
+	void testUserCode() {
+		
+		given: "Nothing"
+			
+		when: "service is called"
+			
+		then: "Expect userCode is generated"
+			assert service.generateUserCode("Rohit").startsWith("ROHZ")
+			assert service.generateUserCode("Rajan P").startsWith("RAJP")
+			assert service.generateUserCode("R Arora").startsWith("RXXA")
+			assert service.generateUserCode("R A").startsWith("RXXA")
+			assert service.generateUserCode("Ro").startsWith("ROXZ")
+			assert service.generateUserCode("Rohit K Arora").startsWith("ROHK")
+			
     }
 }
