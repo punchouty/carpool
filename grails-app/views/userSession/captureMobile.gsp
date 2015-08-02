@@ -42,7 +42,7 @@
             <div class="row">
             	<g:form controller="userSession" action="addMobile" method="POST" class="form-inline" name="addMobileForm">
 		             <input type="text" id="mobile" name="mobile" value="${mobile}" class="form-control input-box" placeholder="Enter Mobile" required>
-	                 
+	                 <input type="text" id="cf-userCode" name="userCode" class="form-control input-box" placeholder="Referal Code" value="${user?.userCode}" maxlength="10" minlength="3" />
 	                 <button id="addMobile" class="btn standard-button" type="button" >Add Mobile</button>
 	                 
 	                 <div id = "error" class="hidden">

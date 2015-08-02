@@ -154,4 +154,14 @@ class UserManagerService {
 		int n = 100 + rnd.nextInt(900);
 		return n;
 	}
+	
+	def boolean validateReferalCode(String userCode) {
+		User user = User.findByUserCode(userCode)
+		if(user) {
+			return true
+		}
+		else {
+			return false
+		}
+	}
 }

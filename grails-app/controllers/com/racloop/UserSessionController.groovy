@@ -166,6 +166,7 @@ class UserSessionController {
 			response.sendError(404)
 			return
 		}
+		def referalCode = null
 		def user = InstanceGenerator.user(grailsApplication)
 		user.profile = InstanceGenerator.profile(grailsApplication)
 		user.profile.owner = user
@@ -185,6 +186,7 @@ class UserSessionController {
 			else {
 				user.profile.isMale = true
 			}
+			referalCode = userMap.userCode
 			
 		}
 		else {
@@ -197,6 +199,7 @@ class UserSessionController {
 			user.profile.properties['fullName', 'email', 'mobile', 'emergencyContact'] = params
 			user.username = user.profile.email
 			user.profile.isMale = isMale
+			referalCode = params.userCode
 			
 		}
 		user.enabled = nimbleConfig.localusers.provision.active
@@ -239,6 +242,18 @@ class UserSessionController {
 			resetNewUser(user)
 			render(view: 'signup', model: [user: user])
 			return
+		}
+		
+		if(referalCode){
+			boolean validReferalCode = userManagerService.validateReferalCode(referalCode)
+			if(!validReferalCode) {
+				log.debug("Invalid referal code ${referalCode}")
+				resetNewUser(user)
+				flash.type = "error"
+				flash.error = "Invalid referal code - ${referalCode}"
+				render(view: 'signup', model: [user: user])
+				return
+			}
 		}
 
 		def savedUser
@@ -600,6 +615,7 @@ class UserSessionController {
 		userMap.email = params.email
 		userMap.gender = params.gender
 		userMap.facebookId= params.facebookId
+		userMap.userCode = params.userCode
 		forward action: 'saveuser', model: [userMap: userMap]
 	}
 	
