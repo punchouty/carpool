@@ -279,6 +279,16 @@ class UserMobileController {
 			user.external = false
 			user.facebookId = json?.facebookId
 			user.userCode = userManagerService.generateUserCode(user.profile.fullName)
+			def referalCode = json?.referalCode
+			if(referalCode) {
+				boolean validCode = userManagerService.validateReferalCode(referalCode)
+				if(!validCode){
+					mobileResponse.success = false
+					mobileResponse.message = "Invalid referal code"
+					render mobileResponse as JSON
+					return
+				}
+			}
 			
 			def profile = ProfileBase.findByEmail(json?.email)
 			if(profile) {

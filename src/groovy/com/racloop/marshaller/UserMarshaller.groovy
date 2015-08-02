@@ -20,7 +20,8 @@ class UserMarshaller {
 				isVerified: user.profile.isVerified,
 				travelModePreference:user.profile.travelModePreference,
 				paymentPreference:user.profile.paymentPreference,
-				cabServicePreference:user.profile.cabPreference
+				cabServicePreference:user.profile.cabPreference,
+				userCode:user.userCode
 			]
 		}
 		
