@@ -550,15 +550,24 @@ class UserMobileController {
 			}
 			if (user.validate()) {
 				def updatedUser = userService.updateUser(user)
-				/*RacloopUser racloopUser = userDataService.findUserByMobile(oldMobile)
-				racloopUser.setMobile(user.profile.mobile);
-				racloopUser.setEmail(user.profile.email);
-				racloopUser.setFullName(user.profile.fullName);
-				racloopUser.setEmailHash(user.profile.emailHash);
-				//TODO take care for failure scenario
-				userDataService.saveUser(racloopUser);*/
-				mobileResponse.success = true
-				mobileResponse.message = "Profile updated successfully"
+				if(oldMobile == updatedUser.profile.mobile) {
+					/*RacloopUser racloopUser = userDataService.findUserByMobile(oldMobile)
+					racloopUser.setMobile(user.profile.mobile);
+					racloopUser.setEmail(user.profile.email);
+					racloopUser.setFullName(user.profile.fullName);
+					racloopUser.setEmailHash(user.profile.emailHash);
+					//TODO take care for failure scenario
+					userDataService.saveUser(racloopUser);*/
+					mobileResponse.success = true
+					mobileResponse.data = updatedUser
+					mobileResponse.message = "Profile updated successfully"
+				}
+				else {
+					userManagerService.setUpVerificationForMobileChange(updatedUser.profile.mobile, updatedUser.profile.email)
+					SecurityUtils.subject?.logout()
+					mobileResponse.success = true
+					mobileResponse.message = "Profile updated. Please verify mobile and re-login."
+				}
 			}
 			else {
 				errors = user.errors
