@@ -10,6 +10,7 @@ public interface Constant {
 	public static final String NOTIFICATION_SMS_QUEUE = "msg.sms.notification.queue";
 	public static final String NOTIFICATION_MOBILE_PUSH_QUEUE = "msg.push.notification.queue";
 	public static final String NOTIFICATION_MOBILE_FORGOT_PASSWORD_QUEUE = "msg.sms.mobile.forgot.password";
+	public static final String NOTIFICATION_PROMOTION_MESSAGE_QUEUE = "msg.notification.promotion.queue";
 	
 	public static final String MOBILE_KEY = "mobile";
 	public static final String EMAIL_KEY = "email";

@@ -9,11 +9,14 @@ import liquibase.util.csv.opencsv.CSVReader
 import org.apache.shiro.SecurityUtils
 import org.elasticsearch.common.geo.GeoHashUtils
 import org.elasticsearch.common.geo.GeoPoint
+import org.elasticsearch.common.joda.time.DateTime
 import org.springframework.web.context.support.WebApplicationContextUtils
 
 import com.racloop.ElasticsearchUtil
 import com.racloop.Place
 import com.racloop.integration.CabDetailsService
+import com.racloop.promotion.PromotionEvent
+import com.racloop.promotion.PromotionMetaData
 import com.racloop.staticdata.StaticData
 class BootStrap {
 	
@@ -77,6 +80,8 @@ class BootStrap {
 		}
 		
 		intializeStaticData();
+		
+		intializePromotionData();
 		
 		intializeCabPriceData();
 		
@@ -187,7 +192,19 @@ class BootStrap {
 		reader.close();
 	}
 	
+	private void intializePromotionData(){
+		PromotionMetaData promotionMetaData = PromotionMetaData.findByPromotionEvent(PromotionEvent.USER_REFERAL_EVENT)
+		if(!promotionMetaData){
+			promotionMetaData = new PromotionMetaData()
+			promotionMetaData.promotionEvent = PromotionEvent.USER_REFERAL_EVENT
+			promotionMetaData.startDate = new DateTime().toDate()
+			promotionMetaData.endDate = new DateTime().plusDays(200).toDate()
+			promotionMetaData.save()
+		}
+	}
+	
 	private void intializeStaticData() {
+		
 		StaticData staticData  = StaticData.find {staticDataKey == 'safety'}
 		if(!staticData){
 			String data = groovyPageRenderer.render view: '/staticPage/safety'

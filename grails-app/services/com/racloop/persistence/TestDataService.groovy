@@ -39,6 +39,7 @@ class TestDataService {
 			user.pass = 'qwert'
 			user.passConfirm = 'qwert'
 			user.enabled = true
+			user.userCode = 'SAMU123'
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Sample User"
@@ -79,6 +80,7 @@ class TestDataService {
 			user.pass = 'qwert'
 			user.passConfirm = 'qwert'
 			user.enabled = true
+			user.userCode = 'SAMD123'
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Sample Driver"
@@ -119,6 +121,7 @@ class TestDataService {
 			user.pass = 'qwert'
 			user.passConfirm = 'qwert'
 			user.enabled = true
+			user.userCode = 'SAMR123'
 
 			def userProfile = InstanceGenerator.profile(grailsApplication)
 			userProfile.fullName = "Sample Rider"

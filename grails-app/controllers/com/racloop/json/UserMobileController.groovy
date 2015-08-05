@@ -281,7 +281,7 @@ class UserMobileController {
 			user.userCode = userManagerService.generateUserCode(user.profile.fullName)
 			def referalCode = json?.referalCode
 			if(referalCode) {
-				boolean validCode = userManagerService.validateReferalCode(referalCode)
+				boolean validCode = userManagerService.validateAndApplyReferalCode(referalCode)
 				if(!validCode){
 					mobileResponse.success = false
 					mobileResponse.message = "Invalid referal code"

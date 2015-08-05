@@ -245,7 +245,7 @@ class UserSessionController {
 		}
 		
 		if(referalCode){
-			boolean validReferalCode = userManagerService.validateReferalCode(referalCode)
+			boolean validReferalCode = userManagerService.validateAndApplyReferalCode(referalCode)
 			if(!validReferalCode) {
 				log.debug("Invalid referal code ${referalCode}")
 				resetNewUser(user)

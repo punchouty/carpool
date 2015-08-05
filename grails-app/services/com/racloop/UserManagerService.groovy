@@ -4,6 +4,9 @@ import grails.transaction.Transactional
 
 import org.apache.shiro.crypto.hash.Sha256Hash
 
+import com.racloop.notification.promotion.model.PromotionMessage;
+import com.racloop.promotion.PromotionEvent;
+
 @Transactional
 class UserManagerService {
 	
@@ -33,7 +36,9 @@ class UserManagerService {
 		Profile profile = getUserProfile(mobile, email)
 		profile.verificationCode = generateVerificationCode();
 		profile.isVerified = false
-		profile.save(flush: true);
+		profile.owner.enabled = false
+		profile.save();
+		profile.owner.save(flush: true);
 		def  messageMap =[(Constant.MOBILE_KEY) : mobile, (Constant.VERIFICATION_CODE_KEY):profile.verificationCode]
 		jmsService.send(queue: Constant.MOBILE_VERIFICATION_QUEUE, messageMap);
 	}
@@ -48,7 +53,10 @@ class UserManagerService {
 		if(profile) {
 			profile.verificationCode = generateVerificationCode();
 			profile.isVerified = false
-			profile.save(flush:true);
+			profile.owner.enabled = false
+			profile.save()
+			profile.owner.save(flush:true)
+			
 			def  messageMap =[(Constant.MOBILE_KEY) : mobile, (Constant.VERIFICATION_CODE_KEY):profile.verificationCode]
 			jmsService.send(queue: Constant.MOBILE_VERIFICATION_QUEUE, messageMap);
 			return GenericStatus.SUCCESS;
@@ -150,14 +158,18 @@ class UserManagerService {
 	}
 	
 	private int generateThreeDigitCode() {
-		Random rnd = new Random();
-		int n = 100 + rnd.nextInt(900);
+		Random random = new Random();
+		int n = 100 + random.nextInt(900);
 		return n;
 	}
 	
-	def boolean validateReferalCode(String userCode) {
+	private boolean validateAndApplyReferalCode(String userCode) {
 		User user = User.findByUserCode(userCode)
 		if(user) {
+			PromotionMessage promotionMessage = new PromotionMessage()
+			promotionMessage.promotionEvent = PromotionEvent.USER_REFERAL_EVENT
+			promotionMessage.messageData = [benificaryUserName : user.username]
+			jmsService.send(queue: Constant.NOTIFICATION_PROMOTION_MESSAGE_QUEUE, promotionMessage);
 			return true
 		}
 		else {
