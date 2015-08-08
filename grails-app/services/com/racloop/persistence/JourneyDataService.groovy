@@ -447,4 +447,12 @@ class JourneyDataService {
 		return null
 	}
 	
+	boolean isEligibleForRecurring(Journey journey) {
+		return true;
+	}
+	
+	boolean isEligibleForRecurring(String journeyPairId) {
+		return true;
+	}
+	
 }

@@ -23,6 +23,7 @@ class WorkflowMobileController {
 				journeyDataService.createJourney(journey);
 				session.currentJourneyCommand = null;
 				mobileResponse = journeySearchService.straightThruSearch(currentJourney, true);
+				mobileResponse.isEligibleForRecurring = journeyDataService.isEligibleForRecurring(journey);
 				mobileResponse.data['hideSaveButton'] = true;
 				mobileResponse.message = "Journey saved successfully"
 			}
@@ -105,6 +106,7 @@ class WorkflowMobileController {
 		def currentUser = getAuthenticatedUser();
 		if(currentUser) {
 			mobileResponse.data = workflowDataService.acceptRequest(journeyPairId)
+			mobileResponse.isEligibleForRecurring = journeyDataService.isEligibleForRecurring(journeyPairId);
 			mobileResponse.success = true
 			mobileResponse.message = "Successfully Accepted journey request"
 		}
