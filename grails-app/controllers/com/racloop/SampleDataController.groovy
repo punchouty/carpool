@@ -167,4 +167,17 @@ class SampleDataController {
 		cabDetailsService.resetCabPriceMap()
 		render "Cab Price Map cleared"
 	}
+	
+	/**
+	 * get verification code 
+	 * http://localhost:8080/app/sampleData/verificationCode?mobile=7307392447&secret=s3cr3t
+	 * @return
+	 */
+	def verificationCode(){
+		log.info("Params : ${params}");
+		def mobile = params.mobile
+		def secret = params.secret
+		String verificationCode = testDataService.getVerificationCode(secret, mobile);
+		render verificationCode
+	}
 }
