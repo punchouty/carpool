@@ -6,10 +6,12 @@ import grails.gsp.PageRenderer
 
 import java.text.SimpleDateFormat
 
+import org.elasticsearch.common.geo.GeoPoint;
 import org.elasticsearch.common.joda.time.DateTime
 
 import com.racloop.Constant
 import com.racloop.GenericUtil
+import com.racloop.DistanceUtil
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.domain.Journey
@@ -348,5 +350,16 @@ class JourneyMobileController {
 			log.error "Something went wrong while setting Dates", e
 		}
 		return success;
+	}
+	
+	def nearByPoints(double lattitude, double longitude) {
+		GeoPoint point = new GeoPoint(lattitude, longitude);
+		def points = [];
+		for(int i = 0; i<5; i++) {
+			points << DistanceUtil.getRandomLocation(point, 1000)
+		}
+		def mobileResponse = new MobileResponse()
+		mobileResponse.success = true
+		mobileResponse.data = points;
 	}
 }

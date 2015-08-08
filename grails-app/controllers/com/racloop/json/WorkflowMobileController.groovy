@@ -26,6 +26,7 @@ class WorkflowMobileController {
 				mobileResponse.isEligibleForRecurring = journeyDataService.isEligibleForRecurring(journey);
 				mobileResponse.data['hideSaveButton'] = true;
 				mobileResponse.message = "Journey saved successfully"
+				mobileResponse.currentJourney = journey
 			}
 			else {
 				mobileResponse.message = "Error : No journey to save"
