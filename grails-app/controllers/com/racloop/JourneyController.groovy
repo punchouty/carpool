@@ -504,6 +504,7 @@ public class JourneyRequestCommand {
 	String photoUrl
 	String actionOnSearchUi = "SEARCH"
 	Integer tripTimeInSeconds
+	Object recurringDays
 	
 	static constraints = {
 		id nullable : true
