@@ -31,6 +31,7 @@ public class AwsUtil {
 	private static String userTable = "RacloopUser";
 	private static String ratingTable = "UserRating";
 	private static String loginDetailsTable = "LoginDetail";
+	private static String autoMatchJourney = "AutoMatchJourney";
 
 	public static void main(String[] args) throws InterruptedException, ParseException {
 		createTables();
@@ -49,6 +50,7 @@ public class AwsUtil {
 		createRatingTable();
 		createJourneyTable();
 		createLoginDetailsTable();
+		createAutoMatchJourneyTable();
 	}
 
 	public static void deleteAllTables() throws InterruptedException {
@@ -209,6 +211,26 @@ public class AwsUtil {
 		Table table = dynamoDB.createTable(request);
 		table.waitForActive();
 		System.out.println("Created successfully : " + loginDetailsTable);
+	}
+	
+	public static void createAutoMatchJourneyTable() throws InterruptedException {
+		ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("PrimaryJourneyId").withAttributeType("S"));
+		
+		ArrayList<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
+		keySchema.add(new KeySchemaElement().withAttributeName("PrimaryJourneyId").withKeyType(KeyType.HASH));
+		
+		CreateTableRequest request = new CreateTableRequest()
+				.withTableName(autoMatchJourney)
+				.withKeySchema(keySchema)
+				.withAttributeDefinitions(attributeDefinitions)
+				.withProvisionedThroughput(
+						new ProvisionedThroughput().withReadCapacityUnits(2L)
+								.withWriteCapacityUnits(2L));
+		System.out.println("Started creating table : " + autoMatchJourney);
+		Table table = dynamoDB.createTable(request);
+		table.waitForActive();
+		System.out.println("Created successfully : " + autoMatchJourney);
 	}
 
 }
