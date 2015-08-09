@@ -448,6 +448,7 @@ class JourneyDataService {
 		return null
 	}
 	
+
 	private findMyJourneysForAutoMatch(Date startTime, Date endTine) {
 		String startTimeString = GenericUtil.javaDateToDynamoDbDateString(startTime);
 		String endTimeString = GenericUtil.javaDateToDynamoDbDateString(endTine);
@@ -460,7 +461,12 @@ class JourneyDataService {
 			result << journey
 		}
 		return result;
-
 	}
+
+
+	boolean isEligibleForRecurring(Journey journey) {
+		return true;
+	}
+	
 	
 }

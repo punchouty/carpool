@@ -10,4 +10,5 @@ class MobileResponse {
 	Object currentJourney = null
 	boolean isDummy = false
 	boolean feedbackPending = false
+	boolean isEligibleForRecurring = false
 }

@@ -531,4 +531,22 @@ class TestDataService {
 			}
 		}
 	}
+	
+	
+	
+	def getVerificationCode(String secret, String mobile) {
+		String deletePassword = grailsApplication.config.grails.delete.user.password
+		if(secret.equals(deletePassword)) {
+			Profile profile = Profile.findByMobile(mobile);
+			if(profile != null) {
+				return profile.verificationCode
+			}
+			else {
+				return "Unable to find user with mobile :  ${mobile}";
+			}
+		}
+		else {
+			return "Wrong password";
+		}
+	}
 }
