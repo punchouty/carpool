@@ -352,14 +352,21 @@ class JourneyMobileController {
 		return success;
 	}
 	
-	def nearByPoints(double lattitude, double longitude) {
-		GeoPoint point = new GeoPoint(lattitude, longitude);
+	def nearByPoints() {
+		def json = request.JSON
+		log.info("nearByPoints json ${json} : ${params}")
+		double latitude = convertToDouble(json?.latitude)
+		double longitude = convertToDouble(json?.longitude)
+		MobileResponse mobileResponse = new MobileResponse()
+		GeoPoint point = new GeoPoint(latitude, longitude);
 		def points = [];
 		for(int i = 0; i<5; i++) {
-			points << DistanceUtil.getRandomLocation(point, 1000)
-		}
-		def mobileResponse = new MobileResponse()
+			points << DistanceUtil.getRandomLocation(point, 5000)
+		}			
 		mobileResponse.success = true
 		mobileResponse.data = points;
+		mobileResponse.total = points.size()
+		log.info "nearByPoints size : ${points.size()}"
+		render mobileResponse as JSON
 	}
 }
