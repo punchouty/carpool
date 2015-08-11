@@ -85,7 +85,7 @@
 					<div class="timeline-content right">
 						<h2>Pick Up Point</h2>
 						<table border="0">
-							<tr><td colspan="2"><i>${wayPoints?.get(1).user} will join you here</i></td></tr>
+							<tr><td colspan="2"><i>${wayPoints?.get(1).user} will join here</i></td></tr>
 	                        <tr>
 	                            <td><strong>Location:</strong></td>
 	                            <td>${wayPoints?.get(1).place}</td>
