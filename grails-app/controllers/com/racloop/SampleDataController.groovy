@@ -1,9 +1,7 @@
 package com.racloop
 
-import java.text.SimpleDateFormat;
-
+import grails.converters.JSON
 import grails.util.Environment
-import liquibase.util.csv.opencsv.CSVReader
 
 class SampleDataController {
 	
@@ -13,6 +11,7 @@ class SampleDataController {
 	def journeyDataService
 	def userReviewService
 	def cabDetailsService
+	def autoMatcherService
 
     def index() { 
 		render "Empty Implementation"
@@ -179,5 +178,10 @@ class SampleDataController {
 		def secret = params.secret
 		String verificationCode = testDataService.getVerificationCode(secret, mobile);
 		render verificationCode
+	}
+	
+	def testAuto(){
+		def result = autoMatcherService.autoMatch()
+		render result as JSON
 	}
 }

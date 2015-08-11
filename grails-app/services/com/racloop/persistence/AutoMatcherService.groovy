@@ -24,7 +24,7 @@ class AutoMatcherService {
 		Map autoMatchResult = [:]
 		DateTime dateTime = new DateTime()
 		DateTime futureDateTime = new DateTime().plusHours(12) //Read this from config
-		List journeysToBeMatched= journeyDataService.findMyJourneysForAutoMatch(dateTime.toDate(), futureDateTime.toDate())
+		List journeysToBeMatched= journeySearchService.findAllJourneysBetweenDates(dateTime, futureDateTime)
 		for (Journey inputJourney : journeysToBeMatched) {
 			MobileResponse mobileResponse = journeySearchService.straightThruSearch(inputJourney.convert(), false)
 			List matchedResult = mobileResponse.data.get("journeys")

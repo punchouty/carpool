@@ -524,4 +524,21 @@ class SearchService {
 	
 	/**** Location Index Handling ENDS ****/
 	
+	def findAllJourneysBetweenDates(DateTime startDate, DateTime endDate) {
+		FilterBuilder filter = FilterBuilders.andFilter(
+			FilterBuilders.rangeFilter("dateOfJourney").gte(startDate),
+			FilterBuilders.rangeFilter("dateOfJourney").lte(endDate)
+		)
+		FieldSortBuilder  sorter = SortBuilders.fieldSort("dateOfJourney")
+		sorter.order(SortOrder.ASC);
+		def journeys = []
+		SearchHit[] hits = queryDocuments(IndexMetadata.JOURNEY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, filter, 20, sorter)
+		def searchResults = [];
+		for (SearchHit searchHit : hits) {
+			Journey item = parseJourneyFromSearchHit(searchHit);
+			searchResults << item
+		}
+		return searchResults
+	}
+	
 }

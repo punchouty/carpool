@@ -193,4 +193,8 @@ class JourneySearchService {
 		return new ArrayList(returnSet)
 	}
 	
+	def findAllJourneysBetweenDates(DateTime startDate, DateTime endDate){
+		return searchService.findAllJourneysBetweenDates(startDate, endDate)
+	}
+	
 }

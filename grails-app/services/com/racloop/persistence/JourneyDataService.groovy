@@ -9,7 +9,6 @@ import org.elasticsearch.common.joda.time.DateTime
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBQueryExpression
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression
 import com.amazonaws.services.dynamodbv2.model.AttributeValue
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator
 import com.amazonaws.services.dynamodbv2.model.Condition
@@ -448,21 +447,6 @@ class JourneyDataService {
 		return null
 	}
 	
-
-	private findMyJourneysForAutoMatch(Date startTime, Date endTine) {
-		String startTimeString = GenericUtil.javaDateToDynamoDbDateString(startTime);
-		String endTimeString = GenericUtil.javaDateToDynamoDbDateString(endTine);
-		Condition greaterThanCondtion = new Condition().withComparisonOperator(ComparisonOperator.GT.toString()).withAttributeValueList(new AttributeValue().withS(startTimeString));
-		Condition lessThanCondition = new Condition().withComparisonOperator(ComparisonOperator.LT.toString()).withAttributeValueList(new AttributeValue().withS(endTimeString));
-		DynamoDBScanExpression<Journey> exp = new DynamoDBScanExpression<Journey>().withFilterConditionEntry("DateOfJourney", lessThanCondition).withFilterConditionEntry("DateOfJourney", greaterThanCondtion)
-		List journeys = awsService.dynamoDBMapper.scan(Journey.class, exp)
-		def result =[]
-		for(Journey journey:journeys){
-			result << journey
-		}
-		return result;
-	}
-
 
 	boolean isEligibleForRecurring(Journey journey) {
 		return true;
