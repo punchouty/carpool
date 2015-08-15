@@ -54,6 +54,9 @@ public class Journey {
 	private Set<Journey> relatedJourneys = new HashSet<Journey>();
 	private Set<JourneyPair> journeyPairs = new HashSet<JourneyPair>();
 	private Integer tripTimeInSeconds;
+	private String parentRecurringJourneyId;
+	private Set<String> journeyRecurrence;
+	private Boolean isRecurring;
 	
 	
 	public JourneyRequestCommand convert() {
@@ -463,5 +466,44 @@ public class Journey {
 	}
 	public void setTripTimeInSeconds(Integer tripTimeInSeconds) {
 		this.tripTimeInSeconds = tripTimeInSeconds;
+	}
+	
+	public Journey resetMe() {
+		this.id = null;
+		this.journeyPairIds  = null;
+		this.numberOfCopassengers = 0;
+		this.journeyPairIds = null;
+		this.version = null;
+		return this;
+	}
+
+	@DynamoDBAttribute(attributeName="ParentRecurringJourneyId") 
+	public String getParentRecurringJourneyId() {
+		return parentRecurringJourneyId;
+	}
+
+	public void setParentRecurringJourneyId(String parentRecurringJourneyId) {
+		this.parentRecurringJourneyId = parentRecurringJourneyId;
+	}
+	
+	@DynamoDBAttribute(attributeName="JourneyRecurrence") 
+	public Set<String> getJourneyRecurrence() {
+		return journeyRecurrence;
+	}
+
+	public void setJourneyRecurrence(Set<String> journeyRecurrence) {
+		this.journeyRecurrence = journeyRecurrence;
+	}
+
+	public Boolean getIsRecurring() {
+		return this.parentRecurringJourneyId!=null || (this.journeyRecurrence != null && !this.journeyRecurrence.isEmpty());
+	}
+
+	public void setIsRecurring(Boolean isRecurring) {
+		this.isRecurring = isRecurring;
+	}
+	
+	public boolean parentRecurringJourney() {
+		return (this.parentRecurringJourneyId == null && getIsRecurring());
 	}
 }

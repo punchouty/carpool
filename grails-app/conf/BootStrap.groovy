@@ -17,6 +17,7 @@ import com.racloop.Place
 import com.racloop.integration.CabDetailsService
 import com.racloop.promotion.PromotionEvent
 import com.racloop.promotion.PromotionMetaData
+import com.racloop.staticdata.RacloopConfig;
 import com.racloop.staticdata.StaticData
 class BootStrap {
 	
@@ -78,11 +79,9 @@ class BootStrap {
 			createMasterDataForPlaces();
 			log.info("Master data for places created successfully in Elasticsearch")
 		}
-		
+		intializeSchedulerConfig()
 		intializeStaticData();
-		
 		intializePromotionData();
-		
 		intializeCabPriceData();
 		
 		if (Environment.current == Environment.DEVELOPMENT) {
@@ -255,6 +254,19 @@ class BootStrap {
 			cabDetailsService.populateCityViseCabPriceTemplateFromFile()
 			log.info("Sucessfully loaded cab price tempalates")
 		}
+		
+	}
+	
+	private void intializeSchedulerConfig() {
+		String ipAddr = InetAddress.localHost.getHostAddress()
+		RacloopConfig config = RacloopConfig.find {configKey == RacloopConfig.SCHEDULER_RUNNER_KEY}
+		if(config){
+			config.configValue = ipAddr
+		}
+		else {
+			config = new RacloopConfig(configKey:RacloopConfig.SCHEDULER_RUNNER_KEY,configValue:ipAddr)
+		}
+		config.save()
 		
 	}
 	

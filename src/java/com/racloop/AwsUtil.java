@@ -32,6 +32,7 @@ public class AwsUtil {
 	private static String ratingTable = "UserRating";
 	private static String loginDetailsTable = "LoginDetail";
 	private static String autoMatchJourney = "AutoMatchJourney";
+	private static String recurrenceJourney = "RecurrenceJourney";
 
 	public static void main(String[] args) throws InterruptedException, ParseException {
 		createTables();
@@ -51,6 +52,7 @@ public class AwsUtil {
 		createJourneyTable();
 		createLoginDetailsTable();
 		createAutoMatchJourneyTable();
+		createRecurrenceJourneyTable();
 	}
 
 	public static void deleteAllTables() throws InterruptedException {
@@ -231,6 +233,22 @@ public class AwsUtil {
 		Table table = dynamoDB.createTable(request);
 		table.waitForActive();
 		System.out.println("Created successfully : " + autoMatchJourney);
+	}
+	
+	public static void createRecurrenceJourneyTable() throws InterruptedException {
+		ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("Id").withAttributeType("S"));
+		ArrayList<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
+		keySchema.add(new KeySchemaElement().withAttributeName("Id").withKeyType(KeyType.HASH));
+		CreateTableRequest request = new CreateTableRequest()
+				.withTableName(recurrenceJourney)
+				.withKeySchema(keySchema)
+				.withAttributeDefinitions(attributeDefinitions)
+				.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(5L).withWriteCapacityUnits(5L));
+		System.out.println("Started creating table : " + recurrenceJourney);
+		Table table = dynamoDB.createTable(request);
+		table.waitForActive();
+		System.out.println("Created successfully : " + recurrenceJourney);
 	}
 
 }

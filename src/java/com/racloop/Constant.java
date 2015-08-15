@@ -11,6 +11,7 @@ public interface Constant {
 	public static final String NOTIFICATION_MOBILE_PUSH_QUEUE = "msg.push.notification.queue";
 	public static final String NOTIFICATION_MOBILE_FORGOT_PASSWORD_QUEUE = "msg.sms.mobile.forgot.password";
 	public static final String NOTIFICATION_PROMOTION_MESSAGE_QUEUE = "msg.notification.promotion.queue";
+	public static final String NOTIFICATION_AUTOMATCH_MESSAGE_QUEUE = "msg.notification.autoMatch.queue";
 	
 	public static final String MOBILE_KEY = "mobile";
 	public static final String EMAIL_KEY = "email";
@@ -22,6 +23,8 @@ public interface Constant {
 	public static final String SOS_KEY = "sos";
 	public static final String SOS_USER_KEY = "sosUser";
 	public static final String SOS_ADMIN_KEY = "sosAdmin";
+	
+	public static final String AUTO_MATCH_KEY = "autoMatch";
 	
 	public static final String SOS_USER_LATITUDE = "sosUserLatitude";
 	public static final String SOS_USER_LONGITUDE = "sosUserLongitude";
