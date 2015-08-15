@@ -14,7 +14,9 @@ class CleanDummyJourneyJob {
 
 	def execute() {
 		if (staticdataService.canRunJob()) {
+			log.info "Starting CleanDummyJourney Job"
 			workflowDataService.cancelAllAgedDummyJourneyRequest()
+			log.info "Starting CleanDummyJourney job"
 		}
 		else {
 			log.info "Not running CleanDummyJourneyJob job as I am not configured to run on the machine"

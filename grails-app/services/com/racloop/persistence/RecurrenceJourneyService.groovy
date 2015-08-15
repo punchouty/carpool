@@ -35,7 +35,7 @@ class RecurrenceJourneyService {
 	
 	def activateJourneys() {
 		DateTime startDateTime = RecurrenceJourneyIdResolver.getFloorDateTimeFromCurrentDate()
-		DateTime endDateTime = startDateTime.plusHours(48) 	//Read this from config
+		DateTime endDateTime = startDateTime.plusHours(18) 	//Read this from config
 		List idsToFetch = getRecurringIdsToFetch(startDateTime, endDateTime) 
 		List recurrenceJourneys = this.findRecurrenceJourneysByIds(idsToFetch as Set)
 		createActualJourneys(recurrenceJourneys)
