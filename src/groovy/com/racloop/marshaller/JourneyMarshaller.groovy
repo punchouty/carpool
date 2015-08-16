@@ -35,6 +35,8 @@ class JourneyMarshaller {
 				myDirection : journey.myDirection,
 				myActions : journey.myActions, 
 				myPairId : journey.myPairId,
+				isRecurring:journey.getIsRecurring(),
+				journeyRecurrence:journey.journeyRecurrence,
 				//journeyPairs : journey.journeyPairs,
 				relatedJourneys : journey.relatedJourneys.collect() { Journey relatedJourney ->
 					[ id : relatedJourney.id,

@@ -24,6 +24,7 @@ class TestDataService {
 	def userService;
 	def roleService;
 	def groupService;
+	def recurrenceJourneyService
 	
 	
 	
@@ -351,6 +352,7 @@ class TestDataService {
 		
 		journeyDataService.deleteJourneyForUser(Constant.DUMMY_USER_MOBILE);
 		searchService.deleteAllDummyData();
+		recurrenceJourneyService.deleteAllRecurrence()
 		
 		
 	}

@@ -12,6 +12,7 @@ class SampleDataController {
 	def userReviewService
 	def cabDetailsService
 	def autoMatcherService
+	def recurrenceJourneyService
 
     def index() { 
 		render "Empty Implementation"
@@ -181,7 +182,12 @@ class SampleDataController {
 	}
 	
 	def testAuto(){
-		def result = autoMatcherService.autoMatch()
-		render result as JSON
+		def result = autoMatcherService.sendAutoMatchNotificaiton()
+		render "Success"
+	}
+	
+	def testRecurrence() {
+		recurrenceJourneyService.activateJourneys()
+		render "Activated suceesully"
 	}
 }

@@ -1,31 +1,44 @@
 package com.racloop.json
 
-import com.racloop.mobile.data.response.MobileResponse
 import grails.converters.JSON
-import com.racloop.GenericUtil
+
 import com.racloop.JourneyRequestCommand
+import com.racloop.mobile.data.response.MobileResponse
 class PreferenceController {
 
-	def journeyDataService
-    def makeRecurring() {def json = request.JSON
+	
+	def recurrenceJourneyService
+	
+    def makeRecurring() {
+		def json = request.JSON
 		log.info("makeRecurring json ${json}")
 		MobileResponse mobileResponse = new MobileResponse();
+		String journeyId = json?.journeyId
+		String[] recurring = json?.recurring
+		recurrenceJourneyService.createNewRecurringJourney(journeyId , recurring)
 		mobileResponse.success = true;
+		mobileResponse.message = "Saved sucessfully."
 		render mobileResponse as JSON;
 	}
 	
 	def recurringJourney() {
+		def currentUser = getAuthenticatedUser();
 		def mobileResponse = new MobileResponse()
 		def json = request.JSON
 		log.info("recurringJourney json ${json}")		
-		String currentTime = params.currentTime;//json?.currentTime
-		
-			mobileResponse.data = dummyJourney()
-			mobileResponse.data.recurringDays = [1,2,5,6]
+		if(currentUser){
+			Set result = recurrenceJourneyService.getAllRecurringJourneyForAUser(currentUser.profile.mobile)
+			mobileResponse.data = result
+			//mobileResponse.data.recurringDays = [1,2,5,6]
 			mobileResponse.success = true
-			mobileResponse.total = 1
-		
-		log.info "My History size : ${mobileResponse.total}"
+			mobileResponse.total = result.size()
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch results."
+			mobileResponse.success = false
+			mobileResponse.total =0
+		}
+		log.info "recurringJourney size : ${mobileResponse.total}"
 		render mobileResponse as JSON
 	
 	}
@@ -34,6 +47,8 @@ class PreferenceController {
 		def mobileResponse = new MobileResponse()
 		def json = request.JSON
 		log.info("delete recurring Journey json ${json}")
+		String journeyId = json?.journeyId
+		recurrenceJourneyService.deleteRecurringJourney(journeyId)
 		mobileResponse.success = true
 		mobileResponse.message = "Successfully Deleted"
 		render mobileResponse as JSON

@@ -4,13 +4,11 @@ import grails.transaction.Transactional
 
 import org.elasticsearch.common.joda.time.DateTime
 
-import com.amazonaws.Response;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapperConfig
+import com.racloop.Constant
 import com.racloop.domain.Journey
 import com.racloop.domain.JourneyAutoMatch
-import com.racloop.domain.JourneyPair;
-import com.racloop.mobile.data.response.MobileResponse;
-import com.sun.org.apache.bcel.internal.generic.RETURN;
+import com.racloop.mobile.data.response.MobileResponse
 
 @Transactional
 class AutoMatcherService {
@@ -18,13 +16,14 @@ class AutoMatcherService {
 	def awsService
 	def journeyDataService
 	def journeySearchService
+	def jmsService
 
     private Map autoMatch() {
 		
 		Map autoMatchResult = [:]
 		DateTime dateTime = new DateTime()
 		DateTime futureDateTime = new DateTime().plusHours(12) //Read this from config
-		List journeysToBeMatched= journeySearchService.findAllJourneysBetweenDates(dateTime, futureDateTime)
+		Set journeysToBeMatched= getListOfJourneysToBeAutoMatched(dateTime, futureDateTime)
 		for (Journey inputJourney : journeysToBeMatched) {
 			MobileResponse mobileResponse = journeySearchService.straightThruSearch(inputJourney.convert(), false)
 			List matchedResult = mobileResponse.data.get("journeys")
@@ -38,6 +37,25 @@ class AutoMatcherService {
 		}
 		return autoMatchResult
     }
+	
+	def sendAutoMatchNotificaiton() {
+		Map autoMatchResult = this.autoMatch()
+		autoMatchResult.each{ journeyId, autoMatchResultMap -> 
+			Set newMatches = autoMatchResultMap.get("newJourneys")
+			if(newMatches) {
+				//Send SMS
+				Journey journey = journeyDataService.findJourney(journeyId)
+				def  messageMap =[
+					mobile: journey.getMobile(),
+					journeyDate: journey.dateOfJourney.format('dd MMM yy HH:mm'),
+					to:journey.getTo(),
+					exsitingMatches : autoMatchResultMap.get("existingJourneys")?.size(),
+					newMatches : autoMatchResultMap.get("newJourneys")?.size()
+					]
+				jmsService.send(queue: Constant.NOTIFICATION_AUTOMATCH_MESSAGE_QUEUE, messageMap)
+			}
+		}
+	}
 	
 	private JourneyAutoMatch findAutoMatchJourneyByJourneyId(String journeyId) {
 		JourneyAutoMatch autoMatch = awsService.dynamoDBMapper.load(JourneyAutoMatch.class, journeyId);
@@ -90,6 +108,25 @@ class AutoMatcherService {
 			journeyAutoMatch.setAutoMatchedJourneyIds(matchedJourenyId)
 			this.createAutoMatchJourney(journeyAutoMatch)
 		}
+	}
+	
+	private Set getListOfJourneysToBeAutoMatched (DateTime startDateTime, DateTime futureDateTime) {
+		
+		List journeysFromES = journeySearchService.findAllJourneysBetweenDates(startDateTime, futureDateTime)
+		def returnList = [] as Set
+		for(Journey journey : journeysFromES){
+			Journey journeyFromDb = journeyDataService.findJourney(journey.getId())
+			if(journeyFromDb) {
+				returnList << journeyFromDb
+				for(String pairedJourneyId :journeyFromDb.getJourneyPairIds()) {
+					Journey journeyFromPair = journeyDataService.findJourney(pairedJourneyId)
+					if(journeyFromPair) {
+						returnList << journeyFromPair
+					}
+				}
+			}
+		}
+		return returnList
 	}
 	
 }

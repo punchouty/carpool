@@ -35,6 +35,8 @@ class SmsService {
 		templates.put(Constant.SOS_USER_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosUser));
 		templates.put(Constant.SOS_ADMIN_KEY, engine.createTemplate(grailsApplication.config.sms.templates.sosAdmin));
 		templates.put(Constant.NEW_PASSWORD_KEY, engine.createTemplate(grailsApplication.config.sms.templates.newPassword));
+		templates.put(Constant.AUTO_MATCH_KEY, engine.createTemplate(grailsApplication.config.sms.templates.autoMatch));
+		
 		urlPrefixIndividual = grailsApplication.config.sms.url + '?&UserName=' + grailsApplication.config.sms.username + '&Password=' + grailsApplication.config.sms.password + '&Type=Individual&Mask=' + grailsApplication.config.sms.mask
 		urlPrefixBulk = grailsApplication.config.sms.url + '?&UserName=' + grailsApplication.config.sms.username + '&Password=' + grailsApplication.config.sms.password + '&Type=Bulk&Mask=' + grailsApplication.config.sms.mask
 		adminSosContactOne = grailsApplication.config.grails.sms.emergency.one
@@ -139,6 +141,20 @@ class SmsService {
 		String mobile = messageMap[Constant.MOBILE_KEY]
 		String newPassword = messageMap[Constant.NEW_PASSWORD_KEY]
 		def message = templates.get(Constant.NEW_PASSWORD_KEY).make(['newPassword' : newPassword]).toString();
+		String restUrl = urlPrefixIndividual + '&To=' + mobile + '&Message=' + message;
+		log.info('Sending SMS to sms provider with URL : ' + restUrl);
+		sendMessage(restUrl, message, mobile);
+	}
+	
+	@Queue(name= Constant.NOTIFICATION_AUTOMATCH_MESSAGE_QUEUE)
+	def sendAutoMatch(def messageMap) {
+		String mobile = messageMap[Constant.MOBILE_KEY]
+		String newMatch = messageMap['newMatches']
+		String existing = messageMap['exsitingMatches']
+		String to = messageMap['to']
+		String journeyDate = messageMap['journeyDate']
+		def dataMap = ['newMatch' : newMatch, 'existing':existing, 'to':to, 'journeyDate':journeyDate]
+		def message = templates.get(Constant.AUTO_MATCH_KEY).make(dataMap).toString();
 		String restUrl = urlPrefixIndividual + '&To=' + mobile + '&Message=' + message;
 		log.info('Sending SMS to sms provider with URL : ' + restUrl);
 		sendMessage(restUrl, message, mobile);

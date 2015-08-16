@@ -16,6 +16,7 @@ class WorkflowDataService {
 	def journeyDataService;
 	def journeyPairDataService
 	def jmsService
+	def recurrenceJourneyService
 	
 	def requestJourneyAndSave(Journey unsavedJourney, String otherJourneyId) {
 		journeyDataService.saveJourney(unsavedJourney);
@@ -255,6 +256,7 @@ class WorkflowDataService {
 			journeyDataService.updateElasticsearchForPassangeCountIfRequired(otherJourney.id, otherJourney.numberOfCopassengers)
 			//sendNotificationForWorkflowStateChange(myJourneyId, otherJourneyId, WorkflowStatus.CANCELLED.getStatus())
 		}
+		recurrenceJourneyService.deleteRecurringJourney( myJourneyId)
 	}
 	
 	

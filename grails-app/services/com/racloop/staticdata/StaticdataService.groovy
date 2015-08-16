@@ -7,4 +7,10 @@ class StaticdataService {
 		return data?.pageData
 		
 	}
+	
+	public boolean canRunJob() {
+		RacloopConfig config = RacloopConfig.find {configKey == RacloopConfig.SCHEDULER_RUNNER_KEY}
+		String ipAddress = InetAddress.localHost.getHostAddress()
+		return ipAddress == config.configValue
+	}
 }
