@@ -251,7 +251,8 @@ sms {
 		sosUser = 'You have raised SOS alert. If you dont need emergency assistance, Please cancel it on app home screen.'
 		sosAdmin = '${name} | ${mobile} | ${email} | ${emergencyContactOne} | ${emergencyContactTwo} | ${lat} | ${lng} | ${journeyIds}'
 		newPassword = 'Your new password for www.cabshare.in is ${newPassword}'
-		autoMatch = 'You have ${newMatch} new match and ${existing} existing match for your journey to ${to} on ${journeyDate}'
+		autoMatch = 'You have ${newMatch} new match(es) and ${existing} existing match for your journey to ${to} on ${journeyDate}'
+		autoMatchWithoutExisting = 'You have ${newMatch} new match(es) for your journey to ${to} on ${journeyDate}'
 	}
 }
 

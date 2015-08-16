@@ -8,7 +8,7 @@ class ActivateRecurringJourneyJob {
 	def staticdataService
 	
     static triggers = {
-      simple name: 'ActivateRecurring', startDelay: 70000, repeatInterval: 18*60*60*1000
+      simple name: 'ActivateRecurring', startDelay: 150000, repeatInterval: 18*60*60*1000
     }
 
     def execute() {

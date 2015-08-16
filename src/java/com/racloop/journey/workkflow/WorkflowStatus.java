@@ -10,7 +10,7 @@ public enum WorkflowStatus {
 	
 	NONE("None"),
 	REQUESTED("Requested"),
-	REQUEST_RECIEVED("Request Recieved"),
+	REQUEST_RECIEVED("Request Received"),
 	ACCEPTED("Accepted"),
 	REJECTED("Rejected"),
 	REJECTED_BY_ME("Rejected by Me"),

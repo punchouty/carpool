@@ -26,6 +26,8 @@ public interface Constant {
 	public static final String SOS_ADMIN_KEY = "sosAdmin";
 	
 	public static final String AUTO_MATCH_KEY = "autoMatch";
+	public static final String AUTO_MATCH_WITHOUT_EXISTING_KEY = "autoMatchWithoutExisting";
+	
 	
 	public static final String SOS_USER_LATITUDE = "sosUserLatitude";
 	public static final String SOS_USER_LONGITUDE = "sosUserLongitude";
