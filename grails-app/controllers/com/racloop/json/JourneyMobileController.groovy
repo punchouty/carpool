@@ -355,18 +355,29 @@ class JourneyMobileController {
 	def nearByPoints() {
 		def json = request.JSON
 		log.info("nearByPoints json ${json} : ${params}")
-		double latitude = convertToDouble(json?.latitude)
-		double longitude = convertToDouble(json?.longitude)
-		MobileResponse mobileResponse = new MobileResponse()
-		GeoPoint point = new GeoPoint(latitude, longitude);
-		def points = [];
-		for(int i = 0; i<5; i++) {
-			points << DistanceUtil.getRandomLocation(point, 5000)
-		}			
-		mobileResponse.success = true
-		mobileResponse.data = points;
-		mobileResponse.total = points.size()
-		log.info "nearByPoints size : ${points.size()}"
+		def currentUser = getAuthenticatedUser();
+		MobileResponse mobileResponse = new MobileResponse();
+		if(currentUser) {
+			String mobile = currentUser.profile.mobile;
+			double latitude = convertToDouble(json?.latitude)
+			double longitude = convertToDouble(json?.longitude)
+			def dateOfJourney = GenericUtil.uiDateStringToJavaDateForSearch(json?.currentTime);
+			def journeys = journeySearchService.nearByPoints(mobile, dateOfJourney, latitude, longitude);
+			def points = [];
+			journeys.each { journey ->
+				log.info journey
+				points << new GeoPoint(journey.fromLatitude, journey.fromLongitude);
+			}
+			log.info "nearByPoints size : ${points.size()}"
+			mobileResponse.success = true
+			mobileResponse.data = points;
+			mobileResponse.total = points.size()
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot fetch search results"
+			mobileResponse.success = false
+			mobileResponse.total = 0
+		}
 		render mobileResponse as JSON
 	}
 }

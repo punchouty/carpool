@@ -1,5 +1,7 @@
 package com.racloop.integration
 
+import java.util.Date;
+
 import grails.transaction.Transactional
 
 import org.elasticsearch.common.geo.GeoHashUtils
@@ -195,6 +197,10 @@ class JourneySearchService {
 	
 	def findAllJourneysBetweenDates(DateTime startDate, DateTime endDate){
 		return searchService.findAllJourneysBetweenDates(startDate, endDate)
+	}
+	
+	def nearByPoints(String mobile, Date timeOfJourney, Double fromLat, Double fromLon) {
+		return searchService.searchNearByPoints(mobile, timeOfJourney, fromLat, fromLon)
 	}
 	
 }

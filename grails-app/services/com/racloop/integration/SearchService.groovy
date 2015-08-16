@@ -262,6 +262,30 @@ class SearchService {
 		return searchResults;
 	}
 
+	/**
+	 * Used for search in main index as well as dummy (or generated data) index
+	 */
+	def searchNearByPoints(String mobile, Date timeOfJourney, Double fromLat, Double fromLon) {
+		DateTime dateOfJourney = new DateTime(timeOfJourney);
+		DateTime start = dateOfJourney.minusHours(2);
+		DateTime end = dateOfJourney.plusHours(2);
+		FilterBuilder dateRanageFilter = FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end);
+
+		double filterDistance = 3.0;
+		FilterBuilder geoDistanceFilterFrom = FilterBuilders.geoDistanceFilter("fromGeoPoint").point(fromLat, fromLon).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC);
+		FilterBuilder filter = FilterBuilders.andFilter(
+			dateRanageFilter,
+			geoDistanceFilterFrom)
+		filter = FilterBuilders.andFilter(filter, FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("mobile", mobile)));
+		SearchHit[] hits = queryDocuments(IndexMetadata.JOURNEY_INDEX_NAME, IndexMetadata.DEFAULT_TYPE, filter, 10);
+		def searchResults = [];
+		for (SearchHit searchHit : hits) {
+			Journey item = parseJourneyFromSearchHit(searchHit);
+			searchResults << item
+		}
+		return searchResults;
+	}
+
 	private SearchHit[] queryDocuments(String indexName, String indexType, FilterBuilder filter, int size, SortBuilder...sorters){
 		SearchHit[] hits = []
 		try {
