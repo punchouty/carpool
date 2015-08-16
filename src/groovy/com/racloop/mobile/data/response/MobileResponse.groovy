@@ -1,7 +1,7 @@
 package com.racloop.mobile.data.response
 
 class MobileResponse {
-	
+
 	int total = 0
 	boolean success = false
 	String message = ""
@@ -10,5 +10,4 @@ class MobileResponse {
 	Object currentJourney = null
 	boolean isDummy = false
 	boolean feedbackPending = false
-	boolean isEligibleForRecurring = false
 }

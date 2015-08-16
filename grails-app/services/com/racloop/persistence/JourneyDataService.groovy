@@ -446,12 +446,7 @@ class JourneyDataService {
 		}
 		return null
 	}
-	
-
-	boolean isEligibleForRecurring(Journey journey) {
-		return true;
-	}
-	
+		
 	private List findMyJourneyBetweenDates(String mobile, Date startTime, Date endTime) {
 		String startTimeStr = GenericUtil.javaDateToDynamoDbDateString(startTime);
 		String endTimeStr = GenericUtil.javaDateToDynamoDbDateString(endTime);
