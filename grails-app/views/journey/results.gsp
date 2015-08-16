@@ -150,7 +150,7 @@
   												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Sent Request</button>
   									</g:link>
                                	</g:if>
-                               	<g:elseif test = "${matchedResult.getMyStatus()=='Request Recieved'}">
+                               	<g:elseif test = "${matchedResult.getMyStatus()=='Request Received'}">
                                		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest${i }"  params="[pairId: matchedResult.getMyPairId(),redirectToSearch:true]">
 											<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept Request</button>
 									</g:link>

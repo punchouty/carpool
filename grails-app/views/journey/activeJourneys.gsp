@@ -124,7 +124,7 @@
 		   												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Request</button>
 		   										</g:link>
 		                                	</g:if>
-		                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Request Recieved'}">
+		                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Request Received'}">
 		                                		<g:link action="acceptIncomingRequest" id="acceptIncomingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId()]">
 														<button class="btn btn-primary"><i class="fa fa-check-circle"></i> Accept Request</button>
 												</g:link>
