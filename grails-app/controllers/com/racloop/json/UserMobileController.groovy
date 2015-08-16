@@ -351,7 +351,7 @@ class UserMobileController {
 		if(json) {
 			def mobile = json?.mobile
 			def verificationCode = json?.verificationCode
-			def status = userManagerService.verify(mobile, verificationCode)
+			def status = userManagerService.verify(mobile+"", verificationCode+"")
 			if(status == GenericStatus.SUCCESS) {
 				mobileResponse.message="Mobile Verified Successfully"
 				mobileResponse.total=0
