@@ -250,7 +250,7 @@ class UserSessionController {
 				log.debug("Invalid referal code ${referalCode}")
 				resetNewUser(user)
 				flash.type = "error"
-				flash.error = "Invalid referal code - ${referalCode}"
+				flash.message = "Invalid referral code - ${referalCode}"
 				render(view: 'signup', model: [user: user])
 				return
 			}
