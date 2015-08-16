@@ -30,6 +30,8 @@
                             </li>
                             <li><a href="${request.contextPath}/#safety">Safety</a>
                             </li>
+                            <li><a href="http://blog.cabshare.in/" target="_blank">Blog</a>
+                            </li>
                             <li><a href="${request.contextPath}/#faq">FAQ</a>
                             </li>
                             <li><a href="${request.contextPath}/#about">About</a>

@@ -27,9 +27,11 @@
 
                         <!-- NAVIGATION LINK -->
                         <ul class="nav navbar-nav navbar-left main-navigation small-text">
-                            <li><a href="#etiquettes">Etiquettes</a>
+                            <li><a href="#etiquettes">Etiquette</a>
                             </li>
                             <li><a href="${request.contextPath}/safety">Safety</a>
+                            </li>
+                            <li><a href="http://blog.cabshare.in/" target="_blank">Blog</a>
                             </li>
                             <li><a href="#faq">FAQ</a>
                             </li>

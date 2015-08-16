@@ -4,7 +4,7 @@
 <meta name="description" content="Rules to make CabShare experience pleasent">
 <meta name="keywords" content="cabshare etiquettes, carpool etiquettes">
 
-<title>Cab Share Etiquettes</title>
+<title>Cab Share Etiquette</title>
 <r:require module="core" />
 </head>
 
@@ -17,7 +17,7 @@
                <div class="small-text-medium uppercase colored-text">
                    Do's and Dont's
                </div>
-               <h2 class="dark-text"><strong>Carpool</strong> Etiquettes</h2>
+               <h2 class="dark-text"><strong>CabShare</strong> Etiquette</h2>
                <div class="colored-line">
                </div>
                <div class="sub-heading">
