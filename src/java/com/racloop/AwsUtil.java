@@ -32,6 +32,7 @@ public class AwsUtil {
 	private static String ratingTable = "UserRating";
 	private static String loginDetailsTable = "LoginDetail";
 	private static String autoMatchJourney = "AutoMatchJourney";
+	private static String searchLog = "SearchLog";
 
 	public static void main(String[] args) throws InterruptedException, ParseException {
 		createTables();
@@ -51,6 +52,7 @@ public class AwsUtil {
 		createJourneyTable();
 		createLoginDetailsTable();
 		createAutoMatchJourneyTable();
+		createSearchLogTable();
 	}
 
 	public static void deleteAllTables() throws InterruptedException {
@@ -231,6 +233,52 @@ public class AwsUtil {
 		Table table = dynamoDB.createTable(request);
 		table.waitForActive();
 		System.out.println("Created successfully : " + autoMatchJourney);
+	}
+
+	private static void createSearchLogTable() throws InterruptedException {
+		ArrayList<AttributeDefinition> attributeDefinitions = new ArrayList<AttributeDefinition>();
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("Id").withAttributeType("S"));
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("Mobile").withAttributeType("S"));
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("DateOfJourney").withAttributeType("S"));
+		attributeDefinitions.add(new AttributeDefinition().withAttributeName("DateKey").withAttributeType("S"));
+
+		ArrayList<KeySchemaElement> keySchema = new ArrayList<KeySchemaElement>();
+		keySchema.add(new KeySchemaElement().withAttributeName("Id").withKeyType(KeyType.HASH));
+		
+		ArrayList<KeySchemaElement> indexKeySchema1 = new ArrayList<KeySchemaElement>();
+		indexKeySchema1.add(new KeySchemaElement().withAttributeName("DateKey").withKeyType(KeyType.HASH));
+		//indexKeySchema1.add(new KeySchemaElement().withAttributeName("Mobile").withKeyType(KeyType.RANGE));
+		
+		ArrayList<KeySchemaElement> indexKeySchema2 = new ArrayList<KeySchemaElement>();
+		indexKeySchema2.add(new KeySchemaElement().withAttributeName("Mobile").withKeyType(KeyType.HASH));
+		indexKeySchema2.add(new KeySchemaElement().withAttributeName("DateOfJourney").withKeyType(KeyType.RANGE));
+		
+		GlobalSecondaryIndex index1 = new GlobalSecondaryIndex()
+			.withIndexName("DateKey-index")
+			.withKeySchema(indexKeySchema1)
+			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
+			.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(1L).withWriteCapacityUnits(1L));
+		
+		GlobalSecondaryIndex index2 = new GlobalSecondaryIndex()
+			.withIndexName("Mobile-DateOfJourney-index")
+			.withKeySchema(indexKeySchema2)
+			.withProjection(new Projection().withProjectionType(ProjectionType.ALL))
+			.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(5L).withWriteCapacityUnits(5L));
+		
+		ArrayList<GlobalSecondaryIndex> indexes = new ArrayList<GlobalSecondaryIndex>();
+		indexes.add(index1);
+		indexes.add(index2);
+		
+		CreateTableRequest request = new CreateTableRequest()
+				.withTableName(searchLog)
+				.withKeySchema(keySchema)
+				.withGlobalSecondaryIndexes(indexes)
+				.withAttributeDefinitions(attributeDefinitions)
+				.withProvisionedThroughput(new ProvisionedThroughput().withReadCapacityUnits(5L).withWriteCapacityUnits(5L));
+		System.out.println("Started creating table : " + searchLog);
+		Table table = dynamoDB.createTable(request);
+		table.waitForActive();
+		System.out.println("Created successfully : " + searchLog);
 	}
 
 }

@@ -40,7 +40,7 @@ class SampleDataController {
 	
 	/**
 	 * delete all test journey data 
-	 * http://localhost:8080/app/sampleData/deleteUser?mobile=7307392447&secret=s3cr3t or http://www.racloop.com/deleteDataForUser?mobile=7307392447&secret=s3cr3t
+	 * http://localhost:8080/app/sampleData/deleteUser?mobile=7307392447&secret=s3cr3t or https://www.racloop.com/sampleData/deleteUser?mobile=7890123467&secret=s3cr3t
 	 * @return
 	 */
 	def deleteUser(){

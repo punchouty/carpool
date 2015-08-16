@@ -35,6 +35,7 @@ class BootStrap {
 	def userDataService
 	def testDataService
 	def cabDetailsService
+	def analyticService
 	
     def init = { servletContext ->
 		log.info("Current User : " + System.getProperty("user.name"));
@@ -48,6 +49,8 @@ class BootStrap {
 		
 		injectAuthentication()
 		
+		smsService.init()
+		analyticService.init()
 		def settings = searchService.init();
 		ElasticsearchUtil.downloadPlugins(settings);
 		searchService.start();
@@ -64,8 +67,6 @@ class BootStrap {
 			log.info("Users created successfully in Elasticsearch")
 		}
 		
-		
-		smsService.init()
 		Boolean createIndex = grailsApplication.config.grails.startup.elasticsearch.index.create
 		if(createIndex) {
 			log.info("Start creating indexes in Elasticsearch")

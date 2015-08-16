@@ -1,3 +1,5 @@
+import org.apache.log4j.DailyRollingFileAppender;
+
 // locations to search for config files that get merged into the main config;
 // config files can be ConfigSlurper scripts, Java properties files, or classes
 // in the classpath in ConfigSlurper format
@@ -260,13 +262,18 @@ log4j = {
 	//info "grails.app"
 	
     root {
-        info 'stdout', 'myAppender'
+        info 'stdout'
     }
 
 	appenders {
-		console name:'stdout', layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
-		file name: 'file', file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log", layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
-		rollingFile name: "myAppender",	maxFileSize: 1024, file: "${System.getProperty('user.home')}/racloop-data/logs/tomcat-racloop.log", layout:pattern(conversionPattern: '%r [%t] %-5p %c %x - %m%n')
+		console name:'stdout', layout:pattern(conversionPattern: '%d{ISO8601} %r [%t] %-5p %c %x - %m%n')
+		//rollingFile name: "analyticAppender",	maxFileSize: 1024, file: "${System.getProperty('user.home')}/racloop-data/logs/analytics.log", layout:pattern(conversionPattern: '%d{ISO8601} %r [%t] %-5p %c %x - %m%n')
+		appender new DailyRollingFileAppender(
+			name: "analyticAppender",
+			datePattern: "'.'yyyy-MM-dd",
+			file: "${System.getProperty('user.home')}/racloop-data/logs/analytics.log",
+			layout:pattern(conversionPattern: '%d{ISO8601} %r - %m%n')
+		)
 	}
 
 	error  'org.codehaus.groovy.grails.web.servlet',        // controllers
@@ -280,4 +287,6 @@ log4j = {
 			'org.springframework',
 			'org.hibernate',
 			'net.sf.ehcache.hibernate'
+	
+	info  additivity: false, analyticAppender: ["grails.app.services.com.racloop.integration.AnalyticService"] 
 }
