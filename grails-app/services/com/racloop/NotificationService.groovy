@@ -106,7 +106,7 @@ class NotificationService {
 				state: WorkflowStatus.ACCEPTED.status,
 				mobile: requestIntiator.profile.mobile
 				]
-			jmsService.send(queue: Constant.NOTIFICATION_AUTOMATCH_MESSAGE_QUEUE, messageMap);
+			jmsService.send(queue: Constant.NOTIFICATION_SMS_QUEUE, messageMap);
 		}
 		
 	}
