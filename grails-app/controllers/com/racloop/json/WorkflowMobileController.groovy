@@ -24,6 +24,7 @@ class WorkflowMobileController {
 				session.currentJourneyCommand = null;
 				mobileResponse = journeySearchService.straightThruSearch(currentJourney, true);
 				mobileResponse.data['hideSaveButton'] = true;
+				mobileResponse.data['isEligibleForRecurring'] = true;
 				mobileResponse.message = "Journey saved successfully"
 				mobileResponse.currentJourney = journey
 			}
