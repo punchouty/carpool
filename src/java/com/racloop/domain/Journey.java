@@ -506,4 +506,15 @@ public class Journey {
 	public boolean parentRecurringJourney() {
 		return (this.parentRecurringJourneyId == null && getIsRecurring());
 	}
+	
+	public void removePairIdFromJourney(String pairId){
+		Set<String> existingPairId = this.getJourneyPairIds();
+		if(existingPairId != null && !existingPairId.isEmpty()){
+			existingPairId.remove(pairId);
+			if (existingPairId.isEmpty()) {
+				existingPairId = null;
+			}
+		}
+		return;
+	}
 }

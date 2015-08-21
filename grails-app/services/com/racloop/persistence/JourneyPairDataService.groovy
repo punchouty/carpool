@@ -29,9 +29,16 @@ class JourneyPairDataService {
 	def List findPairsByIds(Set ids){
 		def journeyPairs = []
 		ids.each{it ->
-			journeyPairs << findPairById(it)
+			JourneyPair journeyPair = findPairById(it)
+			if(journeyPair) {
+				journeyPairs << journeyPair
+			}
 			
 		}
 		return journeyPairs
+	}
+	
+	def void deleteJourneyPair(JourneyPair journeyPair) {
+		awsService.dynamoDBMapper.delete(journeyPair)
 	}
 }

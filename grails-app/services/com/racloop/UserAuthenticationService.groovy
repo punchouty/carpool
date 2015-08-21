@@ -16,7 +16,14 @@ class UserAuthenticationService {
 		
 		def user = getFBUser()
 		if(!user){
-			user = getAuthenticatedUser()
+			try {
+				user = getAuthenticatedUser()
+			}
+			catch (Exception e) {
+				if(SecurityUtils.subject?.principal) {
+					SecurityUtils.subject?.logout()
+				}
+			}
 		}
 		return user
 		
