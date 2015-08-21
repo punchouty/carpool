@@ -240,7 +240,7 @@ class TestDataService {
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
 				journey.tripTimeInSeconds= 16600;
 				journey.photoUrl = user.profile.getGravatarUri()
-				journey.isDummy = true;
+				journey.isDummy = false;
 				journey.createdDate = new Date();
 				if(generatedRecordCount < numberOfrecordsToGenerate) {
 					journeyDataService.createJourney(journey);
@@ -280,7 +280,7 @@ class TestDataService {
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
 				journey.tripTimeInSeconds= 16600;
 				journey.photoUrl = user.profile.getGravatarUri()
-				journey.isDummy = true;
+				journey.isDummy = false;
 				journey.createdDate = new Date();
 				if(generatedRecordCount < numberOfrecordsToGenerate) {
 					journeyDataService.createJourney(journey);
@@ -320,7 +320,7 @@ class TestDataService {
 				journey.tripDistance = DistanceUtil.distance(journey.fromLatitude, journey.fromLongitude, journey.toLatitude, journey.toLongitude);
 				journey.tripTimeInSeconds= 16600;
 				journey.photoUrl = user.profile.getGravatarUri()
-				journey.isDummy = true;
+				journey.isDummy = false;
 				journey.createdDate = new Date();
 				if(generatedRecordCount < numberOfrecordsToGenerate) {
 					journeyDataService.createJourney(journey);

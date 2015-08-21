@@ -45,9 +45,9 @@
 	        <!-- VERTICAL REGISTRATION FORM -->
 	        <div class="row">
 				<g:form action="updatePassword" controller="userSession"  name="myForm" method="post"  class="registration-form"  >
-                    <input type="password" id="currentPassword" name="currentPassword" class="form-control input-box" placeholder="Old Password" required />
+                    <input type="password" id="currentPassword" name="currentPassword" class="form-control input-box" placeholder="Current Password" required />
                     <input type="password" id="pass" name="pass" class="form-control input-box" placeholder="New Password"  required/>
-                    <input type="password" id="passConfirm" name="passConfirm" class="form-control input-box" placeholder="Repeat" required />
+                    <input type="password" id="passConfirm" name="passConfirm" class="form-control input-box" placeholder="Confirm New Password" required />
                     <button class="btn btn-primary" type="submit">Change Password</button>
 	            </g:form>
 	        </div>

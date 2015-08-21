@@ -35,6 +35,9 @@ class RacloopTagLib {
 		}
 		if(!user) {
 			user = UserBase.get(SecurityUtils.subject?.principal)
+			if(SecurityUtils.subject?.principal && !user) {
+				SecurityUtils.subject?.logout()
+			} 
 		}
 		
 		return user
