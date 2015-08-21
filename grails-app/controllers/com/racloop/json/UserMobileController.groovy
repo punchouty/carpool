@@ -525,6 +525,7 @@ class UserMobileController {
 	 */
 	def editProfile() {
 		def json = request.JSON
+		log.info("editProfile() json : ${json}");
 		def mobileResponse = new MobileResponse()
 		String jsonMessage = null
 		String jsonResponse = "error"
@@ -589,6 +590,7 @@ class UserMobileController {
 	
 	def savePreferences() {
 		def json = request.JSON
+		log.info("savePreferences() json : ${json}");
 		def mobileResponse = new MobileResponse()
 		String jsonMessage = null
 		String jsonResponse = "error"

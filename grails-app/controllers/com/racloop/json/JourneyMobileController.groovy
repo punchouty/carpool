@@ -217,8 +217,10 @@ class JourneyMobileController {
 		def currentUser = getAuthenticatedUser();
 		String currentTime = params.currentTime;//json?.currentTime
 		log.info "myJourneys currentUser : ${currentUser?.profile?.email} currentTime : ${currentTime}"
+		Date current = GenericUtil.uiDateStringToJavaDate(currentTime);
+		DateTime minimumValidSearchTime = new DateTime(current).minusHours(1);
 		if(currentUser) {
-			def journeys = journeyDataService.findMyJourneys(currentUser.profile.mobile, GenericUtil.uiDateStringToJavaDate(currentTime));
+			def journeys = journeyDataService.findMyJourneys(currentUser.profile.mobile, minimumValidSearchTime.toDate());
 			mobileResponse.data = journeys
 			mobileResponse.success = true
 			mobileResponse.total = journeys?.size()
@@ -276,8 +278,10 @@ class JourneyMobileController {
 		def currentUser = getAuthenticatedUser();
 		String currentTime = params.currentTime;//json?.currentTime
 		log.info "myHistory currentUser : ${currentUser?.profile?.email} currentTime : ${currentTime}"
+		Date current = GenericUtil.uiDateStringToJavaDate(currentTime);
+		DateTime minimumValidSearchTime = new DateTime(current).minusHours(1);
 		if(currentUser) {
-			def journeys = journeyDataService.findMyHistory(currentUser.profile.mobile, GenericUtil.uiDateStringToJavaDate(currentTime));
+			def journeys = journeyDataService.findMyHistory(currentUser.profile.mobile, minimumValidSearchTime.toDate());
 			mobileResponse.data = journeys
 			mobileResponse.success = true
 			mobileResponse.total = journeys?.size()

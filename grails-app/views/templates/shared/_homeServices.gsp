@@ -90,7 +90,7 @@
                        </div>
                        <h4 class="white-text">App Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           <a href="#">iOS 7+</a>
+                           <a href="#">iOS 7+  (Coming Soon)</a>
                        </p>
                    </div>
 
@@ -101,7 +101,7 @@
                        </div>
                        <h4 class="white-text">Play Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           <a href="#">Android 4+</a>
+                           <a href="#">Android 4+ (Coming Soon)</a>
                        </p>
                    </div>
 
@@ -112,7 +112,7 @@
                        </div>
                        <h4 class="white-text">Windows Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           Windows 7+ (Coming Soon)
+                           <a href="#">Windows 7+ (Coming Soon)</a>
                        </p>
                    </div>
                </div>

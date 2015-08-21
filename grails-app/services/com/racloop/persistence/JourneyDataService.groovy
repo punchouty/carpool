@@ -287,7 +287,7 @@ class JourneyDataService {
 		Journey journeyKey = new Journey();
 		journeyKey.mobile = mobile;
 		Condition rangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.LT.toString()).withAttributeValueList(new AttributeValue().withS(currentTimeStr.toString()));
-		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", rangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withLimit(15).withConsistentRead(false);
 		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		def returnJourneys = [];
 		for(Journey journey:journeys){
