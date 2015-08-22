@@ -27,7 +27,9 @@
 				<!-- HEADING AND BUTTONS -->
 				<div class="intro-section intro-section-from">
 					<!-- WELCOM MESSAGE -->
-					<h1 class="intro white-text">Search, Connect and Go</h1>
+					<%--<h1 class="intro white-text">Search. Connect. Go</h1>
+					--%>
+					<h1 class="intro white-text">Coming Soon.....</h1>
 					<p class="transparent-text">Make new friends and transform a dull ride into an unforgettable journey. Better way to get Social. If you are not member of CabShare community, click below to Sign Up.</p>
 					<!-- BUTTON -->
 					<div class="button hidden-xs">
