@@ -4,7 +4,7 @@ package racloop
 
 class ActivateRecurringJourneyJob {
 	
-	def autoMatcherService
+	def recurrenceJourneyService
 	def staticdataService
 	
     static triggers = {
@@ -14,7 +14,7 @@ class ActivateRecurringJourneyJob {
     def execute() {
         if (staticdataService.canRunJob()) {
 			log.info "Starting ActivateRecurringJourney job"
-			autoMatcherService.sendAutoMatchNotificaiton()
+			recurrenceJourneyService.activateJourneys()
 			log.info "Sucessfully completed ActivateRecurringJourney job"
 		}
 		else {
