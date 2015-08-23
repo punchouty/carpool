@@ -39,11 +39,14 @@ public interface Constant {
 	public static final String JOURNEY_WORKFLOW_SOURCE_ID = "journeyWorkflowSourceId";
 	public static final String JOURNEY_WORKFLOW_TARGET_ID = "journeyWorkflowTargetId";
 
-	
+	public static final String GRAVATAR_PIX = "Gravatar";
+	public static final String FACEBOOK_PIX = "Facebook";
+	public static final String AWS_PIX = "Aws";
 	public static final String GRAVATAR_URL = "http://www.gravatar.com/avatar/";
 	public static final String GRAVATAR_URL_SUFFIX = "?s=200&d=mm";
 	public static final String FACEBOOK_URL = "http://graph.facebook.com/";
 	public static final String PICTURE = "/picture";
+	public static final String AWS_URL = "https://s3-ap-southeast-1.amazonaws.com/profile-pix-cabshare/";
 	
 	public static final String DATE_FORMAT_DYNAMODB = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'";//"yyyy-MM-dd HH:mm:ss.u Z";
 	public static final String DATE_FORMAT_UI = "yyyy-MM-dd'T'HH:mm:ssXXX";

@@ -1,5 +1,9 @@
 package com.racloop.json
 
+import java.awt.image.BufferedImage;
+
+import javax.imageio.ImageIO;
+
 import grails.converters.JSON
 import grails.plugin.nimble.InstanceGenerator
 import grails.plugin.nimble.core.ProfileBase
@@ -13,6 +17,11 @@ import org.apache.shiro.crypto.hash.Sha256Hash
 import org.codehaus.groovy.grails.web.mapping.LinkGenerator
 import org.elasticsearch.common.joda.time.DateTime
 
+import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.transfer.TransferManager;
+import com.amazonaws.services.s3.transfer.Upload;
 import com.racloop.Constant
 import com.racloop.GenericStatus
 import com.racloop.GenericUtil
@@ -38,6 +47,7 @@ class UserMobileController {
 	def jmsService
 	def testDataService
 	def userReviewService
+	def awsService
 	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST', forgotPassword : 'POST' ]
 	
@@ -777,37 +787,34 @@ class UserMobileController {
 		log.info("setUserImage() json : ${json}");
 		def jsonResponse = null
 		MobileResponse mobileResponse = new MobileResponse()
-		
-		// *********Code to Convert base64 to image*******
-//		// Needed Imports
-//		import java.io.ByteArrayInputStream;
-//		import sun.misc.BASE64Decoder;
-//		
-//		
-//		def sourceData = 'data:image/png;base64,'+json.file;
-//		
-//		// tokenize the data
-//		def parts = sourceData.tokenize(",");
-//		def imageString = parts[1];
-//		
-//		// create a buffered image
-//		BufferedImage image = null;
-//		byte[] imageByte;
-//		
-//		BASE64Decoder decoder = new BASE64Decoder();
-//		imageByte = decoder.decodeBuffer(imageString);
-//		ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
-//		image = ImageIO.read(bis);
-//		bis.close();
-//		
-//		// write the image to a file
-//		File outputfile = new File("image.png");
-//		ImageIO.write(image, "png", outputfile);
-		
-		
-		
-		
-		mobileResponse.success = true
+		def currentUser = getAuthenticatedUser()
+		if(currentUser) {
+			def sourceData = 'data:image/jpg;base64,'+json.file;
+			def parts = sourceData.tokenize(",");
+			def imageString = parts[1];
+			sun.misc.BASE64Decoder decoder = new sun.misc.BASE64Decoder();
+			byte[] imageByte = decoder.decodeBuffer(imageString);
+			ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+			TransferManager transferManager = awsService.getTransferManager();
+			ObjectMetadata objectMetadata = new ObjectMetadata();
+			objectMetadata.setContentLength(imageByte.length);
+			objectMetadata.setContentType("image/jpeg");
+			Upload upload = transferManager.upload("profile-pix-cabshare", currentUser?.profile?.emailHash, bis, objectMetadata)
+			try {
+				upload.waitForCompletion();
+				currentUser.profilePictureSource = Constant.AWS_PIX
+				userService.updateUser(currentUser)
+				mobileResponse.success = true
+				mobileResponse.data = currentUser
+			} catch (Exception e) {
+				mobileResponse.message = e.getMessage()
+				mobileResponse.success = false
+			}
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Cannot process image"
+			mobileResponse.success = false
+		}
 		render mobileResponse as JSON
 	}
 		

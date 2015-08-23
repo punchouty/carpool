@@ -22,6 +22,7 @@ class User extends grails.plugin.nimble.core.UserBase {
 	String pendingReview
 	String journeyIdForReview
 	String userCode
+	String profilePictureSource = Constant.GRAVATAR_PIX;
 	
 	static transients = ['facebookProfilePic']
 	
@@ -81,7 +82,15 @@ class User extends grails.plugin.nimble.core.UserBase {
 	}
 	
 	public String getPhotoUrl() {
-		return (this.facebookId ? getFacebookProfilePic(): profile?.getGravatarUri())
+		if(profilePictureSource == Constant.AWS_PIX) {
+			return Constant.AWS_URL + profile?.emailHash;
+		}
+		else if(profilePictureSource == Constant.FACEBOOK_PIX) {
+			return getFacebookProfilePic()
+		}
+		else {
+			return profile?.getGravatarUri();
+		}
 	}
 	
 }
