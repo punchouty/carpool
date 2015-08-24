@@ -45,7 +45,7 @@
 	                                <a href="${request.contextPath}/search"><i class="icon-basic-magnifier"></i> Search</a>
 	                            </li>
 	                            <li class="login">
-	                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Requests</a>
+	                                <a href="${request.contextPath}/journeys"><i class="icon-basic-bookmark"></i> My Rides</a>
 	                            </li>
 	                            <li class="login">
 	                                <a href="${request.contextPath}/history"><i class="icon-basic-calendar"></i> History</a>

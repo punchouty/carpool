@@ -395,6 +395,12 @@ class TestDataService {
 					user.roles.each { role ->
 						roleService.deleteMember(user, role)
 					}
+					user.outgoingReviews.each {review ->
+						review.delete()
+					}
+					user.incomingReviews.each {review ->
+						review.delete()
+					}
 					user.delete();//delete from mysql
 				}
 				
