@@ -57,6 +57,7 @@ public class Journey {
 	private String parentRecurringJourneyId;
 	private Set<String> journeyRecurrence;
 	private Boolean isRecurring;
+	private Boolean femaleOnlySearch = false;
 	
 	
 	public JourneyRequestCommand convert() {
@@ -81,6 +82,7 @@ public class Journey {
 		journeyCommand.setCreatedDate(createdDate);
 		journeyCommand.setPhotoUrl(photoUrl);
 		journeyCommand.setTripTimeInSeconds(tripTimeInSeconds);
+		journeyCommand.setFemaleOnlySearch(femaleOnlySearch);
 		return journeyCommand;
 	}
 	
@@ -105,6 +107,7 @@ public class Journey {
 		journey.setCreatedDate(requestCommand.getCreatedDate());
 		journey.setPhotoUrl(requestCommand.getPhotoUrl());
 		journey.setTripTimeInSeconds(requestCommand.getTripTimeInSeconds());
+		journey.setFemaleOnlySearch(requestCommand.getFemaleOnlySearch());
 		return journey;
 	}
 	
@@ -516,5 +519,13 @@ public class Journey {
 			}
 		}
 		return;
+	}
+
+	public Boolean getFemaleOnlySearch() {
+		return femaleOnlySearch;
+	}
+
+	public void setFemaleOnlySearch(Boolean femaleOnlySearch) {
+		this.femaleOnlySearch = femaleOnlySearch;
 	}
 }

@@ -82,6 +82,9 @@ class IndexMetadata {
 					startObject("tripTimeInSeconds").
 					field("type", "integer").
 					endObject().
+					startObject("femaleOnlySearch").
+					field("type", "boolean").
+					endObject().
 				endObject().
 			endObject().
 		endObject();

@@ -505,6 +505,7 @@ public class JourneyRequestCommand {
 	String actionOnSearchUi = "SEARCH"
 	Integer tripTimeInSeconds
 	Object recurringDays
+	Boolean femaleOnlySearch = false
 	
 	static constraints = {
 		id nullable : true

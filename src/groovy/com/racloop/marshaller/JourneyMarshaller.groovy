@@ -37,6 +37,7 @@ class JourneyMarshaller {
 				myPairId : journey.myPairId,
 				isRecurring:journey.getIsRecurring(),
 				journeyRecurrence:journey.journeyRecurrence,
+				femaleOnlySearch : journey.femaleOnlySearch,
 				//journeyPairs : journey.journeyPairs,
 				relatedJourneys : journey.relatedJourneys.collect() { Journey relatedJourney ->
 					[ id : relatedJourney.id,

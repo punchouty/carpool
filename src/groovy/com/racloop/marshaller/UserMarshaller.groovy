@@ -21,7 +21,9 @@ class UserMarshaller {
 				travelModePreference:user.profile.travelModePreference,
 				paymentPreference:user.profile.paymentPreference,
 				cabServicePreference:user.profile.cabPreference,
-				userCode:user.userCode
+				userCode:user.userCode,
+				enableRecurringSearch:user.profile.enableRecurringSearch,
+				femaleOnlySearch:user.profile.femaleOnlySearch
 			]
 		}
 		

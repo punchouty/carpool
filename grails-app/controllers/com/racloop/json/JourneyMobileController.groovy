@@ -67,6 +67,7 @@ class JourneyMobileController {
 			}
 		}
 		else {
+			currentJourneyCommand.isMale = true; //defaulting to male so that femaleOnlySearch should work for anonymous user
 			currentJourneyCommand.ip = request.remoteAddr
 			if(isAfterUpperLimit(currentJourneyCommand.validStartTime, currentJourneyCommand.dateOfJourney)) {
 				mobileResponse.message = "You cannot search for more than 7 days in future"
@@ -314,7 +315,8 @@ class JourneyMobileController {
 		currentJourney.tripUnit = json?.tripUnit;
 		currentJourney.ip = request.remoteAddr;
 		currentJourney.user = json?.user
-		currentJourney.id = json?.id		
+		currentJourney.id = json?.id	
+		currentJourney.femaleOnlySearch = json?.femaleOnlySearch		
 		return currentJourney
 	}
 	

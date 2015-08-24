@@ -610,6 +610,8 @@ class UserMobileController {
 		String travelModePreference = json?.travelModePreference
 		String paymentPreference = json?.paymentPreference
 		String cabServicePreference = json?.cabServicePreference
+		Boolean enableRecurringSearch = json?.enableRecurringSearch
+		Boolean femaleOnlySearch = json?.femaleOnlySearch
 		
 		def user = getAuthenticatedUser()
 		if(user) {
@@ -618,6 +620,8 @@ class UserMobileController {
 			user.profile.travelModePreference=travelModePreference
 			user.profile.paymentPreference= paymentPreference
 			user.profile.cabPreference= cabServicePreference
+			user.profile.enableRecurringSearch = enableRecurringSearch
+			user.profile.femaleOnlySearch = femaleOnlySearch
 			if (user.validate()) {
 				def updatedUser = userService.updateUser(user)
 				/*RacloopUser racloopUser = userDataService.findUserByMobile(oldMobile)
@@ -799,7 +803,7 @@ class UserMobileController {
 			ObjectMetadata objectMetadata = new ObjectMetadata();
 			objectMetadata.setContentLength(imageByte.length);
 			objectMetadata.setContentType("image/jpeg");
-			Upload upload = transferManager.upload("profile-pix-cabshare", currentUser?.profile?.emailHash, bis, objectMetadata)
+			Upload upload = transferManager.upload("profile-pix-cabshare", currentUser?.profile?.mobileHash, bis, objectMetadata)
 			try {
 				upload.waitForCompletion();
 				currentUser.profilePictureSource = Constant.AWS_PIX
@@ -816,6 +820,13 @@ class UserMobileController {
 			mobileResponse.success = false
 		}
 		render mobileResponse as JSON
+	}
+	
+	def installReferer() {
+		def json = request.JSON
+		log.info("installReferer() json : ${json}");
+		MobileResponse mobileResponse = new MobileResponse()
+		mobileResponse.success = true
 	}
 		
 }

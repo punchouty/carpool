@@ -8,7 +8,7 @@ class AnalyticsFilters {
 	def jmsService
 
     def filters = {
-        all(controller:'*', action:'*') {
+        all(controller:'*', action:'*', uriExclude : '*UserImage*') {
             before = {
 				def user = SecurityUtils.getSubject()?.getPrincipal()
 				String resolvedIp = getClientIpAddress(request)
