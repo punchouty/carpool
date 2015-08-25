@@ -8,7 +8,7 @@ class AnalyticsFilters {
 	def jmsService
 
     def filters = {
-        all(controller:'*', action:'*', uriExclude : '*UserImage*') {
+        all(controller:'*', action:'*', uriExclude : '*health*') {
             before = {
 				def user = SecurityUtils.getSubject()?.getPrincipal()
 				String resolvedIp = getClientIpAddress(request)
@@ -26,7 +26,7 @@ class AnalyticsFilters {
 					params : params?.toString(),
 					queryString : request.queryString
 				]
-				jmsService.send(queue: Constant.ANALYTICS_QUEUE, messageMap)
+				if(!actionName.equals("setUserImage")) jmsService.send(queue: Constant.ANALYTICS_QUEUE, messageMap)
             }
             after = { Map model ->
             }
