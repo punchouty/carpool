@@ -246,6 +246,22 @@ class JourneyController {
 		forward action: 'activeJourneys'
 	}
 	
+	def requestAgain() {
+		
+		def currentUser = getRacloopAuthenticatedUser()
+		def myJourneyId = params.myJourneyId
+		def pairId = params.pairId
+		if(myJourneyId && pairId){
+			log.info("Requesting Again. currentJourney.id : " + myJourneyId + ", pairId : " + pairId)
+			workflowDataService.requestJourneyAgain(myJourneyId, pairId)
+		}
+		else {
+			flash.error = "Something went wrong while requesting. Please log out and try again"
+		}
+		
+		forward action: 'activeJourneys'
+	}
+	
 	/**
 	 * Request Journey - from search results of main search screen
 	 * @return

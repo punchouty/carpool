@@ -23,6 +23,7 @@ class JourneySearchService {
 	def searchService
 	def journeyDataService
 	def journeyPairDataService
+	def grailsApplication
 	
 	def executeSearch(JourneyRequestCommand currentJourney){
 		Date timeOfJourney = currentJourney.dateOfJourney
@@ -91,11 +92,7 @@ class JourneySearchService {
 		}
 		
 		if(currentJourney.id) {
-			Journey journey = journeyDataService.findJourney(currentJourney.id)
-			noOfExistingPassanger = journey.getNumberOfCopassengers()
-			if(noOfExistingPassanger>=2){
-				disableMoreRequests = true
-			}
+			disableMoreRequests = shoudlDisableMoreRequest(currentJourney.id)
 			searchResults = enrichResult(searchResults,currentJourney.id )
 		}
 		if(searchResults.size() > 0) {
@@ -195,7 +192,7 @@ class JourneySearchService {
 	}
 	
 	
-	private List enrichResult(List searchResult, String currentJourneyId){
+	private List enrichResult1(List searchResult, String currentJourneyId){
 		def returnSet = [] as Set	//Result coming from 2 different source, hence can be duplicate. Relying on equals of Journey object
 		def excludedSet = [] as Set
 		Journey currentJourney = journeyDataService.findChildJourneys(currentJourneyId)
@@ -212,12 +209,66 @@ class JourneySearchService {
 		return new ArrayList(returnSet)
 	}
 	
+	private List enrichResult(List searchResult, String currentJourneyId){
+		def returnSet = [] as Set	//Result coming from 2 different source, hence can be duplicate. Relying on equals of Journey object
+		Set childJourneysId = [] as Set
+		Journey acceptedJourney = journeyDataService.findAcceptedRequestForAJourney(currentJourneyId)
+		Journey currentJourney = journeyDataService.findChildJourneys(currentJourneyId)
+		if(currentJourney.getRelatedJourneys()){
+			currentJourney.getRelatedJourneys().each {it->
+				childJourneysId << it.getId()
+				if(acceptedJourney) {
+					if(acceptedJourney.getId().equals(it.getId())) {
+						returnSet << it
+					}
+				}
+				else {
+					if(searchResult.contains(it)) {
+						returnSet << it
+					}
+				} 
+			}
+		}
+		searchResult.each {it ->
+			if(!childJourneysId.contains(it.getId())) {
+				returnSet << it
+			}
+			
+		}
+		return new ArrayList(returnSet)
+	}
+	
 	def findAllJourneysBetweenDates(DateTime startDate, DateTime endDate){
 		return searchService.findAllJourneysBetweenDates(startDate, endDate)
 	}
 	
 	def nearByPoints(String mobile, Date timeOfJourney, Double fromLat, Double fromLon) {
 		return searchService.searchNearByPoints(mobile, timeOfJourney, fromLat, fromLon)
+	}
+	
+	private boolean shoudlDisableMoreRequest (String currentJourneyId) {
+		Integer maxAllowedRequests = Integer.valueOf(grailsApplication.config.grails.max.active.requests)
+		boolean shoudlDisableMoreRequest = false
+		int countOfRequestMade = 0
+		Journey currentJourney = journeyDataService.findChildJourneys(currentJourneyId)
+		int noOfExistingPassanger = currentJourney.getNumberOfCopassengers()
+		if(noOfExistingPassanger>=2){
+			return true
+		}
+		for (Journey journey : currentJourney.getRelatedJourneys()){
+			if(journey?.getMyStatus()?.equals(WorkflowStatus.ACCEPTED.getStatus())) {
+				shoudlDisableMoreRequest = true
+				break
+			}
+			else if(journey?.getMyStatus()?.equals(WorkflowStatus.REQUESTED.getStatus())) {
+				countOfRequestMade++
+				if(countOfRequestMade >= maxAllowedRequests) {
+					shoudlDisableMoreRequest = true
+					break
+				}
+			}
+		}
+		return shoudlDisableMoreRequest
 	}
 	
 }

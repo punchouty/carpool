@@ -194,7 +194,11 @@ class JourneyDataService {
 	
 	def findChildJourneys(String journeyId , boolean includeAllPairs = true) {
 		Journey journey = findJourney(journeyId);
+		if(!journey) {
+			return null
+		}
 		Set<String> pairIds = journey.journeyPairIds
+		boolean isJourneyAccepted = false
 		pairIds.each { id ->
 			JourneyPair journeyPair = journeyPairDataService.findPairById(id);
 			if(journeyPair != null) {
@@ -207,7 +211,9 @@ class JourneyDataService {
 						if(otherJourney != null) {
 							journeyPair.initiatorJourney = journey;
 							journeyPair.recieverJourney = otherJourney;
-							
+							if(journeyPair.isPairAccepted()) {
+								isJourneyAccepted = true
+							}
 							otherJourney.setMyStatus(journeyPair.getInitiatorStatus());
 							otherJourney.setMyDirection(journeyPair.getInitiatorDirection());
 							otherJourney.setMyPairId(journeyPair.getId());
@@ -225,7 +231,9 @@ class JourneyDataService {
 						if(otherJourney != null) {
 							journeyPair.initiatorJourney = otherJourney;
 							journeyPair.recieverJourney = journey;
-							
+							if(journeyPair.isPairAccepted()) {
+								isJourneyAccepted = true
+							}
 							otherJourney.setMyStatus(journeyPair.getRecieverStatus());
 							otherJourney.setMyDirection(journeyPair.getRecieverDirection());
 							otherJourney.setMyPairId(journeyPair.getId());
@@ -249,6 +257,9 @@ class JourneyDataService {
 			else {
 				log.error("Invalid state for journey : ${journey}. \n JourneyPair provided for id does not exists ${id}");
 			}
+		}
+		if(isJourneyAccepted) {
+			journey.setHasAcceptedRequest(true)
 		}
 		return journey;
 	}
@@ -340,6 +351,13 @@ class JourneyDataService {
 	
 	def makeJourneySearchable (Journey journey){
 		searchService.indexJourney(journey, journey.getId())
+	}
+	
+	def makeJourneySearchable (String journeyId){
+		Journey journey = findJourney(journeyId)
+		if(journey) {
+			searchService.indexJourney(journey, journey.getId())
+		}
 	}
 	
 	def deleteAllDataForUser(String mobile) {
@@ -462,6 +480,36 @@ class JourneyDataService {
 			returnJourneys << journey
 		}
 		return returnJourneys;
+	}
+	
+	def Journey findAcceptedRequestForAJourney(String myJourneyId) {
+		Journey myJourney = findJourney(myJourneyId)
+		Journey otherJourney = null
+		for (String pairId : myJourney.getJourneyPairIds()) {
+			JourneyPair pair  = journeyPairDataService.findPairById(pairId)
+			if(pair?.getInitiatorStatus()?.equals(WorkflowStatus.ACCEPTED.getStatus())) {
+				String otherJourneyId = pair.getInitiatorJourneyId().equals(myJourney.getId()) ? pair.getRecieverJourneyId() : pair.getInitiatorJourneyId()
+				otherJourney = findJourney(otherJourneyId)
+				break;
+			}
+		}
+		return otherJourney
+	}
+	
+	def List findAllRequstedJourneysForAJourney(String myJourneyId) {
+		Journey myJourney = findJourney(myJourneyId)
+		List result = []
+		for (String pairId : myJourney.getJourneyPairIds()) {
+			JourneyPair pair  = journeyPairDataService.findPairById(pairId)
+			if(pair?.getInitiatorStatus()?.equals(WorkflowStatus.REQUESTED.getStatus()) && pair?.getInitiatorJourneyId()?.equals(myJourneyId)) {
+				String otherJourneyId =pair.getRecieverJourneyId()
+				Journey otherJourney = findJourney(otherJourneyId)
+				if(otherJourney) {
+					result << otherJourney
+				}
+			}
+		}
+		
 	}
 	
 }

@@ -72,7 +72,31 @@ class WorkflowMobileController {
 			}
 		}
 		else {
-			mobileResponse.message = "User is not logged in. Unable to perform save"
+			mobileResponse.message = "User is not logged in. Unable to perform request"
+		}
+		render mobileResponse as JSON
+	}
+	
+	def requestAgain() {
+		def json = request.JSON
+		def otherJourneyId = json.otherJourneyId;
+		def pairId = json.pairId;
+		log.info("requestAgain() json : ${json}");
+		MobileResponse mobileResponse = new MobileResponse()
+		def currentUser = getAuthenticatedUser();
+		if(currentUser) {
+			if(otherJourneyId && pairId){
+				workflowDataService.inviteAgain(otherJourneyId, pairId)
+				mobileResponse.success = true;
+				mobileResponse.message = "Request Sent to user";
+			}
+			else {
+				mobileResponse.success = false;
+				mobileResponse.message = "Something is not right";
+			}
+		}
+		else {
+			mobileResponse.message = "User is not logged in. Unable to perform request."
 		}
 		render mobileResponse as JSON
 	}

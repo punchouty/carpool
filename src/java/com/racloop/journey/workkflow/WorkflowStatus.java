@@ -20,7 +20,9 @@ public enum WorkflowStatus {
 	DELEGATED("Delegated"),
 	CANCELLED_BY_OTHER("Cancelled by Other"),
 	CANCELLED_BY_ME("Cancelled by Me"),
-	FORCED_CANCELLED("Forced Cancelled");
+	FORCED_CANCELLED("Forced Cancelled"),
+	AUTO_REJECTED("Auto Rejected"),
+	AVAILABLE("Available");
 
 	private final String status;
 	private static final String [] NONE_ACTIONS = {};
@@ -36,8 +38,10 @@ public enum WorkflowStatus {
 	private static final String [] INHERITED_ACTIONS = {};
 	private static final String [] DELEGATED_ACTIONS = {};
 	private static final String [] FORCED_CANCELLED_ACTIONS = {};
+	private static final String [] AUTO_REJECTED_ACTIONS = {};
+	private static final String [] AVAILABLE_ACTIONS = {WorkflowAction.AVAILABLE.getAction()};
 	private static final HashMap<WorkflowStatus, String []> statusToActionMapping = new HashMap<WorkflowStatus, String []>();
-	private static final List<WorkflowStatus> ignoreableStatus = Arrays.asList(CANCELLED, CANCELLED_BY_ME, REJECTED, REJECTED_BY_ME, CANCELLED_BY_OTHER, FORCED_CANCELLED);
+	private static final List<WorkflowStatus> ignoreableStatus = Arrays.asList(CANCELLED, CANCELLED_BY_ME, REJECTED, REJECTED_BY_ME, CANCELLED_BY_OTHER, FORCED_CANCELLED, AUTO_REJECTED, AVAILABLE);
 	private static final List<WorkflowStatus> indirectStatus = Arrays.asList(DELEGATED, INHERITED);
 	
 	static {
@@ -54,6 +58,8 @@ public enum WorkflowStatus {
 		statusToActionMapping.put(WorkflowStatus.CANCELLED_BY_ME, CANCELLED_BY_ME_ACTION);
 		statusToActionMapping.put(WorkflowStatus.CANCELLED_BY_OTHER, CANCELLED_BY_OTHER_ACTION);
 		statusToActionMapping.put(WorkflowStatus.FORCED_CANCELLED, FORCED_CANCELLED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.AUTO_REJECTED, AUTO_REJECTED_ACTIONS);
+		statusToActionMapping.put(WorkflowStatus.AVAILABLE, AVAILABLE_ACTIONS);
 		
 	}
 

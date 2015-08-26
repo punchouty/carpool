@@ -166,5 +166,15 @@ public class JourneyPair {
 	public void setIsDummy(Boolean isDummy) {
 		this.isDummy = isDummy;
 	}
+	
+	@DynamoDBIgnore
+	public boolean isPairAccepted() {
+		if(this.initiatorStatus.equals(WorkflowStatus.ACCEPTED.getStatus())) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 
 }

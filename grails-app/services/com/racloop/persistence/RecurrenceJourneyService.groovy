@@ -19,7 +19,7 @@ class RecurrenceJourneyService {
 	
 	def createNewRecurringJourney(String journeyId, String[] recurringDays) {
 		Journey journey = journeyDataService.findJourney(journeyId)
-		if(journey) {
+		if(journey && recurringDays && recurringDays.length>0) {
 			journey.setJourneyRecurrence(recurringDays as Set)
 			for (String dayOfWeek : recurringDays ) {
 				RecurrenceJourney recurrenceJourney = new RecurrenceJourney()
@@ -79,6 +79,7 @@ class RecurrenceJourneyService {
 						Journey newJourney = parentJourney.resetMe()
 						newJourney.setDateOfJourney(dateTimeFromId.toDate())
 						newJourney.setParentRecurringJourneyId(journeyId)
+						newJourney.setCreatedDate(new Date())
 						journeyDataService.createJourney(newJourney)
 					}
 				}
