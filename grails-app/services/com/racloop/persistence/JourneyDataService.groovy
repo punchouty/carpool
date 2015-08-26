@@ -192,8 +192,11 @@ class JourneyDataService {
 //		return returnJourneys;
 	}
 	
-	private findChildJourneys(String journeyId , boolean includeAllPairs = true) {
+	def findChildJourneys(String journeyId , boolean includeAllPairs = true) {
 		Journey journey = findJourney(journeyId);
+		if(!journey) {
+			return null
+		}
 		Set<String> pairIds = journey.journeyPairIds
 		boolean isJourneyAccepted = false
 		pairIds.each { id ->

@@ -145,6 +145,11 @@
 														<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel accepted Request</button>
 												</g:link>
 		                                	</g:elseif>
+		                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Available'}">
+		                                		<g:link action="requestAgain" id="requestAgain"  params="[pairId: matchedWorkflowInstance.getMyPairId(), myJourneyId:journeyInstance.id]">
+		   												<button class="btn btn-primary"><i class="fa fa-mail-reply"></i> Request Again</button>
+		   										</g:link>
+		                                	</g:elseif>
 		                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus().startsWith('Rejected')}">
 		                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> ${matchedWorkflowInstance.getMyStatus()}</button>
 		                                	</g:elseif>
