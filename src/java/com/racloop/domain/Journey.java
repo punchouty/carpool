@@ -57,7 +57,7 @@ public class Journey {
 	private String parentRecurringJourneyId;
 	private Set<String> journeyRecurrence;
 	private Boolean isRecurring;
-	
+	private Boolean hasAcceptedRequest;
 	
 	public JourneyRequestCommand convert() {
 		JourneyRequestCommand journeyCommand = new JourneyRequestCommand();
@@ -516,5 +516,14 @@ public class Journey {
 			}
 		}
 		return;
+	}
+	
+	@DynamoDBIgnore
+	public Boolean getHasAcceptedRequest() {
+		return hasAcceptedRequest;
+	}
+
+	public void setHasAcceptedRequest(Boolean hasAcceptedRequest) {
+		this.hasAcceptedRequest = hasAcceptedRequest;
 	}
 }

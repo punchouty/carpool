@@ -79,6 +79,7 @@ class RecurrenceJourneyService {
 						Journey newJourney = parentJourney.resetMe()
 						newJourney.setDateOfJourney(dateTimeFromId.toDate())
 						newJourney.setParentRecurringJourneyId(journeyId)
+						newJourney.setCreatedDate(new Date())
 						journeyDataService.createJourney(newJourney)
 					}
 				}

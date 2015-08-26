@@ -74,7 +74,15 @@
 			                        		<g:link action="searchAgain"id="searchAgain"  class="btn btn-warning" params="[journeyId: journeyInstance.id, indexName:journeyInstance.dateOfJourney.format(grailsApplication.config.grails.journeyIndexNameFormat), isDriver:journeyInstance.isDriver?true:false]">
 						       					<i class="fa fa-search"></i> Search Again
 							       			</g:link>&nbsp; 
-				                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i> Travel Buddies (${journeyInstance.numberOfCopassengers}) <span class="caret"></span></button> &nbsp; 
+				                        	<button id="incoming-btn-${i}" data-requestId="${i}" class="btn btn-success incoming-btn"><i class="fa fa-download"></i>
+				                        		<g:if test = "${journeyInstance.getHasAcceptedRequest() == true }">
+				                        			Travel Buddies
+				                        		</g:if> 
+				                        		<g:else>
+					                        		Requests (${journeyInstance.relatedJourneys?.size()})
+					                        	</g:else> 
+					                        	<span class="caret"></span>
+				                        	</button> &nbsp; 
 				                        	<a name ="delete" id="delete${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
 							       				<button class="btn btn-danger"><i class="fa fa-trash"></i> Delete</button>
 							       			</a>
@@ -86,7 +94,7 @@
 			            </div>
 		            </div>
 		            
-		            <g:if test="${journeyInstance.numberOfCopassengers > 0}">
+		            <g:if test="${journeyInstance?.relatedJourneys?.size() > 0}">
 		            <div id="incoming-requests-${i}" class="incoming-requests">
 	                    <div class="well  well-sm">
 	                   		<h4>Travel Buddies</h4>

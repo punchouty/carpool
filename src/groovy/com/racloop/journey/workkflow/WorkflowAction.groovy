@@ -6,7 +6,8 @@ enum WorkflowAction {
 	CANCEL("Cancel"),
 	REJECT("Reject"),
 	ACCEPT("Accept"),
-	NONE("")
+	NONE(""),
+	AVAILABLE("Available");
 
 	private String action
 
