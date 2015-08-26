@@ -276,6 +276,7 @@ class UserMobileController {
 			if(json?.facebookId) {
 				user.pass = Constant.DEFAULT_PASSWORD
 				user.passConfirm = Constant.DEFAULT_PASSWORD
+				user.profilePictureSource = Constant.FACEBOOK_PIX
 			}
 			else {
 				user.pass = json?.password

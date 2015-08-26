@@ -89,6 +89,9 @@ class JourneyController {
 			currentJourney.mobile = currentUser.profile.mobile
 			currentJourney.photoUrl = currentUser.getPhotoUrl()
 		}
+		else {
+			currentJourney.isMale = true;
+		}
 	}
 	
 	private boolean setDates(JourneyRequestCommand currentJourney) {
