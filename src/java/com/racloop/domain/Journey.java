@@ -59,6 +59,8 @@ public class Journey {
 	private Boolean isRecurring;
 	private Boolean hasAcceptedRequest;
 	private Boolean femaleOnlySearch = false;
+	private Set<String> incomingJourneyPairIds;
+	private Set<String> outgoingJourneyPairIds;
 	
 	public JourneyRequestCommand convert() {
 		JourneyRequestCommand journeyCommand = new JourneyRequestCommand();
@@ -539,5 +541,37 @@ public class Journey {
 	public void setFemaleOnlySearch(Boolean femaleOnlySearch) {
 		this.femaleOnlySearch = femaleOnlySearch;
 
+	}
+
+	@DynamoDBIgnore
+	public Set<String> getIncomingJourneyPairIds() {
+		return incomingJourneyPairIds;
+	}
+
+	public void setIncomingJourneyPairIds(Set<String> incomingJourneyPairIds) {
+		this.incomingJourneyPairIds = incomingJourneyPairIds;
+	}
+
+	@DynamoDBIgnore
+	public Set<String> getOutgoingJourneyPairIds() {
+		return outgoingJourneyPairIds;
+	}
+
+	public void setOutgoingJourneyPairIds(Set<String> outgoingJourneyPairIds) {
+		this.outgoingJourneyPairIds = outgoingJourneyPairIds;
+	}
+	
+	public void addToIncomingPair(String pairId) {
+		if(incomingJourneyPairIds == null) {
+			incomingJourneyPairIds = new HashSet<String>();
+		}
+		incomingJourneyPairIds.add(pairId);
+	}
+	
+	public void addToOutgoingPair(String pairId) {
+		if(outgoingJourneyPairIds == null) {
+			outgoingJourneyPairIds = new HashSet<String>();
+		}
+		outgoingJourneyPairIds.add(pairId);
 	}
 }

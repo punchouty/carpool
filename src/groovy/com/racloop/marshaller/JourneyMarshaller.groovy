@@ -27,6 +27,8 @@ class JourneyMarshaller {
 				tripDistance : journey.tripDistance,
 				photoUrl : journey.photoUrl,
 				journeyPairIds : journey.journeyPairIds,
+				incomingJourneyPairIds : journey.incomingJourneyPairIds,
+				outgoingJourneyPairIds : journey.outgoingJourneyPairIds,
 				numberOfCopassengers : journey.numberOfCopassengers,
 				isDummy : journey.isDummy,
 				statusAsParent : journey.statusAsParent,
