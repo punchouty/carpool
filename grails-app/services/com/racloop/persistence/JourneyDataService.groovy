@@ -178,6 +178,7 @@ class JourneyDataService {
 		for(Journey journey:journeys){
 			result << journey
 		}
+		enrichMyJourneys(result)
 		return result;
 //		def returnJourneys = [];
 //		journeys.each { indexJourney ->
@@ -190,6 +191,20 @@ class JourneyDataService {
 //			}
 //		}
 //		return returnJourneys;
+	}
+	
+	private void enrichMyJourneys(List myJourneys) {
+		for(Journey myJourney : myJourneys) {
+			Journey expandedJourney = this.findChildJourneys(myJourney.getId())
+			for (JourneyPair pair : expandedJourney.getJourneyPairs()) {
+				if(pair.getInitiatorJourneyId().equals(myJourney.getId())) {
+					myJourney.addToOutgoingPair(pair.getId())
+				}
+				else {
+					myJourney.addToIncomingPair(pair.getId())
+				}
+			}
+		}
 	}
 	
 	def findChildJourneys(String journeyId , boolean includeAllPairs = true) {
