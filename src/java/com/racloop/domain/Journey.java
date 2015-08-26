@@ -58,6 +58,7 @@ public class Journey {
 	private Set<String> journeyRecurrence;
 	private Boolean isRecurring;
 	private Boolean hasAcceptedRequest;
+	private Boolean femaleOnlySearch = false;
 	
 	public JourneyRequestCommand convert() {
 		JourneyRequestCommand journeyCommand = new JourneyRequestCommand();
@@ -81,6 +82,7 @@ public class Journey {
 		journeyCommand.setCreatedDate(createdDate);
 		journeyCommand.setPhotoUrl(photoUrl);
 		journeyCommand.setTripTimeInSeconds(tripTimeInSeconds);
+		journeyCommand.setFemaleOnlySearch(femaleOnlySearch);
 		return journeyCommand;
 	}
 	
@@ -105,6 +107,7 @@ public class Journey {
 		journey.setCreatedDate(requestCommand.getCreatedDate());
 		journey.setPhotoUrl(requestCommand.getPhotoUrl());
 		journey.setTripTimeInSeconds(requestCommand.getTripTimeInSeconds());
+		journey.setFemaleOnlySearch(requestCommand.getFemaleOnlySearch());
 		return journey;
 	}
 	
@@ -517,6 +520,7 @@ public class Journey {
 		}
 		return;
 	}
+
 	
 	@DynamoDBIgnore
 	public Boolean getHasAcceptedRequest() {
@@ -525,5 +529,15 @@ public class Journey {
 
 	public void setHasAcceptedRequest(Boolean hasAcceptedRequest) {
 		this.hasAcceptedRequest = hasAcceptedRequest;
+	}
+
+
+	public Boolean getFemaleOnlySearch() {
+		return femaleOnlySearch;
+	}
+
+	public void setFemaleOnlySearch(Boolean femaleOnlySearch) {
+		this.femaleOnlySearch = femaleOnlySearch;
+
 	}
 }

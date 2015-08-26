@@ -150,6 +150,7 @@ class SearchService {
 				field("isDummy", journey.getIsDummy()).
 				field("numberOfCopassengers", journey.getNumberOfCopassengers()).
 				field("tripTimeInSeconds", journey.getTripTimeInSeconds()).
+				field("femaleOnlySearch", journey.getFemaleOnlySearch()).
 			endObject();
 		return builder;
 	}
@@ -189,6 +190,7 @@ class SearchService {
 		journey.setPhotoUrl(getResponse.getSource().get('photoUrl'));
 		journey.setNumberOfCopassengers(getResponse.getSource().get('numberOfCopassengers'));
 		journey.setTripTimeInSeconds(getResponse.getSource().get('tripTimeInSeconds'));
+		journey.setFemaleOnlySearch(getResponse.getSource().get('femaleOnlySearch'));
 		return journey;
 	}
 
@@ -246,6 +248,102 @@ class SearchService {
 			filter = FilterBuilders.andFilter(filter, FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("mobile", mobile)));
 		}
 
+		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("fromGeoPoint");
+		sorter.point(fromLat, fromLon);
+		sorter.order(SortOrder.ASC);
+
+		FieldSortBuilder startTimeSorter = new FieldSortBuilder("dateOfJourney").order(SortOrder.ASC);
+
+		//SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100, sorter, startTimeSorter);
+		SearchHit[] hits = queryDocuments(indexName, IndexMetadata.DEFAULT_TYPE, filter, 20, sorter, startTimeSorter);
+		def searchResults = [];
+		for (SearchHit searchHit : hits) {
+			Journey item = parseJourneyFromSearchHit(searchHit);
+			searchResults << item
+		}
+		return searchResults;
+	}
+
+	/**
+	 * Used for search in main index as well as dummy (or generated data) index
+	 */
+	def searchFemaleOnlyRides(String indexName, Date timeOfJourney, Date validStartTime, String mobile, Double fromLat, Double fromLon, Double toLat, Double toLon) {
+		log.info("search index ${indexName}")
+		FilterBuilder  copassengerFilter = FilterBuilders.rangeFilter("numberOfCopassengers").lt(2);
+		DateTime dateOfJourney = new DateTime(timeOfJourney);
+		DateTime start = dateOfJourney.minusHours(4);
+		DateTime end = dateOfJourney.plusHours(4);
+		DateTime validTime = new DateTime(validStartTime)
+		if(start.isBefore(validTime)) {
+			start = validTime;
+		}
+		FilterBuilder dateRanageFilter = FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end);
+
+		Double tripDistance = DistanceUtil.distance(fromLat, fromLon, toLat, toLon);
+		double filterDistance = tripDistance / DISTANCE_FACTOR;
+		FilterBuilder geoDistanceFilterFrom = FilterBuilders.geoDistanceFilter("fromGeoPoint").point(fromLat, fromLon).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC);
+		FilterBuilder geoDistanceFilterTo = FilterBuilders.geoDistanceFilter("toGeoPoint").point(toLat, toLon).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+		FilterBuilder filter = FilterBuilders.andFilter(
+			copassengerFilter,
+			dateRanageFilter,
+			geoDistanceFilterFrom,
+			geoDistanceFilterTo)
+
+		if(mobile) {
+			filter = FilterBuilders.andFilter(filter, FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("mobile", mobile)));
+		}
+		
+		/* IMPORTNAT DISTINCTION */
+		filter = FilterBuilders.andFilter(filter, FilterBuilders.termFilter("isMale", false));
+		
+		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("fromGeoPoint");
+		sorter.point(fromLat, fromLon);
+		sorter.order(SortOrder.ASC);
+
+		FieldSortBuilder startTimeSorter = new FieldSortBuilder("dateOfJourney").order(SortOrder.ASC);
+
+		//SearchHit[] hits = queryDocuments(indexName, "_all", filter, 100, sorter, startTimeSorter);
+		SearchHit[] hits = queryDocuments(indexName, IndexMetadata.DEFAULT_TYPE, filter, 20, sorter, startTimeSorter);
+		def searchResults = [];
+		for (SearchHit searchHit : hits) {
+			Journey item = parseJourneyFromSearchHit(searchHit);
+			searchResults << item
+		}
+		return searchResults;
+	}
+
+	/**
+	 * Used for search in main index as well as dummy (or generated data) index
+	 */
+	def searchRidesForMales(String indexName, Date timeOfJourney, Date validStartTime, String mobile, Double fromLat, Double fromLon, Double toLat, Double toLon) {
+		log.info("search index ${indexName}")
+		FilterBuilder  copassengerFilter = FilterBuilders.rangeFilter("numberOfCopassengers").lt(2);
+		DateTime dateOfJourney = new DateTime(timeOfJourney);
+		DateTime start = dateOfJourney.minusHours(4);
+		DateTime end = dateOfJourney.plusHours(4);
+		DateTime validTime = new DateTime(validStartTime)
+		if(start.isBefore(validTime)) {
+			start = validTime;
+		}
+		FilterBuilder dateRanageFilter = FilterBuilders.rangeFilter("dateOfJourney").from(start).to(end);
+
+		Double tripDistance = DistanceUtil.distance(fromLat, fromLon, toLat, toLon);
+		double filterDistance = tripDistance / DISTANCE_FACTOR;
+		FilterBuilder geoDistanceFilterFrom = FilterBuilders.geoDistanceFilter("fromGeoPoint").point(fromLat, fromLon).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC);
+		FilterBuilder geoDistanceFilterTo = FilterBuilders.geoDistanceFilter("toGeoPoint").point(toLat, toLon).distance(filterDistance, DistanceUnit.KILOMETERS).optimizeBbox("memory").geoDistance(GeoDistance.ARC)
+		FilterBuilder filter = FilterBuilders.andFilter(
+			copassengerFilter,
+			dateRanageFilter,
+			geoDistanceFilterFrom,
+			geoDistanceFilterTo)
+
+		if(mobile) {
+			filter = FilterBuilders.andFilter(filter, FilterBuilders.boolFilter().mustNot(FilterBuilders.termFilter("mobile", mobile)));
+		}
+		
+		/* IMPORTNAT DISTINCTION */
+		filter = FilterBuilders.andFilter(filter, FilterBuilders.termFilter("femaleOnlySearch", false));
+		
 		GeoDistanceSortBuilder sorter = SortBuilders.geoDistanceSort("fromGeoPoint");
 		sorter.point(fromLat, fromLon);
 		sorter.order(SortOrder.ASC);
@@ -334,7 +432,8 @@ class SearchService {
 		journey.setTripDistance(searchHit.getSource().get('tripDistance'));
 		journey.setPhotoUrl(searchHit.getSource().get('photoUrl'));
 		journey.setNumberOfCopassengers(searchHit.getSource().get('numberOfCopassengers'));
-		journey.setTripTimeInSeconds(searchHit.getSource().get('tripTimeInSeconds'))//
+		journey.setTripTimeInSeconds(searchHit.getSource().get('tripTimeInSeconds'))
+		journey.setFemaleOnlySearch(searchHit.getSource().get('femaleOnlySearch'))
 		return journey;
 	}
 	

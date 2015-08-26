@@ -78,7 +78,19 @@ class JourneySearchService {
 		Integer noOfExistingPassanger = 0
 		boolean disableMoreRequests = false
 		MobileResponse mobileResponse = new MobileResponse();
-		List<Journey> searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+		List<Journey> searchResults = null;
+		if(currentJourney.isMale) {
+			searchResults = searchService.searchRidesForMales(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+		}
+		else {
+			if(currentJourney.femaleOnlySearch) {
+				searchResults = searchService.searchFemaleOnlyRides(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+			}
+			else {
+				searchResults = searchService.search(IndexMetadata.JOURNEY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+			}
+		}
+		
 		if(currentJourney.id) {
 			disableMoreRequests = shoudlDisableMoreRequest(currentJourney.id)
 			searchResults = enrichResult(searchResults,currentJourney.id )
@@ -92,7 +104,7 @@ class JourneySearchService {
 			mobileResponse.message = "${length} results found"
 		}
 		else {
-			if(searchFromDummy && noOfExistingPassanger<1 && currentJourney.tripDistance<=40) {
+			if(searchFromDummy && noOfExistingPassanger<1 && currentJourney.tripDistance<=40 && currentJourney.isMale) {// show dummy only in case of male
 				mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 			}
 			else {
@@ -162,15 +174,20 @@ class JourneySearchService {
 	
 	
 	private boolean areJourneysSame(JourneyRequestCommand currentJourney, Journey dbJourney) {
-		String currentJourneyFromGeoHash = GeoHashUtils.encode(currentJourney.fromLatitude, currentJourney.fromLongitude, 6);
-		String currentJourneyToGeoHash = GeoHashUtils.encode(currentJourney.toLatitude, currentJourney.toLongitude, 6);
-		String fromGeohash = GeoHashUtils.encode(dbJourney.fromLatitude, dbJourney.fromLongitude, 6);
-		String toGeohash = GeoHashUtils.encode(dbJourney.toLatitude, dbJourney.toLongitude, 6);
-		if(fromGeohash.equals(currentJourneyFromGeoHash) && toGeohash.equals(currentJourneyToGeoHash)){//from and to are almost identical with in precision of 6
-			return true;
+		if(currentJourney.isTaxi == dbJourney.isTaxi && currentJourney.femaleOnlySearch == dbJourney.femaleOnlySearch) {
+			String currentJourneyFromGeoHash = GeoHashUtils.encode(currentJourney.fromLatitude, currentJourney.fromLongitude, 6);
+			String currentJourneyToGeoHash = GeoHashUtils.encode(currentJourney.toLatitude, currentJourney.toLongitude, 6);
+			String fromGeohash = GeoHashUtils.encode(dbJourney.fromLatitude, dbJourney.fromLongitude, 6);
+			String toGeohash = GeoHashUtils.encode(dbJourney.toLatitude, dbJourney.toLongitude, 6);
+			if(fromGeohash.equals(currentJourneyFromGeoHash) && toGeohash.equals(currentJourneyToGeoHash)){//from and to are almost identical with in precision of 6
+				return true;
+			}
+			else {
+				return false;
+			}
 		}
 		else {
-			return false;
+			return false
 		}
 	}
 	
