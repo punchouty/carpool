@@ -8,7 +8,7 @@ class AutoMatcherJob {
 	def staticdataService
 	
     static triggers = {
-      simple name: 'autoMatcher', startDelay: 1200000, repeatInterval: 12*60*60*1000
+      simple name: 'autoMatcher', startDelay: 1200000, repeatInterval: 1*60*60*1000
     }
 
     def execute() {
