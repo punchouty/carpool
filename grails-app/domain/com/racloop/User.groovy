@@ -83,7 +83,7 @@ class User extends grails.plugin.nimble.core.UserBase {
 	
 	public String getPhotoUrl() {
 		if(profilePictureSource == Constant.AWS_PIX) {
-			return Constant.AWS_URL + profile?.mobileHash;
+			return Constant.AWS_URL + profile?.mobileHash + "?" + System.currentTimeMillis();
 		}
 		else if(profilePictureSource == Constant.FACEBOOK_PIX) {
 			return getFacebookProfilePic()

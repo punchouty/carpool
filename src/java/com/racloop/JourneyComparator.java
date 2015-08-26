@@ -13,8 +13,8 @@ public class JourneyComparator implements Comparator<Journey> {
 			return o1.getDateOfJourney().compareTo(o2.getDateOfJourney());
 		}
 		else {
-			if(o1.getStatusAsParent().equals(WorkflowStatus.CANCELLED.getStatus())) return -1;
-			if(o2.getStatusAsParent().equals(WorkflowStatus.CANCELLED.getStatus())) return 1;
+			if(o1.getStatusAsParent().equals(WorkflowStatus.CANCELLED.getStatus())) return 1;
+			if(o2.getStatusAsParent().equals(WorkflowStatus.CANCELLED.getStatus())) return -1;
 		}
 		return 0;
 	}
