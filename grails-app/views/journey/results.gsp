@@ -170,7 +170,7 @@
                                		<button class="btn btn-warning"><i class="fa fa-ban"></i> ${matchedResult.getMyStatus()}</button>
                                	</g:elseif>
                                	<g:elseif test = "${matchedResult.getMyStatus()=='Available'}">
-                               		<g:link action="requestAgain" id="request_${i}"  params="[pairId: matchedResult.getMyPairId(), myJourneyId:currentJourney.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Invite Again</g:link>
+                               		<g:link action="requestAgain" id="request_${i}"  params="[pairId: matchedResult.getMyPairId(), myJourneyId:currentJourney.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Connect Again</g:link>
 									<g:link action="routeDetails" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-cog"></i> Details</g:link>
                                	</g:elseif>
                                	<g:else>
@@ -181,17 +181,17 @@
 						<g:else>
 							<li>
 								<g:if test= "${searchResults.data.get('disableMoreRequests') == true  }">
-									<button class="btn btn-primary" disabled="disabled"><i class="fa fa-ban"></i> Invite</button>
+									<button class="btn btn-primary" disabled="disabled"><i class="fa fa-ban"></i> Connect</button>
 								</g:if>
 								<g:elseif test= "${ matchedResult.getNumberOfCopassengers()>0}">
-									<button class="btn btn-primary" disabled="disabled"><i class="fa fa-ban"></i> Invite</button>
+									<button class="btn btn-primary" disabled="disabled"><i class="fa fa-ban"></i> Connect</button>
 									<a name ="additonal" id="additonal${i}" href="#"  data-target="#myModal" data-id="${journeyInstance.id}">
 							       		<button class="btn btn-warning"> All users info</button>
 								    </a>
 								</g:elseif>
 								<g:else>
 									<g:link action="selectedJourney" id="
-uest_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Invite</g:link>
+uest_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-mail-reply"></i> Connect</g:link>
 									<g:link action="routeDetails" id="request_${i}"  params="[matchedJourneyId: journeyInstance.id]" class="btn btn-info"><i class="fa fa-cog"></i> Details</g:link>
 									
 								</g:else>
