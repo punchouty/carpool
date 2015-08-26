@@ -117,7 +117,7 @@ class UserManagerService {
 		def crypt = pwEnc.toHex()
 		if(!user.facebookId) {
 			user.facebookId = facebookId
-			if(user.profilePictureSource != Constant.AWS_PIX) user.profilePictureSource = Constant.FACEBOOK_PIX
+			if(user.profilePictureSource.equals(Constant.GRAVATAR_PIX)) user.profilePictureSource = Constant.FACEBOOK_PIX
 			updateUser = true
 		}
 		if(!crypt.equals(user.passwordHash)) {

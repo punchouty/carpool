@@ -6,12 +6,13 @@ import grails.gsp.PageRenderer
 
 import java.text.SimpleDateFormat
 
-import org.elasticsearch.common.geo.GeoPoint;
+import org.elasticsearch.common.geo.GeoPoint
 import org.elasticsearch.common.joda.time.DateTime
 
 import com.racloop.Constant
 import com.racloop.GenericUtil
-import com.racloop.DistanceUtil
+import com.racloop.HistoryComparator
+import com.racloop.JourneyComparator;
 import com.racloop.JourneyRequestCommand
 import com.racloop.User
 import com.racloop.domain.Journey
@@ -222,6 +223,7 @@ class JourneyMobileController {
 		DateTime minimumValidSearchTime = new DateTime(current).minusHours(1);
 		if(currentUser) {
 			def journeys = journeyDataService.findMyJourneys(currentUser.profile.mobile, minimumValidSearchTime.toDate());
+			Collections.sort(journeys, new JourneyComparator());
 			mobileResponse.data = journeys
 			mobileResponse.success = true
 			mobileResponse.total = journeys?.size()
@@ -283,6 +285,7 @@ class JourneyMobileController {
 		DateTime minimumValidSearchTime = new DateTime(current).minusHours(1);
 		if(currentUser) {
 			def journeys = journeyDataService.findMyHistory(currentUser.profile.mobile, minimumValidSearchTime.toDate());
+			Collections.sort(journeys, new HistoryComparator());
 			mobileResponse.data = journeys
 			mobileResponse.success = true
 			mobileResponse.total = journeys?.size()
