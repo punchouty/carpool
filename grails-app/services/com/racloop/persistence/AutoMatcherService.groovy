@@ -17,6 +17,7 @@ class AutoMatcherService {
 	def journeyDataService
 	def journeySearchService
 	def jmsService
+	def journeyPairDataService
 
     private Map autoMatch() {
 		
@@ -70,9 +71,10 @@ class AutoMatcherService {
 	}
 	
 	private List removeAlreadyRequestJourenys(List inputJourneyList, Journey primaryJourney) {
+		primaryJourney = journeyDataService.findChildJourneys(primaryJourney.getId())
 		List newMatches = []
 		inputJourneyList.each {it ->
-			if(!(primaryJourney.getJourneyPairIds()?.contains(it.id))) {
+			if(!(primaryJourney.getRelatedJourneys()?.contains(it))) {
 				newMatches.add(it)
 			}
 		}
