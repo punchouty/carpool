@@ -155,6 +155,7 @@ class JourneyController {
 			result.each {it->
 				journeys << journeyDataService.findChildJourneys(it.getId())
 			}
+			Collections.sort(journeys, new HistoryComparator());
 			numberOfRecords = result?.size()
 			
 		}
