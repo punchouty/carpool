@@ -486,9 +486,8 @@ class JourneyDataService {
 		log.info("findMyJourneyBetweenDates: mobile : ${mobile}, startTime : ${startTimeStr}, endTime :${endTimeStr}");
 		Journey journeyKey = new Journey();
 		journeyKey.mobile = mobile;
-		Condition endDateRangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.LT.toString()).withAttributeValueList(new AttributeValue().withS(endTimeStr.toString()));
-		Condition startDateRangeKeyCondition = new Condition().withComparisonOperator(ComparisonOperator.GT.toString()).withAttributeValueList(new AttributeValue().withS(startTimeStr.toString()));
-		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", endDateRangeKeyCondition).withRangeKeyCondition("DateOfJourney", startDateRangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
+		Condition bwtweenDateRangeKeyCondition =new Condition().withComparisonOperator(ComparisonOperator.BETWEEN).withAttributeValueList(new AttributeValue().withS(startTimeStr.toString()), new AttributeValue().withS(endTimeStr.toString()))
+		DynamoDBQueryExpression<Journey> queryExpression = new DynamoDBQueryExpression<Journey>().withHashKeyValues(journeyKey).withRangeKeyCondition("DateOfJourney", bwtweenDateRangeKeyCondition).withIndexName("Mobile-DateOfJourney-index").withConsistentRead(false);
 		List<Journey> journeys = awsService.dynamoDBMapper.query(Journey.class, queryExpression);
 		def returnJourneys = [];
 		for(Journey journey:journeys){
