@@ -7,6 +7,7 @@ import com.racloop.domain.JourneyPair
 import com.racloop.journey.workkflow.WorkflowDirection
 import com.racloop.journey.workkflow.WorkflowStatus
 import com.racloop.journey.workkflow.WorkflowAction
+import com.racloop.mobile.data.response.MobileResponse
 import com.racloop.Constant
 import com.racloop.GenericUtil;
 
@@ -336,13 +337,28 @@ class WorkflowDataService {
 		return currentDate.after(dateAfterAdingNMinutes)
 	}
 	
-	def boolean validateInvitationRequest(Journey currentJourney, String otherJourneyId) {
+	def boolean validateInvitationRequest(Journey currentJourney, String otherJourneyId, MobileResponse mobileResponse  ) {
 		boolean isValidRequest = true
-		Journey otherJourney = journeyDataService.findJourney(otherJourneyId)
+		Journey otherJourney = journeyDataService.findChildJourneys(otherJourneyId)
 		if(otherJourney) {
 			if(otherJourney.getUser().equals(currentJourney.getUser())){
 				isValidRequest = false;
+				mobileResponse.success = false;
+				mobileResponse.message ="Sorry, you cannot invite yourself."
+				return isValidRequest
 			}
+			if(otherJourney.getHasAcceptedRequest()) {
+				isValidRequest = false;
+				mobileResponse.success = false;
+				mobileResponse.message ="Sorry, The passenger has already accepted ride with someone else."
+				return isValidRequest
+			}
+		} 
+		else {
+			isValidRequest = false;
+			mobileResponse.success = false;
+			mobileResponse.message= "Something is wrong with the journey that you are trying to connect."
+			return isValidRequest
 		}
 		return isValidRequest
 	}
@@ -389,7 +405,7 @@ class WorkflowDataService {
 	
 	private validateIfJourneyIsNotAccepted(Journey journey) {
 		if(journey.getHasAcceptedRequest()) {
-			throw new RuntimeException("Somethig is not right. Journey already as one accepted request. Journey is: ${journey}")
+			throw new RuntimeException("Somethig is not right. Journey already has one accepted request. Journey is: ${journey}")
 		}
 	}
 }

@@ -7,6 +7,7 @@ import org.springframework.web.servlet.ModelAndView
 
 import com.racloop.domain.Journey
 import com.racloop.journey.workkflow.WorkflowState
+import com.racloop.mobile.data.response.MobileResponse;
 
 class JourneyController {
 	
@@ -234,7 +235,8 @@ class JourneyController {
 			session.currentJourney = currentJourney
 		}
 		Journey myJourney = Journey.convert(currentJourney)
-		if(workflowDataService.validateInvitationRequest(myJourney, matchedJourneyId)) {
+		MobileResponse mobileResponse = new MobileResponse()
+		if(workflowDataService.validateInvitationRequest(myJourney, matchedJourneyId, mobileResponse)) {
 			log.info("Requesting service. currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + matchedJourneyId)
 			if(currentJourney.isNewJourney()) {
 				Journey savedJourney = workflowDataService.requestJourneyAndSave(myJourney, matchedJourneyId);
@@ -245,7 +247,7 @@ class JourneyController {
 			}
 		}
 		else {
-			flash.error = "Sorry, you cannot invite yourself."
+			flash.error = mobileResponse.message
 		}
 		forward action: 'activeJourneys'
 	}

@@ -49,7 +49,7 @@ class WorkflowMobileController {
 			JourneyRequestCommand currentJourney = session.currentJourneyCommand
 			if(currentJourney != null) {
 				Journey myJourney = Journey.convert(currentJourney)
-				if(workflowDataService.validateInvitationRequest(myJourney, otherJourneyId)){
+				if(workflowDataService.validateInvitationRequest(myJourney, otherJourneyId, mobileResponse)){
 					log.info("currentJourney.id : " + currentJourney.id + ", otherJourneyId : " + otherJourneyId)
 					if(currentJourney.isNewJourney()) {
 						workflowDataService.requestJourneyAndSave(myJourney, otherJourneyId);
@@ -63,7 +63,7 @@ class WorkflowMobileController {
 				}
 				else {
 					mobileResponse.success = false;
-					mobileResponse.message = "Sorry, you cannot invite yourself.";
+					//mobileResponse.message = "Sorry, you cannot invite yourself.";
 				}
 			}
 			else {
