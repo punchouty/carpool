@@ -22,10 +22,20 @@ class RecurrenceJourneyService {
 		if(journey && recurringDays && recurringDays.length>0) {
 			journey.setJourneyRecurrence(recurringDays as Set)
 			for (String dayOfWeek : recurringDays ) {
-				RecurrenceJourney recurrenceJourney = new RecurrenceJourney()
-				recurrenceJourney.setId(RecurrenceJourneyIdResolver.generateIdFromDate(journey.getDateOfJourney(), dayOfWeek))
-				recurrenceJourney.addParentJourney(journeyId)
-				this.createRecurringJourney(recurrenceJourney)
+				RecurrenceJourney recurrenceJourney = null
+				String recurrenceJourneyId = RecurrenceJourneyIdResolver.generateIdFromDate(journey.getDateOfJourney(), dayOfWeek)
+				recurrenceJourney = findRecurrenceJourneyById(recurrenceJourneyId)
+				if(recurrenceJourney) {
+					recurrenceJourney.addParentJourney(journeyId)
+					this.updateRecurringJourney(recurrenceJourney)
+				}
+				else {
+					recurrenceJourney = new RecurrenceJourney()
+					recurrenceJourney.setId(recurrenceJourneyId)
+					recurrenceJourney.addParentJourney(journeyId)
+					this.createRecurringJourney(recurrenceJourney)
+				}
+				
 			}
 			
 			journeyDataService.saveJourney(journey)
