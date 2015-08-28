@@ -130,13 +130,13 @@ grails.journeyIndexNameFormat = 'yy-MM-W'
 grails.startup.sampleData.file = "journey.csv"
 grails.startup.masterData.places.file = "all.csv"
 
-grails.email.mail.from="admin@racloop.com"
+grails.email.mail.from="admin@cabshare.in"
 grails.email.exception.one="rajan@racloop.com"
 grails.email.exception.two="rohit@racloop.com"
 grails.sms.emergency.one="9810095625"
 grails.sms.emergency.two="7307392447"
 
-grails.messaging.mail.from="admin@racloop.com"
+grails.messaging.mail.from="admin@cabshare.in"
 
 grails.approx.distance.to.match = 3.0
 grails.approx.time.to.match = 30
