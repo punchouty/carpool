@@ -41,7 +41,7 @@
 			                            <th>Approx. Fare</th>
 			                            <th>UberGo</th>
 			                            <th>Ola Mini</th>
-			                            <th>Meru Cab</th>
+			                            <th>Radio Cab</th>
 			                        </tr>
 			                        <tr>
 			                            <td><i>Individual</i></td>
@@ -113,7 +113,7 @@
 				                            <th>Approx. Fare</th>
 				                            <th>UberGo</th>
 				                            <th>Ola Mini</th>
-				                            <th>Meru Cab</th>
+				                            <th>Radio Cab</th>
 				                        </tr>
 				                        <tr>
 				                            <td><i>Individual</i></td>
