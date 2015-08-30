@@ -62,8 +62,15 @@ class UserReviewService {
 	}
 	
 	def clearUserForReview(User currentUser){
+		currentUser.refresh();
 		currentUser.journeyIdForReview = null
-		currentUser.save()
+		if(!currentUser.save(flush:true)) {
+			log.error ("Something went wrong while saving the current user.")
+			currentUser.errors.allErrors.each { log.error it }
+		}
+		else {
+			log.info("User saved successfully for review");
+		}
 	}
 	
 	def saveUserRating(User currentUser, Review review, String pairId){
@@ -76,7 +83,7 @@ class UserReviewService {
 		review.setReviewee(otherUser)
 		if(!review.save()) {
 			log.error ("Something went wrong while saving the review.")
-			review.errors.allErrors.each { println it }
+			review.errors.allErrors.each { log.error it }
 		}
 		clearUserForReview(currentUser)
 	}
