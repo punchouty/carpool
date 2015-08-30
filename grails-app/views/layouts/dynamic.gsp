@@ -46,5 +46,11 @@
 	</div>
 	</g:if>	
 	<r:layoutResources />
+	<script>
+		window.setTimeout(function() {
+		  window.location.href='${createLink(controller: "userSession", action: "search")}'
+		}, (29*60*1000)); // 29 minutes
+	</script>
+	
 </body>
 </html>

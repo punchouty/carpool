@@ -1,7 +1,7 @@
 <%@ page import="grails.converters.JSON" %>
 <html>
 <head>
-<meta name="layout" content="static" />
+<meta name="layout" content="dynamic" />
 <title>Existing Journey Found</title>
 <r:require module="core" />
 </head>
