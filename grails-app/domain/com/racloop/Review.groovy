@@ -22,10 +22,11 @@ class Review {
 	Double comfort = 0D// 1-5 scale
 	
 	// for both driver and rider
-	Double punctualty // 1-5 scale
-	Double overall // 1-5 scale
+	Double punctualty =0D// 1-5 scale
+	Double overall =0D// 1-5 scale
 
     static constraints = {
+		comment blank: true, nullable: true
     }
 	
 	static mapping = {

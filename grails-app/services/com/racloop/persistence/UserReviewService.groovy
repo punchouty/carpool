@@ -76,6 +76,7 @@ class UserReviewService {
 		review.setReviewee(otherUser)
 		if(!review.save()) {
 			log.error ("Something went wrong while saving the review.")
+			review.errors.allErrors.each { println it }
 		}
 		clearUserForReview(currentUser)
 	}
