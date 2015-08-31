@@ -470,7 +470,9 @@ class JourneyDataService {
 	private List findJourneyForRouteDetail(String journeyId) {
 		Journey journey = this.findJourney(journeyId)
 		if(journey) {
-			return this.findSiblingJourneys(journeyId)
+			def myList = [journey]
+			return myList
+			//return this.findSiblingJourneys(journeyId)
 		}
 		else {
 			journey = this.findJourneyFromElasticSearch(journeyId, true)
