@@ -288,7 +288,8 @@ log4j = {
 			'org.codehaus.groovy.grails.orm.hibernate',      // hibernate integration
 			'org.springframework',
 			'org.hibernate',
-			'net.sf.ehcache.hibernate'
+			'net.sf.ehcache.hibernate',
+			'grails.plugin.jms.JmsService'
 	
 	info  additivity: false, analyticAppender: ["grails.app.services.com.racloop.integration.AnalyticService"] 
 }
