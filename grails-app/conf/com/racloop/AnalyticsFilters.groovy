@@ -29,9 +29,14 @@ class AnalyticsFilters {
 //					params : params?.toString(),
 //					queryString : request.queryString
 //				]
-				if(!actionName.equals("setUserImage")) {
-					log.info "${user}|${resolvedIp}|${request.getHeader('User-Agent')}|${request.method}|${controllerName+ '/' + actionName}|${request.JSON}|${params}"
-					//jmsService.send(queue: Constant.ANALYTICS_QUEUE, messageMap)
+				if(request.requestURI?.startsWith("/health") || userAgent?.startsWith("ELB")) {
+					
+				}
+				else {
+					if(!actionName.equals("setUserImage")) {
+						log.info "${user}|${resolvedIp}|${request.getHeader('User-Agent')}|${request.method}|${controllerName+ '/' + actionName}|${request.JSON}|${params}"
+						//jmsService.send(queue: Constant.ANALYTICS_QUEUE, messageMap)
+					}
 				}
             }
             after = { Map model ->
