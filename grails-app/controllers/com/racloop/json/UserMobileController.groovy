@@ -22,9 +22,11 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import com.amazonaws.services.s3.transfer.TransferManager;
 import com.amazonaws.services.s3.transfer.Upload;
+import com.racloop.Affel;
 import com.racloop.Constant
 import com.racloop.GenericStatus
 import com.racloop.GenericUtil
+import com.racloop.Mobile;
 import com.racloop.Profile
 import com.racloop.Review
 import com.racloop.Sos
@@ -48,8 +50,10 @@ class UserMobileController {
 	def testDataService
 	def userReviewService
 	def awsService
+	def rest
 	LinkGenerator grailsLinkGenerator
 	static Map allowedMethods = [ login: 'POST', logout : 'POST', signup : 'POST', changePassword : 'POST', forgotPassword : 'POST' ]
+	String urlAffel = null;
 	
     /**
 	 * curl -X POST -H "Content-Type: application/json" -d '{ "email": "sample.user@racloop.com", "password": "P@ssw0rd", "rememberMe": "true" }' http://localhost:8080/app/mlogin
@@ -358,12 +362,37 @@ class UserMobileController {
 	def verifyMobile() {
 		MobileResponse mobileResponse = new MobileResponse();
 		def json = request.JSON
+		log.info("verifyMobile() json : ${json}");
 		def errors = null
 		if(json) {
 			def mobile = json?.mobile
 			def verificationCode = json?.verificationCode
 			def status = userManagerService.verify(mobile+"", verificationCode+"")
 			if(status == GenericStatus.SUCCESS) {
+				def uuid = json?.uuid
+				if(uuid) {
+					Mobile mobileDevice = Mobile.findByUuid(uuid);
+					Affel affel = new Affel();
+					affel.referrer = mobileDevice.referrer
+					affel.uuid = mobileDevice.uuid
+					affel.imei = mobileDevice.imei
+					affel.oSVersion = mobileDevice.oSVersion
+					if(mobileDevice) {
+						def resp = rest.get("https://affle.co/global/install.php?af_cid=1439883271&af_tid=${mobileDevice.referrer}&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}");
+						if(resp.getStatus() != 200) {
+							log.error("Sending fail : " + resp.getStatus() + " : " + resp.text)
+							affel.success = false
+						}
+						else {
+							log.info("sending success to Affel")
+						}
+						affel.affelResponse = resp.text
+						affel.save()
+					}
+				}
+				else {
+					log.warn("No uuid in request")
+				}
 				mobileResponse.message="Mobile Verified Successfully"
 				mobileResponse.total=0
 				mobileResponse.success=true
@@ -826,6 +855,81 @@ class UserMobileController {
 	def installReferer() {
 		def json = request.JSON
 		log.info("installReferer() json : ${json}");
+		Mobile mobileDevice = Mobile.findByUuid(json.uuid);
+		if(!mobileDevice) {
+			def mobile = new Mobile();
+			mobile.referrer = json.referrer;
+			mobile.uuid = json.uuid;
+			mobile.imei = json.imei;
+			mobile.imsi = json.imsi;
+			mobile.iccid = json.iccid;
+			mobile.mac = json.mac;
+			mobile.carrierName = json.carrierName;
+			mobile.countryCode = json.countryCode;
+			mobile.mcc = json.mcc;
+			mobile.mnc = json.mnc;
+			mobile.phoneNumber = json.phoneNumber;
+			mobile.callState = json.callState;
+			mobile.dataActivity = json.dataActivity;
+			mobile.networkType = json.networkType;
+			mobile.phoneType = json.phoneType;
+			mobile.simState = json.simState;
+			mobile.model = json.model;
+			mobile.platform = json.platform;
+			mobile.oSVersion = json.osVersion;
+			mobile.cordova = json.cordova;
+			mobile.userAgent = request.getHeader("User-Agent")
+			if(json.phoneNumber == null || json.phoneNumber?.toString().equals("null")) mobile.phoneNumber = null;
+			if(!mobile.save()) {
+				mobile.errors.each {
+					log.error "Install Failure : " + it
+				}
+			}
+			else {
+				log.info("New installation success")
+			}
+		}
+		else {
+			log.info("Already there : ${mobileDevice.phoneNumber} ${json.phoneNumber} ")
+			if(mobileDevice.phoneNumber != null) {
+				log.info("${mobileDevice.phoneNumber}")
+				if(json.phoneNumber != null) {
+					log.info("${json.phoneNumber}")
+					if(!mobileDevice.phoneNumber.equals(json.phoneNumber)) {
+						def mobile = new Mobile();
+						mobile.referrer = json.referrer;
+						mobile.uuid = json.uuid;
+						mobile.imei = json.imei;
+						mobile.imsi = json.imsi;
+						mobile.iccid = json.iccid;
+						mobile.mac = json.mac;
+						mobile.carrierName = json.carrierName;
+						mobile.countryCode = json.countryCode;
+						mobile.mcc = json.mcc;
+						mobile.mnc = json.mnc;
+						mobile.phoneNumber = json.phoneNumber;
+						mobile.callState = json.callState;
+						mobile.dataActivity = json.dataActivity;
+						mobile.networkType = json.networkType;
+						mobile.phoneType = json.phoneType;
+						mobile.simState = json.simState;
+						mobile.model = json.model;
+						mobile.platform = json.platform;
+						mobile.osVersion = json.osVersion;
+						mobile.cordova = json.cordova;
+						mobile.userAgent = request.getHeader("User-Agent")
+						if(!mobile.save()) {
+							mobile.errors.each {
+								log.error "Repeated Install Failure : " + it
+							}
+						}
+						else {
+							log.info("New installation success")
+						}
+					}
+				}
+			}
+		}
 		MobileResponse mobileResponse = new MobileResponse()
 		mobileResponse.success = true
 	}

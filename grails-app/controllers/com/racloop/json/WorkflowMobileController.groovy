@@ -25,11 +25,11 @@ class WorkflowMobileController {
 				mobileResponse = journeySearchService.straightThruSearch(currentJourney, true);
 				mobileResponse.data['hideSaveButton'] = true;
 				mobileResponse.data['isEligibleForRecurring'] = true;
-				mobileResponse.message = "Journey saved successfully"
+				mobileResponse.message = "Ride Saved Successfully"
 				mobileResponse.currentJourney = journey
 			}
 			else {
-				mobileResponse.message = "Error : No journey to save"
+				mobileResponse.message = "Error : No ride to save"
 				log.warn ("currentJourney not in session scope for user ${currentUser}")
 			}
 		}
@@ -59,7 +59,7 @@ class WorkflowMobileController {
 					}
 					session.currentJourneyCommand = null;
 					mobileResponse.success = true;
-					mobileResponse.message = "Request Sent to user";
+					mobileResponse.message = "Request Sent To User";
 				}
 				else {
 					mobileResponse.success = false;
@@ -67,7 +67,7 @@ class WorkflowMobileController {
 				}
 			}
 			else {
-				mobileResponse.message = "Error : No journey in session"
+				mobileResponse.message = "Error : No ride in session"
 				log.warn ("currentJourney not in session scope for user ${currentUser} so cannot perform request")
 			}
 		}
@@ -88,7 +88,7 @@ class WorkflowMobileController {
 			if(otherJourneyId && pairId){
 				workflowDataService.inviteAgain(otherJourneyId, pairId)
 				mobileResponse.success = true;
-				mobileResponse.message = "Request Sent to user";
+				mobileResponse.message = "Request Sent To User";
 			}
 			else {
 				mobileResponse.success = false;
@@ -114,10 +114,10 @@ class WorkflowMobileController {
 		if(currentUser) {
 			workflowDataService.cancelMyJourney(journeyId);
 			mobileResponse.success = true
-			mobileResponse.message = "Successfully Cancelled Journey"
+			mobileResponse.message = "Ride Cancelled Successfully"
 		}
 		else {
-			mobileResponse.message = "User is not logged in. Unable to perform cancel my journey"
+			mobileResponse.message = "User is not logged in. Unable to perform cancel my ride"
 		}
 		
 		render mobileResponse as JSON
@@ -132,7 +132,7 @@ class WorkflowMobileController {
 		if(currentUser) {
 			mobileResponse.data = workflowDataService.acceptRequest(journeyPairId)
 			mobileResponse.success = true
-			mobileResponse.message = "Successfully Accepted journey request"
+			mobileResponse.message = "Ride Accepted Successfully"
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Unable to perform accept request"
@@ -149,7 +149,7 @@ class WorkflowMobileController {
 		if(currentUser) {
 			mobileResponse.data = workflowDataService.rejectRequest(journeyPairId)
 			mobileResponse.success = true
-			mobileResponse.message = "Successfully rccepted journey request"
+			mobileResponse.message = "Ride Rejected Successfully"
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Unable to perform reject request"
@@ -167,7 +167,7 @@ class WorkflowMobileController {
 		if(currentUser) {
 			mobileResponse.data = workflowDataService.cancelMyRequest(journeyPairId, myJourneyId, currentUser.getUsername())
 			mobileResponse.success = true
-			mobileResponse.message = "Successfully cancelled journey request"
+			mobileResponse.message = "Ride Request Cancelled"
 		}
 		else {
 			mobileResponse.message = "User is not logged in. Unable to perform cancel request"

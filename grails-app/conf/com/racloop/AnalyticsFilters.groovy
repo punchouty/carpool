@@ -5,28 +5,34 @@ import org.codehaus.groovy.grails.web.util.WebUtils;
 
 class AnalyticsFilters {
 	
-	def jmsService
+	//def jmsService
 
     def filters = {
         all(controller:'*', action:'*', uriExclude : '*health*') {
             before = {
 				def user = SecurityUtils.getSubject()?.getPrincipal()
+				if(!user) user = "none"
 				String resolvedIp = getClientIpAddress(request)
-				def messageMap = [
-					user: user?.toString(),
-					ip : resolvedIp,
-					userAgent : request.getHeader("User-Agent"),
-					context : request.contextPath,
-					requestURI : request.requestURI,
-					method : request.method,
-					controllerName : controllerName,
-					actionName : actionName,
-					session : session?.id,
-					json : request.JSON?.toString(),
-					params : params?.toString(),
-					queryString : request.queryString
-				]
-				if(!actionName.equals("setUserImage")) jmsService.send(queue: Constant.ANALYTICS_QUEUE, messageMap)
+				String userAgent = request.getHeader('User-Agent')
+				String action = controllerName+ '/' + actionName
+//				def messageMap = [
+//					user: user?.toString(),
+//					ip : resolvedIp,
+//					userAgent : request.getHeader("User-Agent"),
+//					context : request.contextPath,
+//					requestURI : request.requestURI,
+//					method : request.method,
+//					controllerName : controllerName,
+//					actionName : actionName,
+//					session : session?.id,
+//					json : request.JSON?.toString(),
+//					params : params?.toString(),
+//					queryString : request.queryString
+//				]
+				if(!actionName.equals("setUserImage")) {
+					log.info "${user}|${resolvedIp}|${request.getHeader('User-Agent')}|${request.method}|${controllerName+ '/' + actionName}|${request.JSON}|${params}"
+					//jmsService.send(queue: Constant.ANALYTICS_QUEUE, messageMap)
+				}
             }
             after = { Map model ->
             }

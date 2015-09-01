@@ -247,7 +247,7 @@ sms {
 		acceptRequest = 'Your cab share request for journey on $journeyDate has been ACCEPTED by user $name. Mobile : $mobile'
 		rejectRequest = 'Your cab share request for journey on $journeyDate has been REJECTED by user $name.'
 		cancelRequest = 'Your cab share request for journey on $journeyDate has been CANCELLED by user $name.'
-		sos = '${name} is in danger. Please contact immediately. If unreachable please call police. Location: ${lat}, ${lng}'
+		sos = '${name} has raised an SOS alert. Please contact him/her immediately. If unreachable please call police. Location: ${lat}, ${lng}'
 		sosUser = 'You have raised SOS alert. If you dont need emergency assistance, Please cancel it on app home screen.'
 		sosAdmin = '${name} | ${mobile} | ${email} | ${emergencyContactOne} | ${emergencyContactTwo} | ${lat} | ${lng} | ${journeyIds}'
 		newPassword = 'Your new password for www.cabshare.in is ${newPassword}'
@@ -291,5 +291,5 @@ log4j = {
 			'net.sf.ehcache.hibernate',
 			'grails.plugin.jms.JmsService'
 	
-	info  additivity: false, analyticAppender: ["grails.app.services.com.racloop.integration.AnalyticService"] 
+	info  additivity: false, analyticAppender: ["grails.app.filters.com.racloop.AnalyticsFilters"] 
 }
