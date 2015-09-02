@@ -338,7 +338,7 @@ class UserMobileController {
 						userManagerService.setUpMobileVerificationDuringSignUp(savedUser.profile)
 						mobileResponse.success=true
 						mobileResponse.data = savedUser
-						mobileResponse.message = "User sign up sucessfully. Check SMS for verificaton code."
+						mobileResponse.message = "User sign up successful. Check SMS for verificaton code."
 					}
 				}
 				else {

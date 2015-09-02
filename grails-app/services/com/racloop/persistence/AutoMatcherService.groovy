@@ -23,7 +23,7 @@ class AutoMatcherService {
 		
 		Map autoMatchResult = [:]
 		DateTime dateTime = new DateTime()
-		DateTime futureDateTime = new DateTime().plusHours(12) //Read this from config
+		DateTime futureDateTime = new DateTime().plusHours(18) //Read this from config
 		Set journeysToBeMatched= getListOfJourneysToBeAutoMatched(dateTime, futureDateTime)
 		for (Journey inputJourney : journeysToBeMatched) {
 			MobileResponse mobileResponse = journeySearchService.straightThruSearch(inputJourney.convert(), false)
