@@ -47,7 +47,7 @@
 
                   <!-- WELCOM MESSAGE -->
                   <h1 class="intro white-text">Coming Soon.....</h1>
-                  <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to a <span class="fa fa-leaf green-text">Greener</span> Tomorrow.</h5>
+                  <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to a <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">

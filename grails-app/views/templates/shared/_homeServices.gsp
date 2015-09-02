@@ -14,7 +14,7 @@
                <div class="colored-line">
                </div>
                <div class="sub-heading">
-                   Find people like you who want to <strong>Save</strong> money for <span class="green-text"><strong>Greener</strong></span> tomorrow.
+                   Find people like you who want to <strong>Save</strong> money for <span class="green-text"><strong>greener</strong></span> tomorrow.
                </div>
            </div>
 
