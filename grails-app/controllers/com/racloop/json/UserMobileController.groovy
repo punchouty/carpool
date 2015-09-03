@@ -370,7 +370,7 @@ class UserMobileController {
 			def status = userManagerService.verify(mobile+"", verificationCode+"")
 			if(status == GenericStatus.SUCCESS) {
 				def uuid = json?.uuid
-				if(uuid) {
+				if(uuid !=  null && !uuid.equals("browser")) {
 					Mobile mobileDevice = Mobile.findByUuid(uuid);
 					Affel affel = new Affel();
 					affel.referrer = mobileDevice.referrer
