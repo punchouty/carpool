@@ -145,10 +145,11 @@
                <div class="colored-line">
                </div>
                <div class="sub-heading text-left">
-                   Your safety and security are extremely important to us and we are completely committed to a comfortable hassle-free journey with your co-passengers. 
-Before accepting or rejecting a cabshare request, please review the user profile and ensure you are comfortable with this person as a co-passenger. 
-When selecting a cab vendor, use cab aggregator platforms or radio-taxi operators that you are satisfied with or Government-approved taxis and auto rickshaws. 
-During the ride, you can track your real-time location on the CabShare app along with how far you have travelled and how much further your destination is. The app will also notify you if there is a possible deviation from the standard route.
+                   Your safety and security during a rideshare are extremely important to us and we are completely committed to a comfortable hassle-free journey with your co-passengers. 
+                   Before accepting or rejecting a cabshare request, please review the user profile and ensure you are comfortable with this person as a co-passenger. 
+                   When sharing taxi services in Delhi NCR, use cab aggregator platforms or radio-taxi operators that you are satisfied with or Government-approved taxis and auto rickshaws. 
+                   During the ride, you can track your real-time location on the CabShare app along with how far you have travelled and how much further your destination is. 
+                   The app will also notify you if there is a possible deviation from the standard route.
  
                </div>
            </div>
@@ -245,9 +246,9 @@ During mobile app setup, please provide the phone numbers of your emergency cont
                                <div class="panel-body">
                                    <h5>3 simple steps for ride sharing</h5>
                                    <ol class="simple-list">
-                                   	<li>Put in request when and where are you going. We’ll find matching people who are going in same direction and around same time. </li>
-                                   	<li>Send you request to the person whom you think will make a good co-passenger. If the other person accepts your request then we’ll share the contact info with each other.</li>
-                                   	<li> Simply call him/her and plan your journey.</li>
+                                   	<li><strong>Search :</strong> Put in the request - when and where are you going. We’ll find matching people who are going in the same direction and around the same time.</li>
+                                   	<li><strong>Connect :</strong> Send you request to the person whom you think will make a good co-passenger. If the other person accepts your request then we’ll share the contact info with each other.</li>
+                                   	<li><strong>Go :</strong>  Simply call him/her and plan your journey.</li>
                                    </ol>
                                    Hit the road 
                                </div>
@@ -289,7 +290,7 @@ During mobile app setup, please provide the phone numbers of your emergency cont
                            <!-- ACORDIION DESCRIPTION / TEXT -->
                            <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
                                <div class="panel-body">
-                                   Yes - you can use cabshare.in as car pool platform.
+                                   Yes - you can use cabshare.in as a car pooling platform. Be sure to communicate accordingly with your co-passengers and decide on sharing of travel costs beforehand.
                                </div>
                            </div>
                        </div>
@@ -309,7 +310,7 @@ During mobile app setup, please provide the phone numbers of your emergency cont
                            <!-- ACORDIION DESCRIPTION / TEXT -->
                            <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
                                <div class="panel-body">
-                                   Change in plan is quite normal and there is nothing wrong in a change of plan. The idea is to keep everyone informed. If you are cancelling your journey then simply look for you journey in My Requests and delete it. We’ll notify your fellow co-passengers about the cancellation. If you want to change the travel date or destination, simply delete the old request and put in a new one.
+                                   A change in plan is quite normal. However, to avoid inconvenience to others, do notify your co-passengers ASAP. If you are cancelling your journey, then simply look for your journey in My Requests and delete it. We’ll notify your fellow co-passengers about the cancellation. If you want to change the travel time or destination, simply delete the old request and put in a new one.
                                </div>
                            </div>
                        </div>
@@ -329,7 +330,7 @@ During mobile app setup, please provide the phone numbers of your emergency cont
                            <!-- ACORDIION DESCRIPTION / TEXT -->
                            <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
                                <div class="panel-body">
-                                   We try to match requests that have very near source and destination. So ideally fare should split evenly.
+                                   We try to match requests between rides that have close-by From and To locations. So, ideally the fare should be split evenly. However, this should be decided before-hand when you talk with your co-passengers especially if either party feels the sharing of the travel costs should be different (this could be due to detours or waiting time to accommodate the co-passenger or slightly different distances for the co-passengers. 
                                </div>
                            </div>
                        </div>

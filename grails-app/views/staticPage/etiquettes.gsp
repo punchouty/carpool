@@ -21,7 +21,7 @@
                <div class="colored-line">
                </div>
                <div class="sub-heading">
-                   Ground rules for making ride sharing experience pleasant.
+                   Ground rules for making your and others’ <strong>CabShare</strong> experience pleasant.
                </div>
            </div>
 
@@ -39,7 +39,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Always <strong>obey</strong> traffic rules and drive safely. There are people waiting on other end of journey.
+                               Insist that your driver <strong>obeys</strong> traffic rules and drives safely. There are loved ones waiting for you at the other end of the journey. Ensure you and your co-passengers do not distract the driver
                            </p>
                        </div>
                    </div>
@@ -54,7 +54,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Although Racloop does suggest an approximate cost but it’s just an indicator. Discuss cost in <strong>advance</strong>.
+                               Although CabShare does suggest an approximate total and shared cost, it is only a <strong>suggestion</strong>. Do discuss and decide on how to share the travel costs in <strong>advance</strong>. If paying by cash, please carry exact change so neither you nor your co-passengers are inconvenienced.
                            </p>
                        </div>
                    </div>
@@ -69,7 +69,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               There is nothing more annoying than a <strong>late</strong> co-passenger.
+                               Respect your co-passengers’ time and don’t keep them <strong>waiting</strong>. There is nothing more annoying than a late co-passenger.
                            </p>
                        </div>
                    </div>
@@ -84,10 +84,10 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               Sound sleep is necessary for good health but it’s not a good idea to <strong>sleep</strong> when you are sharing a ride.
+                               Sound sleep is necessary for good health but it’s not a good idea to <strong>sleep</strong> when you are sharing a ride for your own safety as well as to ensure the driver is not sleepy. 
                            </p>
                        </div>
-                   </div>
+                   </div><%--
 
                    <!-- SINGLE FEATURE -->
                    <div class="feature">
@@ -104,7 +104,7 @@
                        </div>
                    </div>
 
-                   <!-- SINGLE FEATURE -->
+                   --%><!-- SINGLE FEATURE -->
                    <div class="feature">
                        <div class="icon-container">
                            <span class="fa fa-briefcase colored-text"></span>
@@ -114,7 +114,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               There is always limited space in car trunk. If you are carrying <strong>luggage</strong> please discuss with your co passangers about it.
+                               There is always limited space in the car trunk. If you are traveling with luggage, please discuss this with your co-passengers <strong>beforehand</strong>.
                            </p>
                        </div>
                    </div>
@@ -162,7 +162,7 @@
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               For convenience for other please <strong>Accept</strong> or <strong>Reject</strong> your incoming requests.
+                           		For convenience to others, please <strong>Accept</strong> or <strong>Reject</strong> your incoming requests.\
                            </p>
                        </div>
                    </div>
@@ -173,17 +173,17 @@
                            <span class="icon-basic-tablet colored-text"></span>
                        </div>
                        <div class="description text-left">
-                           <h4 class="dark-text">Mobile Usage</h4>
+                           <h4 class="dark-text">Mobile Usage/Playing Music</h4>
                            <div class="grey-line-short pull-left">
                            </div>
                            <p class="text-left">
-                               It is rude if as a co-passenger you are talking loud on mobile.
+                               Talking loudly on your mobile or music-playing is rude and can be distracting to the driver and your co-passengers. Respect their privacy (and their music tastes!) and avoid (or seek their permission for) any activities that could disturb them.
                            </p>
                        </div>
                    </div>
 
                    <!-- SINGLE FEATURE -->
-                   <div class="feature">
+                   <%--<div class="feature">
                        <div class="icon-container">
                            <span class="icon-ecommerce-money colored-text"></span>
                        </div>
@@ -197,8 +197,8 @@
                        </div>
                    </div>
                    
-                   <!-- SINGLE FEATURE -->
-                   <div class="feature">
+                   --%><!-- SINGLE FEATURE -->
+                   <%--<div class="feature">
                        <div class="icon-container">
                            <span class="icon-music-headphones colored-text"></span>
                        </div>
@@ -212,7 +212,7 @@
                        </div>
                    </div>
 
-               </div>
+               --%></div>
            </div>
        </div>
    </section>
