@@ -13,6 +13,8 @@ class NotificationService {
 	def grailsApplication
 	def emailService
 	def jmsService
+	def groovyPageRenderer
+	
 
 	@Queue(name= "msg.notification.workflow.state.change.queue") //also defined in Constant.java. Grails issue
 	def processRequestNotificationWorkflow(def messageMap) {
@@ -31,7 +33,7 @@ class NotificationService {
 				sendNotificationForAcceptRequest(sourceJourney,targetJourney)
 				break
 			case WorkflowStatus.REJECTED.status : // other user rejected request
-				sendNotificationForRejectequest(sourceJourney,targetJourney)
+				sendNotificationForRejectRequest(sourceJourney,targetJourney)
 				break
 			case WorkflowStatus.CANCELLED.status : // i am canceling previous accepted request
 				sendNotificationForCancelRequest(sourceJourney,targetJourney)
@@ -56,11 +58,11 @@ class NotificationService {
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)) {
 			def dateOfJourneyString = getFormattedDate(targetJourney.dateOfJourney)
-			String mailToRequester = "Your request to share a ride has been sent to ${requestTo?.profile?.fullName?.capitalize()}"
-			emailService.sendMail(requestIntiator.profile.email, "Your request has been sent", mailToRequester) 
+			//String mailToRequester = "Your request to share a ride has been sent to ${requestTo?.profile?.fullName?.capitalize()}"
+			//emailService.sendMail(requestIntiator.profile.email, "Your request has been sent", mailToRequester) 
+			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestReceived", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), sender:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: dateOfJourneyString]).toString()
+			emailService.sendMail(requestTo.profile.email, "Your have received a new CabShare request", emailContent)
 			
-			String mailToReciever = "You have received a request to share a ride with ${requestIntiator?.profile?.fullName.capitalize()}, for your journey to ${targetJourney.to} starting at ${dateOfJourneyString}"
-			emailService.sendMail(requestTo.profile.email, "Your have received a new request", mailToReciever)
 			
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
@@ -93,11 +95,13 @@ class NotificationService {
 	}
 
 	private sendNotificationForAcceptRequest(Journey sourceJourney, Journey targetJourney) {
+		def g = grailsApplication.mainContext.getBean('org.codehaus.groovy.grails.plugins.web.taglib.ApplicationTagLib')
 		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
-			String mailToRequester = "${requestIntiator?.profile?.fullName?.capitalize()} has accepted the request to share the ride with you"
-			emailService.sendMail(requestTo.profile.email, "Your request has been accepted", mailToRequester)
+			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestAccepted", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), accepter:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: getFormattedDate(targetJourney.dateOfJourney)]).toString()
+			//String mailToRequester = "${requestIntiator?.profile?.fullName?.capitalize()} has accepted the request to share the ride with you"
+			emailService.sendMail(requestTo.profile.email, "Your request has been accepted", emailContent)
 			
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
@@ -111,12 +115,14 @@ class NotificationService {
 		
 	}
 
-	private sendNotificationForRejectequest(Journey sourceJourney, Journey targetJourney) {
+	private sendNotificationForRejectRequest(Journey sourceJourney, Journey targetJourney) {
+		//rejecter
 		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
-			String mailToRequester = "${requestIntiator?.profile?.fullName?.capitalize()} has rejected the request to share the ride with you"
-			emailService.sendMail(requestTo.profile.email, "Your request has been rejected", mailToRequester)
+			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestRejected", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), rejecter:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: getFormattedDate(targetJourney.dateOfJourney)]).toString()
+			emailService.sendMail(requestTo.profile.email, "Your CabShare request has been rejected", emailContent)
+			
 			
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
@@ -132,8 +138,9 @@ class NotificationService {
 		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
-			String mailMessage = "Your journey request for ${getFormattedDate(targetJourney.dateOfJourney)} has been cancelled"
-			emailService.sendMail(requestTo.profile.email, "Your request has been cancelled", mailMessage + " by ${requestIntiator?.profile?.fullName?.capitalize()}")
+			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestCancel", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), user:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: getFormattedDate(targetJourney.dateOfJourney)]).toString()
+			emailService.sendMail(requestTo.profile.email, "Your CabShare request has been cancelled", emailContent)
+			
 			//emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessage)
 			
 			def  messageMap =[
@@ -151,10 +158,9 @@ class NotificationService {
 		User requestIntiator = getUserDeatils(sourceJourney.getEmail())
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
-			String mailMessageForRequester = "Your journey request for ${getFormattedDate(targetJourney.dateOfJourney)} has been cancelled"
-			String mailMessage = mailMessageForRequester + " by ${requestIntiator?.profile?.fullName?.capitalize()}"
-			//emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessageForRequester)
-			emailService.sendMail(requestTo.profile.email, "Your request has been cancelled", mailMessage)
+			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestCancel", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), user:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: getFormattedDate(targetJourney.dateOfJourney)]).toString()
+			emailService.sendMail(requestTo.profile.email, "Your CabShare request has been cancelled", emailContent)
+			
 			
 			def  messageMap =[
 				to: requestTo.profile.mobile, 
