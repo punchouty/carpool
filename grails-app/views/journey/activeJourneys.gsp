@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="layout" content="dynamic" />
-<title>My Requests</title>
+<title>My Rides</title>
 <r:require module="core" />
 <style>
 .modal-header {
@@ -29,9 +29,9 @@
 	        <!-- SECTION HEADER -->
 	        <div class="section-header-racloop">
 	            <div class="small-text-medium uppercase colored-text">
-	                My upcoming Journeys
+	                Upcoming Rides
 	            </div>
-	            <h2 class="dark-text"><strong>My</strong> Requests</h2>
+	            <h2 class="dark-text"><strong>My</strong> Rides</h2>
 	            <div class="colored-line">
 	            </div>
 	        </div>
@@ -182,7 +182,7 @@
 	   </g:if>
 	     <g:else>
 	  	<div class="well">
-		<h4>No Records Found</h4>
+		<h4>No Rides Found</h4>
 	 </div>
     </g:else>
  </div>

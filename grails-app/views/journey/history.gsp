@@ -1,7 +1,7 @@
 <html>
 <head>
 <meta name="layout" content="dynamic" />
-<title>My Past Requests</title>
+<title>History</title>
 <r:require module="core" />
 <style>
 .modal-header {
@@ -16,9 +16,9 @@
         <!-- SECTION HEADER -->
         <div class="section-header-racloop">
             <div class="small-text-medium uppercase colored-text">
-                My Journeys
+                My History
             </div>
-            <h2 class="dark-text"><strong>Past</strong> Requests</h2>
+            <h2 class="dark-text"><strong>Past</strong> Rides</h2>
             <div class="colored-line">
             </div>
         </div>
@@ -125,7 +125,7 @@
    </g:if>
      <g:else>
 	  <div class="well">
-		<h4>No Records Found</h4>
+		<h4>No History Found</h4>
 	 </div>
     </g:else>
  </div>
