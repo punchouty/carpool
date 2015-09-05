@@ -179,6 +179,7 @@ class UserSessionController {
 			user.profile.email = userMap.email
 			user.profile.mobile = userMap.mobile
 			user.facebookId = userMap.facebookId
+			user.profilePictureSource = Constant.FACEBOOK_PIX
 			def gender = userMap.gender 
 			if(gender != 'male') {
 				user.profile.isMale  = false

@@ -107,7 +107,7 @@
 
 <p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Your cab share request for ${journeyDate} to ${destination} has been cancelled by ${user}.</p>
 
-<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Log on to the CabShare app again and keep on looking for new sharing partners</p>
+<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Please log on to the CabShare app again and keep on looking for new cab/auto sharing partners.</p>
 
 
 
