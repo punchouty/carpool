@@ -129,7 +129,7 @@
 		                                <li>
 		                                	<g:if test = "${matchedWorkflowInstance.getMyStatus()=='Requested'}">
 		                                		<g:link action="cancelRequest" id="cancelRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId(), myJourneyId:journeyInstance.id]">
-		   												<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel Request</button>
+		   												<button class="btn btn-danger"><i class="fa fa-times"></i> Cancel Request</button>
 		   										</g:link>
 		                                	</g:if>
 		                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Request Received'}">
@@ -142,7 +142,7 @@
 		                                	</g:elseif>
 		                                	<g:elseif test = "${matchedWorkflowInstance.getMyStatus()=='Accepted'}">
 		                                		<g:link action="cancelRequest" id="cancelIncomingRequest"  params="[pairId: matchedWorkflowInstance.getMyPairId(), myJourneyId:journeyInstance.id]">
-														<button class="btn btn-danger"><i class="fa fa-trash"></i> Cancel accepted Request</button>
+														<button class="btn btn-danger"><i class="fa fa-times"></i> Cancel Accepted Request</button>
 												</g:link>
 		                                	</g:elseif>
 		                                	
