@@ -13,139 +13,139 @@
 			<!-- SECTION HEADER -->
            <div class="section-header">
                <div class="small-text-medium uppercase colored-text">
-                   Privacy
+                   Data Privacy
                </div>
                <h2 class="dark-text">Privacy Policy</h2>
                <div class="colored-line">
                </div>
                <div class="sub-heading">
-                   Last updated on January 01, 2015
+                   Last updated on September 06, 2015
                </div>
            </div>
 			
            <div class="col-md-12 text-left">
 				<div>
-				CabShare (“we/our/us”) recognizes that privacy is important and respects the privacy needs and concerns of our subscribers.  The manner in which we handle any personal information, such as your name, address, email address or phone number ("Personal Information") that you provide to us is important to us.  This Privacy Policy describes the Personal Information we gather about you, what we do with it, the safeguards we have in place to protect it, and how you can control our use of it.  By using our website www.cabshare.in and any others that we may choose to include in our network (the “Website”) or any affiliated application on any device (“the App”), you agree, without limitation or qualification, to be bound by this Privacy Policy. When you provide Personal Information to us via the Website, the App, or any other method, you are consenting to the manner in which we will collect, use, disclose and otherwise manage your Personal Information, as set out below.
+				We, <strong>Ezzie Infosystems</strong>, a limited liability company incorporated under the Indian Companies Act, 2013, having its registered office at #24, Gracia Floor, Shiva Enclave, Kharar, Punjab (140301), represented by its Authorized Representative, where such expression shall, unless repugnant to the context thereof, be deemed to include its respective legal heirs, representatives, administrators, permitted successors and assigns, the creator of this Privacy Policy ensure our steady commitment to Your privacy with regard to the protection of your invaluable information. This privacy policy contains information about Mobile Application, Website and Company. In order to provide You with Our uninterrupted use of services, We may collect and, in some circumstances, disclose information about you. To ensure better protection of Your privacy, We provide this notice explaining Our information collection and disclosure policies, and the choices You make about the way Your information is collected and used. 
 				</div>
-               
-				<h4>Who May Use the CabShare?</h4>
+            	<div>If You have any queries or concerns regarding this privacy policy, please contact at admin@cabshare.in.
+            	</div>   
 				<div>
-				The Website and the App are not intended or designed to attract users under the age of 18.  We do not collect Personal Information from any person we know to be under the age of 18.  If you are under 18, we ask that you not use our Website, the App, or send us any Personal Information.
+				<br/><br/>
+				<strong>ANY CAPITALIZED WORDS USED HENCEFORTH SHALL HAVE THE MEANING ACCORDED TO THEM UNDER THIS AGREEMENT. FURTHER, ALL HEADING USED HEREIN ARE ONLY FOR THE PURPOSE OF ARRANGING THE VARIOUS PROVISIONS OF THE AGREEMENT IN ANY MANNER. NEITHER THE USER NOR THE CREATERS OF THIS PRIVACY POLICY MAY USE THE HEADING TO INTERPRET THE PROVISIONS CONTAINED WITHIN IT IN ANY MANNER.</strong>
+				<br/><br/>
 				</div>
 				
-				<h4>Collection and Use of Information</h4>
+				<h4>1. DEFINITIONS:</h4>
 				<div>
-					We may collect Personal Information that you provide us when you:
+					&nbsp;&nbsp;(a) <strong>“We”, “Our”, and “Us”</strong> shall mean and refer to the creators of this privacy policy.<br/>
+					&nbsp;&nbsp;(b) <strong>“You”, “Your”, “Yourself” and “User”</strong> shall mean and refer to natural and legal individuals who use the Mobile Application/Website.<br/>
+					&nbsp;&nbsp;(c) <strong>“Application”</strong> shall mean and refer to Cabshare created by Ezzie Infosystems LLP.<br/>
+					&nbsp;&nbsp;(d) <strong>“Personal Information”</strong> shall mean and refer to any personally identifiable information that We may collect from You. For removal of any doubts, please refer to Clause 2.<br/>
+					&nbsp;&nbsp;(e) <strong>“Third Parties”</strong> refer to any application, website, company or individual apart from the User and the creator of the Application.<br/>
+				</div>
+				
+				<h4>2.	OVERVIEW:</h4>
+				<div>
+					<p>We are committed to respecting Your online privacy. We further recognize Your need for appropriate protection and management of any Personal Information You share with us. </p>
+					<p>In order to use the services of this Website or Application, You are required to register Yourself by providing the following information which <i>inter alia</i> includes:</p>
 					<ul class="custom-ul">
-						<li>Register or log in to CabShare</li>
-						<li>Offer to provide or join a ride</li>
-						<li>Contact our Customer Support Team</li>
-						<li>Visit or register with our Website or participate in another feature of our Website, such as our blog</li>
-						<li>Provide us with comments or suggestions</li>
-						<li>Communicate with other customers of CabShare</li>
+						<li>Profile Image</li>
+						<li>Personal Information(Name, DOB, Email ID, Contact Number, Address etc.)</li>
 					</ul>
-					<p>
-					Choices for personal information. When you sign up for a particular service that requires registration, such as offering or joining a ride, we ask you to provide Personal Information. If we use this information in a manner different than the purpose for which it was collected, then we will ask for your consent prior to such use. If we propose to use personal information for any purposes other than those described in this Privacy Policy, we will offer you an effective way to opt out of the use of personal information for those other purposes. We will not collect or use sensitive information for purposes other than those described in this Privacy Policy, unless we have obtained your prior consent. You can decline to submit Personal Information to us, in which case CabShare may not be able to provide services to you.
-					</p>
+				</div>
+				
+				<h4>3.	INFORMATION COLLECTED:</h4>
+				<div>
+					<p>We may collect the following information:</p>
+					<ul class="custom-ul">
+						<li>Personal data of the User such as, but not limited to, Your name, Your address, Your age, Your email address and Your Phone Number.</li>
+						<li>Tracking Information such as, but not limited to the IP address of Your device when connected to the Internet.</li>
+						<li>Geographic Location of the User, used to provide real time tracking of current location on the map.</li>
+					</ul>
+				</div>
+				
+				<h4>4.	COOKIES:</h4>
+				<div>
+					We use data collection device known as “cookies” at certain stages of use of Our Website/ Application. “Cookies” are small files situated on Your mobile/ computer/ device’s hard disk that assists Us in providing customised services. A cookie helps us analyse your preferences by, for example, recording the number of times you have used the Application, and help us in tailoring our services to suit your interests. Further, there are certain features of the Application that are available only through the use of a “cookie”. These “cookies” may be used whether You register on the Application or not. However, a “cookie” does not give Us access to your device. 
+					<br/>
+					You may choose to disable the “cookie” feature on Your device. But this may prevent full utilization of the services provided by the Application.
+				</div>
+				
+				<h4>5.	EXTERNAL LINKS ON THE APPLICATION:</h4>
+				<div>
+				<p>The Website/Application may include advertisements hyperlinks to other websites, applications, content or resources. We have no control over such external links present in the Application, which are provided by persons or companies other than Us.</p>
+				<p>You acknowledge and agree that We are not responsible for any collection or disclosure of your Personal Information by any external sites, applications, companies or persons, nor are do We endorse any advertising, products or other material on or available from such external application, websites or resources.</p>
+				<p>You further acknowledge and agree that We are not liable for any loss or damage which may be incurred by You as a result of the collection and/or disclosure of Your personal information by external applications, sites or resources, or as a result of any reliance placed by You on the completeness, accuracy or existence of any advertising, products or other materials on, or available from such applications, websites or resources. This external application, websites and resource providers may have their own privacy policies governing the collection, storage, retention and disclosure of Your Personal Information that You may be subject to. We recommend that You enter the external application or website and review their privacy policy.</p>
+				<p>We allow third parties/individuals to display advertisements when you use the Website/ Application.</p>
+				</div>
+				
+				<h4>6.	OUR USE OF YOUR INFORMATION:</h4>
+				<div>
+				<p>The information provided by You at the time of registration shall be used to contact You when necessary. For more details about the nature of such communications, please refer to Our Terms of Service. Further, Your personal data and Sensitive Personal Information may be collected and stored by Us for internal record.</p> 
+				<p>We use Your tracking information such as IP addresses to help identify you and to gather broad demographic information.</p> 
+				<p>We may release your Personal Information to a third-party in order comply with a Court Order or other similar legal procedure, or when we believe in good faith that such disclosure is necessary to comply with the law; prevent imminent physical harm or financial loss; or investigate or take action regarding illegal activities, suspected fraud, or violations of Our Terms of Use. We may disclose Personal Information to parties in compliance with our Copyright Policy as mentioned in the Terms of Use as we in our sole discretion believe necessary or appropriate in connection with an investigation of fraud, intellectual property infringement, piracy, or other unlawful activity.</p>
+				<p>In case We are acquired by or merged with another company, We shall transfer information disclosed by You and information about You to the company we are acquired by or merged with. In the event of a merger or acquisition, Weshall notify You by email/by putting a prominent notice on the Website/ Application before Your Personal Information is transferred and becomes subject to a different privacy policy.</p> 
+				
+				</div>
+				
+				<h4>7.	CONFIDENTIALITY:</h4>
+				<div>
+				<p>You further acknowledge that this Website/ Application may contain information which is designated confidential by Us and that you shall not disclose such information without our prior written consent</p> 
+				<p>Your information is regarded as confidential and therefore shall not be divulged to any third party, unless if legally required to do so to the appropriate authorities, or if necessary to ensure Users may fully avail of the services of the Application.</p> 
+				<p>We shall not sell, share, or rent your personal information to any third party or use your e-mail address for unsolicited mail. Any communication by Us to You shall be undertaken in accordance with Our Terms of Service and Privacy Policy.</p> 
+				
+				</div>
+				
+				<h4>8.	DISCLOSURE OF YOUR INFORMATION TO THIRD PARTIES:</h4>
+				<div>
+				<p>Due to the existing regulatory environment, We cannot ensure that all of your Personal Information shall never be disclosed in ways other than those described in this Privacy Policy. For example, but without limiting and foregoing to, We may be forced to disclose Your Personal Information to the government, law enforcement agencies or other Third Parties. Under certain circumstances, Third Parties may unlawfully intercept or access transmission or private communications, or abuse or misuse Your Personal Information that they may collect from our Website/ Application. Therefore, although we use industry standard practices to protect your privacy, we do not promise, and you should not expect, that your personally identifiable information or private communications would always remain private.</p>
+				<p>As a matter of policy, we do not sell or rent any Personal Information about You and/or disclosed by You to Third Parties.</p>
 					<div>
-					Information we collect and how we use it.
-					
-					<ul class="custom-ul">
-						<li><strong>Log information.</strong> When you access our Website or the App, our servers automatically record information that your browser or mobile device sends whenever you visit a website. These server logs may include information such as your web request, Internet Protocol address, browser type, browser language, the date and time of your request and one or more cookies that may uniquely identify your browser.</li>
-						<li><strong>User communications</strong> When you send e-mail, messages or other communications to or through CabShare, we may retain those communications in order to process your inquiries, respond to your requests, and improve our services.</li>
-						<li><strong>Affiliated CabShare Services on other sites.</strong> Personal information that you provide as part of or in connection with messages delivered by CabShare to other third party sites may be collected by CabShare. We process such information under this Privacy Policy. The sites to which CabShare delivers messages may have different privacy practices and we encourage you to read their privacy policies.</li>
-						<li><strong>Location data.</strong> CabShare offers location-enabled services. If you use those services, CabShare may receive information about your actual location (such as GPS signals sent by a mobile device) or information that can be used to approximate a location (such as a cell ID).</li>
-						<li><strong>Links.</strong> CabShare may present links to videos, music, games, and other forms of multimedia in a format that enables us to keep track of whether these links have been followed. We use this information to improve the quality of our search technology, customized content and advertising.</li>
-						<li><strong>Other websites</strong> This Privacy Policy applies to CabShare and our Website and the App only. We do not exercise control over third party websites or apps displayed as search results or websites or apps that include CabShare applications, products or services, or websites or apps that link to our Website or the App. These other sites or apps may place their own cookies or other files on your computer, and collect data or solicit personal information from you.</li>
-					</ul>
+						&nbsp;&nbsp;&nbsp;&nbsp;<strong>8.1	External Service Providers:</strong> There may be a number of services offered by external service providers that help You use our Application. If You choose to use these optional services, and in the course of doing so, disclose information to the external service providers, and/ or grant them permission to collect information about You, then their use of Your information is governed by their privacy policy.<br/>
+						&nbsp;&nbsp;&nbsp;&nbsp;<strong>8.2	Other Corporate Entities:</strong> We share much of our data, including Your Personal Information, with Our parent and/ or subsidiaries that are committed to serving Your needs through use of Our Application and related services, throughout the world. Such data shall be shared for the sole purpose of enhancing Your experience of using the Application. To the extent that these entities have access to your information, they shall treat it at least as protectively as they treat information they obtain from their other members. It is possible that We and/or its subsidiaries, or any combination of such, could merge with or be acquired by another business entity. Should such a combination occur, you should expect that we would share some or all of your information in order to continue to provide the service. You shall receive notice of such event (to the extent it occurs).<br/>
+						&nbsp;&nbsp;&nbsp;&nbsp;<strong>8.3	Law and Order:</strong>  We cooperate with law enforcement inquiries, as well as other third parties to enforce laws, such as: intellectual property rights, fraud and other rights. We can, and You so authorise Us, disclose Your Personal Information to law enforcement and other government officials as We, in Our sole discretion, believe necessary or appropriate, in connection with an investigation of fraud, intellectual property infringements, or other activity that is illegal or may expose Us/ Us or You to any legal liability. <br/>
 					</div>
+					<p>Any information that you make publically available on the site may be potentially viewed by any party, and by posting such material it is deemed that you consent to share such information with such parties.</p>
+					<p>You may request details of the Your Personal Information collected and/ disclosed by Us. Such a request may be made under the IT Act, 2000 or Indian IT (spi) Rules, 2011. If You would require such details, please email us at admin@cabshare.in</p>
+					
 				</div>
 				
-				<h4>Customer Support</h4>
+				<h4>9.	ACCESSING, REVIEWING AND CHANGING YOUR PROFILE:</h4>
 				<div>
-				When you contact our Customer Support and Community Team about a ride, billing question or for customer service, you may be asked for Personal Information that identifies you along with additional information we may need to help us promptly answer your question, such as your name and address and a phone number where we might contact you. We may retain this information to assist you in the future.
+				<p>Following registration, You can review and change the information You submitted at the stage of registration. If you believe that any information we are holding on you is incorrect or incomplete, please update your profile in Mobile app or website.</p>
+				<p>We shall retain in Our files information You have requested to remove for certain circumstances, such as to resolve disputes, troubleshoot problems and enforce Our terms and conditions. Further, such prior information is never completely removed from Our databases due to technical and legal constraints, including stored 'back up' systems. Therefore, You should not expect that all of Your personally identifiable information shall be completely removed from our databases in response to Your requests.</p>
+				
 				</div>
 				
-				<h4>Site Registration</h4>
+				<h4>10.	CONTROL OF YOUR PASSWORD:  (OPTIONAL)</h4>
 				<div>
-				You do not have to register to browse our Website or download the App but you must register to use the services provided via our Website and the App. Your registration information may be used to help make your online access to CabShare services on our Website or the App a quicker and easier ride-booking experience by pre-filling certain parts of your information. When you register you will have the opportunity to sign up for future marketing information from CabShare.
+				<p>When You register on the Website/Application, You shall be asked to choose a password. You are entirely responsible for maintaining the confidentiality of Your password. It is important that You protect it against unauthorised access of Your account and information by choosing Your password carefully, keeping Your password and device secure by signing out after using Our services and exercising caution in disclosing Your password if needed.</p> 
+				<p>You agree not to use the account, username, email address or password of another User at any time. Further, if You choose to disclose Your password to any Third Party, You are solely responsible for all actions taken with Your account information and password, including fees. If You lose control of Your password, You may lose substantial control over Your Personal Information and may be subject to legally binding actions taken on Your behalf. Therefore, in the event of loss of Your password, You should immediately change Your password. Further, You agree to notify Us immediately if You suspect any consistent unauthorized use of Your account or access to Your password even after changing it.</p>
 				</div>
 				
-				<h4>Contests, Reviews, Questions or Surveys</h4>
+				<h4>11.	SECURITY:</h4>
 				<div>
-				When you ask a question, participate in a survey or enter a contest or sweepstakes, we may collect your name, address, phone number and e-mail address. We use this information to administer your participation in a contest or sweepstakes. At the time you are entering a contest or sweepstakes, we may ask your permission to send you future marketing information from CabShare.
+				We treat data as an asset that must be protected against loss and unauthorised access. We employ many different security techniques to protect such data from unauthorised access by members inside and outside Ezzie Infosystems. We follow generally accepted industry standards to protect the Personal Information submitted to Us and information that we have accessed. However, “perfect security” does not exist on the Internet. You therefore agree that any security breaches beyond the control of Our standard security procedures are at Your sole risk and discretion.
 				</div>
 				
-				<h4>Other Uses of Personal Information</h4>
+				<h4>12.	INDEMNITY:</h4>
 				<div>
-				CabShare also uses Personal Information, including information provided to us from our Service Providers, to continually assess and improve the products and/or services we offer. To serve you better, we may combine the Personal Information that you give us with publicly available information and information we receive from or cross-reference with our marketing partners and others. We use that combined information to enhance and personalize your experience with us, to communicate with you about our services, products and events that may be of interest to you, and for other promotional purposes. We will also disclose your Personal Information to comply with any legal obligation (including responding to subpoenas or orders of courts, legislative or administrative bodies and law enforcement authorities) or in order to enforce or apply the CabShare terms of use and other agreements, or to protect the rights, property, or safety of CabShare, our users or others. This includes exchanging information with other companies and organizations for the purposes of fraud protection and credit risk reduction.
+				You agree and undertake to indemnify us against in any suit or dispute by any Third Party arising out of disclosure of Personal Information by You to Third Parties either through Our Application or otherwise and Your use and access of websites, applications and resources of Third Parties. We assume no liability for any actions of Third Parties with regard to Your Personal Information, which You may have disclosed to such Third Parties. 
 				</div>
 				
-				<h4>Promotional Information and Marketing Materials</h4>
+				<h4>13.	SEVERABILITY:</h4>
 				<div>
-				When you register online or participate in a survey, you may have the opportunity to sign up for e-mails about our products, services, sales and special offers. We may also send you mail, e-mail or call you with information about our product and service offerings if you have provided us with your name and address, e-mail address or phone number. If you would like to stop receiving such promotional information, please see the "Privacy Preferences/Opt-Out" section of this Privacy Statement.
+				Each paragraph of this privacy policy shall be and remain separate from and independent of and severable from all and any other paragraphs herein except where otherwise expressly indicated or indicated by the context of the agreement. The decision or declaration that one or more of the paragraphs are null and void shall have no effect on the remaining paragraphs of this privacy policy.
 				</div>
 				
-				<h4>Disclosure of Personal Information</h4>
+				<h4>14.	AMENDMENT:</h4>
 				<div>
-				CabShare only shares Personal Information with other companies or individuals outside of CabShare in the following limited circumstances:
-				<ul class="custom-ul">
-					<li>When we have your consent.</li>
-					<li>When we provide such information to our subsidiaries, affiliated companies or other trusted businesses or persons for the purpose of processing personal information on our behalf. We require that these parties agree to process such information based on our instructions and in compliance with this Privacy Policy and any other appropriate confidentiality and security measures.</li>
-					<li>When we have a good faith belief that access, use, preservation or disclosure of such information is reasonably necessary to (a) satisfy any applicable law, regulation, legal process or enforceable governmental request, (b) enforce applicable Terms of Use, including investigation of potential violations thereof, (c) detect, prevent, or otherwise address fraud, security or technical issues, or (d) protect against harm to the rights, property or safety of CabShare, its users or the public as required or permitted by law</li>
-					<li>If CabShare or any of our service providers is requested by law enforcement officials or judicial authorities to provide Personal Information on individual users, CabShare or the applicable service provider may, without your consent, provide such information. In matters involving claims of personal or public safety, CabShare or the applicable service provider may provide your Personal Information to appropriate authorities without your consent or court process. CabShare or the applicable service provider will also provide your Personal Information in response to a search warrant or other legally valid inquiry or order, or to an investigative body in the case of a breach of an agreement or contravention of law, or in litigation involving CabShare or the applicable service or otherwise as required by law.</li>
-				</ul>
-				<p>
-				If CabShare becomes involved in a merger, acquisition, or any form of sale of some or all of its assets, or CabShare dissolves, liquidates, or goes into bankruptcy we will take reasonable steps to ensure the confidentiality of any personal information involved in such transactions and provide notice before personal information is transferred and becomes subject to a different privacy policy.
-				</p>
-				<p>
-				We may share with third parties certain pieces of aggregated, non-personal information, such as the number of users who searched for a particular route, for example, or how many users clicked on a particular advertisement. Such information does not identify you individually.
-				</p>
+				Our Privacy Policy may change from time to time. Hence we shall post any privacy policy changes on the homepage of the Website/ Application or notify You by email.
 				</div>
 				
-				<h4>Access to Personal Information</h4>
+				<h4>15.	DISCLAIMER:</h4>
 				<div>
-				You may request access to the Personal Information that we have about you at any time.
-				</div>
-				
-				<h4>Privacy Preferences / Opt-Out</h4>
-				<div>
-				If you wish to change your preferences to receive or not receive marketing materials, please submit information via the appropriate link on the Website or via e-mail to admin@cabshare.in. You may update these preferences at any time. Please allow sufficient time for your preferences to be processed.
-				</div>
-				
-				<h4>Additional Information about Visiting Our Website</h4>
-				<div>
-				In general, you can visit our Website or download the App without telling us who you are or providing us with any information. However, we collect the IP (Internet protocol) addresses of all visitors to our Website and other related information such as page requests, browser type, operating system and average time spent on our Website. We use this information to monitor and improve our Website and the App.
-				</div>
-				
-				<h4>Cookies and Tracer Tags</h4>
-				<div>
-				Our Website uses a technology called "cookies" which are small files containing a string of characters sent to your browser which may be then stored on your computer or other device that uniquely identifies your browser so that we can recognize you when you return to our Website. We use cookies to improve the quality of our service, including for storing user preferences, improving search results and ad selection, and tracking user trends, such as how people search. CabShare also uses cookies in its advertising services to help advertisers and publishers serve and manage ads across the web. We may set one or more cookies in your browser when you visit a website, including CabShare affiliate sites that use our advertising cookies, and view or click on an ad supported by CabShare advertising services. Our Website may also use a technology called "tracer tags" which are also referred to as "Clear GIFs" or "Web Beacons". This technology allows us to understand which pages you visit on our Website. These tracer tags are used to help us optimize and tailor our Website and associated apps for you and other future visitors.
-				</div>
-				
-				<h4>Security of Personal Information</h4>
-				<div>
-				We maintain administrative, technical and physical safeguards to protect against unauthorized access, use, modification and disclosure of Personal Information in our custody and control. We also are committed to employing reasonable technology in order to protect the security of our Website. However, even with the best technology, no website is 100% secure. We will take reasonable measures which we believe are appropriate to protect your Personal Information from loss, misuse, alteration or destruction, and, where possible, will ask that any third parties to whom we may transfer such information to take comparable steps to protect that security.
-				</div>
-				
-				<h4>Our Privacy Policy and Outside Links</h4>
-				<div>
-				This Privacy Policy only applies to our Website and the App. Our Website or the App may include links to the websites or apps of third parties including, but not limited to, our business partners, vendors and advertisers. These other sites are outside of our control. Please be aware that these websites or apps may collect information about you, and operate according to their own privacy practices which may differ from those contained in our Privacy Policy. Remember to consult that website's or app's own privacy policy, as once you are outside of our Website or communicate with another website or app using our Website or the App, any information you submit is no longer in our control.
-				</div>
-				
-				<h4>Privacy Policy Modifications</h4>
-				<div>
-				From time to time we may modify or amend this Privacy Policy in order to comply with new laws or regulations or to reflect future changes in our business practices. Any changes in our policies will be communicated in this page so please check back on occasion. We also may post a notice on our Website or send an e-mail or chat message describing the changes.
-				</div>
-				
-				<h4>Contacting Us</h4>
-				<div>
-				When you contact our Customer Support and Community Team about a ride, billing question or for customer service, you may be asked for Personal Information that identifies you along with additional information we may need to help us promptly answer your question, such as your name and address and a phone number where we might contact you. We may retain this information to assist you in the future.
-				</div>
-				
-				<h4>Customer Support</h4>
-				<div>
-				If you have any questions about this Privacy Policy or our handling of Personal Information, please feel free to write to us at admin@cabshare.in or call us at  +91 7307392447
+				We cannot ensure that all of Your private communications and other personal information (including sensitive information like credit card information and bank account number) shall never be disclosed in ways not otherwise described in this Privacy Policy. Therefore, although We are committed to protecting Your privacy, We do not promise, and You should not expect, that Your personal information shall always remain private. As a User of the Website/ Application, You understand and agree that You assume all responsibility and risk for Your use of the Application, the internet generally, and the documents You post or access and for Your conduct on and off the Application.
 				</div>
            </div>
        </div>

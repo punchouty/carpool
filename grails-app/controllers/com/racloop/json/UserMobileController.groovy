@@ -855,11 +855,27 @@ class UserMobileController {
 	def installReferer() {
 		def json = request.JSON
 		log.info("installReferer() json : ${json}");
-		Mobile mobileDevice = Mobile.findByUuid(json.uuid);
-		if(!mobileDevice) {
+		String mobileNumber = null;
+		String uuid = null;
+		if(json.uuid == null || json.uuid?.toString().equals("null")) {
+			uuid = null;
+		}
+		else {
+			uuid = json.uuid?.toString();
+		}
+		if(json.phoneNumber == null || json.phoneNumber?.toString().equals("null")) {
+			mobileNumber = null;
+		}
+		else {
+			mobileNumber = json.phoneNumber?.toString();
+		}
+		String uuidPhoneNumber = getUniqueDeviceKey(uuid, mobileNumber)
+		Mobile mobileDevice = Mobile.findByUuidPhoneNumber(uuidPhoneNumber);
+		if(mobileDevice == null) {
 			def mobile = new Mobile();
 			mobile.referrer = json.referrer;
-			mobile.uuid = json.uuid;
+			mobile.uuid = uuid;
+			mobile.phoneNumber = mobileNumber;
 			mobile.imei = json.imei;
 			mobile.imsi = json.imsi;
 			mobile.iccid = json.iccid;
@@ -879,7 +895,7 @@ class UserMobileController {
 			mobile.oSVersion = json.osVersion;
 			mobile.cordova = json.cordova;
 			mobile.userAgent = request.getHeader("User-Agent")
-			if(json.phoneNumber == null || json.phoneNumber?.toString().equals("null")) mobile.phoneNumber = null;
+			mobile.uuidPhoneNumber = uuidPhoneNumber
 			if(!mobile.save()) {
 				mobile.errors.each {
 					log.error "Install Failure : " + it
@@ -889,49 +905,27 @@ class UserMobileController {
 				log.info("New installation success")
 			}
 		}
-		else {
-			log.info("Already there : ${mobileDevice.phoneNumber} ${json.phoneNumber} ")
-			if(mobileDevice.phoneNumber != null) {
-				log.info("${mobileDevice.phoneNumber}")
-				if(json.phoneNumber != null) {
-					log.info("${json.phoneNumber}")
-					if(!mobileDevice.phoneNumber.equals(json.phoneNumber)) {
-						def mobile = new Mobile();
-						mobile.referrer = json.referrer;
-						mobile.uuid = json.uuid;
-						mobile.imei = json.imei;
-						mobile.imsi = json.imsi;
-						mobile.iccid = json.iccid;
-						mobile.mac = json.mac;
-						mobile.carrierName = json.carrierName;
-						mobile.countryCode = json.countryCode;
-						mobile.mcc = json.mcc;
-						mobile.mnc = json.mnc;
-						mobile.phoneNumber = json.phoneNumber;
-						mobile.callState = json.callState;
-						mobile.dataActivity = json.dataActivity;
-						mobile.networkType = json.networkType;
-						mobile.phoneType = json.phoneType;
-						mobile.simState = json.simState;
-						mobile.model = json.model;
-						mobile.platform = json.platform;
-						mobile.osVersion = json.osVersion;
-						mobile.cordova = json.cordova;
-						mobile.userAgent = request.getHeader("User-Agent")
-						if(!mobile.save()) {
-							mobile.errors.each {
-								log.error "Repeated Install Failure : " + it
-							}
-						}
-						else {
-							log.info("New installation success")
-						}
-					}
-				}
-			}
-		}
 		MobileResponse mobileResponse = new MobileResponse()
 		mobileResponse.success = true
+		render mobileResponse as JSON
+	}
+	
+	def radioTaxi() {
+		log.info("radioTaxi() json : ${json}");
+		MobileResponse mobileResponse = new MobileResponse()
+		mobileResponse.success = true
+		render mobileResponse as JSON
+	}
+	
+	def callUser() {
+		log.info("callUser() json : ${json}");
+		MobileResponse mobileResponse = new MobileResponse()
+		mobileResponse.success = true
+		render mobileResponse as JSON
+	}
+	
+	private String getUniqueDeviceKey(String uuid, String phoneNo) {
+		return uuid + "_" + phoneNo
 	}
 		
 }

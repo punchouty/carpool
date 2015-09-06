@@ -22,9 +22,12 @@ class Mobile {
 	String platform
 	String oSVersion
 	String userAgent
+	String uuidPhoneNumber
+	Date createdDate = new Date();
 	
 	static mapping = {
 		uuid column: "Uuid", index : "Uuid_Index"
+		uuidPhoneNumber column: "UuidPhoneNumber", index : "uuidPhoneNumber_index"
 	}
 
     static constraints = {
@@ -49,5 +52,6 @@ class Mobile {
 		platform(nullable: true, blank: true)
 		oSVersion(nullable: true, blank: true)
 		userAgent(nullable: true, blank: true)
+		uuidPhoneNumber(nullable: true, blank: true)
     }
 }

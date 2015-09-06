@@ -1,5 +1,7 @@
 package com.racloop
 
+import java.util.Date;
+
 class Affel {
 	String referrer
 	String uuid
@@ -8,6 +10,7 @@ class Affel {
 	String affelResponse
 	String appEvent = "Register"
 	Boolean success = true
+	Date createdDate = new Date();
 	
     static constraints = {
 		referrer(nullable: true, blank: true)

@@ -186,7 +186,7 @@ environments {
 		grails.startup.masterData.places.create = false
 		grails.startup.sampleData.create = false
 		grails.enable.delete.all = true
-		grails.delete.user.password = "s3cr3t"
+		grails.delete.user.password = "khw@!sh16092010"
 		
 		//grails.serverURL = "http://awseb-e-r-AWSEBLoa-14MW1J02IWQX1-349308203.ap-southeast-1.elb.amazonaws.com"
 		grails.plugin.facebooksdk.app.id = 827335057382382
