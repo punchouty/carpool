@@ -90,7 +90,7 @@
                        </div>
                        <h4 class="white-text">App Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           <a href="#">iOS 7+  (Coming Soon)</a>
+                           iOS 7+  (Coming Soon)
                        </p>
                    </div>
 
@@ -101,7 +101,7 @@
                        </div>
                        <h4 class="white-text">Play Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           <a href="#">Android 4+ (Coming Soon)</a>
+                           <a href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=website" target="_blank">Android 4+</a>
                        </p>
                    </div>
 
@@ -112,7 +112,7 @@
                        </div>
                        <h4 class="white-text">Windows Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           <a href="#">Windows 7+ (Coming Soon)</a>
+                           Windows 7+ (Coming Soon)
                        </p>
                    </div>
                </div>
