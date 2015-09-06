@@ -911,6 +911,7 @@ class UserMobileController {
 	}
 	
 	def radioTaxi() {
+		def json = request.JSON
 		log.info("radioTaxi() json : ${json}");
 		MobileResponse mobileResponse = new MobileResponse()
 		mobileResponse.success = true
@@ -918,6 +919,7 @@ class UserMobileController {
 	}
 	
 	def callUser() {
+		def json = request.JSON
 		log.info("callUser() json : ${json}");
 		MobileResponse mobileResponse = new MobileResponse()
 		mobileResponse.success = true
