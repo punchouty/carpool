@@ -528,4 +528,21 @@ class JourneyDataService {
 		
 	}
 	
+	def reloadESDataFromDynamoDB(final DateTime journeyDateFrom) {
+		DateTime journeyDate = new DateTime(journeyDateFrom)
+		Integer daysForward = Integer.valueOf(grailsApplication.config.grails.max.days.to.search)
+		DateTime journeyDateUpto = journeyDateFrom.plusDays(daysForward)
+		while (journeyDate.compareTo(journeyDateUpto) <= 0) {
+			log.info "Trying to load data for date: ${journeyDate}"
+			List journeys = findAllJourneysForADate(journeyDateFrom.toDate())
+			for(Journey journey : journeys) {
+				searchService.indexJourney(journey, journey.getId());
+			}
+			log.info "Data loaded for date: ${journeyDate}"
+			journeyDate = journeyDate.plusDays(1)
+		}
+
+
+	}
+	
 }

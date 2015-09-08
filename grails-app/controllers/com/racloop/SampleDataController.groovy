@@ -1,7 +1,8 @@
 package com.racloop
 
-import grails.converters.JSON
 import grails.util.Environment
+
+import org.elasticsearch.common.joda.time.DateTime
 
 class SampleDataController {
 	
@@ -189,5 +190,11 @@ class SampleDataController {
 	def testRecurrence() {
 		recurrenceJourneyService.activateJourneys()
 		render "Activated suceesully"
+	}
+	
+	def restoreES() {
+		DateTime journeyDateFrom = new DateTime().minusHours(6)
+		journeyDataService.reloadESDataFromDynamoDB(journeyDateFrom)
+		render "All data loaded."
 	}
 }
