@@ -8,7 +8,7 @@ class Affel {
 	String imei
 	String oSVersion
 	String affelResponse
-	String appEvent = "Register"
+	String appEvent = Constant.APP_EVENT_FIRST_OPEN
 	Boolean success = true
 	Date createdDate = new Date();
 	

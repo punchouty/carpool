@@ -165,6 +165,7 @@ environments {
 		grails.plugin.facebooksdk.app.secret = '3461eaa74e391bb6add17f9b25a38355'
 		grails.sms.enable=false
 		grails.email.enable=true
+		grails.affel.enable=false
 		
 		grails.activemq.data.dir = "${System.getProperty('user.home')}/racloop-data/activemq/data"
 		
@@ -194,6 +195,7 @@ environments {
 		grails.plugin.facebooksdk.app.secret = '02063ce45ea0d452fb12b756495ce787'
 		grails.sms.enable=true
 		grails.email.enable=true
+		grails.affel.enable=true
 		
 		grails.activemq.data.dir = "/var/cache/tomcat7/activemq/data"
 		

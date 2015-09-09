@@ -58,4 +58,7 @@ public interface Constant {
 	public static final String LOGIN_ON_FLY = "LoginOnFly";
 	
 	public static final String DEFAULT_PASSWORD = "P@ssw0rd";
+	
+	public static final String APP_EVENT_FIRST_OPEN = "FirstOpen";
+	public static final String APP_EVENT_SIGNUP_COMPLETE = "SignupComplete";
 }

@@ -369,25 +369,31 @@ class UserMobileController {
 			def verificationCode = json?.verificationCode
 			def status = userManagerService.verify(mobile+"", verificationCode+"")
 			if(status == GenericStatus.SUCCESS) {
+				log.info("Mobile verified and signup complete")
 				def uuid = json?.uuid
 				if(uuid !=  null && !uuid.equals("browser")) {
 					Mobile mobileDevice = Mobile.findByUuid(uuid);
-					Affel affel = new Affel();
-					affel.referrer = mobileDevice.referrer
-					affel.uuid = mobileDevice.uuid
-					affel.imei = mobileDevice.imei
-					affel.oSVersion = mobileDevice.oSVersion
 					if(mobileDevice) {
-						def resp = rest.get("https://affle.co/global/install.php?af_cid=1439883271&af_tid=${mobileDevice.referrer}&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}");
-						if(resp.getStatus() != 200) {
-							log.error("Sending fail : " + resp.getStatus() + " : " + resp.text)
-							affel.success = false
+						Affel affel = new Affel();
+						affel.referrer = mobileDevice.referrer
+						affel.uuid = mobileDevice.uuid
+						affel.imei = mobileDevice.imei
+						affel.oSVersion = mobileDevice.oSVersion
+						affel.appEvent = Constant.APP_EVENT_SIGNUP_COMPLETE
+						Boolean affelEnabled = grailsApplication.config.grails.affel.enable
+						String url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&${mobileDevice.referrer}&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_event=${affel.appEvent}&af_ua_os_version=${mobileDevice.oSVersion}"; 
+						if(affelEnabled) {
+							def resp = rest.get(url);
+							if(resp.getStatus() != 200) {
+								log.error("Sending fail : " + resp.getStatus() + " : " + resp.text)
+								affel.success = false
+							}
+							else {
+								log.info("Sending success to Affel : " + url)
+							}
+							affel.affelResponse = resp.text
+							affel.save()
 						}
-						else {
-							log.info("sending success to Affel")
-						}
-						affel.affelResponse = resp.text
-						affel.save()
 					}
 				}
 				else {
@@ -902,7 +908,27 @@ class UserMobileController {
 				}
 			}
 			else {
+				Boolean affelEnabled = grailsApplication.config.grails.affel.enable
+				String url = "https://affle.co/global/install.php?af_cid=1439883271&${mobileDevice.referrer}&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}"
 				log.info("New installation success")
+				if(affelEnabled) {
+					Affel affel = new Affel();
+					affel.referrer = mobileDevice.referrer
+					affel.uuid = mobileDevice.uuid
+					affel.imei = mobileDevice.imei
+					affel.oSVersion = mobileDevice.oSVersion
+					affel.appEvent = Constant.APP_EVENT_FIRST_OPEN
+					def resp = rest.get(url);
+					if(resp.getStatus() != 200) {
+						log.error("Sending fail : " + resp.getStatus() + " : " + resp.text)
+						affel.success = false
+					}
+					else {
+						log.info("Sending success to Affel : " + url)
+					}
+					affel.affelResponse = resp.text
+					affel.save()
+				}
 			}
 		}
 		MobileResponse mobileResponse = new MobileResponse()
