@@ -20,4 +20,8 @@ class Affel {
 		appEvent(nullable: true, blank: true)
 		affelResponse(nullable: true, blank: true)
     }
+	
+	static mapping = {
+		uuid column: "Uuid", index : "Affel_Uuid_Index"
+	}
 }
