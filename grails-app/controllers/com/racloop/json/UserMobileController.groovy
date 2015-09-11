@@ -925,10 +925,10 @@ class UserMobileController {
 				log.info("New installation success")
 				if(affelEnabled) {
 					Affel affel = new Affel();
-					affel.referrer = mobileDevice.referrer
-					affel.uuid = mobileDevice.uuid
-					affel.imei = mobileDevice.imei
-					affel.oSVersion = mobileDevice.oSVersion
+					affel.referrer = mobile.referrer
+					affel.uuid = mobile.uuid
+					affel.imei = mobile.imei
+					affel.oSVersion = mobile.oSVersion
 					affel.appEvent = Constant.APP_EVENT_FIRST_OPEN
 					def resp = rest.get(url);
 					if(resp.getStatus() != 200) {
