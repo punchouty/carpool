@@ -380,14 +380,14 @@ class UserMobileController {
 						}
 						else {
 							Boolean affelEnabled = grailsApplication.config.grails.affel.enable
+							Affel affel = new Affel();
+							affel.referrer = mobileDevice.referrer
+							affel.uuid = mobileDevice.uuid
+							affel.imei = mobileDevice.imei
+							affel.oSVersion = mobileDevice.oSVersion
+							affel.appEvent = Constant.APP_EVENT_SIGNUP_COMPLETE
 							String url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&${mobileDevice.referrer}&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_event=${affel.appEvent}&af_ua_os_version=${mobileDevice.oSVersion}";
 							if(affelEnabled) {
-								Affel affel = new Affel();
-								affel.referrer = mobileDevice.referrer
-								affel.uuid = mobileDevice.uuid
-								affel.imei = mobileDevice.imei
-								affel.oSVersion = mobileDevice.oSVersion
-								affel.appEvent = Constant.APP_EVENT_SIGNUP_COMPLETE
 								def resp = rest.get(url);
 								if(resp.getStatus() != 200) {
 									log.error("Sending fail : " + resp.getStatus() + " : " + resp.text)
