@@ -50,7 +50,7 @@
         <ul class="social-icons">
             <li><a href="https://www.facebook.com/cabshare.in" target="_blank"><span class="icon-social-facebook transparent-text-dark"></span></a>
             </li>
-            <li><a href="https://twitter.com/cabsharein" target="_blank"><span class="icon-social-twitter transparent-text-dark"></span></a>
+            <li><a href="https://twitter.com/cabshare_in" target="_blank"><span class="icon-social-twitter transparent-text-dark"></span></a>
             </li>
         </ul>
         

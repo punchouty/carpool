@@ -386,7 +386,13 @@ class UserMobileController {
 							affel.imei = mobileDevice.imei
 							affel.oSVersion = mobileDevice.oSVersion
 							affel.appEvent = Constant.APP_EVENT_SIGNUP_COMPLETE
-							String url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&${mobileDevice.referrer}&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_event=${affel.appEvent}&af_ua_os_version=${mobileDevice.oSVersion}";
+							String url = null;
+							if(mobileDevice.referrer == null) {
+								url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}&af_event=${affel.appEvent}"
+							}
+							else {
+								url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}&af_event=${affel.appEvent}&${mobileDevice.referrer}";
+							}
 							if(affelEnabled) {
 								def resp = rest.get(url);
 								if(resp.getStatus() != 200) {
@@ -914,6 +920,13 @@ class UserMobileController {
 			mobile.cordova = json.cordova;
 			mobile.userAgent = request.getHeader("User-Agent")
 			mobile.uuidPhoneNumber = uuidPhoneNumber
+			String referrerTemp = json.referrer?.toString();
+			if(referrerTemp == null || referrerTemp.equals("None") || referrerTemp.equals("None_Error")) {
+				mobile.referrer = null;
+			}
+			else {
+				mobile.referrer = referrerTemp;
+			}
 			if(!mobile.save()) {
 				mobile.errors.each {
 					log.error "Install Failure : " + it
@@ -921,7 +934,13 @@ class UserMobileController {
 			}
 			else {
 				Boolean affelEnabled = grailsApplication.config.grails.affel.enable
-				String url = "https://affle.co/global/install.php?af_cid=1439883271&${mobile.referrer}&af_android_id=${mobile.uuid}&af_udid=${mobile.imei}&af_ua_os_version=${mobile.oSVersion}"
+				String url = null;
+				if(mobile.referrer == null) {
+					url = "https://affle.co/global/install.php?af_cid=1439883271&af_android_id=${mobile.uuid}&af_udid=${mobile.imei}&af_ua_os_version=${mobile.oSVersion}"
+				}
+				else {
+					url = "https://affle.co/global/install.php?af_cid=1439883271&af_android_id=${mobile.uuid}&af_udid=${mobile.imei}&af_ua_os_version=${mobile.oSVersion}&${mobile.referrer}"
+				}
 				log.info("New installation success")
 				if(affelEnabled) {
 					Affel affel = new Affel();
