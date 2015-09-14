@@ -2,8 +2,6 @@ package com.racloop
 
 import grails.util.Environment
 
-import org.elasticsearch.common.joda.time.DateTime
-
 class SampleDataController {
 	
 	def testDataService
@@ -14,6 +12,7 @@ class SampleDataController {
 	def cabDetailsService
 	def autoMatcherService
 	def recurrenceJourneyService
+	def houseKeepingService
 
     def index() { 
 		render "Empty Implementation"
@@ -193,8 +192,12 @@ class SampleDataController {
 	}
 	
 	def restoreES() {
-		DateTime journeyDateFrom = new DateTime().minusHours(6)
-		journeyDataService.reloadESDataFromDynamoDB(journeyDateFrom)
+		houseKeepingService.restoreESData()
 		render "All data loaded."
+	}
+	
+	def doLogsHousekeeping(){
+		houseKeepingService.archiveAnalyticsLogs()
+		render "Housekeeping done. Data uploaded to S3"
 	}
 }

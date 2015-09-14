@@ -70,7 +70,7 @@ class SecurityFilters extends NimbleFilterBase {
 			}
 		}
 		
-		supportUtils(controller: "sampleData", action: "(resetCabPriceMap)") {
+		supportUtils(controller: "sampleData", action: "(restoreES|resetCabPriceMap)") {
 			before ={
 				accessControl { role(AdminsService.ADMIN_ROLE) }
 			}
