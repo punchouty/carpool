@@ -201,7 +201,7 @@ class JourneyMobileController {
 				if(journey.getTripDistance() <= 50) priceMap = cabDetailsService.getDelhiCabPrices(currentJourneyCommand.getTripDistance(),currentJourneyCommand.getTripTimeInSeconds())
 			}
 			
-			if(wayPoints){
+			if(wayPoints && priceMap){
 				String html = groovyPageRenderer.render template: '/templates/misc/journeyDetails', model: [id: journeyId, wayPoints:wayPoints, priceMap:priceMap]
 				mobileResponse.success = true;
 				mobileResponse.message = html;

@@ -13,18 +13,23 @@ class CabDetailsService {
 	public static final String DELHI = "DELHI"
 	
 	def Map getDelhiCabPrices(Double distanceInKm, Integer timeInSeconds){
-		Binding binding = new Binding() ;
-		binding.setVariable( "distanceInKm", distanceInKm) ;
-		binding.setVariable( "timeInSeconds", timeInSeconds) ;
-		GroovyShell shell=new GroovyShell(binding)
-		String delhiPriceTemplate = cityViseCabPriceTemplateMap.get(DELHI)
-		if(!delhiPriceTemplate){
-			log.warn ("Unable to locat the cab price temaplate in memory. Reading from DB.")
-			delhiPriceTemplate = this.findCabPriceTemplateForACity(DELHI)
-			cityViseCabPriceTemplateMap.put(DELHI, delhiPriceTemplate)
+		if(distanceInKm && timeInSeconds){
+			Binding binding = new Binding() ;
+			binding.setVariable( "distanceInKm", distanceInKm) ;
+			binding.setVariable( "timeInSeconds", timeInSeconds) ;
+			GroovyShell shell=new GroovyShell(binding)
+			String delhiPriceTemplate = cityViseCabPriceTemplateMap.get(DELHI)
+			if(!delhiPriceTemplate){
+				log.warn ("Unable to locat the cab price temaplate in memory. Reading from DB.")
+				delhiPriceTemplate = this.findCabPriceTemplateForACity(DELHI)
+				cityViseCabPriceTemplateMap.put(DELHI, delhiPriceTemplate)
+			}
+			def priceMap = shell.evaluate(delhiPriceTemplate)
+			return priceMap
 		}
-		def priceMap = shell.evaluate(delhiPriceTemplate)
-		return priceMap
+		else {
+			return null
+		}
 	}
 	
 	def populateCityViseCabPriceTemplateFromFile() {
