@@ -374,9 +374,15 @@ class UserMobileController {
 				if(uuid !=  null && !uuid.equals("browser")) {
 					Mobile mobileDevice = Mobile.findByUuid(uuid);
 					if(mobileDevice) {
-						Affel affelPast = Affel.findByUuid(uuid);
-						if(affelPast) {
-							log.warn("Already interacted with Affel earlier with this UUID : " + uuid)
+						def allAffel = Affel.findAllByUuid(uuid);
+						boolean signupAlreadyRecorded = false;
+						allAffel.each { 
+							if(it.appEvent.equals(Constant.APP_EVENT_SIGNUP_COMPLETE)) {
+								signupAlreadyRecorded = true;
+							}
+						}
+						if(signupAlreadyRecorded) {
+							log.warn("Already verified with Affel earlier with this UUID : " + uuid)
 						}
 						else {
 							Boolean affelEnabled = grailsApplication.config.grails.affel.enable
