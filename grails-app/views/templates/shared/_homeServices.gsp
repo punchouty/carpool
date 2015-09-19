@@ -1,4 +1,14 @@
-
+	<%-- TODO Remove--%>
+	<div class="clients white-bg">
+        <ul class="client-logos">
+            <li>
+                <a href="https://www.facebook.com/hashtag/carfreeday" target="_blank"><span class="green-text">#CarFreeDay</span></a>
+            </li>
+            <li>
+                <a href="#">CabShare</a> In support with <a href="https://www.facebook.com/GTPGGN" target="_blank">Gurgaon Traffic Police</a> for Car Free Gurgaon
+            </li>
+        </ul>
+    </div>
 
 <!-- =========================
     SECTION: SERVICES
@@ -10,7 +20,7 @@
            <div class="section-header">
 
                
-               <h2 class="dark-text">A <strong>Free</strong> Cab and Auto Sharing Platform</h2>
+               <h2 class="dark-text"><strong>CabShare</strong> Free Cab and Auto Sharing Platform</h2>
                <div class="colored-line">
                </div>
                <div class="sub-heading">
@@ -101,7 +111,7 @@
                        </div>
                        <h4 class="white-text">Play Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           <a href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=website" target="_blank">Android 4+</a>
+                           <a href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=website">Android 4+</a>
                        </p>
                    </div>
 
@@ -403,7 +413,7 @@ During mobile app setup, please provide the phone numbers of your emergency cont
                    <div class="icon-container">
                        <span class="icon-basic-geolocalize-01 colored-text"></span>
                    </div>
-                   <a href="" class="strong">#24, Gracia Floor, Shiva Enclave, Kharar, Punjab 140301</a>
+                   <a href="#" class="strong">#704, Ramses Tower, Omaxe Nile, Sector 49, Gurgaon</a>
                    <!-- 30.758332, 76.633361 -->
                </div>
 
@@ -411,7 +421,7 @@ During mobile app setup, please provide the phone numbers of your emergency cont
                    <div class="icon-container">
                        <span class="icon-basic-tablet colored-text"></span>
                    </div>
-                   <a href="tel:+91 9717744392" class="strong">+91 9780242630</a>
+                   <a href="tel:+91 9717744392" class="strong">+91 9717744392</a>
                </div>
            </div>
 
@@ -425,7 +435,7 @@ During mobile app setup, please provide the phone numbers of your emergency cont
         <div id="cd-google-map">
             <div id="google-container">
             </div>
-            <address class="color-bg">#24, Gracia Floor, Shiva Enclave, Kharar, Punjab 140301</address>
+            <address class="color-bg">#704, Ramses Tower, Omaxe Nile, Sector 49, Gurgaon</address>
         </div>
     </div>
 

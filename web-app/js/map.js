@@ -449,10 +449,12 @@ jQuery(document).ready(function($) {
 
     "use strict";
     //set your google maps parameters
-    var $latitude = 30.758332, //If you unable to find latitude and longitude of your address. Please visit http://www.latlong.net/convert-address-to-lat-long.html you can easily generate.
-        $longitude = 76.633361,
-        $map_zoom = 12; /* ZOOM SETTING */
-
+//    var $latitude = 30.758332, //If you unable to find latitude and longitude of your address. Please visit http://www.latlong.net/convert-address-to-lat-long.html you can easily generate.
+//        $longitude = 76.633361,
+//        $map_zoom = 12; /* ZOOM SETTING */
+    var $latitude = 28.4085131, //If you unable to find latitude and longitude of your address. Please visit http://www.latlong.net/convert-address-to-lat-long.html you can easily generate.
+    $longitude = 77.0469811,
+    $map_zoom = 12; /* ZOOM SETTING */
     //google map custom marker icon - .png fallback for IE11
     var is_internetExplorer11 = navigator.userAgent.toLowerCase().indexOf('trident') > -1;
     var $marker_url = (is_internetExplorer11) ? 'images/map-marker.png' : 'images/map-marker.svg';
