@@ -81,7 +81,7 @@
 	                        </racloop:userLoggedIn>
                             <racloop:userNotLoggedIn>
 			                    <li class="login js-login">
-			                       <a href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=website">Get App <span class="fa fa-android"></span></a>
+			                       <a href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=ref_id%3Dwebsite">Get App <span class="fa fa-android"></span></a>
 			                  	</li>
                             	<g:if test="${isSignin == null}">
 	                            <li class="login js-login">

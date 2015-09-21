@@ -111,7 +111,7 @@
                        </div>
                        <h4 class="white-text">Play Store</h4>
                        <p class="uppercase transparent-text small-text">
-                           <a href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=website">Android 4+</a>
+                           <a href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=ref_id%3Dwebsite">Android 4+</a>
                        </p>
                    </div>
 
