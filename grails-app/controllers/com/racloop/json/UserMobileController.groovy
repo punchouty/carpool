@@ -392,12 +392,13 @@ class UserMobileController {
 							affel.imei = mobileDevice.imei
 							affel.oSVersion = mobileDevice.oSVersion
 							affel.appEvent = Constant.APP_EVENT_SIGNUP_COMPLETE
+							affel.remoteAddress = userDataService.getClientIpAddress(request);
 							String url = null;
 							if(mobileDevice.referrer == null) {
-								url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}&af_event=${affel.appEvent}"
+								url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}&af_event=${affel.appEvent}&REMOTE_ADDR=${affel.remoteAddress}"
 							}
 							else {
-								url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}&af_event=${affel.appEvent}&${mobileDevice.referrer}";
+								url = "https://affle.co/global/event.php?af_cid=1439883271&af_source=app&af_mode=1&af_android_id=${mobileDevice.uuid}&af_udid=${mobileDevice.imei}&af_ua_os_version=${mobileDevice.oSVersion}&af_event=${affel.appEvent}&REMOTE_ADDR=${affel.remoteAddress}&${mobileDevice.referrer}";
 							}
 							if(affelEnabled) {
 								def resp = rest.get(url);
@@ -926,6 +927,7 @@ class UserMobileController {
 			mobile.cordova = json.cordova;
 			mobile.userAgent = request.getHeader("User-Agent")
 			mobile.uuidPhoneNumber = uuidPhoneNumber
+			mobile.remoteAddress = userDataService.getClientIpAddress(request);
 			String referrerTemp = json.referrer?.toString();
 			if(referrerTemp == null || referrerTemp.equals("None") || referrerTemp.equals("None_Error")) {
 				mobile.referrer = null;
@@ -942,10 +944,10 @@ class UserMobileController {
 				Boolean affelEnabled = grailsApplication.config.grails.affel.enable
 				String url = null;
 				if(mobile.referrer == null) {
-					url = "https://affle.co/global/install.php?af_cid=1439883271&af_android_id=${mobile.uuid}&af_udid=${mobile.imei}&af_ua_os_version=${mobile.oSVersion}"
+					url = "https://affle.co/global/install.php?af_cid=1439883271&af_android_id=${mobile.uuid}&af_udid=${mobile.imei}&af_ua_os_version=${mobile.oSVersion}&REMOTE_ADDR=${mobile.remoteAddress}"
 				}
 				else {
-					url = "https://affle.co/global/install.php?af_cid=1439883271&af_android_id=${mobile.uuid}&af_udid=${mobile.imei}&af_ua_os_version=${mobile.oSVersion}&${mobile.referrer}"
+					url = "https://affle.co/global/install.php?af_cid=1439883271&af_android_id=${mobile.uuid}&af_udid=${mobile.imei}&af_ua_os_version=${mobile.oSVersion}&REMOTE_ADDR=${mobile.remoteAddress}&${mobile.referrer}"
 				}
 				log.info("New installation success")
 				if(affelEnabled) {
@@ -955,6 +957,7 @@ class UserMobileController {
 					affel.imei = mobile.imei
 					affel.oSVersion = mobile.oSVersion
 					affel.appEvent = Constant.APP_EVENT_FIRST_OPEN
+					affel.remoteAddress = mobile.remoteAddress
 					def resp = rest.get(url);
 					if(resp.getStatus() != 200) {
 						log.error("Sending fail : " + resp.getStatus() + " : " + resp.text)

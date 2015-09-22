@@ -11,6 +11,7 @@ class Affel {
 	String appEvent = Constant.APP_EVENT_FIRST_OPEN
 	Boolean success = true
 	Date createdDate = new Date();
+	String remoteAddress
 	
     static constraints = {
 		referrer(nullable: true, blank: true)
@@ -19,6 +20,7 @@ class Affel {
 		oSVersion(nullable: true, blank: true)
 		appEvent(nullable: true, blank: true)
 		affelResponse(nullable: true, blank: true)
+		remoteAddress(nullable: true, blank: true)
     }
 	
 	static mapping = {

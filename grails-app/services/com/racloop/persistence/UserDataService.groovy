@@ -46,7 +46,7 @@ class UserDataService {
 		awsService.dynamoDBMapper.save(record, new DynamoDBMapperConfig(DynamoDBMapperConfig.SaveBehavior.UPDATE));
 	}
 	
-	private String getClientIpAddress(request) {
+	public String getClientIpAddress(request) {
 		String ip = request.getHeader("X-Forwarded-For")
 		if(isNullOrUnknown(ip)) {
 			ip = request.getHeader("Proxy-Client-IP")

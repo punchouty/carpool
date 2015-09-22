@@ -24,6 +24,7 @@ class Mobile {
 	String userAgent
 	String uuidPhoneNumber
 	Date createdDate = new Date();
+	String remoteAddress
 	
 	static mapping = {
 		uuid column: "Uuid", index : "Uuid_Index"
@@ -53,5 +54,6 @@ class Mobile {
 		oSVersion(nullable: true, blank: true)
 		userAgent(nullable: true, blank: true)
 		uuidPhoneNumber(nullable: true, blank: true)
+		remoteAddress(nullable: true, blank: true)
     }
 }
