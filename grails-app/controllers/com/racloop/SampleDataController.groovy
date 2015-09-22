@@ -1,5 +1,6 @@
 package com.racloop
 
+import grails.converters.JSON
 import grails.util.Environment
 
 class SampleDataController {
@@ -199,5 +200,11 @@ class SampleDataController {
 	def doLogsHousekeeping(){
 		houseKeepingService.archiveAnalyticsLogs()
 		render "Housekeeping done. Data uploaded to S3"
+	}
+	
+	def generateJourneyReport() {
+		def json = journeyDataService.getJourneyReport(new Date()) as JSON 
+		json.prettyPrint = true
+		render json 
 	}
 }

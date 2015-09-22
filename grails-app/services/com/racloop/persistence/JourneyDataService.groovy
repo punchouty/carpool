@@ -541,8 +541,25 @@ class JourneyDataService {
 			log.info "Data loaded for date: ${journeyDate}"
 			journeyDate = journeyDate.plusDays(1)
 		}
-
-
+	}
+	
+	def List getJourneyReport(Date inputDate) {
+		Map returnMap = [:]
+		Set pairIds = [] as Set
+		List acceptedJourneys = []
+		List nonAcceptedJourneys = []
+		List journeys = this.findAllJourneysForADate(inputDate)
+		for(Journey journey : journeys) {
+			if(journey.getJourneyPairIds()) {
+				pairIds.addAll(journey.getJourneyPairIds())
+			}
+		}
+		List journeyPairs = journeyPairDataService.findPairsByIds(pairIds)
+		for (JourneyPair pair : journeyPairs) {
+			pair.setInitiatorJourney(this.findJourney(pair.getInitiatorJourneyId()))
+			pair.setRecieverJourney(this.findJourney(pair.getRecieverJourneyId()))
+		}
+		return journeyPairs
 	}
 	
 }
