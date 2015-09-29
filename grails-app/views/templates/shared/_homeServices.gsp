@@ -1,4 +1,5 @@
 	<%-- TODO Remove--%>
+	<%-- 
 	<div class="clients white-bg">
         <ul class="client-logos">
             <li>
@@ -8,8 +9,8 @@
                 <a href="#">CabShare</a> is in support with <a href="https://www.facebook.com/GTPGGN" target="_blank">Gurgaon Traffic Police</a> for <a href="https://www.facebook.com/hashtag/carfreegurgaon" target="_blank">#CarFreeGurgaon</a>
             </li>
         </ul>
-    </div
-
+    </div>
+	--%>
 <!-- =========================
     SECTION: SERVICES
    ============================== -->
