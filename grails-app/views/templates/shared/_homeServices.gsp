@@ -1,5 +1,5 @@
 	<%-- TODO Remove--%>
-	<%-- 
+	
 	<div class="clients white-bg">
         <ul class="client-logos">
             <li>
@@ -10,7 +10,7 @@
             </li>
         </ul>
     </div>
-	--%>
+	
 <!-- =========================
     SECTION: SERVICES
    ============================== -->

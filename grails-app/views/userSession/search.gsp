@@ -46,11 +46,11 @@
               <div class="intro-section">
 
                   <!-- WELCOM MESSAGE -->
-                  <h1 class="intro white-text">Search, Connect and Go</h1>
+                  <%--<h1 class="intro white-text">Search, Connect and Go</h1> --%>
                   
-                  <%-- <h1 class="intro white-text">Car Free Day</h1>
-                  <h5 class="white-text">Share Taxi and Auto Rides This 29 September. Reduce Your Travel Cost and Contribute to <a href="https://www.facebook.com/hashtag/carfreegurgaon"><span class="fa fa-leaf green-text"> Car Free Gurgaon</span></a></h5>--%>
-                  <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>
+                  <h1 class="intro white-text">Car Free Day</h1>
+                  <h5 class="white-text">Share Taxi and Auto Rides this 6th October. Reduce Your Travel Cost and Contribute to <a href="https://www.facebook.com/hashtag/carfreegurgaon"><span class="fa fa-leaf green-text"> Car Free Gurgaon</span></a></h5>
+                  <%-- <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>--%>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">
