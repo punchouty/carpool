@@ -76,6 +76,10 @@ class UserManagerService {
 	def verify(String mobile, String verificationCode, String email=null) {
 		Profile profile = getUserProfile(mobile, email)
 		if(profile) {
+			if(profile.isVerified && profile.owner.enabled) {
+				log.warn "Profile is already verified. Profile is ${profile}"
+				return GenericStatus.SUCCESS
+			}
 			if(profile.verificationCode == verificationCode) {
 				profile.isVerified = true
 				profile.save()
