@@ -159,7 +159,7 @@ public class Journey {
 		buffer.append("from : " + from + ", ");
 		buffer.append("to : " + to + ", ");
 		buffer.append("journeyPairIds : " + journeyPairIds + ", ");
-		buffer.append("isDummy : " + isDummy);
+		buffer.append("isDummy : " + isDummy + ", ");
 		buffer.append("isTaxi : " + isTaxi);
 		return buffer.toString();
 	}

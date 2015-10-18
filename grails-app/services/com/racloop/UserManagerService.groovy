@@ -51,12 +51,16 @@ class UserManagerService {
 	def setUpMobileVerification(String mobile, String email=null) {
 		Profile profile = getUserProfile(mobile,email)
 		if(profile) {
-			profile.verificationCode = generateVerificationCode();
-			profile.isVerified = false
-			profile.owner.enabled = false
-			profile.save()
-			profile.owner.save(flush:true)
-			
+			if(profile.verificationCode) {
+				log.info "Already has a verifiaction code. Code is ${profile.verificationCode}. Mobile number is ${mobile}"
+			}
+			else {
+				profile.verificationCode = generateVerificationCode();
+				profile.isVerified = false
+				profile.owner.enabled = false
+				profile.save()
+				profile.owner.save(flush:true)
+			}
 			def  messageMap =[(Constant.MOBILE_KEY) : mobile, (Constant.VERIFICATION_CODE_KEY):profile.verificationCode]
 			jmsService.send(queue: Constant.MOBILE_VERIFICATION_QUEUE, messageMap);
 			return GenericStatus.SUCCESS;
@@ -77,7 +81,7 @@ class UserManagerService {
 		Profile profile = getUserProfile(mobile, email)
 		if(profile) {
 			if(profile.isVerified && profile.owner.enabled) {
-				log.warn "Profile is already verified. Profile is ${profile}"
+				log.warn "Profile is already verified. Mobile is ${mobile}"
 				return GenericStatus.SUCCESS
 			}
 			if(profile.verificationCode == verificationCode) {

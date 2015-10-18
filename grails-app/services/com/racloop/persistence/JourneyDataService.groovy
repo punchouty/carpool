@@ -31,8 +31,8 @@ class JourneyDataService {
 	def journeyPairDataService
 
 	def createJourney(Journey journey) {
-		this.saveJourney(journey)
 		log.info("createJourney - ${journey}");
+		this.saveJourney(journey)
 		searchService.indexJourney(journey, journey.getId());
 	}
 	
@@ -130,6 +130,7 @@ class JourneyDataService {
 	 * Find Journey from Dynamo DB
 	 */
 	def saveJourney(Journey currentJourney) {
+		log.info("saveJourney - ${currentJourney}");
 		if(!currentJourney.photoUrl){
 			log.warn "Photo URL not present in journey. Going to DB to fetch it. Journey is: ${currentJourney}"
 			User user = User.findByUsername(currentJourney.getUser())
