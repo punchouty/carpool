@@ -16,7 +16,7 @@ class WorkflowMobileController {
 	def saveJourney() {
 		MobileResponse mobileResponse = new MobileResponse()
 		def currentUser = getAuthenticatedUser();
-		log.info("saveJourney() json : ${json}");
+		log.info("saveJourney()");
 		if(currentUser) {
 			JourneyRequestCommand currentJourney = session.currentJourneyCommand
 			if(currentJourney != null) {
