@@ -105,7 +105,7 @@ class JourneySearchService {
 		}
 		else {
 			if(searchFromDummy && noOfExistingPassanger<1 && currentJourney.tripDistance<=40 && currentJourney.isMale) {// show dummy only in case of male
-				mobileResponse = getGeneratedData(timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
+				mobileResponse = getGeneratedData(currentJourney.id, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 			}
 			else {
 				def emptyResults = []
@@ -119,11 +119,16 @@ class JourneySearchService {
 		return mobileResponse;
 	}
 	
-	private MobileResponse getGeneratedData(Date timeOfJourney, Date validStartTime, String mobile, Double fromLat, Double fromLon, Double toLat, Double toLon) {
+	private MobileResponse getGeneratedData(String currentJourneyId, Date timeOfJourney, Date validStartTime, String mobile, Double fromLat, Double fromLon, Double toLat, Double toLon) {
 		MobileResponse mobileResponse = new MobileResponse()
 		List<Journey> dummyResults = searchService.search(IndexMetadata.DUMMY_INDEX_NAME, timeOfJourney, validStartTime, mobile, fromLat, fromLon, toLat, toLon);
 		if(dummyResults.size() <= 0) {
 			dummyResults = searchService.generateData(timeOfJourney, mobile, fromLat, fromLon, toLat, toLon);
+		}
+		else {
+			if(currentJourneyId) {
+				dummyResults = enrichResult(dummyResults, currentJourneyId)
+			}
 		}
 		def returnJourneys = []
 		for (Journey dbJourney: dummyResults) {

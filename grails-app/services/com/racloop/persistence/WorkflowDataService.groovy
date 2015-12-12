@@ -355,10 +355,15 @@ class WorkflowDataService {
 			}
 		} 
 		else {
-			isValidRequest = false;
-			mobileResponse.success = false;
-			mobileResponse.message= "Something is wrong with the journey that you are trying to connect."
-			return isValidRequest
+			//See if its a dummy journey
+			Journey dummyJourney = journeyDataService.findJourneyFromElasticSearch(otherJourneyId, true)
+			if(!dummyJourney){
+				isValidRequest = false;
+				mobileResponse.success = false;
+				mobileResponse.message= "Something is wrong with the journey that you are trying to connect."
+				return isValidRequest
+			}
+			
 		}
 		return isValidRequest
 	}

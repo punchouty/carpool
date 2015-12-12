@@ -15,7 +15,7 @@
 
                         <!-- LOGO -->
                         <a id="logo-racloop" class="navbar-brand logo-racloop" href="${request.contextPath}/">
-                            CABSHARE
+                            OddlyEven
                             <!-- <img src="images/logo-nav.png" alt=""> -->
                         </a>
 
@@ -30,8 +30,8 @@
                             </li>
                             <li><a href="${request.contextPath}/#safety">Safety</a>
                             </li>
-                            <li><a href="http://blog.cabshare.in/" target="_blank">Blog</a>
-                            </li>
+                            <!-- <li><a href="http://blog.cabshare.in/" target="_blank">Blog</a>
+                            </li> -->
                             <li><a href="${request.contextPath}/#faq">FAQ</a>
                             </li>
                             <li><a href="${request.contextPath}/#about">About</a>

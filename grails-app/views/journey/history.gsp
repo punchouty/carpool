@@ -34,20 +34,21 @@
 		                <div>
 		                    <ul class="active-journey-list text-left">
 		                        <li>
-		                        	<%--
+		                        	
 		                        	<g:if test = "${journeyInstance.isDriver == true}">
 		                        		<span class="label label-primary">Car Owner <i class="fa fa-car"></i></span> 
 		                        	</g:if>
 		                        	<g:else>
 		                        		<span class="label label-primary">Ride Seeker <i class="fa fa-male"></i></span> 
 		                        	</g:else>
-		                        	--%>
+		                        	<%--
 		                        	<g:if test = "${journeyInstance.isTaxi == true}">
 		                        		<span class="label label-primary">Taxi</span> 
 		                        	</g:if>
 		                        	<g:else>
 		                        		<span class="label label-primary">Auto Rickshaw</span> 
 		                        	</g:else>
+		                        	--%>
 		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${journeyInstance.dateOfJourney}"/></span> 
 		                        	&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${journeyInstance.dateOfJourney}"/></span>
 		                        </li>
@@ -77,19 +78,21 @@
 	                    		<h5>${matchedWorkflowInstance?.name}</h5>
 	                    		<ul class="text-left">
 	                                <li>
-	                                	<%--<g:if test = "${matchedWorkflowInstance?.isDriver== true}">
+	                                	<g:if test = "${matchedWorkflowInstance?.isDriver== true}">
 	                                		<span class="label label-primary">Car Owner</span> 
 	                                	</g:if>
 	                                	<g:else>
 	                                		<span class="label label-primary">Ride Seeker</span> 
 	                                	</g:else>
-	                                	--%>
+	                                	
+	                                	<%--
 	                                	<g:if test = "${matchedWorkflowInstance?.isTaxi == true}">
 			                        		<span class="label label-primary">Taxi</span> 
 			                        	</g:if>
 			                        	<g:else>
 			                        		<span class="label label-primary">Auto Rickshaw</span> 
 			                        	</g:else>
+			                        	--%>
 	                                	<span class="${matchedWorkflowInstance.getMyStatus()=='Accepted'?'label label-success':(matchedWorkflowInstance.getMyStatus()=='Cancelled'?'label label-danger':(matchedWorkflowInstance.getMyStatus()=='Rejected'?'label label-info':'label label-info'))}">${matchedWorkflowInstance.getMyStatus()}</span>
 	                                	
 	                                </li>

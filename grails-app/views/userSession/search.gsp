@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta name="layout" content="main" />
-<title>CabShare - Free Cab and Auto sharing platform</title>
+<title>OddlyEven - Free car sharing service</title>
 <r:require module="map" />
 </head>
 <body>
@@ -34,7 +34,7 @@
       <div class="only-logo">
           <div class="navbar">
               <div class="navbar-header">
-              	<h2 class="white-text racloop-heading-big">Share Auto and Cabs</h2>
+              	<h2 class="white-text racloop-heading-big">Share your cars. Help Delhi</h2>
               </div>
           </div>
       </div>
@@ -49,8 +49,9 @@
                   <h1 class="intro white-text">Search, Connect and Go</h1>
                   
                   <%-- <h1 class="intro white-text">Car Free Day</h1>
-                  <h5 class="white-text">Share Taxi and Auto Rides this 6th October. Reduce Your Travel Cost and Contribute to <a href="https://www.facebook.com/hashtag/carfreegurgaon"><span class="fa fa-leaf green-text"> Car Free Gurgaon</span></a></h5>--%>
-                  <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>
+                  <h5 class="white-text">Share Taxi and Auto Rides this 6th October. Reduce Your Travel Cost and Contribute to <a href="https://www.facebook.com/hashtag/carfreegurgaon"><span class="fa fa-leaf green-text"> Car Free Gurgaon</span></a></h5>
+                  <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>--%>
+                  <h5 class="white-text">Share your vehicle and contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">
@@ -72,8 +73,8 @@
 							    <button type="button" id ="ask" value="ask"class="btn standard-button">Ask</button>
 							     <button type="button" id ="offer" value="offer" class="btn standard-button">Search</button>
 							     --%>
-							    <button type="button" id ="auto" value="auto" class="btn standard-button">Auto</button>
-							    <button type="button" id ="taxi" value="taxi" class="btn standard-button">Taxi</button>
+							    <button type="button" id ="auto" value="auto" class="btn standard-button">Offer</button>
+							    <button type="button" id ="taxi" value="taxi" class="btn standard-button">Ask</button>
 							    <button type="button" id ="clear" value="clear"class="btn standard-button standard-red-button">Clear</button>
 								<g:hiddenField name="validStartTimeString" value="${commandInstance?.validStartTimeString}" />
 								<g:hiddenField name="tripDistance" value="${commandInstance?.tripDistance}" />

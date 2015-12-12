@@ -2,11 +2,11 @@
 	
 	<div class="clients white-bg">
         <ul class="client-logos">
-            <li>
+            <!-- <li>
                 <a href="https://www.facebook.com/hashtag/carfreeday" target="_blank">#CarFreeDay</a>
-            </li>
+            </li> -->
             <li>
-                <a href="#">CabShare</a> is in support with <a href="https://www.facebook.com/GTPGGN" target="_blank">Gurgaon Traffic Police</a> for <a href="https://www.facebook.com/hashtag/carfreegurgaon" target="_blank">#CarFreeGurgaon</a>
+                <a href="#">OddlyEven</a> is in support with Delhi govt.
             </li>
         </ul>
     </div>
@@ -21,7 +21,7 @@
            <div class="section-header">
 
                
-               <h2 class="dark-text"><strong>CabShare</strong> Free Cab and Auto Sharing Platform</h2>
+               <h2 class="dark-text"><strong>OddlyEven</strong> Free car sharing platform</h2>
                <div class="colored-line">
                </div>
                <div class="sub-heading">
