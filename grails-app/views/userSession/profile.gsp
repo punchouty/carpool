@@ -165,6 +165,7 @@
 						<input type="text" id="cf-emergencyContactTwo" name="emergencyContactTwo" class="form-control input-box zero-margin" placeholder="Emergency Contact 2" value="${user.profile?.emergencyContactTwo}" pattern="^[6789]\d{9}$" data-validation-pattern-message="Invalid Phone Number">
               		</div>
                    
+                   <%--
                    <div class="text-left form-group">
 	            		<label for="travelModePreference">Travel Mode Preference:</label>
 	            		<g:select name="travelModePreference"  class="form-control input-box zero-margin" from="${['Auto','Taxi']}" value="${user.profile?.travelModePreference}"noSelection="['':'-Please Select-']"/> 
@@ -179,7 +180,7 @@
 	            		<label for="cabPreference">Cab Preference:</label>
 	            		<g:select name="cabPreference"  class="form-control input-box zero-margin" from="${['Ola','Uber', 'Meru Cabs', 'Easy Cabs','Mega Cabs', 'Others']}" value="${user.profile?.cabPreference}"noSelection="['':'-Please Select-']"/> 
 	            	</div>
-	            	
+	            	 --%>
               		<div class=" text-left">
                         <label class="radio-inline">
                             <input type="radio" name="sex" id="inlineRadio1" value="male" <g:if test="${user?.profile?.isMale}">checked</g:if>> Male
