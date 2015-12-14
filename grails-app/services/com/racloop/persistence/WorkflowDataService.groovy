@@ -263,7 +263,7 @@ class WorkflowDataService {
 		else {
 			pairTobeCancelled.setInitiatorStatus(WorkflowStatus.CANCELLED_BY_OTHER.getStatus())
 			pairTobeCancelled.setRecieverStatus(WorkflowStatus.CANCELLED_BY_ME.getStatus())
-			sendNotificationForWorkflowStateChange(pairTobeCancelled.getInitiatorJourneyId(), myJourneyId, WorkflowStatus.CANCELLED.getStatus())
+			sendNotificationForWorkflowStateChange(myJourneyId, pairTobeCancelled.getInitiatorJourneyId(), WorkflowStatus.CANCELLED.getStatus())
 		}
 		
 		journeyPairDataService.saveJourneyPair(pairTobeCancelled)

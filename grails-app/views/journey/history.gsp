@@ -97,8 +97,8 @@
 	                                	
 	                                </li>
 	                                <li> <i class="icon-basic-calendar"></i> <span><g:formatDate format="dd/MMM/yyyy" date="${matchedWorkflowInstance.dateOfJourney}"/></span> <i class="icon-clock-alt"></i> <span><g:formatDate format="hh:mm a" date="${matchedWorkflowInstance.dateOfJourney}"/></span></li>
-	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From :</strong>${matchedWorkflowInstance.from}</li>
-	                                <li><i class="icon-basic-map"></i> <strong>To :</strong>${matchedWorkflowInstance.to}</li>
+	                                <li><i class="icon-basic-geolocalize-01"></i> <strong>From : </strong>${matchedWorkflowInstance.from}</li>
+	                                <li><i class="icon-basic-map"></i> <strong>To : </strong>${matchedWorkflowInstance.to}</li>
 	                                <g:if test = "${matchedWorkflowInstance.getMyStatus()=='Accepted' && journeyInstance.id ==currentUser?.journeyIdForReview}">
 		                                <li>
 											<g:link action="loadReviewPage" controller ="review" params="[pairId: matchedWorkflowInstance.getMyPairId(), journeyId:journeyInstance.id]">

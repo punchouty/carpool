@@ -244,15 +244,15 @@ sms {
 	username = "cabshare"
 	password = "eC4yrnzu"
 	templates {
-		verification = 'Your verification code for www.cabshare.in is $verificationCode'
-		newRequest = 'There is new cab share request against your journey on $journeyDate by user $name'
-		acceptRequest = 'Your cab share request for journey on $journeyDate has been ACCEPTED by user $name. Mobile : $mobile'
-		rejectRequest = 'Your cab share request for journey on $journeyDate has been REJECTED by user $name.'
-		cancelRequest = 'Your cab share request for journey on $journeyDate has been CANCELLED by user $name.'
+		verification = 'Your verification code for www.oddlyeven.in is $verificationCode'
+		newRequest = 'There is new OddlyEven share request against your journey on $journeyDate by user $name'
+		acceptRequest = 'Your OddlyEven share request for journey on $journeyDate has been ACCEPTED by user $name. Mobile : $mobile'
+		rejectRequest = 'Your OddlyEven share request for journey on $journeyDate has been REJECTED by user $name.'
+		cancelRequest = 'Your OddlyEven share request for journey on $journeyDate has been CANCELLED by user $name.'
 		sos = '${name} has raised an SOS alert. Please contact him/her immediately. If unreachable please call police. Location: ${lat}, ${lng}'
 		sosUser = 'You have raised SOS alert. If you dont need emergency assistance, Please cancel it on app home screen.'
 		sosAdmin = '${name} | ${mobile} | ${email} | ${emergencyContactOne} | ${emergencyContactTwo} | ${lat} | ${lng} | ${journeyIds}'
-		newPassword = 'Your new password for www.cabshare.in is ${newPassword}'
+		newPassword = 'Your new password for www.oddlyeven.in is ${newPassword}'
 		autoMatch = 'You have ${newMatch} new match(es) and ${existing} existing match for your journey to ${to} on ${journeyDate}'
 		autoMatchWithoutExisting = 'You have ${newMatch} new match(es) for your journey to ${to} on ${journeyDate}'
 	}
