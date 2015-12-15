@@ -6,7 +6,13 @@
                 <a href="https://www.facebook.com/hashtag/carfreeday" target="_blank">#CarFreeDay</a>
             </li> -->
             <li>
-                <a href="#">OddlyEven</a> is in support with Delhi govt.
+                <a href="https://www.facebook.com/hashtag/oddlyeven">#OddlyEven</a> 
+            </li>
+            <li>
+                <a href="https://www.facebook.com/hashtag/oddevenformula" target="_blank">‪#‎OddEvenFormula‬</a> 
+            </li>
+            <li> 
+                <a href="https://www.facebook.com/hashtag/oddeven" target="_blank">#OddEven</a> 
             </li>
         </ul>
     </div>
@@ -85,11 +91,11 @@
                    <div class="small-text-medium uppercase colored-text">
                        Sign Up Today 
                    </div>
-                   <h2 class="white-text">Download the <strong class="white-text">CabShare</strong> App on your Smart Phone</h2>
+                   <h2 class="white-text">Download the <strong class="white-text">OddlyEven</strong> App on your Smart Phone</h2>
                    <div class="colored-line">
                    </div>
                    <div class="white-text sub-heading">
-                       Find and Connect with Others Quickly and Conveniently from your Mobile Device to Share your Cab ride
+                       Find and Connect with Others Quickly and Conveniently from your Mobile Device
                    </div>
                </div>
                <div class="row no-gutters">
@@ -407,7 +413,7 @@ During mobile app setup, please provide the phone numbers of your emergency cont
                    <div class="icon-container">
                        <span class="icon-basic-mail colored-text"></span>
                    </div>
-                   <a href="mailto:admin@cabshare.in" class="strong">admin@cabshare.in</a>
+                   <a href="mailto:admin@cabshare.in" class="strong">info@oddlyeven.in</a>
                </div>
 
                <div class="col-sm-4">

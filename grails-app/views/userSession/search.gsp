@@ -34,7 +34,7 @@
       <div class="only-logo">
           <div class="navbar">
               <div class="navbar-header">
-              	<h2 class="white-text racloop-heading-big">Share your cars. Help Delhi</h2>
+              	<h2 class="white-text racloop-heading-big" id="even-odd">Help #evenodd formula successful</h2>
               </div>
           </div>
       </div>
@@ -46,19 +46,19 @@
               <div class="intro-section">
 
                   <!-- WELCOM MESSAGE -->
-                  <h1 class="intro white-text">Search, Connect and Go</h1>
+                  <h1 class="intro white-text">Delhi fightbacks Pollution</h1>
                   
                   <%-- <h1 class="intro white-text">Car Free Day</h1>
                   <h5 class="white-text">Share Taxi and Auto Rides this 6th October. Reduce Your Travel Cost and Contribute to <a href="https://www.facebook.com/hashtag/carfreegurgaon"><span class="fa fa-leaf green-text"> Car Free Gurgaon</span></a></h5>
                   <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>--%>
-                  <h5 class="white-text">Share your vehicle and contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>
+                  <h5 class="white-text">Share cars, cabs, autos. Contribute to <span class="fa fa-leaf green-text"> Greener</span> Tomorrow.</h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">
                       <div class="col-sm-12">
                           <div class="horizontal-subscribe-form">
                           	<g:form class="form-inline" name="search-form" controller="journey" action="findMatching">
-                          		<input type="text" id="dateOfJourneyString" name="dateOfJourneyString" size="17" autocomplete="off" class="form-control input-box form_datetime" placeholder="Date and Time">
+                          		<input type="text" id="dateOfJourneyString" name="dateOfJourneyString" size="17" readonly autocomplete="off" class="form-control input-box form_datetime" placeholder="Date and Time">
                           		<span class="clearer glyphicon glyphicon-remove-circle form-control-feedback"></span>
                           		<input type="text" id="from" name="from" size="25" autocomplete="off" value="${commandInstance?.from}" class="form-control input-box" placeholder="From : Landmark">
                           		<g:hiddenField name="_hFromPlace" value="${commandInstance?.from}" />

@@ -217,7 +217,9 @@ var now = new Date();
 var reserveTime = 25;//in minutes
 var timeLimitInDays = 7;//in days
 var validStartTime = new Date(now.getTime() + reserveTime * 60000);
+console.log('validStartTime : ' + validStartTime)
 var initialTime = new Date(now.getTime() + (reserveTime + 15) * 60000);
+console.log('initialTime : ' + initialTime)
 //console.log(validStartTime);
 var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);
 //console.log(validEndTime);
@@ -225,7 +227,8 @@ var validEndTime = new Date(now.getTime() + timeLimitInDays * 24 * 60 * 60000);
 // for configration of time picker
 var uiValidStartTime = new Date(now.getTime() + 15 * 60000); // 15 minutes from now
 var uiValidEndTime = validEndTime; // 15 minutes from now
-
+var timeToDisplayInMiliiSeconds = parseInt(validStartTime/(15*60000)) * 15 * 60000;
+var timeToDisplay = new Date(timeToDisplayInMiliiSeconds);
 //Date format for date.js library - dd MMMM yyyy    hh:mm tt - map.js
 //This is different from that of datetime plugin which is - dd MM yyyy    HH:ii P - search.gsp
 //This in turn is different from Joda date format - dd MMMM yyyy    hh:mm a - JourneyController.groovy
@@ -242,13 +245,29 @@ $(function() {
         minuteStep: 15,
         showMeridian: true,
         pickerPosition: "top-left",
-        startDate: new Date(),
+        //initialDate: uiValidStartTime,
         format: 'dd M yy HH:ii P'
         //format: 'dd MM yyyy    HH:ii P'
     }).on('changeDate', function(ev){
+    	var isEven = ev.date.getDate() % 2 == 0;
+    	var dayOfMonth = ev.date.toString('dd MMMM')
+    	console.log()
+    	if(isEven) {
+    		$('#even-odd').text(dayOfMonth + " is for even numbered vehicles")
+    	}
+    	else {
+    		$('#even-odd').text(dayOfMonth + " is for odd numbered vehicles")
+    	}
     	//Nothing
     });
-
+	$('#dateOfJourneyString').val(timeToDisplay.toString('dd MMM yy hh:mm tt'));
+	var isEven = now.getDate() % 2 == 0;
+	if(isEven) {
+		$('#even-odd').text("Today is for even numbered vehicles")
+	}
+	else {
+		$('#even-odd').text("Today is for odd numbered vehicles")
+	}
 });
 
 
