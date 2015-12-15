@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta content="text/html; charset=utf-8" http-equiv="Content-Type" />
-<title>CabShare</title>
+<title>OddlyEven</title>
 </head>
 
 <body marginheight="0" topmargin="0" marginwidth="0" leftmargin="0" style="margin: 0px; background-color: #FFFFFF; font-family: Helvetica, Arial, sans-serif;">
@@ -44,7 +44,7 @@
     						<td style="margin: 0; padding: 0; border: 0;" width="452"><table cellspacing="0" border="0" style="margin: 0; padding: 0; border: 0;" cellpadding="0">
     							<tr height="55" style="margin: 0; padding: 0; border: 0;">
     								<td style="margin: 0; padding: 0; border: 0;" width="30"></td>
-    								<td style="margin: 0; padding: 0; border: 0;" align="left" width="422"><h1 style="padding: 13px 0 0 0; margin: 0; font-size: 38px; font-weight: bold; border: 0; color:#f9f9f9; font:Helvetica; font-family:Helvetica, sans-serif">CABSHARE</h1></td>
+    								<td style="margin: 0; padding: 0; border: 0;" align="left" width="422"><h1 style="padding: 13px 0 0 0; margin: 0; font-size: 38px; font-weight: bold; border: 0; color:#f9f9f9; font:Helvetica; font-family:Helvetica, sans-serif">OddlyEven</h1></td>
     								</tr>
     							<tr height="12" style="margin: 0; padding: 0; border: 0;">
     								<td style="margin: 0; padding: 0; border: 0;"></td>
@@ -91,7 +91,7 @@
 	<tr>
 		<td valign="middle" height="30" width="8%"><img style="margin: 0; padding: 0;" src="${grailsApplication.config?.grails?.serverURL}/images/email/arrow.png" height="20" width="16" /></td>
 		<td valign="middle" height="30" width="92%">
-		<h1 style="font-size: 20px; font-weight: bold; border: 0; color: #767676; display: inline; padding: 0; margin-top: 0px; margin-bottom: 0px; font-family:Helvetica, Arial, sans-serif">Your CabShare request has been accepted</h1>
+		<h1 style="font-size: 20px; font-weight: bold; border: 0; color: #767676; display: inline; padding: 0; margin-top: 0px; margin-bottom: 0px; font-family:Helvetica, Arial, sans-serif">Your OddlyEven request has been accepted</h1>
 		</td>
 	</tr>
 	</table>
@@ -105,15 +105,15 @@
 </table>
 		<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Dear ${reciever},</p>
 
-<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Your cab share request for ${journeyDate} to ${destination} has been accepted by ${accepter}.</p>
+<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Your OddlyEven share request for ${journeyDate} to ${destination} has been accepted by ${accepter}.</p>
 
-<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Please log on to the CabShare app and get in touch with ${accepter}</p>
+<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Please log on to the OddlyEven app and get in touch with ${accepter}</p>
 
 
 
 <p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">Happy sharing!!!</p>
 
-<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">The CabShare Team</p>
+<p style="margin-bottom: 15px; margin-top: 0; padding: 0; font-size: 12px; font-family: Helvetica, Arial, sans-serif; color:#949494">The OddlyEven Team</p>
 
 		
 

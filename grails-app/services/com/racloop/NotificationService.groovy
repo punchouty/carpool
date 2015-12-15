@@ -1,3 +1,4 @@
+
 package com.racloop
 
 import grails.plugin.jms.Queue
@@ -61,7 +62,7 @@ class NotificationService {
 			//String mailToRequester = "Your request to share a ride has been sent to ${requestTo?.profile?.fullName?.capitalize()}"
 			//emailService.sendMail(requestIntiator.profile.email, "Your request has been sent", mailToRequester) 
 			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestReceived", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), sender:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: dateOfJourneyString]).toString()
-			emailService.sendMail(requestTo.profile.email, "Your have received a new CabShare request", emailContent)
+			emailService.sendMail(requestTo.profile.email, "Your have received a new OddlyEven request", emailContent)
 			
 			
 			def  messageMap =[
@@ -121,7 +122,7 @@ class NotificationService {
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
 			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestRejected", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), rejecter:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: getFormattedDate(targetJourney.dateOfJourney)]).toString()
-			emailService.sendMail(requestTo.profile.email, "Your CabShare request has been rejected", emailContent)
+			emailService.sendMail(requestTo.profile.email, "Your OddlyEven request has been rejected", emailContent)
 			
 			
 			def  messageMap =[
@@ -139,7 +140,7 @@ class NotificationService {
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
 			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestCancel", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), user:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: getFormattedDate(targetJourney.dateOfJourney)]).toString()
-			emailService.sendMail(requestTo.profile.email, "Your CabShare request has been cancelled", emailContent)
+			emailService.sendMail(requestTo.profile.email, "Your OddlyEven request has been cancelled", emailContent)
 			
 			//emailService.sendMail(requestIntiator.profile.email, "Your request has been cancelled", mailMessage)
 			
@@ -159,7 +160,7 @@ class NotificationService {
 		User requestTo = getUserDeatils(targetJourney.getEmail())
 		if(validateUser(requestIntiator) && validateUser(requestTo)){
 			String emailContent = groovyPageRenderer.render(template: "/templates/email/requestCancel", model: [reciever: requestTo?.profile?.fullName?.capitalize(), destination:targetJourney.getTo(), user:requestIntiator?.profile?.fullName?.capitalize(), journeyDate: getFormattedDate(targetJourney.dateOfJourney)]).toString()
-			emailService.sendMail(requestTo.profile.email, "Your CabShare request has been cancelled", emailContent)
+			emailService.sendMail(requestTo.profile.email, "Your OddlyEven request has been cancelled", emailContent)
 			
 			
 			def  messageMap =[

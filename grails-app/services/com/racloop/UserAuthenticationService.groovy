@@ -3,6 +3,8 @@ package com.racloop
 import grails.plugin.facebooksdk.FacebookContext
 import grails.transaction.Transactional
 
+import org.apache.shiro.SecurityUtils
+
 
 
 class UserAuthenticationService {
