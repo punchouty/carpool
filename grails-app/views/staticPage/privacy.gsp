@@ -2,7 +2,7 @@
 <head>
 <meta name="layout" content="static" />
 <title>Privacy</title>
-<meta name="description" content="Privacy statement of CabShare services">
+<meta name="description" content="Privacy statement of OddlyEven services">
 <r:require module="core" />
 </head>
 
@@ -19,7 +19,7 @@
                <div class="colored-line">
                </div>
                <div class="sub-heading">
-                   Last updated on September 06, 2015
+                   Last updated on Dec 15, 2015
                </div>
            </div>
 			
@@ -27,7 +27,7 @@
 				<div>
 				We, <strong>Ezzie Infosystems</strong>, a limited liability company incorporated under the Indian Companies Act, 2013, having its registered office at #24, Gracia Floor, Shiva Enclave, Kharar, Punjab (140301), represented by its Authorized Representative, where such expression shall, unless repugnant to the context thereof, be deemed to include its respective legal heirs, representatives, administrators, permitted successors and assigns, the creator of this Privacy Policy ensure our steady commitment to Your privacy with regard to the protection of your invaluable information. This privacy policy contains information about Mobile Application, Website and Company. In order to provide You with Our uninterrupted use of services, We may collect and, in some circumstances, disclose information about you. To ensure better protection of Your privacy, We provide this notice explaining Our information collection and disclosure policies, and the choices You make about the way Your information is collected and used. 
 				</div>
-            	<div>If You have any queries or concerns regarding this privacy policy, please contact at admin@cabshare.in.
+            	<div>If You have any queries or concerns regarding this privacy policy, please contact at admin@oddlyeven.in.
             	</div>   
 				<div>
 				<br/><br/>
@@ -39,7 +39,7 @@
 				<div>
 					&nbsp;&nbsp;(a) <strong>“We”, “Our”, and “Us”</strong> shall mean and refer to the creators of this privacy policy.<br/>
 					&nbsp;&nbsp;(b) <strong>“You”, “Your”, “Yourself” and “User”</strong> shall mean and refer to natural and legal individuals who use the Mobile Application/Website.<br/>
-					&nbsp;&nbsp;(c) <strong>“Application”</strong> shall mean and refer to Cabshare created by Ezzie Infosystems LLP.<br/>
+					&nbsp;&nbsp;(c) <strong>“Application”</strong> shall mean and refer to OddlyEven created by Ezzie Infosystems LLP.<br/>
 					&nbsp;&nbsp;(d) <strong>“Personal Information”</strong> shall mean and refer to any personally identifiable information that We may collect from You. For removal of any doubts, please refer to Clause 2.<br/>
 					&nbsp;&nbsp;(e) <strong>“Third Parties”</strong> refer to any application, website, company or individual apart from the User and the creator of the Application.<br/>
 				</div>
@@ -106,7 +106,7 @@
 						&nbsp;&nbsp;&nbsp;&nbsp;<strong>8.3	Law and Order:</strong>  We cooperate with law enforcement inquiries, as well as other third parties to enforce laws, such as: intellectual property rights, fraud and other rights. We can, and You so authorise Us, disclose Your Personal Information to law enforcement and other government officials as We, in Our sole discretion, believe necessary or appropriate, in connection with an investigation of fraud, intellectual property infringements, or other activity that is illegal or may expose Us/ Us or You to any legal liability. <br/>
 					</div>
 					<p>Any information that you make publically available on the site may be potentially viewed by any party, and by posting such material it is deemed that you consent to share such information with such parties.</p>
-					<p>You may request details of the Your Personal Information collected and/ disclosed by Us. Such a request may be made under the IT Act, 2000 or Indian IT (spi) Rules, 2011. If You would require such details, please email us at admin@cabshare.in</p>
+					<p>You may request details of the Your Personal Information collected and/ disclosed by Us. Such a request may be made under the IT Act, 2000 or Indian IT (spi) Rules, 2011. If You would require such details, please email us at admin@oddlyeven.in</p>
 					
 				</div>
 				

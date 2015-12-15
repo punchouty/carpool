@@ -240,6 +240,7 @@ $(function() {
         //todayBtn:  true,
         startDate: uiValidStartTime,
         endDate: uiValidEndTime,
+        locale: 'in',
         todayHighlight: true,
 		autoclose: true,
         minuteStep: 15,
@@ -249,14 +250,14 @@ $(function() {
         format: 'dd M yy HH:ii P'
         //format: 'dd MM yyyy    HH:ii P'
     }).on('changeDate', function(ev){
-    	var isEven = ev.date.getDate() % 2 == 0;
+    	var dateStr = $('#dateOfJourneyString').val().substring(0,3);
+    	var isEven = dateStr % 2 == 0;
     	var dayOfMonth = ev.date.toString('dd MMMM')
-    	console.log()
     	if(isEven) {
-    		$('#even-odd').text("On " + dayOfMonth + " even numbered vehicles are plying on road.")
+    		$('#even-odd').text("On " + dateStr + " even numbered vehicles will be plying on road.")
     	}
     	else {
-    		$('#even-odd').text("On " + dayOfMonth + " odd numbered vehicles are plying on road.")
+    		$('#even-odd').text("On " + dateStr + " odd numbered vehicles will be plying on road.")
     	}
     	//Nothing
     });
@@ -368,10 +369,10 @@ function getErrorMessage() {
 				errorMessage = "You have selected past date/time";
 				return errorMessage;
 			}
-			else if(selectedDate < validStartTime) {
+			/*else if(selectedDate < validStartTime) {
 				//$('#dateOfJourneyString').addClass("control-group").addClass("error");
 				errorMessage = "You can select time only after 30 minutes from now";
-			}
+			}*/
 			else if(selectedDate > validEndTime) {
 				//$('#dateOfJourneyString').addClass("control-group").addClass("error");
 				errorMessage = "You can not select time more than seven days in future";
