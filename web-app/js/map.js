@@ -253,20 +253,20 @@ $(function() {
     	var dayOfMonth = ev.date.toString('dd MMMM')
     	console.log()
     	if(isEven) {
-    		$('#even-odd').text(dayOfMonth + " is for even numbered vehicles")
+    		$('#even-odd').text("On " + dayOfMonth + " even numbered vehicles are plying on road.")
     	}
     	else {
-    		$('#even-odd').text(dayOfMonth + " is for odd numbered vehicles")
+    		$('#even-odd').text("On " + dayOfMonth + " odd numbered vehicles are plying on road.")
     	}
     	//Nothing
     });
 	$('#dateOfJourneyString').val(timeToDisplay.toString('dd MMM yy hh:mm tt'));
 	var isEven = now.getDate() % 2 == 0;
 	if(isEven) {
-		$('#even-odd').text("Today is for even numbered vehicles")
+		$('#even-odd').text("Today even numbered vehicles are plying on road.")
 	}
 	else {
-		$('#even-odd').text("Today is for odd numbered vehicles")
+		$('#even-odd').text("Today odd numbered vehicles are plying on road.")
 	}
 });
 
