@@ -45,6 +45,7 @@
             <li><a href="${request.contextPath}/#safety" class="dark-text">Safety</a>
             </li>
         </ul>
+        
 
         <!-- SOCIAL ICONS -->
         <ul class="social-icons">
@@ -54,12 +55,13 @@
             </li>
         </ul>
         
+         <%--
          <ul class="social-icons">
          	<li>
          		<div class="fb-like" data-href="https://www.cabshare.in/" data-colorscheme ="light" data-layout="standard" data-action="like" data-share="true" ></div>
             </li>
          </ul>
-        
+         --%>
 
     </footer>
         
