@@ -152,7 +152,7 @@
 	<tr>
 		<td align="left" style="padding-bottom: 20px; padding-top: 8px;">
 		<p style="margin: 0; padding: 0; font-family: Helvetica, Arial, sans-serif; font-size: 12px; color:#949494">
-		<a href="https://www.facebook.com/cabshare.in"><img src="${grailsApplication.config?.grails?.serverURL}/images/email/facebook.png" /></a>
+		<a href="https://www.facebook.com/oddlyeven.in"><img src="${grailsApplication.config?.grails?.serverURL}/images/email/facebook.png" /></a>
 		<a href="https://twitter.com/cabsharein"><img src="${grailsApplication.config?.grails?.serverURL}/images/email/twitter.png" /></a>
 		<!--  <a href="#"><img src="${grailsApplication.config?.grails?.serverURL}/images/email/pin.png" /></a>
 		<a href="#"><img src="${grailsApplication.config?.grails?.serverURL}/images/email/inst.png" /></a> -->
