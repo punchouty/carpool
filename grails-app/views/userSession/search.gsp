@@ -34,7 +34,9 @@
       <div class="only-logo">
           <div class="navbar">
               <div class="navbar-header">
-              	<h2 class="white-text racloop-heading-big">Share your commute to make <a href="https://twitter.com/hashtag/OddEven" target="_blank">#oddeven</a> initiative a success</h2>
+              	<%--<h2 class="white-text racloop-heading-big">Share your commute to make <a href="https://twitter.com/hashtag/OddEven" target="_blank">#oddeven</a> initiative a success</h2>
+              --%>
+              <h2 class="white-text racloop-heading-big">Share Your Commute </h2>
               </div>
           </div>
       </div>
@@ -51,7 +53,7 @@
                   <%-- <h1 class="intro white-text">Car Free Day</h1>
                   <h5 class="white-text">Share Taxi and Auto Rides this 6th October. Reduce Your Travel Cost and Contribute to <a href="https://www.facebook.com/hashtag/carfreegurgaon"><span class="fa fa-leaf green-text"> Car Free Gurgaon</span></a></h5>
                   <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>--%>
-                  <h5 class="white-text"><span id="even-odd"></span> Share cars, cabs, autos and contribute to <span class='fa fa-leaf green-text'> Greener</span> Tomorrow.</h5>
+                  <h5 class="white-text"> Share car, cab and auto rides for free. Let's make <a href="https://twitter.com/hashtag/OddEven" target="_blank"><span class="green-text">#oddeven</span></a> initiative a success for better tomorrow.</h5>
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">

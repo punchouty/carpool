@@ -223,7 +223,7 @@ auditLog {
 
 grails {
 	mail {
-		from = "Cab Share <admin@cabshare.in>"
+		from = "OddlyEven <info@oddlyeven.in>"
 		host = "email-smtp.us-east-1.amazonaws.com"
 		port = 587
 		username = "AKIAILEU3VLFSXHCEVDA"
