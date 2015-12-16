@@ -181,7 +181,7 @@ environments {
 		grails.es.http.cors.allow.origin = "*"
 	}
 	production {
-		grails.serverURL="https://www.cabshare.in"
+		grails.serverURL="http://www.oddlyeven.in"
 		grails.startup.elasticsearch.index.create = false
 		grails.startup.sampleUsers.create = false
 		grails.startup.masterData.places.create = false
