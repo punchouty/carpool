@@ -1,199 +1,228 @@
-	<%-- TODO Remove--%>
-	
-	<div class="clients white-bg">
-        <ul class="client-logos">
-            <!-- <li>
+
+<%-- TODO Remove--%>
+
+<div class="clients white-bg">
+	<ul class="client-logos">
+		<!-- <li>
                 <a href="https://www.facebook.com/hashtag/carfreeday" target="_blank">#CarFreeDay</a>
             </li> -->
-            <li>
-                <a href="https://www.facebook.com/hashtag/oddlyeven">#OddlyEven</a> 
-            </li>
-            <li>
-                <a href="https://www.facebook.com/hashtag/oddevenformula" target="_blank">‪#‎OddEvenFormula‬</a> 
-            </li>
-            <li> 
-                <a href="https://www.facebook.com/hashtag/oddeven" target="_blank">#OddEven</a> 
-            </li>
-        </ul>
-    </div>
-	
+		<li><a href="https://www.facebook.com/hashtag/oddlyeven">#OddlyEven</a>
+		</li>
+		<li><a href="https://www.facebook.com/hashtag/oddevenformula"
+			target="_blank">‪#‎OddEvenFormula‬</a></li>
+		<li><a href="https://www.facebook.com/hashtag/oddeven"
+			target="_blank">#OddEven</a></li>
+	</ul>
+</div>
+
 <!-- =========================
     SECTION: SERVICES
    ============================== -->
-   <section class="services grey-bg" id="section1">
-       <div class="container">
+<section class="services grey-bg" id="section1">
+	<div class="container">
 
-           <!-- SECTION HEADER -->
-           <div class="section-header">
+		<!-- SECTION HEADER -->
+		<div class="section-header">
 
-               
-               <h2 class="dark-text"><strong>OddlyEven</strong> Free car sharing platform</h2>
-               <div class="colored-line">
-               </div>
-               <div class="sub-heading">
-                   Find people like you who want to <strong>Save</strong> money for <span class="green-text"><strong>greener</strong></span> tomorrow.
-               </div>
-           </div>
 
-           <div class="row">
+			<h2 class="dark-text">
+				<strong>OddlyEven</strong> Free car sharing platform
+			</h2>
+			<div class="colored-line"></div>
+			<div class="sub-heading">
+				Find people like you who want to <strong>Save</strong> money for <span
+					class="green-text"><strong>greener</strong></span> tomorrow.
+			</div>
+		</div>
 
-               <!-- SINGLE SERVICE -->
-               <div class="col-md-4 wow fadeInLeft" data-wow-offset="10" data-wow-duration="1.75s">
-                   <div class="single-service border-bottom-hover">
-                       <div class="service-icon colored-text">
-                           <span class="fa fa-inr"></span>
-                           <!-- <span class="fa fa-inr"></span> -->
-                       </div>
-                       <h3 class="colored-text">Save Money</h3>
-                       <p>
-                           Find other taxi or auto riders to travel with on your commute to office, home, or airport and share the journey cost
-                       </p>
-                   </div>
-               </div>
+		<div class="row">
 
-               <!-- SINGLE SERVICE -->
-               <div class="col-md-4 wow flipInY" data-wow-offset="10" data-wow-duration="1s">
-                   <div class="single-service border-bottom-hover">
-                       <div class="service-icon colored-text">
-                           <span class="fa fa-leaf"></span>
-                       </div>
-                       <h3 class="colored-text">Save Environment</h3>
-                       <p>
-                           Fewer vehicles on the road benefits every-one through reduced air and noise pollution
-                       </p>
-                   </div>
-               </div>
+			<!-- SINGLE SERVICE -->
+			<div class="col-md-4 wow fadeInLeft" data-wow-offset="10"
+				data-wow-duration="1.75s">
+				<div class="single-service border-bottom-hover">
+					<div class="service-icon colored-text">
+						<span class="fa fa-inr"></span>
+						<!-- <span class="fa fa-inr"></span> -->
+					</div>
+					<h3 class="colored-text">Save Money</h3>
+					<p>Find other taxi or auto riders to travel with on your
+						commute to office, home, or airport and share the journey cost</p>
+				</div>
+			</div>
 
-               <!-- SINGLE SERVICE -->
-               <div class="col-md-4 wow fadeInRight" data-wow-offset="10" data-wow-duration="1.75s">
-                   <div class="single-service border-bottom-hover">
-                       <div class="service-icon colored-text">
-                           <span class="fa fa-group"></span>
-                       </div>
-                       <h3 class="colored-text">Improve the Economy</h3>
-                       <p>
-                           Reduce our fuel import bill through lesser energy consumption. Increase your productivity and leisure time by spending less time on the road
-                       </p>
-                   </div>
-               </div>
+			<!-- SINGLE SERVICE -->
+			<div class="col-md-4 wow flipInY" data-wow-offset="10"
+				data-wow-duration="1s">
+				<div class="single-service border-bottom-hover">
+					<div class="service-icon colored-text">
+						<span class="fa fa-leaf"></span>
+					</div>
+					<h3 class="colored-text">Save Environment</h3>
+					<p>Fewer vehicles on the road benefits every-one through
+						reduced air and noise pollution</p>
+				</div>
+			</div>
 
-           </div>
-       </div>
-   </section>
+			<!-- SINGLE SERVICE -->
+			<div class="col-md-4 wow fadeInRight" data-wow-offset="10"
+				data-wow-duration="1.75s">
+				<div class="single-service border-bottom-hover">
+					<div class="service-icon colored-text">
+						<span class="fa fa-group"></span>
+					</div>
+					<h3 class="colored-text">Improve the Economy</h3>
+					<p>Reduce our fuel import bill through lesser energy
+						consumption. Increase your productivity and leisure time by
+						spending less time on the road</p>
+				</div>
+			</div>
 
-   <!-- =========================
+		</div>
+	</div>
+</section>
+
+<!-- =========================
     SECTION: SOME STATS   
    ============================== -->
-   <section class="stats" id="stats" data-stellar-background-ratio="0.5">
-       <div class="overlay-layer-2">
-           <div class="container">
-               <div class="section-header section-stats">
-                   <div class="small-text-medium uppercase colored-text">
-                       Sign Up Today 
-                   </div>
-                   <h2 class="white-text">Download the <strong class="white-text">OddlyEven</strong> App on your Smart Phone</h2>
-                   <div class="colored-line">
-                   </div>
-                   <div class="white-text sub-heading">
-                       Find and Connect with Others Quickly and Conveniently from your Mobile Device
-                   </div>
-               </div>
-               <div class="row no-gutters">
+<section class="stats" id="stats" data-stellar-background-ratio="0.5">
+	<div class="overlay-layer-2">
+		<div class="container">
+			<div class="section-header section-stats">
+				<div class="small-text-medium uppercase colored-text">Sign Up
+					Today</div>
+				<h2 class="white-text">
+					Download the <strong class="white-text">OddlyEven</strong> App on
+					your Smart Phone
+				</h2>
+				<div class="colored-line"></div>
+				<div class="white-text sub-heading">Find and Connect with
+					Others Quickly and Conveniently from your Mobile Device</div>
+			</div>
+			<div class="row no-gutters">
 
-                   <!-- SINGLE COLUMN WITH ICON -->
-                   <div class="col-md-4 col-sm-4 col-xs-4 single-stats wow fadeInLeft" data-wow-offset="10" data-wow-duration="1.75s">
-                       <div class="icon-container">
-                           <span class="colored-text fa fa-apple"></span>
-                       </div>
-                       <h4 class="white-text">App Store</h4>
-                       <p class="uppercase transparent-text small-text">
-                           iOS 7+  (Coming Soon)
-                       </p>
-                   </div>
+				<!-- SINGLE COLUMN WITH ICON -->
+				<div class="col-md-4 col-sm-4 col-xs-4 single-stats wow fadeInLeft"
+					data-wow-offset="10" data-wow-duration="1.75s">
+					<div class="icon-container">
+						<span class="colored-text fa fa-apple"></span>
+					</div>
+					<h4 class="white-text">App Store</h4>
+					<p class="uppercase transparent-text small-text">iOS 7+ (Coming
+						Soon)</p>
+				</div>
 
-                   <!-- SINGLE COLUMN WITH ICON -->
-                   <div class="col-md-4 col-sm-4 col-xs-4 single-stats border-left-colored border-right-colored wow fadeIn" data-wow-offset="10" data-wow-duration="1.75s">
-                       <div class="icon-container">
-                           <span class="colored-text fa fa-android"></span>
-                       </div>
-                       <h4 class="white-text">Play Store</h4>
-                       <p class="uppercase transparent-text small-text">
-                           <a href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=ref_id%3Dwebsite">Android 4+</a>
-                       </p>
-                   </div>
+				<!-- SINGLE COLUMN WITH ICON -->
+				<div
+					class="col-md-4 col-sm-4 col-xs-4 single-stats border-left-colored border-right-colored wow fadeIn"
+					data-wow-offset="10" data-wow-duration="1.75s">
+					<div class="icon-container">
+						<span class="colored-text fa fa-android"></span>
+					</div>
+					<h4 class="white-text">Play Store</h4>
+					<p class="uppercase transparent-text small-text">
+						<a
+							href="https://play.google.com/store/apps/details?id=com.racloop.mobile&referrer=ref_id%3Dwebsite">Android
+							4+</a>
+					</p>
+				</div>
 
-                   <!-- SINGLE COLUMN WITH ICON -->
-                   <div class="col-md-4 col-sm-4 col-xs-4 single-stats wow fadeInRight" data-wow-offset="10" data-wow-duration="1.75s">
-                       <div class="icon-container">
-                           <span class="colored-text  fa fa-windows"></span>
-                       </div>
-                       <h4 class="white-text">Windows Store</h4>
-                       <p class="uppercase transparent-text small-text">
-                           Windows 7+ (Coming Soon)
-                       </p>
-                   </div>
-               </div>
+				<!-- SINGLE COLUMN WITH ICON -->
+				<div class="col-md-4 col-sm-4 col-xs-4 single-stats wow fadeInRight"
+					data-wow-offset="10" data-wow-duration="1.75s">
+					<div class="icon-container">
+						<span class="colored-text  fa fa-windows"></span>
+					</div>
+					<h4 class="white-text">Windows Store</h4>
+					<p class="uppercase transparent-text small-text">Windows 7+
+						(Coming Soon)</p>
+				</div>
+			</div>
 
-               <!-- CALL TO ACTION -->
-               <div class="stats-footer">
-                   <div class="long-transparent-line">
-                   </div>
-                   <p class="white-text">
-                       Help us to make a difference - <a href="${request.contextPath}/signup" class="strong inpage-scroll">Sign up »</a>
-                   </p>
-               </div>
+			<!-- CALL TO ACTION -->
+			<div class="stats-footer">
+				<div class="long-transparent-line"></div>
+				<p class="white-text">
+					Help us to make a difference - <a
+						href="${request.contextPath}/signup" class="strong inpage-scroll">Sign
+						up »</a>
+				</p>
+			</div>
 
-           </div>
-       </div>
-   </section>
+		</div>
+	</div>
+</section>
 
-   <!-- =========================
+<!-- =========================
     SECTION: BENEFITS
    ============================== -->
-   <section class="white-bg" id="safety">
-       <div class="container">
+<section class="white-bg" id="safety">
+	<div class="container">
 
-           <!-- SECTION HEADER -->
-           <div class="section-header">
-               <div class="small-text-medium uppercase colored-text">
-                   Safety and Security
-               </div>
-               <h2 class="dark-text">Being <strong>Safe</strong> and <strong>Secure</strong> on your shared journey</h2>
-               <div class="colored-line">
-               </div>
-               <div class="sub-heading text-left">
-                   Your safety and security during a rideshare are extremely important to us and we are completely committed to a comfortable hassle-free journey with your co-passengers. 
-                   Before accepting or rejecting a cabshare request, please review the user profile and ensure you are comfortable with this person as a co-passenger. 
-                   When sharing taxi services in Delhi NCR, use cab aggregator platforms or radio-taxi operators that you are satisfied with or Government-approved taxis and auto rickshaws. 
-                   During the ride, you can track your real-time location on the CabShare app along with how far you have travelled and how much further your destination is. 
-                   The app will also notify you if there is a possible deviation from the standard route.
- 
-               </div>
-           </div>
+		<!-- SECTION HEADER -->
+		<div class="section-header">
+			<div class="small-text-medium uppercase colored-text">Safety
+				and Security</div>
+			<h2 class="dark-text">
+				Being <strong>Safe</strong> and <strong>Secure</strong> on your
+				shared journey
+			</h2>
+			<div class="colored-line"></div>
+			<div class="sub-heading text-left">While we are totally committed to your safety, security and comfort on your shared ride, we also realise that initially you are new to this community venture and so is your co-rider. There will be apprehensions and concerns. Though we have built mechanisms to address these, they will work only with your participation.</div>
+		</div>
 
-           <!-- FIRST ROW OF FEATURES -->
-           <div class="row">
-               <div class="col-md-10 col-md-offset-1 wow pulse" data-wow-duration="1.75s" data-wow-offset="20">
+		<!-- FIRST ROW OF FEATURES -->
+		<div class="row">
+			<div class="col-md-10 col-md-offset-1 wow pulse"
+				data-wow-duration="1.75s" data-wow-offset="20">
 
-                   <!-- SINGLE FEATURE -->
-                   <div class="feature">
-                       <div class="icon-container">
-                           <span class="icon-music-bell colored-text"></span>
-                       </div>
-                       <div class="description text-left">
-                           <h4 class="dark-text">SOS!</h4>
-                           <div class="grey-line-short pull-left">
-                           </div>
-                           <p class="text-left">
-                               Clicking the <strong>SOS</strong> button will send an SMS to your emergency contacts every one minute along with your smart phone GPS coordinates. CabShare will also start receiving your current location and, if required, help your emergency contacts in reaching out to the police and sharing with them the contact details of your co-passengers. 
-During mobile app setup, please provide the phone numbers of your emergency contacts that CabShare should contact in case of an emergency.
-                               
-                           </p>
-                       </div>
-                   </div>
-                   
-                   <!-- SINGLE FEATURE -->
-                   <!--  <div class="feature">
+				<!-- SINGLE FEATURE -->
+				<div class="feature">
+					<div class="icon-container">
+						<span class="fa fa-check-circle-o colored-text"></span>
+					</div>
+					<div class="description text-left">
+						<h4 class="dark-text">Review!</h4>
+						<div class="grey-line-short pull-left"></div>
+						<p class="text-left">
+							Before accepting or rejecting a ride sharing request, please review the user profile and ensure you are comfortable with this person as a co-rider.
+						</p>
+					</div>
+				</div>
+				
+				<!-- SINGLE FEATURE -->
+				<div class="feature">
+					<div class="icon-container">
+						<span class="fa fa-car colored-text"></span>
+					</div>
+					<div class="description text-left">
+						<h4 class="dark-text">Stick to familiar services</h4>
+						<div class="grey-line-short pull-left"></div>
+						<p class="text-left">
+							When sharing cab services in Delhi NCR, use cab aggregator platforms or radio-taxi operators that you are satisfied with or Govt. approved taxis and autos. During the ride, you can track your real-time location on the OddlyEven app along with how far you have travelled and how much further your destination is. The app will also notify you if there is a possible deviation from the standard route.
+						</p>
+					</div>
+				</div>
+				
+				<!-- SINGLE FEATURE -->
+				<div class="feature">
+					<div class="icon-container">
+						<span class="fa fa-bell colored-text"></span>
+					</div>
+					<div class="description text-left">
+						<h4 class="dark-text">SOS!</h4>
+						<div class="grey-line-short pull-left"></div>
+						<p class="text-left">
+							During mobile app setup, please provide the phone numbers of your emergency contacts that OddlyEven should contact in case of an emergency.
+						</p>
+						<p class="text-left">
+							Clicking the <strong>SOS</strong> button will send an SMS to your emergency contacts every one minute along with your smart phone GPS coordinates. The OddlyEven app will also start receiving your current location and, if required, help your emergency contacts in reaching out to the police and sharing with them the contact details of your co-riders.
+						</p>
+					</div>
+				</div>
+
+				<!-- SINGLE FEATURE -->
+				<!--  <div class="feature">
                        <div class="icon-container">
                            <span class="icon-basic-bolt colored-text"></span>
                        </div>
@@ -222,227 +251,308 @@ During mobile app setup, please provide the phone numbers of your emergency cont
                        </div>
                    </div> -->
 
-               </div>
-           </div>
-       </div>
-   </section>
-   
-   <!-- =========================
+			</div>
+		</div>
+	</div>
+</section>
+
+<!-- =========================
     SECTION: TIMELINE
    ============================== -->
-   <section class="brief timeline white-bg-border" id="faq">
-       <div class="container">
+<section class="brief timeline white-bg-border" id="faq">
+	<div class="container">
 
-           <div class="row">
+		<div class="row">
 
-               <!-- TIMELINE HEADING / TEXT  -->
-               <div class="col-md-12 text-left wow fadeInLeft" data-wow-offset="20" data-wow-duration="1.75s">
-                   <div class="small-text-medium uppercase colored-text text-left">
-                       FAQ
-                   </div>
-                   <h2 class="text-left dark-text">Frequently Asked Questions</h2>
-                   <div class="colored-line-left">
-                   </div>
-                   <!-- FEATUR ACCORDION WITH ICON -->
-                   <div class="panel-group" id="accordion">
+			<!-- TIMELINE HEADING / TEXT  -->
+			<div class="col-md-12 text-left wow fadeInLeft" data-wow-offset="20"
+				data-wow-duration="1.75s">
+				<div class="small-text-medium uppercase colored-text text-left">
+					FAQ</div>
+				<h2 class="text-left dark-text">Frequently Asked Questions</h2>
+				<div class="colored-line-left"></div>
+				<!-- FEATUR ACCORDION WITH ICON -->
+				<div class="panel-group" id="accordion">
 
-                       <!-- SINGLE ACORDIION -->
-                       <div class="panel panel-default">
+					<!-- SINGLE ACORDIION -->
+					<div class="panel panel-default">
 
-                           <!-- ACORDIION HEADING / TITLE -->
-                           <div class="panel-heading" id="headingZero">
-                               <h4 class="panel-title">
-                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapseZero" aria-expanded="false" aria-controls="collapseZero">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">How it works?</span>
-                                   </a>
-                               </h4>
-                           </div>
+						<!-- ACORDIION HEADING / TITLE -->
+						<div class="panel-heading" id="headingZero">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseZero" aria-expanded="false"
+									aria-controls="collapseZero"> <span
+									class="icon-container color-bg"><span
+										class="fa fa-question-circle white-text"></span></span><span
+									class="title-text">How does it work?</span>
+								</a>
+							</h4>
+						</div>
 
-                           <!-- ACORDIION DESCRIPTION / TEXT -->
-                           <div id="collapseZero" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingZero">
-                               <div class="panel-body">
-                                   <h5>3 simple steps for ride sharing</h5>
-                                   <ol class="simple-list">
-                                   	<li><strong>Search :</strong> Put in the request - when and where are you going. We’ll find matching people who are going in the same direction and around the same time.</li>
-                                   	<li><strong>Connect :</strong> Send you request to the person whom you think will make a good co-passenger. If the other person accepts your request then we’ll share the contact info with each other.</li>
-                                   	<li><strong>Go :</strong>  Simply call him/her and plan your journey.</li>
-                                   </ol>
-                                   Hit the road 
-                               </div>
-                           </div>
-                       </div>
+						<!-- ACORDIION DESCRIPTION / TEXT -->
+						<div id="collapseZero" class="panel-collapse collapse in"
+							role="tabpanel" aria-labelledby="headingZero">
+							<div class="panel-body">
+								<h5>3 simple steps for ride sharing</h5>
+								<ol class="simple-list">
+									<li><strong>Search :</strong> Put in the request - when
+										and where you are going. The app will find matching people who
+										are going in the same direction and around the same time.</li>
+									<li><strong>Connect :</strong> Send you request to the
+										person whom you think will make a good co-rider. Only when the
+										other person accepts your request, the app will share your
+										respective contact info among the two of you.</li>
+									<li><strong>Go :</strong> Simply call the co-rider and
+										plan your journey.</li>
+								</ol>
+								Hit the road
+							</div>
+						</div>
+					</div>
 
-                       <!-- SINGLE ACORDIION -->
-                       <div class="panel panel-default">
+					<!-- SINGLE ACORDIION -->
+					<div class="panel panel-default">
 
-                           <!-- ACORDIION HEADING / TITLE -->
-                           <div class="panel-heading" id="headingOne">
-                               <h4 class="panel-title">
-                                   <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">Is use of CabShare Free?</span>
-                                   </a>
-                               </h4>
-                           </div>
+						<!-- ACORDIION HEADING / TITLE -->
+						<div class="panel-heading" id="headingOne">
+							<h4 class="panel-title">
+								<a data-toggle="collapse" data-parent="#accordion"
+									href="#collapseOne" aria-expanded="false"
+									aria-controls="collapseOne"> <span
+									class="icon-container color-bg"><span
+										class="fa fa-question-circle white-text"></span></span><span
+									class="title-text">Is it free?</span>
+								</a>
+							</h4>
+						</div>
 
-                           <!-- ACORDIION DESCRIPTION / TEXT -->
-                           <div id="collapseOne" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingOne">
-                               <div class="panel-body">
-                                   Absolutely.
-                               </div>
-                           </div>
-                       </div>
+						<!-- ACORDIION DESCRIPTION / TEXT -->
+						<div id="collapseOne" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingOne">
+							<div class="panel-body">Absolutely.</div>
+						</div>
+					</div>
 
-                       <!-- SINGLE ACORDIION -->
-                       <div class="panel panel-default">
+					<!-- SINGLE ACORDIION -->
+					<div class="panel panel-default">
 
-                           <!-- ACORDIION HEADING / TITLE -->
-                           <div class="panel-heading" id="headingFour">
-                               <h4 class="panel-title">
-                                   <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">I have my own car and i am driving alone. Can I share the ride?</span>
-                                   </a>
-                               </h4>
-                           </div>
+						<!-- ACORDIION HEADING / TITLE -->
+						<div class="panel-heading" id="headingFour">
+							<h4 class="panel-title">
+								<a class="collapsed" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseFour"
+									aria-expanded="false" aria-controls="collapseFour"> <span
+									class="icon-container color-bg"><span
+										class="fa fa-question-circle white-text"></span></span><span
+									class="title-text">I have my own car and I am driving
+										alone. Can I share the ride?</span>
+								</a>
+							</h4>
+						</div>
 
-                           <!-- ACORDIION DESCRIPTION / TEXT -->
-                           <div id="collapseFour" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingFour">
-                               <div class="panel-body">
-                                   Yes - you can use cabshare.in as a car pooling platform. Be sure to communicate accordingly with your co-passengers and decide on sharing of travel costs beforehand.
-                               </div>
-                           </div>
-                       </div>
+						<!-- ACORDIION DESCRIPTION / TEXT -->
+						<div id="collapseFour" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingFour">
+							<div class="panel-body">Yes, that is what the OddlyEven is
+								about. Just be sure to communicate with your co-riders and
+								decide on sharing of travel costs and aligning schedules
+								beforehand.</div>
+						</div>
+					</div>
 
-                       <!-- SINGLE ACORDIION -->
-                       <div class="panel panel-default">
+					<!-- SINGLE ACORDIION -->
+					<div class="panel panel-default">
 
-                           <!-- ACORDIION HEADING / TITLE -->
-                           <div class="panel-heading" id="headingTwo">
-                               <h4 class="panel-title">
-                                   <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">My plans have changed. What should I do?</span>
-                                   </a>
-                               </h4>
-                           </div>
+						<!-- ACORDIION HEADING / TITLE -->
+						<div class="panel-heading" id="headingTwo">
+							<h4 class="panel-title">
+								<a class="collapsed" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseTwo"
+									aria-expanded="false" aria-controls="collapseTwo"> <span
+									class="icon-container color-bg"><span
+										class="fa fa-question-circle white-text"></span></span><span
+									class="title-text">I want a ride but I am seeing other
+										ride seekers in the match results. And not a single ride
+										provider. What should I do?</span>
+								</a>
+							</h4>
+						</div>
 
-                           <!-- ACORDIION DESCRIPTION / TEXT -->
-                           <div id="collapseTwo" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingTwo">
-                               <div class="panel-body">
-                                   A change in plan is quite normal. However, to avoid inconvenience to others, do notify your co-passengers ASAP. If you are cancelling your journey, then simply look for your journey in My Requests and delete it. We’ll notify your fellow co-passengers about the cancellation. If you want to change the travel time or destination, simply delete the old request and put in a new one.
-                               </div>
-                           </div>
-                       </div>
+						<!-- ACORDIION DESCRIPTION / TEXT -->
+						<div id="collapseTwo" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingTwo">
+							<div class="panel-body">Don’t worry. Just connect with
+								fellow ride seeker and share a cab or auto. This is benifical
+								for the envoirnment as well your pocket.</div>
+						</div>
+					</div>
 
-                       <!-- SINGLE ACORDIION -->
-                       <div class="panel panel-default">
+					<!-- SINGLE ACORDIION -->
+					<div class="panel panel-default">
 
-                           <!-- ACORDIION HEADING / TITLE -->
-                           <div class="panel-heading" id="headingThree">
-                               <h4 class="panel-title">
-                                   <a class="collapsed" data-toggle="collapse" data-parent="#accordion" href="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                       <span class="icon-container color-bg"><span class="fa fa-question-circle white-text"></span></span><span class="title-text">How should I share the cost?</span>
-                                   </a>
-                               </h4>
-                           </div>
+						<!-- ACORDIION HEADING / TITLE -->
+						<div class="panel-heading" id="headingTwo">
+							<h4 class="panel-title">
+								<a class="collapsed" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseFive"
+									aria-expanded="false" aria-controls="collapseFive"> <span
+									class="icon-container color-bg"><span
+										class="fa fa-question-circle white-text"></span></span><span
+									class="title-text">My plans have changed. What should I
+										do?</span>
+								</a>
+							</h4>
+						</div>
 
-                           <!-- ACORDIION DESCRIPTION / TEXT -->
-                           <div id="collapseThree" class="panel-collapse collapse" role="tabpanel" aria-labelledby="headingThree">
-                               <div class="panel-body">
-                                   We try to match requests between rides that have close-by From and To locations. So, ideally the fare should be split evenly. However, this should be decided before-hand when you talk with your co-passengers especially if either party feels the sharing of the travel costs should be different (this could be due to detours or waiting time to accommodate the co-passenger or slightly different distances for the co-passengers. 
-                               </div>
-                           </div>
-                       </div>
-                   </div>
+						<!-- ACORDIION DESCRIPTION / TEXT -->
+						<div id="collapseFive" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingFive">
+							<div class="panel-body">Plans do change. But sharing a ride
+								requires you to notify your co-riders ASAP. 
+								<p class="text-left">If you are cancelling your journey, then simply look for your journey in My
+								Requests and delete it. The app will notify your co-riders about
+								the cancellation. If you want to change the travel time or
+								destination, simply delete the old request and put in a new one.
+								</p>
+							</div>
+						</div>
+					</div>
 
-               </div>
+					<!-- SINGLE ACORDIION -->
+					<div class="panel panel-default">
 
-           </div>
-       </div>
-   </section>
+						<!-- ACORDIION HEADING / TITLE -->
+						<div class="panel-heading" id="headingThree">
+							<h4 class="panel-title">
+								<a class="collapsed" data-toggle="collapse"
+									data-parent="#accordion" href="#collapseThree"
+									aria-expanded="false" aria-controls="collapseThree"> <span
+									class="icon-container color-bg"><span
+										class="fa fa-question-circle white-text"></span></span><span
+									class="title-text">How should I share the cost?</span>
+								</a>
+							</h4>
+						</div>
+
+						<!-- ACORDIION DESCRIPTION / TEXT -->
+						<div id="collapseThree" class="panel-collapse collapse"
+							role="tabpanel" aria-labelledby="headingThree">
+							<div class="panel-body">The OddlyEven app tries to match
+								requests between rides with nearby ‘From’ and ‘To’ locations.
+								So, ideally the fare should be split evenly. However, it is
+								always a good idea to discuss this before hand with your
+								co-riders. Remember, like you, everyone else on the app is just
+								beginning to get the hang of it.</div>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+</section>
 
 
-   <!-- =========================
+<!-- =========================
     SECTION: BRIEF LEFT
    ============================== -->
-   <section class="brief grey-bg text-left" id="about">
-       <div class="container">
-           <div class="row">
+<section class="brief grey-bg text-left" id="about">
+	<div class="container">
+		<div class="row">
 
-               <!-- BRIEF IMAGE -->
-               <div class="col-md-6 pull-right wow fadeInLeft" data-wow-offset="20" data-wow-duration="1.75s">
-                   <div class="brief-image-right">
-                       <img src="images/logo.jpg" alt="">
-                   </div>
-               </div>
+			<!-- BRIEF IMAGE -->
+			<div class="col-md-6 pull-right wow fadeInLeft" data-wow-offset="20"
+				data-wow-duration="1.75s">
+				<div class="brief-image-right">
+					<img src="images/logo.jpg" alt="">
+				</div>
+			</div>
 
-               <!-- BRIEF HEADING -->
-               <div class="col-md-6 content-section pull-left wow fadeInRight" data-wow-offset="20" data-wow-duration="1.75s">
-                   <div class="small-text-medium uppercase colored-text">
-                       About
-                   </div>
-                   <h2 class="text-left dark-text"><strong>Our</strong> Short Story </h2>
-                   <div class="colored-line-left">
-                   </div>
-                   <p class="text-left">
-                       We are a bunch of techies who commute to office regularly as well as to airports and train stations. Over the past decade, these rides have become a lot more convenient and reliable, thanks to the radio-taxi fleets and cab aggregator platforms. However, even today, whenever we use a taxi or an auto, there is an empty seat (or two) beside us and that just doesn’t feel right! If we can sit next to strangers when using public transportation, why can’t we do the same when using taxis and autos?  
-                   </p>
-					<p class="text-left">
-						Interestingly enough, on a weekday morning, you can find several people doing so at VT station in Mumbai or at Huda City metro station in Gurgaon where it is relatively easy to find co-passengers travelling in the same direction – sharing a cab saves money & time and helps reduce traffic congestion, pollution & energy consumption! Very rational, efficient, benefitting the individual commuters, society as well as future generations… but then what prevents others from doing the same elsewhere? That’s when it struck us – discovery of co-travelers was the main challenge in other locations… and that was the genesis of CabShare!
-					</p>
-					<p class="text-left">
-						CabShare is a mobile app platform that allows regular folk like us to conveniently and quickly find and connect with others who have similar travel plans. The co-travelers can then arrange to share a cab reducing their journey costs and making new friends all in a super simple, cool, and environmentally friendly way. 
-					</p>
-					<p class="text-left">
-						Our mission is to make ride-sharing a viable, mainstream and safe transportation option for all types of people and age groups. 
-					</p>
-               </div>
+			<!-- BRIEF HEADING -->
+			<div class="col-md-6 content-section pull-left wow fadeInRight"
+				data-wow-offset="20" data-wow-duration="1.75s">
+				<div class="small-text-medium uppercase colored-text">About</div>
+				<h2 class="text-left dark-text">
+					<strong>Our</strong> Short Story
+				</h2>
+				<div class="colored-line-left"></div>
+				<p class="text-left">A daily commute is a necessary evil (more
+					so in Metros). Day after day, we all go through the grind, to our
+					work places, to airports and train stations. Of late, there have
+					been some welcome additions of options to these rides, thanks to
+					the radio-taxi fleets and cab aggregator platforms. However, even
+					today, whenever we use our cars, taxis or autos, there is an empty
+					seat (or two) beside us and that just doesn’t feel right! If we can
+					sit next to strangers during flights and train journeys, why can’t
+					we do the same for our daily rides?</p>
+				<p class="text-left">Benefits of sharing a ride were many and
+					obvious, but the ‘how to’ part held us back. So did the multiple
+					concerns like co-passenger compatibility, safety, comfort and so
+					on. That’s when it struck us – discovery of co-travellers was the
+					main challenge. Rajan and Rohit in with years of experience driving
+					IT projects and Karan, a serial entrepreneur decided to join hands
+					and crack this challenge. Looming crisis of Delhi air quality
+					became the catalyst.</p>
+				<p class="text-left">And thus materialised, OddlyEven! A mobile
+					app platform that allows regular folk like us to conveniently and
+					quickly connect with others with similar travel plans. You can then
+					arrange to share your rides, saving costs and hassles, feeling
+					proud as responsible citizens and making new friends, all in a
+					super simple and cool manner.</p>
+				<p class="text-left">Our mission is simple. To make ride-sharing
+					a viable, mainstream and safe commuting option for all.</p>
+			</div>
 
-           </div>
-       </div>
-   </section>
+		</div>
+	</div>
+</section>
 
-   <!-- =========================
+<!-- =========================
     SECTION: CONTACT INFO  
    ============================== -->
-   <div class="contact-info white-bg">
-       <div class="container">
+<div class="contact-info white-bg">
+	<div class="container">
 
-           <!-- CONTACT INFO -->
-           <div class="row contact-links">
+		<!-- CONTACT INFO -->
+		<div class="row contact-links">
 
-               <div class="col-sm-4">
-                   <div class="icon-container">
-                       <span class="icon-basic-mail colored-text"></span>
-                   </div>
-                   <a href="mailto:admin@cabshare.in" class="strong">info@oddlyeven.in</a>
-               </div>
+			<div class="col-sm-4">
+				<div class="icon-container">
+					<span class="icon-basic-mail colored-text"></span>
+				</div>
+				<a href="mailto:admin@cabshare.in" class="strong">info@oddlyeven.in</a>
+			</div>
 
-               <div class="col-sm-4">
-                   <div class="icon-container">
-                       <span class="icon-basic-geolocalize-01 colored-text"></span>
-                   </div>
-                   <a href="#" class="strong">#704, Ramses Tower, Omaxe Nile, Sector 49, Gurgaon</a>
-                   <!-- 30.758332, 76.633361 -->
-               </div>
+			<div class="col-sm-4">
+				<div class="icon-container">
+					<span class="icon-basic-geolocalize-01 colored-text"></span>
+				</div>
+				<a href="#" class="strong">#704, Ramses Tower, Omaxe Nile,
+					Sector 49, Gurgaon</a>
+				<!-- 30.758332, 76.633361 -->
+			</div>
 
-               <div class="col-sm-4">
-                   <div class="icon-container">
-                       <span class="icon-basic-tablet colored-text"></span>
-                   </div>
-                   <a href="tel:+91 9717744392" class="strong">+91 9717744392</a>
-               </div>
-           </div>
+			<div class="col-sm-4">
+				<div class="icon-container">
+					<span class="icon-basic-tablet colored-text"></span>
+				</div>
+				<a href="tel:+91 9717744392" class="strong">+91 9717744392</a>
+			</div>
+		</div>
 
-       </div>
-   </div>
-   
-    <!-- =========================
+	</div>
+</div>
+
+<!-- =========================
      GOOGEL MAP 
     ============================== -->
-    <div id="container-fluid">
-        <div id="cd-google-map">
-            <div id="google-container">
-            </div>
-            <address class="color-bg">#704, Ramses Tower, Omaxe Nile, Sector 49, Gurgaon</address>
-        </div>
-    </div>
+<div id="container-fluid">
+	<div id="cd-google-map">
+		<div id="google-container"></div>
+		<address class="color-bg">#704, Ramses Tower, Omaxe Nile,
+			Sector 49, Gurgaon</address>
+	</div>
+</div>
 
