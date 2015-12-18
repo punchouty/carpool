@@ -11,11 +11,11 @@
 	href="${resource(dir: 'images', file: 'apple-touch-icon.png')}">
 <link rel="apple-touch-icon" sizes="114x114"
 	href="${resource(dir: 'images', file: 'apple-touch-icon-retina.png')}">
-<link rel="icon" href="${resource(dir: 'images/favicons', file: 'icon.png')}">
-<link rel="apple-touch-icon-precomposed" sizes="152x152" href="${resource(dir: 'images/favicons', file: 'favicon-152.png')}">
-<link rel="apple-touch-icon-precomposed" sizes="120x120" href="${resource(dir: 'images/favicons', file: 'favicon-120.png')}">
-<link rel="apple-touch-icon-precomposed" sizes="72x72" href="${resource(dir: 'images/favicons', file: 'favicon-72.png')}">
-<link rel="apple-touch-icon-precomposed" href="${resource(dir: 'images/favicons', file: 'favicon-57.png')}">	
+<link rel="icon" href="${resource(dir: 'images/favicons', file: 'favicon_oddlyeven.png')}">
+<link rel="apple-touch-icon-precomposed" sizes="152x152" href="${resource(dir: 'images/favicons', file: 'favicon_oddlyEven-152.png')}">
+<link rel="apple-touch-icon-precomposed" sizes="120x120" href="${resource(dir: 'images/favicons', file: 'favicon-oddlyeven-120.png')}">
+<link rel="apple-touch-icon-precomposed" sizes="72x72" href="${resource(dir: 'images/favicons', file: 'favicon_oddlyeven-72.png')}">
+<link rel="apple-touch-icon-precomposed" href="${resource(dir: 'images/favicons', file: 'favicon_oddlyeven-57.png')}">	
 <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 <!--[if lt IE 9]>
       <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
