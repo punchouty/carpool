@@ -466,7 +466,7 @@
 			<div class="col-md-6 pull-right wow fadeInLeft" data-wow-offset="20"
 				data-wow-duration="1.75s">
 				<div class="brief-image-right">
-					<img src="images/logo.jpg" alt="">
+					<img src="images/oddlyEven_logo.png" alt="OddlyEven Logo">
 				</div>
 			</div>
 
