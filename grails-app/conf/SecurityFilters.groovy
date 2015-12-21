@@ -30,9 +30,20 @@ import com.racloop.User
 class SecurityFilters extends NimbleFilterBase {
 	
 	FacebookContext facebookContextProxy
+	def grailsApplication
 
 	def filters = {	
 		def clos = { true}
+		all(controller: '*', action: '*') {
+			before = {
+				String inputURI = request.getRequestURL()
+				if(inputURI.contains("cabshare.in")) {
+					def targetUri = request.forwardURI - request.contextPath
+					redirect(url:grailsApplication.config?.grails?.serverURL + targetUri, permanent: true)
+					
+				}
+			}
+		}
 		journeysecure(controller: "journey", action: "(newJourney|requestService|searchWithExistingJourney|history|activeJourneys)") {
 			before = { 
 				if (facebookContextProxy.app.id && facebookContextProxy.authenticated) {
