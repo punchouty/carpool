@@ -195,7 +195,7 @@ environments {
 		grails.plugin.facebooksdk.app.secret = '1001c2cfadbb3ef97ef589695e9266e5'
 		grails.sms.enable=true
 		grails.email.enable=true
-		grails.affel.enable=true
+		grails.affel.enable=false
 		
 		grails.activemq.data.dir = "/var/cache/tomcat7/activemq/data"
 		
