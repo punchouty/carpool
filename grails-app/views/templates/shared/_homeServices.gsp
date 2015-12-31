@@ -1,15 +1,18 @@
 	<%-- TODO Remove--%>
 	
 	<div class="clients white-bg">
-        <ul class="client-logos">
-            <li>
-                <a href="https://www.facebook.com/hashtag/carfreeday" target="_blank">#CarFreeDay</a>
-            </li>
-            <li>
-                <a href="#">CabShare</a> is in support with <a href="https://www.facebook.com/GTPGGN" target="_blank">Gurgaon Traffic Police</a> for <a href="https://www.facebook.com/hashtag/carfreegurgaon" target="_blank">#CarFreeGurgaon</a>
-            </li>
-        </ul>
-    </div>
+		<ul class="client-logos">
+			<!-- <li>
+	                <a href="https://www.facebook.com/hashtag/carfreeday" target="_blank">#CarFreeDay</a>
+	            </li> -->
+			<li><a href="https://www.facebook.com/hashtag/oddlyeven">#OddlyEven</a>
+			</li>
+			<li><a href="https://www.facebook.com/hashtag/oddevenformula"
+				target="_blank">‪#‎OddEvenFormula‬</a></li>
+			<li><a href="https://www.facebook.com/hashtag/oddeven"
+				target="_blank">#OddEven</a></li>
+		</ul>
+	</div>
 	
 <!-- =========================
     SECTION: SERVICES

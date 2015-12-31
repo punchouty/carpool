@@ -54,12 +54,12 @@
 		</div>
 	</g:if>
 	
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&sensor=false&libraries=places"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?v=3&key=AIzaSyD-2SVsFAN8CLCAU7gU7xdbF2Xdkox9JoI&libraries=places"></script>
 	<r:layoutResources />
  	
-	<g:if env="development"  test = "${session?.currentJourney && session?.currentJourney?.dateOfJourneyString}">
+	<%--<g:if env="development"  test = "${session?.currentJourney && session?.currentJourney?.dateOfJourneyString}">
 		<script>
-		/*
+		
 			$(function() {
 				var now = new Date();
 				var reserveTime = 30;//in minutes
@@ -74,8 +74,8 @@
 				calcRoute(from, to);
 				
 			});
-		*/
+		
 		</script>
-	</g:if>
+	</g:if> --%>
 </body>
 </html>

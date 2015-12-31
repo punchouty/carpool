@@ -49,8 +49,11 @@
                   <h1 class="intro white-text">Search, Connect and Go</h1>
                   
                   <%-- <h1 class="intro white-text">Car Free Day</h1>
-                  <h5 class="white-text">Share Taxi and Auto Rides this 6th October. Reduce Your Travel Cost and Contribute to <a href="https://www.facebook.com/hashtag/carfreegurgaon"><span class="fa fa-leaf green-text"> Car Free Gurgaon</span></a></h5>--%>
-                  <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>
+                  <h5 class="white-text">Share Taxi and Auto Rides this 6th October. Reduce Your Travel Cost and Contribute to <a href="https://www.facebook.com/hashtag/carfreegurgaon"><span class="fa fa-leaf green-text"> Car Free Gurgaon</span></a></h5>
+                  <h5 class="white-text">Share Taxi and Auto Rides Conveniently. Split Your Travel Cost and Contribute to <span class="fa fa-leaf green-text">greener</span> Tomorrow.</h5>--%>
+                  <h5 class="white-text"> Share your car, cab and auto rides. Let's make <a href="https://twitter.com/hashtag/OddEven" target="_blank"><span class="green-text"><strong>#oddeven</strong></span></a> initiative a success for a better tomorrow.</h5>
+
+                  
 
                   <!-- MAILCHIMP SUBSCRIBE FORM -->
                   <div class="row">
